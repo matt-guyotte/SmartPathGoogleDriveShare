@@ -1,0 +1,148 @@
+/* Clean and Energetic Look:
+    https://visme.co/blog/website-color-schemes/
+    #5680E9; ()
+    #84CEEB;
+    #5AB9EA;
+    #C1C8E4;
+    #8860D0;
+
+  Corporate and Traditional:
+    https://visme.co/blog/website-color-schemes/
+    #88BDBC;
+    #254E58;
+    #112D32;
+    #4F4A41;
+    #6E6658;
+
+  Eclectic and Peaceful:
+    https://visme.co/blog/website-color-schemes/
+    #844D36;
+    #474853;
+    #86B3D1;
+    #AAA0A0;
+    #8E8268;
+
+  Corporate and Serious:
+    https://visme.co/blog/website-color-schemes/
+    #265077;
+    #022140;
+    #494B68;
+    #1E4258;
+    #2D5F5D;
+
+/* GENERAL 
+================================ */
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+    /* HEADER */
+
+
+    /* FOOTER */
+    
+
+/* FRONT PAGE 
+=================================*/
+
+
+.repository-title {
+  text-align: center;
+  width: 100%;
+  padding: 2%;
+}
+
+.file-box {
+  width: 100%;
+  height: 600px;
+  border: 2px solid black;
+  text-align: center;
+}
+
+.file-column {
+  display: table;
+}
+
+.file-title {
+  border: 2px solid black;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* COURSES
+================================ */
+
+/* SEARCH
+================================ */
+.search-col {
+padding: 4%;
+border: 2px solid black;
+overflow: scroll;
+display: block;
+}
+
+.course-col {
+padding: 4%;
+width: 100%;
+display: block;
+}
+
+.search-box {
+  border: 2px solid red;
+  padding: 10%;
+}
+
+.search-bar {
+  margin: 2%;
+}
+
+.top-row-course {
+  float: right;
+  margin-bottom: 5%;
+  display: block;
+  width: 100%;
+}
+
+.export-btn {
+  float: right;
+}
+
+.check {
+  display: block;
+  position: relative;
+}
+
+.course-box-search {
+  display: block;
+  margin: 2%;
+  padding: 2%;
+  width: 100%;
+  border: 2px solid black;
+}
+
+.course-contents {
+  display: block; 
+}
+
+.check-options {
+  display: block;
+  padding: 2%;
+}
+
+.check-options input {
+  padding: 2%;
+}
+
+.check-options > input, .check-options > h4, .check-options > p {
+  display: inline-block;
+}
+
+.file-box-search {
+  width: 100%;
+  height: 500px;
+  border: 2px solid black;
+  text-align: center;
+}
+
+
