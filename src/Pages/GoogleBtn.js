@@ -5,7 +5,7 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 // Secret: mGbOPtC4HsF5ZDz_RZDBRi0F
 
 
-const CLIENT_ID = '639109772565-vugs87i8f7erko6q45pb64sajminlk5i.apps.googleusercontent.com';
+const CLIENT_ID = '844099065946-5jkm6neret5ij7m2gf6285bs1docg64r.apps.googleusercontent.com';
 
 
 class GoogleBtn extends Component {
