@@ -117,15 +117,7 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    const fileId = fileArray[0].id
-    const update = await drive.files.update({
-      fileId,
-      multipart: {
-        mimeType: 'text/plain',
-        properties:  {subject: 'english'}
-      }
-    })
-console.log(fileArray)
+    console.log(fileArray)
   }
 }
 
