@@ -3,11 +3,20 @@ import {Navbar, Nav} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'; 
 import Row from 'react-bootstrap/Row';
 import Link from 'react-router-dom/Link'; 
+import GoogleBtn from './GoogleBtn';
 
 class TopNavbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
+            access: false
+        })
+        this.loginConfirm = this.loginConfirm.bind(this);
+    }
+
+    loginConfirm() {
+        this.setState({
+            access: true
         })
     }
     render() {
@@ -18,9 +27,7 @@ class TopNavbar extends React.Component {
                     <Navbar.Brand><Link to = "/"> <img src = "https://bit.ly/3frrQ36" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                     <Navbar.Collapse className = "ml-auto">
                         <Row className = "ml-auto">
-                        <Nav.Item> <Nav.Link> <Link to = "/"> Home  </Link> </Nav.Link> </Nav.Item> 
-                        <Nav.Item> <Nav.Link> <Link to = "/search"> Search </Link> </Nav.Link> </Nav.Item>
-                        <Nav.Item> <Nav.Link> <Link to = "/"> Logout </Link> </Nav.Link></Nav.Item>
+                        <Nav.Item> <GoogleBtn login = {this.loginConfirm} /> </Nav.Item>
                         </Row>
                     </Navbar.Collapse>
                 </Container>

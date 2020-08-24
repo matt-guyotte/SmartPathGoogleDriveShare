@@ -15,7 +15,6 @@ class FrontPage extends React.Component {
             access: false,
             driveFiles: [],
             topFolder: true,
-            id: '10nHr-VBYoU-zb7XuvMhrzedjmjtg-wZE'
         })
         this.loginConfirm = this.loginConfirm.bind(this);
         this.organizeFiles = this.organizeFiles.bind(this);
