@@ -62,6 +62,7 @@ class Search extends React.Component {
         fetch('http://localhost:8080/api')
         .then(res => res.json())
         .then(res => this.setState({driveFiles: res}))
+        .then(res => console.log(res));
         this.organizeFiles();
     }
 
