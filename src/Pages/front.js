@@ -22,12 +22,12 @@ class FrontPage extends React.Component {
         this.getChildren = this.getChildren.bind(this);
     }
 
-    //componentDidMount() {
-    //  fetch('http://localhost:8080/api')
-    //  .then(res => res.json())
-    //  .then(res => this.setState({driveFiles: res}))
-    //  this.organizeFiles();
-    //
+    componentDidMount() {
+      fetch('http://localhost:8080/api')
+      .then(res => res.json())
+      .then(res => this.setState({driveFiles: res}))
+      this.organizeFiles();
+    }
 
     loginConfirm() {
         this.setState({
