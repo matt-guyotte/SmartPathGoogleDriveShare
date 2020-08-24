@@ -7,6 +7,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom"
  
 import FrontPage from './Pages/front'; 
 import Search from './Pages/search';
+import Auth from './Pages/extension';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.render(
         <div>
         <Route exact path = "/" component = {FrontPage}/>
         <Route path = "/search" component = {Search}/>
+        <Route path = "/user_auth" component = {Auth}/>
         </div>
       </Switch>
     </Router>

@@ -54,9 +54,9 @@ function authorize(credentials, callback) {
  */
 function getAccessToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'online',
+    access_type: 'offline',
+    prompt: 'consent',
     scope: SCOPES,
-    response_type: 'token',
   });
   console.log('Authorize this app by visiting this url:', authUrl);
   const rl = readline.createInterface({
@@ -86,6 +86,7 @@ function getAccessToken(oAuth2Client, callback) {
  */
 
 async function listFiles(auth) {
+  console.log(auth)
   const drive = google.drive({ version: "v3", auth });
   const res = await drive.files.list({
     pageSize: 10,
