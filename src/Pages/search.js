@@ -13,7 +13,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
-            access: false,
+            access: true,
             driveFiles: [],
             searchTerm: '',
             searchRan: false,
@@ -517,10 +517,9 @@ class Search extends React.Component {
                                             <Col>
                                                 <h2> Found Folders </h2>
                                                 {this.state.foundFolders.map(folders => (
-                                                <p key={folders}>{folders}</p>))}
+                                                <p className = "file-box-search" key={folders}>{folders}</p>))}
                                             </Col>
                                         </Row>
-                                   
                                    </Col>
                                </Row>
                            </Col>  
