@@ -447,7 +447,7 @@ class Search extends React.Component {
                                 <br />
                                 <Row className = "course-box-search">
                                    <Col>
-                                   {this.state.driveFiles.map(files => (
+                                   {this.organizeFiles(files => (
                                                     <div className = "file-box-search" key={files}>
                                                     <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.id} </p>
