@@ -86,6 +86,7 @@ class Search extends React.Component {
                 }
             }
             driveFiles[i].click = 'https://drive.google.com/drive/folders/' + driveFiles[i].id;
+            this.setState({driveFiles: driveFiles})
         }
         return driveFiles;
     }
