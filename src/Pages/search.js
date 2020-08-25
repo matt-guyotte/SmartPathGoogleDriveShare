@@ -88,6 +88,7 @@ class Search extends React.Component {
             driveFiles[i].click = 'https://drive.google.com/drive/folders/' + driveFiles[i].id;
             this.setState({driveFiles: driveFiles})
         }
+        console.log(driveFiles);
         return driveFiles;
     }
 
@@ -447,7 +448,7 @@ class Search extends React.Component {
                                 <br />
                                 <Row className = "course-box-search">
                                    <Col>
-                                   {this.organizeFiles(files => (
+                                   {this.state.driveFiles.map(files => (
                                                     <div className = "file-box-search" key={files}>
                                                     <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.id} </p>
