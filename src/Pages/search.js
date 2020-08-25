@@ -448,7 +448,7 @@ class Search extends React.Component {
                                    <Col>
                                    {this.state.driveFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
-                                                    <p className = ""> {files.files} </p>
+                                                    <p className = ""> {files.file} </p>
                                                     <p> {files.id} </p>
                                                 </div>))}
                                    </Col>
