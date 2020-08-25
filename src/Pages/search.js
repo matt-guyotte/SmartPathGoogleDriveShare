@@ -113,12 +113,12 @@ class Search extends React.Component {
 
             if (driveFiles[i].file === searchTerm && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.english ) {
                 if (driveFiles[i].type === "application/vnd.google-apps.folder") {
-                    foundFolders.push(driveFiles[i].file)
+                    foundFolders.push(driveFiles[i])
                     console.log(foundFolders)
                     this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -130,12 +130,12 @@ class Search extends React.Component {
 
             if(searchTerm === '' && this.state.math === true) {
                 if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'math') {
-                    foundFolders.push(driveFiles[i].file)
+                    foundFolders.push(driveFiles[i])
                     console.log(foundFolders)
                     this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'math') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -144,11 +144,11 @@ class Search extends React.Component {
                 for(var i = 0; i < driveFiles.length; i++) {
                     if(driveFiles[i].properties.subject === 'science') {
                         if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                         }
                         if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                         }
                     }
@@ -158,11 +158,11 @@ class Search extends React.Component {
                 for(var i = 0; i < driveFiles.length; i++) {
                     if(driveFiles[i].properties.subject === 'social-studies') {
                         if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                         }
                         if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                         }
                     }
@@ -172,11 +172,11 @@ class Search extends React.Component {
                 for(var i = 0; i < driveFiles.length; i++) {
                     if(driveFiles[i].properties.subject === 'english') {
                         if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                         }
                         if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                            foundFolders.push(driveFiles[i].file);
+                            foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                         }
                     }
@@ -187,12 +187,12 @@ class Search extends React.Component {
 
             if (driveFiles[i].file === searchTerm && this.state.math === true) {
                 if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'math') {
-                    foundFolders.push(driveFiles[i].file)
+                    foundFolders.push(driveFiles[i])
                     console.log(foundFolders)
                     this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'math') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -204,7 +204,7 @@ class Search extends React.Component {
                     this.setState({foundFolders: [...this.state.foundFolders, driveFiles[i]]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'science') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -216,7 +216,7 @@ class Search extends React.Component {
                     this.setState({foundFolders: [...this.state.foundFolders, driveFiles[i]]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'socialStudies') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -228,7 +228,7 @@ class Search extends React.Component {
                     this.setState({foundFolders: [...this.state.foundFolders, driveFiles[i]]})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'english') {
-                    foundFiles.push(driveFiles[i].file)
+                    foundFiles.push(driveFiles[i])
                     console.log(foundFiles)
                     this.setState({foundFiles: [...this.state.foundFiles, foundFiles]})
                 }
@@ -242,11 +242,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'pre-k') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -257,11 +257,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'K') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -272,11 +272,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'first') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -289,11 +289,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'pre-k') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -304,11 +304,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'K') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -319,11 +319,11 @@ class Search extends React.Component {
             for(var i = 0; i < driveFiles.length; i++) {
                 if(driveFiles[i].properties.grade === 'first') {
                     if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFolders, foundFolders]})
                     }
                     if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i].file);
+                        foundFolders.push(driveFiles[i]);
                         this.setState({foundFolders: [...this.state.foundFiles, foundFiles]})
                     }
                 }
@@ -450,6 +450,7 @@ class Search extends React.Component {
                                                 <div className = "file-box-search" key={files}>
                                                     <p className = ""> {files.file} </p>
                                                     <p> {files.id} </p>
+                                                    <img src = "..\img\document-logo.png"></img>
                                                 </div>))}
                                    </Col>
                                </Row>
