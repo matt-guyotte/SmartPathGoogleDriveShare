@@ -446,6 +446,11 @@ class Search extends React.Component {
                                 <br />
                                 <Row className = "course-box-search">
                                    <Col>
+                                   {this.state.driveFiles.map(files => (
+                                                <div className = "file-box-search" key={files}>
+                                                    <p className = ""> {files.files} </p>
+                                                    <p> {files.id} </p>
+                                                </div>))}
                                    </Col>
                                </Row>
                            </Col>  
@@ -510,7 +515,9 @@ class Search extends React.Component {
                                             <Col>
                                                 <h2> Found Files </h2>
                                                 {this.state.foundFiles.map(files => (
-                                                <p className = "file-box-search" key={files}>{files}</p>))}
+                                                <div className = "file-box-search" key={files}>
+                                                    <p className = ""> {files} </p>
+                                                </div>))}
                                             </Col>
                                         </Row>
                                         <Row>
