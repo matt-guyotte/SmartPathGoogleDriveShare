@@ -97,6 +97,7 @@ async function listFiles(auth) {
   if (files.length) {
     const fileDisplay = [];
     const fileIdArray = [];
+    const description = [];
     const mimeType = [];
     const parents = [];
     const properties = [];
@@ -104,6 +105,7 @@ async function listFiles(auth) {
     for (var i = 0; i < files.length; i++) {
       fileDisplay.push(files[i].name);
       fileIdArray.push(files[i].id);
+      description.push(files[i].description);
       mimeType.push(files[i].mimeType);
       properties.push(files[i].properties);
       parents.push(files[i].parents);
@@ -112,13 +114,14 @@ async function listFiles(auth) {
       fileArray.push({
         file: fileDisplay[y],
         id: fileIdArray[y],
+        description: description[y],
         type: mimeType[y],
-        parents: parents[y],
         properties: properties[y],
+        parents: parents[y],
       });
     }
-    app.set('fileArray', fileArray);
     console.log(fileArray)
+    app.set('fileArray', fileArray);
   }
 }
 
