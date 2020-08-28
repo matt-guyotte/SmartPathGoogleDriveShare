@@ -43,6 +43,7 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
+    exportFiles(oAuth2Client);
   });
 }
 
@@ -86,7 +87,7 @@ function getAccessToken(oAuth2Client, callback) {
  */
 
 async function listFiles(auth) {
-  console.log(auth)
+
   const drive = google.drive({ version: "v3", auth });
   const res = await drive.files.list({
     pageSize: 10,
@@ -125,6 +126,26 @@ async function listFiles(auth) {
   }
 }
 
+function exportFiles(auth) {
+  const drive = google.drive({ version: "v3", auth });
+  app.set('drive', drive);
+  var fileId = '1qupvie1LqNdLj-1TZNu3x6-4bT411C4F2YYGSfpc7yk';
+  var dest = fs.createWriteStream('./src/test.txt');
+
+  drive.files.export({
+    fileId: fileId, mimeType: 'text/plain'}, 
+    {responseType: 'stream'},
+    function(err, response){
+    if(err)return console.log(err);
+    response.data.on('error', err => {
+        console.log(err);
+    }).on('end', ()=>{
+        console.log("sent file.")
+    })
+    .pipe(dest);
+});
+}
+
 //// serve up production assets
 app.use(express.static('build'));
 
@@ -137,5 +158,10 @@ app.get('/api', (req, res, done) => {
 })
 
 app.patch('/update', (req, res, done) => {
+})
+
+app.get("/download", (req, res) => {
+  res.send("");
+  console.log("sent download.")
 })
 

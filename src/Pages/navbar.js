@@ -22,9 +22,9 @@ class TopNavbar extends React.Component {
     render() {
         return (
             <div>
-                <Navbar expand = 'lg' bg = 'light' variant = 'light' className = 'nav-bar'>
+                <Navbar expand = 'lg' bg = '#FFFFFF' variant = 'light' className = 'nav-bar'>
                 <Container fluid>
-                    <Navbar.Brand><Link to = "/"> <img src = "https://bit.ly/3frrQ36" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
+                    <Navbar.Brand class = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                     <Navbar.Collapse className = "ml-auto">
                         <Row className = "ml-auto">
                         <Nav.Item> <GoogleBtn login = {this.loginConfirm} /> </Nav.Item>

@@ -15,6 +15,7 @@ class Search extends React.Component {
         this.state = ({
             access: true,
             driveFiles: [],
+            downloadLink: '',
             searchTerm: '',
             searchRan: false,
             foundFolders: [],
@@ -42,6 +43,7 @@ class Search extends React.Component {
         this.organizeFiles = this.organizeFiles.bind(this);
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.searchFunction = this.searchFunction.bind(this);
+        this.downloadFile = this.downloadFile.bind(this);
 
         //Subject State Functions
         this.math = this.math.bind(this);
@@ -62,7 +64,6 @@ class Search extends React.Component {
         fetch('/api')
         .then(res => res.json())
         .then(res => this.setState({driveFiles: res}))
-        .then(res => console.log(res));
         this.organizeFiles();
     }
 
@@ -101,6 +102,11 @@ class Search extends React.Component {
         })
     }
 
+    downloadFile() {
+        fetch("/download")
+        .then(res => res.json())
+        .then(res => this.setState({downloadFile: res}))
+    }
 
 
 
@@ -401,12 +407,86 @@ class Search extends React.Component {
             return (
                 <div>
                     <TopNavbar />
-                    <Container>
-                        <Row> 
+                    <Container fluid>
+                        <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
-                               <Row>
-                                   <input type = "text" className = "searchBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                   <input type = "submit" onClick = {this.searchFunction}/>
+                               <Row className = "searchBar">
+                                   <input type = "text" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
+                                </Row>
+                                <Row clasName = "submitButton">
+                                   <Button className = "btn btn-primary" onClick = {this.searchFunction}> Submit </Button>
+                                </Row>   
+                                <hr />
+                                <Row className = "search-box subject-area">
+                                    <h2>Subject Area</h2>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.math}/> <p> Math </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.science} /> <p> Science </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.socialStudies} /> <p> Social Studies </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.english} /> <p> English </p> 
+                                    </div>
+                                </Row>
+                                <hr />
+                                <Row className = "search-box grade-level">
+                                    <h2> Grade Level </h2>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.preK} /> <p> Pre-K </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.k}  /> <p> K </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" onClick = {this.first}  /> <p> 1st </p> 
+                                    </div>
+                                </Row>
+                                <hr />
+                                <Row className = "search-box industry">
+                                    <h2> Industry </h2>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" /> <p> Architecture </p>
+                                    </div>
+                                    <div className = "check-options"> 
+                                        <input type = "checkbox" /> <p> Arts </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" /> <p> Engineering </p> 
+                                    </div>
+                                </Row>
+                           </Col>
+                           <Col md = {9} className = "course-col">
+                               <Row className = "top-row-course">
+                                    <Button className = "btn-primary export-btn" onClick = {this.downloadFile}> Export </Button> 
+                                    <a href = "test.jpg" download = "test.jpg"> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                               </Row>
+                                <br />
+                                <Row className = "course-box-search">
+                                   <Col>
+                                   {this.state.downloadLink}
+                                   </Col>
+                               </Row>
+                           </Col>  
+                        </Row>
+                    </Container>
+                </div>
+            )
+        }
+        if(this.state.searchRan === true) {
+            return (
+                <div>
+                   <TopNavbar />
+                   <Container fluid>
+                        <Row className = "searchPage"> 
+                           <Col md = {3} className = "search-col">
+                               <Row className = "searchBar">
+                                   <input type = "text" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
+                                   <br />
+                                   <Button className = "btn btn-primary" onClick = {this.searchFunction}> Submit </Button>
                                </Row>
                                 <Row className = "search-box subject-area">
                                     <h2>Subject Area</h2>
@@ -423,6 +503,7 @@ class Search extends React.Component {
                                         <input type = "checkbox" onClick = {this.english} /> <p> English </p> 
                                     </div>
                                 </Row>
+                                <hr />
                                 <Row className = "search-box grade-level">
                                     <h2> Grade Level </h2>
                                     <div className = "check-options">
@@ -435,76 +516,24 @@ class Search extends React.Component {
                                         <input type = "checkbox" onClick = {this.first}  /> <p> 1st </p> 
                                     </div>
                                 </Row>
+                                <hr />
                                 <Row className = "search-box industry">
                                     <h2> Industry </h2>
-                                    <input type = "checkbox" /> <p> Architecture </p> 
-                                    <input type = "checkbox" /> <p> Arts </p> 
-                                    <input type = "checkbox" /> <p> Engineering </p> 
+                                    <div className = "check-options">
+                                        <input type = "checkbox" /> <p> Architecture </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" /> <p> Arts </p> 
+                                    </div>
+                                    <div className = "check-options">
+                                        <input type = "checkbox" /> <p> Engineering </p> 
+                                    </div>
                                 </Row>
                            </Col>
-                           <Col md = {8} className = "course-col">
+                           <Col md = {9} className = "course-col">
                                <Row className = "top-row-course">
-                                    <Button className = "btn-primary export-btn"> Export </Button>
-                               </Row>
-                                <br />
-                                <Row className = "course-box-search">
-                                   <Col>
-                                   </Col>
-                               </Row>
-                           </Col>  
-                        </Row>
-                    </Container>
-                </div>
-            )
-        }
-        if(this.state.searchRan === true) {
-            return (
-                <div>
-                    <TopNavbar />
-                    <Container>
-                        <Row> 
-                           <Col md = {3} className = "search-col">
-                               <Row>
-                                   <input type = "text" className = "searchBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                   <input type = "submit" onClick = {this.searchFunction}/>
-                               </Row>
-                                <Row className = "search-box subject-area">
-                                    <h2>Subject Area</h2>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.math} /> <p> Math </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.science}/> <p> Science </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.socialStudies}/> <p> Social Studies </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.english}/> <p> English </p> 
-                                    </div>
-                                </Row>
-                                <Row className = "search-box grade-level">
-                                    <h2> Grade Level </h2>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.preK} /> <p> Pre-K </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.k} /> <p> K </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.first} /> <p> 1st </p> 
-                                    </div>
-                                </Row>
-                                <Row className = "search-box industry">
-                                    <h2> Industry </h2>
-                                    <input type = "checkbox" /> <p> Architecture </p> 
-                                    <input type = "checkbox" /> <p> Arts </p> 
-                                    <input type = "checkbox" /> <p> Engineering </p> 
-                                </Row>
-                           </Col>
-                           <Col md = {8} className = "course-col">
-                               <Row className = "top-row-course">
-                                    <Button className = "btn-primary export-btn"> Export </Button>
+                                    <Button className = "btn-primary export-btn" onClick = {this.downloadFile}> Export </Button> 
+                                    <a href = "test.jpg" download = "test.jpg"> <Button className = "btn-primary export-btn"> Download </Button> </a>
                                </Row>
                                 <br />
                                 <Row className = "course-box-search">
@@ -514,17 +543,18 @@ class Search extends React.Component {
                                                 <h2> Found Files </h2>
                                                 {this.state.foundFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
-                                                    <p className = ""> <a href = {files.click}> {files.file} </a> </p>
+                                                    <input type = "checkbox"></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.description}</p>
                                                 </div>))}
                                             </Col>
                                         </Row>
+                                        <hr />
                                         <Row>
                                             <Col>
                                                 <h2> Found Folders </h2>
                                                 {this.state.foundFolders.map(folders => (
                                                 <div className = "file-box-search" key={folders}>
-                                                <h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                                <input type = "checkbox"></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <h4> Options </h4>
                                                 <input type = "checkbox" /> <p> Video </p> 

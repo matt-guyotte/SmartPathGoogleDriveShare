@@ -40,6 +40,11 @@ body {
     /* HEADER */
 
 
+.logo-class {
+  height: 50px; 
+  width: 10%;
+}
+
     /* FOOTER */
     
 
@@ -75,31 +80,40 @@ body {
 
 /* SEARCH
 ================================ */
+.searchPage {
+  background-color: #d5e7ed;
+}
+
 .search-col {
+background-color: #d5e7ed;
 padding: 4%;
-border: 2px solid black;
-overflow: scroll;
 display: block;
+border-right: 2px solid black;
 }
 
 .course-col {
-padding: 4%;
+background-color: #d5e7ed;
+padding: 2%;
 width: 100%;
 display: block;
 }
 
 .search-box {
-  border: 2px solid red;
+  background-color: #d5e7ed;
   padding: 10%;
 }
 
-.search-bar {
-  margin: 2%;
+.searchBar {
+  padding: 2%;
+}
+
+.searchBar input {
+  width: 100%;
 }
 
 .top-row-course {
+  background-color: #d5e7ed;
   float: right;
-  margin-bottom: 5%;
   display: block;
   width: 100%;
 }
@@ -114,32 +128,35 @@ display: block;
 }
 
 .course-box-search {
+  background-color: #d5e7ed;
   display: block;
   margin: 2%;
   padding: 2%;
   width: 100%;
-  border: 2px solid black;
 }
 
 .course-contents {
+  background-color: #d5e7ed;
   display: block; 
 }
 
 .check-options {
   display: block;
-  padding: 2%;
-}
-
-.check-options input {
-  padding: 2%;
+  padding: 3%;
+  width: 100%;
 }
 
 .check-options > input, .check-options > h4, .check-options > p {
   display: inline-block;
 }
 
-.file-box-search {
-  border: 2px solid black;
+.file-box-search > input, .file-box-search > p {
+  display: inline-block;
 }
 
+.file-box-search {
+  border: 2px solid black;
+  padding: 2%;
+  width: 100%;
+}
 
