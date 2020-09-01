@@ -51,7 +51,6 @@ body {
 /* FRONT PAGE 
 =================================*/
 
-
 .repository-title {
   text-align: center;
   width: 100%;
@@ -155,8 +154,57 @@ display: block;
 }
 
 .file-box-search {
-  border: 2px solid black;
+  border: 2px dotted black;
+  background-color: #f0f5f7;
+  border-radius: 1%;
   padding: 2%;
   width: 100%;
 }
+
+.lesson-pic {
+  height: 250px; 
+  width: 100%;
+}
+
+/* ADMIN
+================================ */
+.admin-page {
+  height: 800px;
+  background-color: #d5e7ed;
+  width: 100%;
+}
+
+.admin-title {
+  padding-top: 5%;
+}
+
+.admin-box {
+  margin-top: 10%;
+  border: 2px solid black;
+  text-align: center;
+  width: 100%;
+  height: 150px;
+  display: table;
+}
+
+.admin-box:hover {
+  background-color: #f0f5f7;
+  cursor: pointer;
+}
+
+.admin-box-term {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* Domains */
+
+.domain-box {
+  border: 2px solid black;
+  width: 100%;
+  height: 150px;
+  display: table;
+}
+
+
 

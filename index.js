@@ -1,6 +1,13 @@
 var express = require ('express'); 
 var app = express(); 
 
+require('dotenv').config(); 
+var path = require("path"); 
+
+var bodyParser = require('body-parser');
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
+
 app.listen(process.env.PORT || 8080, () => {
   console.log('Port 8080 is Active.')
 });
@@ -8,10 +15,44 @@ app.listen(process.env.PORT || 8080, () => {
 var cors = require('cors'); 
 app.use(cors()); 
 
+var mongoose = require ('mongoose'); 
+    mongoose.set('useNewUrlParser', true);
+    mongoose.set('useUnifiedTopology', true);
+    mongoose.set('useFindAndModify', false);
+    mongoose.connect(process.env.MONGO_URI);
+    var db = mongoose.connection;
+
+var bcrypt = require('bcrypt');
+var session = require('express-session'); 
+var mongoStore = require('connect-mongo')(session); 
+app.use(session({secret: process.env.secret, 
+    resave: false, saveUninitialized: true,
+    cookie: {maxAge: null},
+    store: new mongoStore({mongooseConnection: db})}));
+
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+    console.log("Mongoose connection successful.");
+  });
+
+var Schema = mongoose.Schema;  
+var userSchema = new Schema ({
+    email: String,
+    password: String,
+    domain: String
+}); 
+var domainSchema = new Schema ({
+  name: String,
+  domains: Array
+})
+const User = mongoose.model('User', userSchema);
+const Domains = mongoose.model('Domains', domainSchema)
+
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 const { file } = require('googleapis/build/src/apis/file');
+const { domain } = require('process');
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
@@ -43,7 +84,6 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
-    exportFiles(oAuth2Client);
   });
 }
 
@@ -75,6 +115,7 @@ function getAccessToken(oAuth2Client, callback) {
         console.log('Token stored to', TOKEN_PATH);
       });
       callback(oAuth2Client);
+      updateTest(oAuth2Client)
     });
   });
 }
@@ -89,6 +130,7 @@ function getAccessToken(oAuth2Client, callback) {
 async function listFiles(auth) {
 
   const drive = google.drive({ version: "v3", auth });
+  app.set('drive', drive);
   const res = await drive.files.list({
     pageSize: 10,
     fields: "nextPageToken, files(id, name, description, mimeType, createdTime, parents, properties)",
@@ -121,16 +163,152 @@ async function listFiles(auth) {
         parents: parents[y],
       });
     }
-    console.log(fileArray)
+    console.log(fileArray);
     app.set('fileArray', fileArray);
   }
 }
 
-function exportFiles(auth) {
-  const drive = google.drive({ version: "v3", auth });
-  app.set('drive', drive);
-  var fileId = '1qupvie1LqNdLj-1TZNu3x6-4bT411C4F2YYGSfpc7yk';
-  var dest = fs.createWriteStream('./src/test.txt');
+//// serve up production assets
+app.use(express.static('build'));
+
+// Stored Domains
+const domains = ['@unit5.org', '@myunit5.org', "@leroyk12.org", "@district87.org", "@smartpathed.com"];
+
+// Domain Functions
+
+
+// Authentication Routes
+
+app.post("/register", (req, res, done) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const domain = req.body.domain;
+  bcrypt.hash(password, 10, (err, hash) => {
+  var addedUser = new User ({
+      email: email,
+      password: hash,
+      domain: domain,
+  })
+  addedUser.save((err, data) => {
+      if (err) {
+          return done(err); 
+          res.redirect('/register'); 
+      }
+      req.session.sessionID = data._id; 
+      console.log(req.session.sessionID); 
+      done(null, data); 
+      console.log(data); 
+  })
+  })
+}); 
+
+app.post('/login', (req, res, done) => {
+  const email = req.body.email; 
+  const password = req.body.password;
+  User.find({email: email}, (err, data) => {
+      if (err) { 
+          done(err); 
+          console.log("email not found.")
+      }
+      else { 
+      console.log('email found!'); 
+      bcrypt.compare(password, data[0].password, (err, result) => {
+          if(err) {
+              done(err);
+              console.log('passwords do not match.')
+          }
+          if(result === true) {
+              req.session.sessionID = data[0]._id; 
+              console.log(data);
+              for(var i = 0; i < domains.length; i++) {
+                if (domains[i] === data[0].domain) {
+                  console.log(domains[i]);
+                  done(null, req.session.sessionID);
+                  console.log(req.session.sessionID); 
+                }
+                else {
+                  console.log("No domain matches account")
+                }
+              }  
+              
+          }
+          else {
+              console.log("outside error found")
+          }
+      }) 
+      }
+  })
+})
+
+app.get('/login2', (req, res) => {
+  if(req.session.sessionID) {
+      res.send(true);
+      console.log("login2 ran.")
+  }
+  else{ 
+      res.send(false); 
+  }   
+})
+
+app.get('/logout', function (req, res, done) {
+  console.log("logout called.")
+  if (req.session.sessionID) {
+    req.session.destroy();
+    }
+  });
+
+app.get('/apicall', (req, res, done) => {
+  console.log("apicall called.")
+  console.log(req.session.sessionID)
+  if(req.session.sessionID) {
+      console.log(req.session.sessionID)
+      res.send(true);
+  }
+  else {
+  done(null)
+  }
+})
+
+app.get('/domains', (req, res) => {
+  Domains.find({name: "Domains"}, (err, data) => {
+    if (err) return console.log(err);
+    console.log(data)
+    res.send(data);
+  })
+})
+
+app.post('/adddomain', (req, res) => {
+  const newDomains = req.body.domain;
+  console.log(newDomains)
+  Domains.findOneAndUpdate(
+    {name: "Domains"}, 
+    {$push: {domains: newDomains}},
+    {new: true},
+    (err, data) => {console.log(data)})
+})
+
+app.get('/api', (req, res, done) => {
+  var fileArray = req.app.get('fileArray');
+  res.send(fileArray);
+  console.log("sent.");
+  done;
+})
+
+app.post('/update', (req, res, done) => {
+  var drive = req.app.get('drive');
+  var fileId = req.body.id;
+  var subject = req.body.subject;
+  var response = drive.files.update({
+    fileId: fileId,
+    requestBody: {properties: {subject: subject}},
+  })
+})
+
+app.post("/download", (req, res) => {
+  const drive = req.app.get('drive');
+  var dest = fs.createWriteStream('./src/Pages/test.txt');
+  console.log(req.body.id)
+  const fileId = req.body.id
 
   drive.files.export({
     fileId: fileId, mimeType: 'text/plain'}, 
@@ -143,25 +321,6 @@ function exportFiles(auth) {
         console.log("sent file.")
     })
     .pipe(dest);
-});
-}
+  });
 
-//// serve up production assets
-app.use(express.static('build'));
-
-
-app.get('/api', (req, res, done) => {
-  var fileArray = req.app.get('fileArray');
-  res.send(fileArray);
-  console.log("sent.");
-  done;
 })
-
-app.patch('/update', (req, res, done) => {
-})
-
-app.get("/download", (req, res) => {
-  res.send("");
-  console.log("sent download.")
-})
-
