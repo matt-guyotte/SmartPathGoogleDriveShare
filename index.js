@@ -171,11 +171,6 @@ async function listFiles(auth) {
 //// serve up production assets
 app.use(express.static('build'));
 
-// Stored Domains
-const domains = ['@unit5.org', '@myunit5.org', "@leroyk12.org", "@district87.org", "@smartpathed.com"];
-
-// Domain Functions
-
 
 // Authentication Routes
 
