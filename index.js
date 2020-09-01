@@ -206,26 +206,25 @@ app.post('/login', (req, res, done) => {
           console.log("email not found.")
       }
       else { 
-      console.log('email found!'); 
+      console.log('user found!'); 
       bcrypt.compare(password, data[0].password, (err, result) => {
           if(err) {
               done(err);
               console.log('passwords do not match.')
           }
           if(result === true) {
-              req.session.sessionID = data[0]._id; 
-              console.log(data);
-              for(var i = 0; i < domains.length; i++) {
-                if (domains[i] === data[0].domain) {
-                  console.log(domains[i]);
+            req.session.sessionID = data[0]._id; 
+            console.log(data);
+            Domains.find({name: "Domains"}, (err, res) => {
+              if (err) return console.log(err);
+              var foundDomains = res[0].domains;
+              for(var i = 0; i < foundDomains.length; i++) {
+                if(foundDomains[i] === data[0].domain) {
                   done(null, req.session.sessionID);
                   console.log(req.session.sessionID); 
                 }
-                else {
-                  console.log("No domain matches account")
-                }
-              }  
-              
+              }
+            })
           }
           else {
               console.log("outside error found")
