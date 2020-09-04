@@ -178,22 +178,29 @@ app.post("/register", (req, res, done) => {
   const email = req.body.email;
   const password = req.body.password;
   const domain = req.body.domain;
-  bcrypt.hash(password, 10, (err, hash) => {
-  var addedUser = new User ({
-      email: email,
-      password: hash,
-      domain: domain,
-  })
-  addedUser.save((err, data) => {
-      if (err) {
-          return done(err); 
-          res.redirect('/register'); 
+  Domains.find({name: "Domains"}, (err, res) => {
+    if (err) return console.log(err);
+    var foundDomains = res[0].domains;
+    for(var i = 0; i < foundDomains.length; i++) {
+      if(foundDomains[i] === domain) {
+        bcrypt.hash(password, 10, (err, hash) => {
+          var addedUser = new User ({
+              email: email,
+              password: hash,
+              domain: domain,
+          })
+          addedUser.save((err, data) => {
+              if (err) {
+                  return done(err); 
+              }
+              req.session.sessionID = data._id; 
+              console.log(req.session.sessionID); 
+              done(null, data); 
+              console.log(data); 
+          })
+        })
       }
-      req.session.sessionID = data._id; 
-      console.log(req.session.sessionID); 
-      done(null, data); 
-      console.log(data); 
-  })
+    }
   })
 }); 
 
@@ -251,6 +258,8 @@ app.get('/logout', function (req, res, done) {
     }
   });
 
+  //Api Routes
+
 app.get('/apicall', (req, res, done) => {
   console.log("apicall called.")
   console.log(req.session.sessionID)
@@ -298,14 +307,61 @@ app.post('/update', (req, res, done) => {
   })
 })
 
-app.post("/download", (req, res) => {
+app.post("/makenew", (req, res) => {
+  var drive = req.app.get('drive');
+  var name = req.body.name;
+  var description = req.body.description;
+  var subject = req.body.subject;
+  var grade = req.body.grade;
+  var type = req.body.type;
+  console.log(subject);
+  var fileMetadata = {
+    'name': name,
+    'description': description,
+    "properties": {
+      "subject": subject,
+      "grade": grade,
+    },
+    'mimeType': type,
+  };
+  drive.files.create({
+    resource: fileMetadata,
+    fields: 'id'
+  }, function (err, file) {
+    if (err) {
+      // Handle error
+      console.error(err);
+    } else {
+      console.log(file.id);
+    }
+  });
+})
+
+app.get('/downloadtest', (req, res) => {
+  res.download('./src/Pages/downloads/lesson 2.txt')
+  console.log("file downloaded.")
+})
+
+app.post("/downloaddocument", (req, res) => {
   const drive = req.app.get('drive');
-  var dest = fs.createWriteStream('./src/Pages/test.txt');
-  console.log(req.body.id)
   const fileId = req.body.id
+  const fileName = req.body.name
+  const type = req.body.type
+  var newType = ''
+  if(type === 'pdf') {
+    newType = 'application/pdf'
+  }
+  if(type === 'docx') {
+    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  }
+  if(type === 'txt') {
+    newType === 'text/plain'
+  }
+  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
+  console.log(dest);
 
   drive.files.export({
-    fileId: fileId, mimeType: 'text/plain'}, 
+    fileId: fileId, mimeType: newType}, 
     {responseType: 'stream'},
     function(err, response){
     if(err)return console.log(err);
@@ -316,5 +372,29 @@ app.post("/download", (req, res) => {
     })
     .pipe(dest);
   });
+})
+
+app.post("/downloadfolder", (req, res) => {
+  const drive = req.app.get('drive');
+  const fileId = req.body.id
+  console.log(req.body.id)
+  const fileName = req.body.name
+  const type = req.body.type
+  console.log(type);
+  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type );
+  console.log(dest);
+
+  //drive.files.export({
+  //  fileId: fileId, mimeType: 'application/zip'}, 
+  //  {responseType: 'stream'},
+  //  function(err, response){
+  //  if(err)return console.log(err);
+  //  response.data.on('error', err => {
+  //      console.log(err);
+  //  }).on('end', ()=>{
+  //      console.log("sent file.")
+  //  })
+  //  .pipe(dest);
+  //});
 
 })

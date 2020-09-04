@@ -13,7 +13,7 @@ class CreateNew extends Component {
   }
   render() {
     return (
-    <div className = "admin-page">
+    <div className = "admin-page whole">
      <Link to = "/admin"> <Button className = 'btn btn-primary' onClick = {this.props.moveToCreateNew}> Return to Home </Button> </Link>
         <h3> Create New Properties </h3>
         <div> 
@@ -25,7 +25,6 @@ class CreateNew extends Component {
             </select>
         </div>
         <div>
-
         </div>
     </div>
     )

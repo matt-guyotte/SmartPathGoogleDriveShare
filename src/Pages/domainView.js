@@ -52,12 +52,11 @@ class DomainView extends Component {
 
   render() {
     return (
-    <div className = "admin-page">
+    <div className = "admin-page whole">
       <Container fluid>
         <Button className = 'btn btn-primary' onClick = {this.props.moveToDomains}> Return to Home </Button>
         <h3> Domains </h3>
         <div className = "domain-box"> 
-            <h4> Current Domains </h4>
             {this.state.domains.map(domains => (
             <div className = "file-box-search" key={domains}>
                 <h4> {domains} </h4>

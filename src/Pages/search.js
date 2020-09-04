@@ -5,14 +5,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button';
 import {Form} from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Link from 'react-router-dom/Link';
+import Redirect from 'react-router-dom/Redirect'
 
 import TopNavbar from './navbar';
 import GoogleBtn from './GoogleBtn';
 import Register from './register';
 import Login from './login'
-import test from './test.txt';
 
 class Search extends React.Component {
     constructor(props) {
@@ -23,10 +24,12 @@ class Search extends React.Component {
             downloadLink: '',
             searchTerm: '',
             searchRan: false,
-            id: '',
-            fileName: '',
             foundFolders: [],
             foundFiles: [],
+            id: '',
+            fileName: '',
+            exportFileType: 'pdf',
+            downloadPath: '',
 
             // Search Terms
 
@@ -57,12 +60,15 @@ class Search extends React.Component {
                 // Industry
                 
         })
-        this.loginConfirm = this.loginConfirm.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.organizeFiles = this.organizeFiles.bind(this);
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleChangeCheckFile = this.handleChangeCheckFile.bind(this);
+        this.handleChangeFileType = this.handleChangeFileType.bind(this);
         this.searchFunction = this.searchFunction.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
+        this.downloadTest = this.downloadTest.bind(this);
 
         //Subject State Functions
         this.math = this.math.bind(this);
@@ -92,6 +98,9 @@ class Search extends React.Component {
         
     }
 
+    openModal = () => this.setState({ isOpen: true });
+    closeModal = () => this.setState({ isOpen: false });
+
     componentDidMount() {
         fetch('/api')
         .then(res => res.json())
@@ -100,12 +109,6 @@ class Search extends React.Component {
         fetch('/apicall')
         .then(res => res.json())
         .then(res => this.setState({session: res}))
-    }
-
-    loginConfirm() {
-        this.setState({
-            session: true
-        })
     }
 
     organizeFiles() {
@@ -141,15 +144,33 @@ class Search extends React.Component {
         this.setState({
             id: event.target.value
         })
+        this.setState({
+            fileName: event.target.name
+        })
+    }
+
+    handleChangeFileType (event) {
+        this.setState({
+            exportFileType: event.target.value
+        })
+    }
+
+    downloadTest() {
+        fetch('/downloadtest');
     }
 
     downloadFile(event) {
         event.preventDefault();
-        fetch('/download', {
+        var pathStart = './downloads/'
+        var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
+        this.setState({newPath : newPath})
+        fetch('/downloaddocument', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({
-              id: this.state.id
+              id: this.state.id,
+              name: this.state.fileName,
+              type: this.state.exportFileType,
             })
           }) 
     }
@@ -212,7 +233,7 @@ class Search extends React.Component {
                 }
             }
             if(searchTerm === '' && this.state.socialStudies === true) {
-                    if(driveFiles[i].properties.subject === 'social-studies') {
+                    if(driveFiles[i].properties.subject === 'socialStudies') {
                         if(driveFiles[i].type === "application/vnd.google-apps.folder") {
                             foundFolders.push(driveFiles[i]);
                             this.setState({foundFolders: foundFolders})
@@ -864,18 +885,12 @@ class Search extends React.Component {
     //Rendered Component
 
     render() {
-        if(!this.state.session) {
-            return (
-                <div>
-                    <Login loginConfirm = {this.loginConfirm} />
-                </div>
-            )
-        }
         if(this.state.session === true && this.state.searchRan === false) {
             return (
                 <div>
                     <TopNavbar />
                     <Container fluid>
+                        <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
                                <Row className = "searchBar">
@@ -967,11 +982,8 @@ class Search extends React.Component {
                                 </Row>
                            </Col>
                            <Col md = {9} className = "course-col">
-                               <Row className = "top-row-course">
-                                   <Form onSubmit = {this.downloadFile} >
-                                        <Button type = "submit" className = "btn-primary export-btn"> Export </Button>
-                                    </Form> 
-                                    <a href = {test} download> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                               <Row className = "top-row-course-search">
+                                   <h2> Search </h2>
                                </Row>
                                 <br />
                                 <Row className = "course-box-search">
@@ -982,6 +994,7 @@ class Search extends React.Component {
                                </Row>
                            </Col>  
                         </Row>
+                        </div>
                     </Container>
                 </div>
             )
@@ -991,6 +1004,7 @@ class Search extends React.Component {
                 <div>
                    <TopNavbar />
                    <Container fluid>
+                       <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
                                <Row className = "searchBar">
@@ -1084,10 +1098,8 @@ class Search extends React.Component {
                            </Col>
                            <Col md = {9} className = "course-col">
                                <Row className = "top-row-course">
-                                    <Form onSubmit = {this.downloadFile} >
-                                        <Button type = "submit" className = "btn-primary export-btn"> Export </Button>
-                                    </Form> 
-                                    <a href = {test} download> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                                    <Button className = "btn-primary export-btn" onClick = {this.openModal} value = {this.state.exportFileType || ''}> Export </Button>
+                                    <Button className = "btn-primary export-btn"> Download </Button>
                                </Row>
                                 <br />
                                 <Row className = "course-box-search">
@@ -1113,7 +1125,7 @@ class Search extends React.Component {
                                             <h2> Found Files </h2>
                                                 {this.state.foundFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
-                                                    <input type = "checkbox" value = {files.id} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
+                                                    <input type = "checkbox" name = {files.file} value = {files.id} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.description}</p>
                                                 </div>
                                                 ))}
@@ -1121,9 +1133,48 @@ class Search extends React.Component {
                                         </Row>
                                    </Col>
                                </Row>
+                               <Modal className = "export-modal" show={this.state.isOpen} onHide={this.closeModal}>
+                                    <Modal.Header closeButton>
+                                      <Modal.Title>Export</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>Current File(s) selected: </Modal.Body>
+                                    <Modal.Body> {this.state.id} </Modal.Body>
+                                    <Modal.Body> {this.state.fileName} </Modal.Body>
+                                    <Modal.Body> {this.state.exportFileType} </Modal.Body>
+                                    <Modal.Body> {this.state.newPath} </Modal.Body>
+                                    <Modal.Footer>
+                                    <Modal.Body> Export To: </Modal.Body>
+                                    <Modal.Footer>
+                                    <select onChange = {this.handleChangeFileType} value = {this.state.exportFileType || ''}>
+                                        <option value = "pdf">.pdf</option>
+                                        <option value = "docx">.docx</option>
+                                        <option value = "txt">.txt</option>
+                                    </select>
+                                    </Modal.Footer>
+                                    <Form onSubmit = {this.downloadFile} >
+                                        <Button type = "submit" className = "btn-primary export-btn"> Export </Button>
+                                    </Form> 
+                                        <Link to = "localhost:8080/downloadtest"> <Button className = "btn-primary export-btn"> Download </Button> </Link>
+                                    </Modal.Footer>
+                                    <Modal.Footer>
+                                      <Button variant="secondary" onClick={this.closeModal}>
+                                        Close
+                                      </Button>
+                                    </Modal.Footer>
+                                </Modal>
                            </Col>  
                         </Row>
+                        </div>
                     </Container>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    <TopNavbar />
+                    <h2> If you have just logged in, please refresh the page. </h2> 
+                    <h2> Otherwise, please login. </h2>
                 </div>
             )
         }

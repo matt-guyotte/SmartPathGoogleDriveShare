@@ -93,15 +93,15 @@ class adminPortal extends Component {
 
 
   render() {
-    if(!this.state.access) {
-        return (
-            <div>
-            <p><strong> Note: </strong></p>
-            <p> This is for Smartpath admins only.</p> 
-            <GoogleBtn login = {this.loginConfirm} />
-            </div>
-        )
-    }
+    //if(!this.state.access) {
+    //    return (
+    //        <div>
+    //        <p><strong> Note: </strong></p>
+    //        <p> This is for Smartpath admins only.</p> 
+    //        <GoogleBtn login = {this.loginConfirm} />
+    //        </div>
+    //    )
+    //}
     if (this.state.domains === true && this.state.view != true && this.state.updateFolder != true && this.state.createNew != true) {
         return (
             <div>
@@ -146,13 +146,13 @@ class adminPortal extends Component {
     return (
     <div>
         <AdminNavbar />
-        <div className = "admin-page">
+        <div className = "admin-page whole">
             <Container fluid>
             <h3 className = "admin-title"> <strong> Welcome to the admin portal! </strong> </h3>
             <Row>
                 <Col md = {6}>
                     <div className = "admin-box" onClick = {this.moveToDomains}> 
-                        <h4 className = "admin-box-term"> View Domains and Privledges </h4>
+                        <h4 className = "admin-box-term"> View Domains and Privileges </h4>
                     </div>
                 </Col>
                 <Col md = {6}>
@@ -164,7 +164,7 @@ class adminPortal extends Component {
             <Row>
                 <Col md = {6}>
                     <div className = "admin-box" onClick = {this.moveToUpdateFolder}> 
-                        <h4 className = "admin-box-term"> Edit a Lesson/Folder </h4>
+                        <h4 className = "admin-box-term"> Edit/Add a Lesson/Folder </h4>
                     </div>
                 </Col>
                 <Col md = {6}>
