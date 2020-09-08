@@ -33,6 +33,9 @@ class AddNew extends React.Component {
     this.handleChangeSubject = this.handleChangeSubject.bind(this);
     this.handleChangeGrade = this.handleChangeGrade.bind(this);
     this.handleChangeIndustry = this.handleChangeIndustry.bind(this);
+    this.handleChangeVideo = this.handleChangeVideo.bind(this);
+    this.handleChangeRubric = this.handleChangeRubric.bind(this);
+    this.handleChangeHandout = this.handleChangeHandout.bind(this);
   }
 
   addSubject() {
@@ -203,6 +206,10 @@ class AddNew extends React.Component {
             <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
             <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
           </Form.Control>
+          <h3> Does it contain? </h3>
+          <input type = "checkbox" onClick = {this.handleChangeVideo} /> <p> Video? </p>
+          <input type = "checkbox" onClick = {this.handleChangeRubric} /> <p> Rubric? </p>
+          <input type = "checkbox" onClick = {this.handleChangeHandout} /> <p> Handout? </p> 
           <Button className = "btn btn-primary" type = "submit">Submit </Button>
           </Form>
     </Container>
