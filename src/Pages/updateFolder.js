@@ -140,7 +140,7 @@ class UpdateFolder extends React.Component {
      <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
         <h3> Update Lesson </h3>
           <Form onSubmit = {this.addSubject}>
-          <h4> Search for lesson to Change </h4>
+          <h4> Enter Drive Folder Id of Lesson to Change </h4>
           <Form.Control input = "true" name = "email" value= {this.state.id || ''} placeholder="Enter file/folder id" onChange = {this.handleChangeId} required />
           <hr />
           <h4> Subject </h4>

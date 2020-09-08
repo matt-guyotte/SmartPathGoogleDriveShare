@@ -180,6 +180,9 @@ class Search extends React.Component {
     }
 
     handleChangeSubject(event) {
+        console.log(event.target.value)
+        console.log(this.state.math)
+        this.setState({subject: event.target.value})
         if(event.target.value === 'math') {
             this.setState({math: true})
         }
@@ -201,6 +204,7 @@ class Search extends React.Component {
     }
 
     handleChangeGrade(event) {
+        this.setState({grade: event.target.value});
         if(event.target.value === "pre-k") {
             this.setState({preK: true})
         }
@@ -247,6 +251,7 @@ class Search extends React.Component {
     }
 
     handleChangeIndustry(event) {
+        this.setState({industry: event.target.value})
         if(event.target.value === "Agriculture, Food & Natural Resources") {
             this.setState({agriculture: true})
         }
@@ -1637,7 +1642,18 @@ class Search extends React.Component {
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <img className = "lesson-pic" src = ""></img>
-                                                <h4> Options </h4>
+                                                <Container>
+                                                <Row>
+                                                <p> Video - {folders.properties.video} </p>
+                                                </Row>
+                                                <Row>
+                                                <p> Rubric - {folders.properties.rubric} </p>
+                                                </Row>
+                                                <Row>
+                                                <p> Handouts - {folders.properties.handout}</p>
+                                                </Row>
+                                                </Container>
+
                                                 </div>))}
                                             </Col>
                                         </Row>

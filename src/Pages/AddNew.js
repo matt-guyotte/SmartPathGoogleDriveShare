@@ -163,7 +163,7 @@ class AddNew extends React.Component {
           <h4> Subject* </h4>
           <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subjectAdd || ''}>
           <option> Pick a subject:</option>
-          <option value = "math">Math</option>
+          <option value = "math"> Math</option>
           <option value = "science">Science</option>
           <option value = "socialStudies">Social Studies</option>
           <option value = "languageArts">Language Arts</option>

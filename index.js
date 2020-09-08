@@ -148,7 +148,7 @@ async function listFiles(auth) {
     if(files[i].properties === undefined) {
       await drive.files.update({
         fileId: files[i].id,
-        requestBody: {properties: {subject: "", grade: "", industry: "", video: "", rubric: "", handout: ""}},
+        requestBody: {properties: {subject: "", grade: "", industry: "", imgsrc: "", video: "no", rubric: "no", handout: "no"}},
       })
     }
   }
@@ -241,6 +241,33 @@ app.post("/register", (req, res, done) => {
           })
         })
       }
+      if(foundDomains[i] !== domain) {
+        SpecialUsers.find({name: "Special Users"}, (err, res) => {
+          if (err) return console.log(err);
+          var specialEmails = res[0].emails;
+          for(var y = 0; y < specialEmails.length; y++) {
+            if(specialEmails[i] === email) {
+              bcrypt.hash(password, 10, (err, hash) => {
+                if(err) return console.log(err);
+                var addedUser = new User ({
+                    email: email,
+                    password: hash,
+                    domain: domain,
+                })
+                addedUser.save((err, data) => {
+                    if (err) {
+                        return done(err); 
+                    }
+                    req.session.sessionID = data._id; 
+                    console.log(req.session.sessionID); 
+                    done(null, data); 
+                    console.log(data); 
+                })
+              })
+            }
+          }
+        })
+      }
     }
   })
 }); 
@@ -270,6 +297,20 @@ app.post('/login', (req, res, done) => {
                 if(foundDomains[i] === data[0].domain) {
                   done(null, req.session.sessionID);
                   console.log(req.session.sessionID); 
+                }
+                if(foundDomains[i] !== data[0].domain) {
+                  SpecialUsers.find({name: "Special Users"}, (err, res) => {
+                    if(err) return console.log(err);
+                    var specialUsers = res[0].emails;
+                    for(var y = 0; y < specialUsers.length; y++) {
+                      if(specialUsers[i] === data[0].email) {
+                        done(null, req.session.sessionID);
+                      }
+                      else {
+                        return console.log("user does not match any of our records.")
+                      }
+                    }
+                  })
                 }
               }
             })
@@ -361,6 +402,7 @@ app.post('/update', (req, res, done) => {
   var fileId = req.body.id;
   var subject = req.body.subject;
   var grade = req.body.grade;
+  var imgSrc = req.body.imgSrc;
   var video = req.body.video;
   var rubric = req.body.rubric;
   var handout = req.body.handout; 
@@ -376,26 +418,19 @@ app.post("/makenew", (req, res) => {
   var description = req.body.description;
   var subject = req.body.subject;
   var grade = req.body.grade;
+  var industry = req.body.industry;
   var type = req.body.type;
   var video = req.body.video;
   var rubric = req.body.rubric;
   var handout = req.body.handout;
-  if(!video) {
-    video = false
-  }
-  if(!rubric) {
-    rubric = false
-  }
-  if(!handout) {
-    handout = false
-  }
-  console.log(subject);
   var fileMetadata = {
     'name': name,
     'description': description,
     "properties": {
       "subject": subject,
       "grade": grade,
+      "industry": industry,
+      "imgsrc": imgSrc,
       "video": video,
       "rubric": rubric,
       "handout": handout,
