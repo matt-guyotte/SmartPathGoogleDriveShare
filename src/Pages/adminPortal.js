@@ -11,6 +11,7 @@ import DomainView from './domainView';
 import SmartPathView from './smartPathView';
 import UpdateFolder from "./updateFolder";
 import CreateNew from './createNew';
+import AddNew from './AddNew';
 import TopNavbar from './navbar';
 
 
@@ -23,12 +24,14 @@ class adminPortal extends Component {
       domains: false,
       view: false, 
       updateFolder: false,
+      addNew: false,
       createNew: false
     };
     this.loginConfirm = this.loginConfirm.bind(this);
     this.moveToDomains = this.moveToDomains.bind(this);
     this.moveToSmartpath = this.moveToSmartpath.bind(this);
     this.moveToUpdateFolder = this.moveToUpdateFolder.bind(this);
+    this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
   }
@@ -72,6 +75,18 @@ class adminPortal extends Component {
         if(this.state.updateFolder === true) {
             this.setState({
                 updateFolder: false
+            })
+        }
+    }
+    moveToAddNew() {
+        if(this.state.addNew === false) {
+            this.setState({
+                addNew: true
+            })
+        }
+        if(this.state.addNew === true) {
+            this.setState({
+                addNew: false
             })
         }
     }
@@ -132,6 +147,16 @@ class adminPortal extends Component {
             </div>
         )
     }
+    if(this.state.addNew === true) {
+        return (
+            <div>
+            <AdminNavbar />
+            <AddNew
+                addNew = {this.state.addNew}
+                moveToAddNew = {this.moveToAddNew} />
+            </div>
+        )
+    }
     if (this.state.createNew === true) {
         return (
             <div>
@@ -164,12 +189,12 @@ class adminPortal extends Component {
             <Row>
                 <Col md = {6}>
                     <div className = "admin-box" onClick = {this.moveToUpdateFolder}> 
-                        <h4 className = "admin-box-term"> Edit/Add a Lesson/Folder </h4>
+                        <h4 className = "admin-box-term"> Edit a Lesson </h4>
                     </div>
                 </Col>
                 <Col md = {6}>
-                    <div className = "admin-box" onClick = {this.moveToCreateNew}> 
-                        <h4 className = "admin-box-term"> Add Lesson Properties</h4>
+                    <div className = "admin-box" onClick = {this.moveToAddNew}> 
+                        <h4 className = "admin-box-term"> Add a Lesson </h4>
                     </div>
                 </Col>
             </Row>

@@ -45,8 +45,14 @@ var domainSchema = new Schema ({
   name: String,
   domains: Array
 })
+var specialUsersSchema = new Schema ({
+  name: String,
+  emails: Array,
+})
 const User = mongoose.model('User', userSchema);
 const Domains = mongoose.model('Domains', domainSchema)
+const SpecialUsers = mongoose.model('SpecialUsers', specialUsersSchema)
+
 
 const fs = require('fs');
 const readline = require('readline');
@@ -55,7 +61,7 @@ const { file } = require('googleapis/build/src/apis/file');
 const { domain } = require('process');
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive'];
+const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/classroom.courses', 'https://www.googleapis.com/auth/classroom.coursework.students'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -84,6 +90,7 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
+    listCourses(oAuth2Client);
   });
 }
 
@@ -115,7 +122,9 @@ function getAccessToken(oAuth2Client, callback) {
         console.log('Token stored to', TOKEN_PATH);
       });
       callback(oAuth2Client);
-      updateTest(oAuth2Client)
+      updateTest(oAuth2Client);
+      listCourses(oAuth2Client);
+      addProperties(oAuth2Client);
     });
   });
 }
@@ -128,14 +137,21 @@ function getAccessToken(oAuth2Client, callback) {
  */
 
 async function listFiles(auth) {
-
   const drive = google.drive({ version: "v3", auth });
   app.set('drive', drive);
   const res = await drive.files.list({
-    pageSize: 10,
+    pageSize: 1000,
     fields: "nextPageToken, files(id, name, description, mimeType, createdTime, parents, properties)",
   });
   const files = res.data.files;
+  for(var i = 0; i < files.length; i++) {
+    if(files[i].properties === undefined) {
+      await drive.files.update({
+        fileId: files[i].id,
+        requestBody: {properties: {subject: "", grade: "", industry: "", video: "", rubric: "", handout: ""}},
+      })
+    }
+  }
   const fileArray = [];
   if (files.length) {
     const fileDisplay = [];
@@ -163,9 +179,34 @@ async function listFiles(auth) {
         parents: parents[y],
       });
     }
-    console.log(fileArray);
+    console.log(fileArray)
     app.set('fileArray', fileArray);
   }
+}
+
+function listCourses(auth) {
+  const classroom = google.classroom({version: 'v1', auth: auth});
+  app.set('classroom', classroom);
+  classroom.courses.courseWork.list({
+    courseId: '140229883842',
+    pageSize: 1000,
+  }, (err, res) => {
+    if (err) return console.error('The API returned an error: ' + err);
+    const courses = res.data
+    if (courses.courseWork) {
+      console.log(courses.courseWork)
+    } else {
+      console.log('No courses found.');
+    }
+  });
+}
+
+listCourses();
+
+function addProperties(auth, fileArray) {
+  const drive = google.drive({ version: "v3", auth });
+  console.log(fileArray);
+
 }
 
 //// serve up production assets
@@ -290,6 +331,24 @@ app.post('/adddomain', (req, res) => {
     (err, data) => {console.log(data)})
 })
 
+app.get('/specialusers', (req, res) => {
+  SpecialUsers.find({name: "Special Users"}, (err, data) => {
+    if(err) return console.log(err);
+    console.log(data);
+    res.send(data);
+  })
+})
+
+app.post('/addspecialuser', (req, res) => {
+  const newUser = req.body.specialUser;
+  console.log(newUser)
+  Domains.findOneAndUpdate(
+    {name: "Special Users"}, 
+    {$push: {emails: newDomains}},
+    {new: true},
+    (err, data) => {console.log(data)})
+})
+
 app.get('/api', (req, res, done) => {
   var fileArray = req.app.get('fileArray');
   res.send(fileArray);
@@ -301,9 +360,13 @@ app.post('/update', (req, res, done) => {
   var drive = req.app.get('drive');
   var fileId = req.body.id;
   var subject = req.body.subject;
+  var grade = req.body.grade;
+  var video = req.body.video;
+  var rubric = req.body.rubric;
+  var handout = req.body.handout; 
   var response = drive.files.update({
     fileId: fileId,
-    requestBody: {properties: {subject: subject}},
+    requestBody: {properties: {subject: subject, grade: grade, video: video, rubric: rubric, handout: handout}},
   })
 })
 
@@ -314,6 +377,18 @@ app.post("/makenew", (req, res) => {
   var subject = req.body.subject;
   var grade = req.body.grade;
   var type = req.body.type;
+  var video = req.body.video;
+  var rubric = req.body.rubric;
+  var handout = req.body.handout;
+  if(!video) {
+    video = false
+  }
+  if(!rubric) {
+    rubric = false
+  }
+  if(!handout) {
+    handout = false
+  }
   console.log(subject);
   var fileMetadata = {
     'name': name,
@@ -321,6 +396,9 @@ app.post("/makenew", (req, res) => {
     "properties": {
       "subject": subject,
       "grade": grade,
+      "video": video,
+      "rubric": rubric,
+      "handout": handout,
     },
     'mimeType': type,
   };
@@ -337,16 +415,24 @@ app.post("/makenew", (req, res) => {
   });
 })
 
-app.get('/downloadtest', (req, res) => {
-  res.download('./src/Pages/downloads/lesson 2.txt')
+app.get('/download', (req, res) => {
   console.log("file downloaded.")
+  const fileName = req.app.get('fileName');
+  const type = req.app.get('type')
+  var pathStart = './src/Pages/downloads/'
+  var newPath = pathStart.concat(fileName + '.' + type)
+  console.log(newPath)
+  res.download(newPath)
 })
 
 app.post("/downloaddocument", (req, res) => {
   const drive = req.app.get('drive');
   const fileId = req.body.id
+  app.set('fileId', fileId);
   const fileName = req.body.name
+  app.set('fileName', fileName)
   const type = req.body.type
+  app.set('type', type)
   var newType = ''
   if(type === 'pdf') {
     newType = 'application/pdf'
@@ -374,27 +460,69 @@ app.post("/downloaddocument", (req, res) => {
   });
 })
 
+// requiring child_process native module
+const child_process = require('child_process');
+
+const folderpath = './src/Pages/downloads';
+
+app.get("/downloadzip", (req, res) => {
+
+  // we want to use a sync exec to prevent returning response
+  // before the end of the compression process
+  child_process.execSync(`zip -r newzip`, {
+    cwd: folderpath
+  });
+
+  // zip archive of your folder is ready to download
+  res.download(folderpath + '/archive.zip');
+});
+
 app.post("/downloadfolder", (req, res) => {
   const drive = req.app.get('drive');
   const fileId = req.body.id
-  console.log(req.body.id)
+  app.set('fileId', fileId);
   const fileName = req.body.name
+  app.set('fileName', fileName)
   const type = req.body.type
-  console.log(type);
-  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type );
+  app.set('type', type)
+  var newType = ''
+  if(type === 'zip') {
+    newType = '	application/zip'
+  }
+  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
   console.log(dest);
 
-  //drive.files.export({
-  //  fileId: fileId, mimeType: 'application/zip'}, 
-  //  {responseType: 'stream'},
-  //  function(err, response){
-  //  if(err)return console.log(err);
-  //  response.data.on('error', err => {
-  //      console.log(err);
-  //  }).on('end', ()=>{
-  //      console.log("sent file.")
-  //  })
-  //  .pipe(dest);
-  //});
 
+  drive.files.export({
+    fileId: fileId, mimeType: newType}, 
+    {responseType: 'stream'},
+    function(err, response){
+    if(err)return console.log(err);
+    response.data.on('error', err => {
+        console.log(err);
+    }).on('end', ()=>{
+        console.log("sent file.")
+    })
+    .pipe(dest);
+  });
+
+})
+
+app.get("/updatecourse", (req, res) => {
+  const classroom = req.app.get("classroom");
+  classroom.courses.courseWork.create(
+    {courseId: '140229883842'},
+    {requestBody: {
+      title: '10th Grade Biology',
+      section: '2',
+      descriptionHeading: 'Welcome to 10th Grade Biology',
+      description: "We'll be learning about about the structure of living creatures from a combination of textbooks, guest lectures, and lab work. Expect to be excited!",
+      room: '301',
+      courseState: 'PROVISIONED',
+      ownerId: '110003867565919888228',
+    }, function (err, res) {
+      if(err) return console.log(err);
+      if(res) return console.log(res);
+    }
+  });
 })
