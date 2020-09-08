@@ -201,7 +201,6 @@ class AddNew extends React.Component {
             <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
             <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
           </Form.Control>
-          <Form.Control input = "true" name = "industry" value= "" placeholder="Enter industry" onChange = ""  />
           <Button className = "btn btn-primary" type = "submit">Submit </Button>
           </Form>
     </div>

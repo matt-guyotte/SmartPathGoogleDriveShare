@@ -1693,8 +1693,21 @@ class Search extends React.Component {
             return (
                 <div>
                     <TopNavbar />
-                    <h2> If you have just logged in, please refresh the page. </h2> 
-                    <h2> Otherwise, please login. </h2>
+                    <Container>
+                        <Row>
+                            <h2> Welcome! </h2>
+                        </Row>
+                        <Row>
+                            <h2> If you have just logged in, please refresh the page. </h2> 
+                        </Row>
+                        <Row>
+                            <h2> Otherwise, please login. </h2>
+                        </Row>
+                        <Row>
+                            <Link to = "/login"> <Button className = "btn btn-primary"> Login </Button> </Link>
+                        </Row>
+                    </Container>
+                    
                 </div>
             )
         }
