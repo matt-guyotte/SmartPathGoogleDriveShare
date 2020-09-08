@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'; 
 import Button from 'react-bootstrap/Button';
@@ -53,6 +54,7 @@ class SmartPathView extends Component {
   render() {
     return (
     <div className = "admin-page">
+      <Container>
      <Link to = "/admin"> <Button className = 'btn btn-primary' onClick = {this.props.moveToSmartpath}> Return to Home </Button> </Link>
         <h3> Smartpath Folder </h3>
         <div> 
@@ -65,6 +67,7 @@ class SmartPathView extends Component {
 
         </div>
           <Button className = "btn btn-primary"> <small> Add to folder </small> </Button>
+          </Container>
     </div>
     )
   }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'; 
 import Form from 'react-bootstrap/Form';
@@ -143,6 +144,7 @@ class AddNew extends React.Component {
   render() {
     return (
     <div className = "admin-page whole">
+    <Container>
      <Button className = 'btn btn-primary' onClick = {this.props.moveToAddNew}> Return to Home </Button>
         <h3> Add Lesson </h3>
           <Form onSubmit = {this.createNew}>
@@ -203,6 +205,7 @@ class AddNew extends React.Component {
           </Form.Control>
           <Button className = "btn btn-primary" type = "submit">Submit </Button>
           </Form>
+    </Container>
     </div>
     )
   }
