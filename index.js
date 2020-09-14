@@ -4,6 +4,10 @@ var app = express();
 require('dotenv').config(); 
 var path = require("path"); 
 
+//// serve up production assets
+app.use(express.static('build'));
+app.use(express.static('img'));
+
 var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
@@ -41,6 +45,12 @@ var userSchema = new Schema ({
     password: String,
     domain: String
 }); 
+var tagSchema = new Schema ({
+  id: String,
+  subject: Array,
+  grade: Array, 
+  industry: Array
+})
 var domainSchema = new Schema ({
   name: String,
   domains: Array
@@ -50,9 +60,32 @@ var specialUsersSchema = new Schema ({
   emails: Array,
 })
 const User = mongoose.model('User', userSchema);
+const TagFile = mongoose.model('TagFile', tagSchema)
 const Domains = mongoose.model('Domains', domainSchema)
 const SpecialUsers = mongoose.model('SpecialUsers', specialUsersSchema)
 
+function makeNewTag() {
+  TagFile.remove({}, (err, res) => {
+    if (err) return console.log(err);
+    console.log("deleted files")
+  });
+}
+
+makeNewTag();
+
+app.use(express.static('img'));
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './src/Pages/img')
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+})
+
+const uploads = multer({storage})
+console.log(multer)
 
 const fs = require('fs');
 const readline = require('readline');
@@ -90,7 +123,7 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
-    listCourses(oAuth2Client);
+    //listCourses(oAuth2Client);
   });
 }
 
@@ -123,7 +156,7 @@ function getAccessToken(oAuth2Client, callback) {
       });
       callback(oAuth2Client);
       updateTest(oAuth2Client);
-      listCourses(oAuth2Client);
+      //listCourses(oAuth2Client);
       addProperties(oAuth2Client);
     });
   });
@@ -141,76 +174,115 @@ async function listFiles(auth) {
   app.set('drive', drive);
   const res = await drive.files.list({
     pageSize: 1000,
-    fields: "nextPageToken, files(id, name, description, mimeType, createdTime, parents, properties)",
+    fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
   });
   const files = res.data.files;
   for(var i = 0; i < files.length; i++) {
-    if(files[i].properties === undefined) {
-      await drive.files.update({
-        fileId: files[i].id,
-        requestBody: {properties: {subject: "", grade: "", industry: "", imgsrc: "", video: "no", rubric: "no", handout: "no"}},
+      TagFile.count({id: files[i].id}, (err, count) => {
+        if(err) return console.log(err);
+        console.log(files[i].id)
       })
-    }
+      console.log(files[i].id)
   }
-  const fileArray = [];
+  const fileArray = [{
+    file: '',
+    id: '',
+    description: '',
+    type: '',
+    properties: {
+      subject: [],
+      grade: [],
+      industry: [],
+      imgsrc: ''
+    },
+    parents: [],
+  }];
   if (files.length) {
     const fileDisplay = [];
     const fileIdArray = [];
     const description = [];
     const mimeType = [];
     const parents = [];
-    const properties = [];
-    console.log("Files:");
+    var subjectArray = [];
+    var gradeArray = [];
+    var industryArray = [];
+    const imgsrc = [];
+    var newLoop = [];
     for (var i = 0; i < files.length; i++) {
+      await TagFile.find({id: files[i].id}, (err, res) => {
+        if (err) return console.log("This is the error for TagFile " + err);
+        //console.log(res);
+        newLoop = res;
+      })
+      //console.log(newLoop.subject);
       fileDisplay.push(files[i].name);
       fileIdArray.push(files[i].id);
       description.push(files[i].description);
       mimeType.push(files[i].mimeType);
-      properties.push(files[i].properties);
       parents.push(files[i].parents);
+      subjectArray.push(newLoop.subject)
+      gradeArray.push(newLoop.grade)
+      industryArray.push(newLoop.industry)
     }
     for (var y = 0; y < fileDisplay.length; y++) {
+      for(var j = 0; j < subjectArray.length; j++) {
+        if(subjectArray[j] === undefined) {
+          subjectArray[j] = [];
+        }
+      }
+      for(var j = 0; j < gradeArray.length; j++) {
+        if(gradeArray[j] === undefined) {
+          gradeArray[j] = [];
+        }
+      }
+      for(var j = 0; j < industryArray.length; j++) {
+        if(industryArray[j] === undefined) {
+          industryArray[j] = [];
+        }
+      }
       fileArray.push({
         file: fileDisplay[y],
         id: fileIdArray[y],
         description: description[y],
         type: mimeType[y],
-        properties: properties[y],
+        properties: {
+          subject: subjectArray[y],
+          grade: gradeArray[y],
+          industry: industryArray[y],
+          imgsrc: ''
+        },
         parents: parents[y],
       });
     }
-    console.log(fileArray)
     app.set('fileArray', fileArray);
+    console.log(fileArray)
   }
 }
 
-function listCourses(auth) {
-  const classroom = google.classroom({version: 'v1', auth: auth});
-  app.set('classroom', classroom);
-  classroom.courses.courseWork.list({
-    courseId: '140229883842',
-    pageSize: 1000,
-  }, (err, res) => {
-    if (err) return console.error('The API returned an error: ' + err);
-    const courses = res.data
-    if (courses.courseWork) {
-      console.log(courses.courseWork)
-    } else {
-      console.log('No courses found.');
-    }
-  });
-}
-
-listCourses();
+//function listCourses(auth) {
+//  const classroom = google.classroom({version: 'v1', auth: auth});
+//  app.set('classroom', classroom);
+//  classroom.courses.courseWork.list({
+//    courseId: '140229883842',
+//    pageSize: 1000,
+//  }, (err, res) => {
+//    if (err) return console.error('The API returned an error: ' + err);
+//    const courses = res.data
+//    if (courses.courseWork) {
+//      console.log('courses found')
+//    } else {
+//      console.log('No courses found.');
+//    }
+//  });
+//}
+//
+//listCourses();
 
 function addProperties(auth, fileArray) {
   const drive = google.drive({ version: "v3", auth });
   console.log(fileArray);
 
 }
-
-//// serve up production assets
-app.use(express.static('build'));
 
 
 // Authentication Routes
@@ -397,18 +469,19 @@ app.get('/api', (req, res, done) => {
   done;
 })
 
-app.post('/update', (req, res, done) => {
+app.post('/update', uploads.single('myFile'), (req, res, done) => {
   var drive = req.app.get('drive');
   var fileId = req.body.id;
   var subject = req.body.subject;
   var grade = req.body.grade;
-  var imgSrc = req.body.imgSrc;
+  var industry = req.body.industry;
+  const imageUrl = req.file.filename;
   var video = req.body.video;
   var rubric = req.body.rubric;
   var handout = req.body.handout; 
-  var response = drive.files.update({
+  drive.files.update({
     fileId: fileId,
-    requestBody: {properties: {subject: subject, grade: grade, video: video, rubric: rubric, handout: handout}},
+    requestBody: {properties: {subject: subject, grade: grade, industry: industry, imgSrc: imageUrl, video: video, rubric: rubric, handout: handout}},
   })
 })
 
@@ -448,6 +521,18 @@ app.post("/makenew", (req, res) => {
       console.log(file.id);
     }
   });
+})
+
+app.post('/profile', uploads.single('myFile'), function (req, res) {
+  var drive = req.app.get('drive');
+  const id = req.body.fileId; 
+  console.log(id);
+  const image = req.file.filename;
+  console.log(image);
+  drive.files.update({
+    fileId: id,
+    requestBody: {properties: {imgsrc: image}},
+  })
 })
 
 app.get('/download', (req, res) => {

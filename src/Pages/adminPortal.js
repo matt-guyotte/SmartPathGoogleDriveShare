@@ -108,15 +108,15 @@ class adminPortal extends Component {
 
 
   render() {
-    if(!this.state.access) {
-        return (
-            <div>
-            <p><strong> Note: </strong></p>
-            <p> This is for Smartpath admins only.</p> 
-            <GoogleBtn login = {this.loginConfirm} />
-            </div>
-        )
-    }
+    //if(!this.state.access) {
+    //    return (
+    //        <div>
+    //        <p><strong> Note: </strong></p>
+    //        <p> This is for Smartpath admins only.</p> 
+    //        <GoogleBtn login = {this.loginConfirm} />
+    //        </div>
+    //    )
+    //}
     if (this.state.domains === true && this.state.view != true && this.state.updateFolder != true && this.state.createNew != true) {
         return (
             <div>
@@ -189,7 +189,7 @@ class adminPortal extends Component {
             <Row>
                 <Col md = {6}>
                     <div className = "admin-box" onClick = {this.moveToUpdateFolder}> 
-                        <h4 className = "admin-box-term"> Edit a Lesson </h4>
+                        <h4 className = "admin-box-term"> Edit a Lesson / Add Image </h4>
                     </div>
                 </Col>
                 <Col md = {6}>

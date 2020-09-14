@@ -186,6 +186,7 @@ display: block;
 .admin-page {
   display: block;
   height: 200vh;
+  height: 100%;
   background-color: #d5e7ed;
   width: 100%;
 }

@@ -13,7 +13,24 @@ import Redirect from 'react-router-dom/Redirect'
 import TopNavbar from './navbar';
 import GoogleBtn from './GoogleBtn';
 import Register from './register';
-import Login from './login'
+import Login from './login';
+
+function importAll(r) {
+    let images = [];
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
+  }
+  
+const images = importAll(require.context('./img', false, /\.(png|jpe?g|svg)$/));
+console.log(images)
+
+function loopImages() {
+    for(var i = 0; i < images.length; i++) {
+        console.log(images[i]);
+    }
+}
+
+loopImages();
 
 class Search extends React.Component {
     constructor(props) {
@@ -34,6 +51,11 @@ class Search extends React.Component {
             exportFileType: 'pdf',
             exportFolderType: 'zip',
             downloadPath: '',
+            subjectArray: [],
+            gradeArray: [],
+            industryArray: [],
+
+
 
             // Search Terms
 
@@ -95,26 +117,9 @@ class Search extends React.Component {
         this.downloadFile = this.downloadFile.bind(this);
         this.downloadFolder = this.downloadFolder.bind(this);
         this.downloadTest = this.downloadTest.bind(this);
-
-        //Industry State Functions 
-        this.agriculture = this.agriculture.bind(this);
-        this.architecture = this.architecture.bind(this);
-        this.arts = this.arts.bind(this);
-        this.businessManagment = this.businessManagement.bind(this);
-        this.educationTraining = this.educationTraining.bind(this);
-        this.finance = this.finance.bind(this);
-        this.governmentPublic = this.governmentPublic.bind(this);
-        this.healthScience = this.healthScience.bind(this);
-        this.hospitality = this.hospitality.bind(this);
-        this.humanServices = this.humanServices.bind(this);
-        this.informationTechnology = this.informationTechnology.bind(this);
-        this.lawSafety = this.lawSafety.bind(this);
-        this.manufacturing = this.manufacturing.bind(this);
-        this.marketingSales = this.marketingSales.bind(this);
-        this.sTEM = this.sTEM.bind(this);
-        this.transportation = this.transportation.bind(this);
         
     }
+    
 
     openModal = () => this.setState({ isOpen: true });
     closeModal = () => this.setState({ isOpen: false });
@@ -180,131 +185,387 @@ class Search extends React.Component {
     }
 
     handleChangeSubject(event) {
-        console.log(event.target.value)
-        console.log(this.state.math)
+        var subjectArrayVar = [];
         this.setState({subject: event.target.value})
+
         if(event.target.value === 'math') {
-            this.setState({math: true})
+            if (this.state.math === false) {
+              this.setState({math: true})
+              subjectArrayVar.push('Math');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.math === true) {
+              this.setState({math: false})
+            }
         }
         if(event.target.value === 'science') {
-            this.setState({science: true})
+            if (this.state.science === false) {
+              this.setState({science: true})
+              subjectArrayVar.push('Science');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.science === true) {
+              this.setState({science: false})
+            }
         }
-        if(event.target.value === "socialStudies") {
-            this.setState({socialStudies: true})
+        if(event.target.value === 'socialStudies') {
+            if (this.state.socialStudies === false) {
+              this.setState({socialStudies: true})
+              subjectArrayVar.push('Social Studies');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.socialStudies === true) {
+              this.setState({socialStudies: false})
+            }
         }
         if(event.target.value === 'languageArts') {
-            this.setState({languageArts: true})
+            if (this.state.languageArts === false) {
+              this.setState({languageArts: true})
+              subjectArrayVar.push('Language Arts');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.languageArts === true) {
+              this.setState({languageArts: false})
+            }
         }
-        if(event.target.value === "careers") {
-            this.setState({careers: true})
+        if(event.target.value === 'careers') {
+            if (this.state.careers === false) {
+              this.setState({careers: true})
+              subjectArrayVar.push('Careers');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.careers === true) {
+              this.setState({careers: false})
+            }
         }
         if(event.target.value === 'technology') {
-            this.setState({technology: true})
+            if (this.state.technology === false) {
+              this.setState({technology: true})
+              subjectArrayVar.push('Technology');
+              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+            }
+            if (this.state.technology === true) {
+              this.setState({technology: false})
+            }
         }
+        console.log(this.state.subjectArray)
     }
 
     handleChangeGrade(event) {
         this.setState({grade: event.target.value});
-        if(event.target.value === "pre-k") {
-            this.setState({preK: true})
+        var gradeArrayVar = [];
+        if(event.target.value === 'pre-k') {
+            if (this.state.preK === false) {
+              this.setState({preK: true})
+              gradeArrayVar.push('Pre-K');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.preK === true) {
+              this.setState({preK: false})
+            }
         }
-        if(event.target.value === "k") {
-            this.setState({k: true})
+        if(event.target.value === 'k') {
+            if (this.state.K === false) {
+              this.setState({K: true})
+              gradeArrayVar.push('K');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.K === true) {
+              this.setState({K: false})
+            }
         }
-        if(event.target.value === "first") {
-            this.setState({first: true})
+        if(event.target.value === 'first') {
+            if (this.state.first === false) {
+              this.setState({first: true})
+              gradeArrayVar.push('1st');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.first === true) {
+              this.setState({first: false})
+            }
         }
-        if(event.target.value === "second") {
-            this.setState({second: true})
+        if(event.target.value === 'second') {
+            if (this.state.second === false) {
+              this.setState({second: true})
+              gradeArrayVar.push('2nd');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.second === true) {
+              this.setState({second: false})
+            }
         }
-        if(event.target.value === "third") {
-            this.setState({third: true})
+        if(event.target.value === 'third') {
+            if (this.state.third === false) {
+              this.setState({third: true})
+              gradeArrayVar.push('3rd');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.third === true) {
+              this.setState({third: false})
+            }
         }
-        if(event.target.value === "fourth") {
-            this.setState({fourth: true})
+        if(event.target.value === 'fourth') {
+            if (this.state.fourth === false) {
+              this.setState({fourth: true})
+              gradeArrayVar.push('4th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.fourth === true) {
+              this.setState({fourth: false})
+            }
         }
-        if(event.target.value === "fifth") {
-            this.setState({fifth: true})
+        if(event.target.value === 'fifth') {
+            if (this.state.fifth === false) {
+              this.setState({fifth: true})
+              gradeArrayVar.push('5th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.fifth === true) {
+              this.setState({fifth: false})
+            }
         }
-        if(event.target.value === "sixth") {
-            this.setState({sixth: true})
+        if(event.target.value === 'sixth') {
+            if (this.state.sixth === false) {
+              this.setState({sixth: true})
+              gradeArrayVar.push('6th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.sixth === true) {
+              this.setState({sixth: false})
+            }
         }
-        if(event.target.value === "seventh") {
-            this.setState({seventh: true})
+        if(event.target.value === 'seventh') {
+            if (this.state.seventh === false) {
+              this.setState({seventh: true})
+              gradeArrayVar.push('7th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.seventh === true) {
+              this.setState({seventh: false})
+            }
         }
-        if(event.target.value === "eighth") {
-            this.setState({eighth: true})
+        if(event.target.value === 'eighth') {
+            if (this.state.eighth === false) {
+              this.setState({eighth: true})
+              gradeArrayVar.push('8th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.eighth === true) {
+              this.setState({eighth: false})
+            }
         }
-        if(event.target.value === "ninth") {
-            this.setState({ninth: true})
+        if(event.target.value === 'ninth') {
+            if (this.state.ninth === false) {
+              this.setState({ninth: true})
+              gradeArrayVar.push('9th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.ninth === true) {
+              this.setState({ninth: false})
+            }
         }
-        if(event.target.value === "tenth") {
-            this.setState({tenth: true})
+        if(event.target.value === 'tenth') {
+            if (this.state.tenth === false) {
+              this.setState({tenth: true})
+              gradeArrayVar.push('10th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.tenth === true) {
+              this.setState({tenth: false})
+            }
         }
-        if(event.target.value === "eleventh") {
-            this.setState({eleventh: true})
+        if(event.target.value === 'eleventh') {
+            if (this.state.eleventh === false) {
+              this.setState({eleventh: true})
+              gradeArrayVar.push('11th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.eleventh === true) {
+              this.setState({eleventh: false})
+            }
         }
-        if(event.target.value === "twelveth") {
-            this.setState({twelveth: true})
+        if(event.target.value === 'twelveth') {
+            if (this.state.twelveth === false) {
+              this.setState({twelveth: true})
+              gradeArrayVar.push('12th');
+              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+            }
+            if (this.state.twelveth === true) {
+              this.setState({twelveth: false})
+            }
         }
-        
     }
 
     handleChangeIndustry(event) {
         this.setState({industry: event.target.value})
-        if(event.target.value === "Agriculture, Food & Natural Resources") {
-            this.setState({agriculture: true})
+        var industryArrayVar = [];
+        if(event.target.value === "Agriculture, Food and Natural Resources") {
+            if (this.state.agriculture === false) {
+              this.setState({agriculture: true})
+              industryArrayVar.push("Agriculture, Food and Natural Resources");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.agriculture === true) {
+              this.setState({agriculture: false})
+            }
         }
-        if(event.target.value === "Architecture & Construction") {
-            this.setState({architecture: true})
+        if(event.target.value === "Architecture and Construction") {
+            if (this.state.architecture === false) {
+              this.setState({architecture: true})
+              industryArrayVar.push("Architecture and Construction");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.architecture === true) {
+              this.setState({architecture: false})
+            }
         }
-        if(event.target.value === "Arts, Audio/Video Technology, & Communications") {
-            this.setState({arts: true})
+        if(event.target.value === "Arts, Audio/Video Technology and Communications") {
+            if (this.state.arts === false) {
+              this.setState({arts: true})
+              industryArrayVar.push("Arts, Audio/Video Technology and Communications");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.arts === true) {
+              this.setState({arts: false})
+            }
         }
-        if(event.target.value === "Business Management & Administration") {
-            this.setState({businessManagement: true})
+        if(event.target.value === "Business Management and Administration") {
+            if (this.state.businessManagement === false) {
+              this.setState({businessManagement: true})
+              industryArrayVar.push("Business Management and Administration");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.businessManagement === true) {
+              this.setState({businessManagement: false})
+            }
         }
-        if(event.target.value === "Education & Training") {
-            this.setState({educationTraining: true})
+        if(event.target.value === "Education and Training") {
+            if (this.state.educationTraining === false) {
+              this.setState({educationTraining: true})
+              industryArrayVar.push("Education and Training");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.educationTraining === true) {
+              this.setState({educationTraining: false})
+            }
         }
         if(event.target.value === "Finance") {
-            this.setState({finance: true})
+            if (this.state.finance === false) {
+              this.setState({finance: true})
+              industryArrayVar.push("Finance");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.finance === true) {
+              this.setState({finance: false})
+            }
         }
-        if(event.target.value === "Government & Public Administration") {
-            this.setState({governmentPublic: true})
+        if(event.target.value === "Government and Public Administration") {
+            if (this.state.governmentPublic === false) {
+              this.setState({governmentPublic: true})
+              industryArrayVar.push("Government and Public Administration");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.governmentPublic === true) {
+              this.setState({governmentPublic: false})
+            }
         }
         if(event.target.value === "Health Science") {
-            this.setState({healthScience: true})
+            if (this.state.healthScience === false) {
+              this.setState({healthScience: true})
+              industryArrayVar.push("Health Science");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.healthScience === true) {
+              this.setState({healthScience: false})
+            }
         }
-        if(event.target.value === "Hospitality & Tourism") {
-            this.setState({hospitality: true})
+        if(event.target.value === "Hospitality and Tourism") {
+            if (this.state.hospitality === false) {
+              this.setState({hospitality: true})
+              industryArrayVar.push("Hospitality and Tourism");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.hospitality === true) {
+              this.setState({hospitality: false})
+            }
         }
         if(event.target.value === "Human Services") {
-            this.setState({humanServices: true})
+            if (this.state.humanServices === false) {
+              this.setState({humanServices: true})
+              industryArrayVar.push("Human Services");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.humanServices === true) {
+              this.setState({humanServices: false})
+            }
         }
         if(event.target.value === "Information Technology") {
-            this.setState({informationTechnology: true})
+            if (this.state.informationTechnology === false) {
+              this.setState({informationTechnology: true})
+              industryArrayVar.push("Human Services");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.informationTechnology === true) {
+              this.setState({informationTechnology: false})
+            }
         }
-        if(event.target.value === "Law, Public Safety, Corrections & Security") {
-            this.setState({lawSafety: true})
+        if(event.target.value === "Law, Public Safety, Corrections and Security") {
+            if (this.state.lawSafety === false) {
+              this.setState({lawSafety: true})
+              industryArrayVar.push("Law, Public Safety, Corrections and Security");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.lawSafety === true) {
+              this.setState({lawSafety: false})
+            }
         }
         if(event.target.value === "Manufacturing") {
-            this.setState({manufacturing: true})
+            if (this.state.manufacturing === false) {
+              this.setState({manufacturing: true})
+              industryArrayVar.push("Manufacturing");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.manufacturing === true) {
+              this.setState({manufacturing: false})
+            }
         }
-        if(event.target.value === "Marketing, Sales & Service") {
-            this.setState({marketingSales: true})
+        if(event.target.value === "Marketing, Sales and Service") {
+            if (this.state.marketingSales === false) {
+              this.setState({marketingSales: true})
+              industryArrayVar.push("Marketing, Sales and Service");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.marketingSales === true) {
+              this.setState({marketingSales: false})
+            }
         }
-        if(event.target.value === "Science, Technology, Engineering & Math") {
-            this.setState({sTEM: true})
+        if(event.target.value === "Science, Technology, Engineering and Math") {
+            if (this.state.sTEM === false) {
+              this.setState({sTEM: true})
+              industryArrayVar.push("Science, Technology, Engineering and Math");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.sTEM === true) {
+              this.setState({sTEM: false})
+            }
         }
-        if(event.target.value === "Transportation, Distribution & Logistics") {
-            this.setState({transportation: true})
+        if(event.target.value === "Transportation, Distribution and Logistics") {
+            if (this.state.transportation === false) {
+              this.setState({transportation: true})
+              industryArrayVar.push("Transportation, Distribution and Logistics");
+              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+            }
+            if (this.state.transportation === true) {
+              this.setState({transportation: false})
+            }
         }
-        
     }
 
     downloadTest() {
-        fetch('/downloadtest');
+        fetch('/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          }) 
     }
 
     downloadFile(event) {
@@ -339,7 +600,7 @@ class Search extends React.Component {
           }) 
     }
 
-
+    
 
     searchFunction() {
         var searchTerm = this.state.searchTerm;
@@ -350,16 +611,47 @@ class Search extends React.Component {
         this.setState({foundFiles: []})
         var foundFiles = [];
         var foundFolders = [];
+        var subjectArray = this.state.subjectArray;
+        var gradeArray = this.state.gradeArray;
+        var industryArray = this.state.indutryArray;
         for(var i = 0; i < driveFiles.length; i++) {
 
-        // Main search terms
+        // Plain search terms
 
-            if(this.state.searchTerm === "Search Here" && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.english) {
+            if(this.state.searchTerm === "Search Here" && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
+            && !this.state.preK && !this.state.K && !this.state.first && !this.state.second && !this.state.third && !this.state.fourth && !this.state.fifth && !this.state.sixth && !this.state.seventh && !this.state.eighth && !this.state.ninth && !this.state.tenth && !this.state.eleventh && !this.state.twelveth 
+            && !this.state.agriculture && !this.state.architecture && !this.state.arts && !this.state.businessManagement && !this.state.educationTraining && !this.state.finance && !this.state.governmentPublic && !this.state.healthScience && !this.state.hospitality && !this.state.humanServices && !this.state.informationTechnology && !this.state.lawSafety && !this.state.manufacturing && !this.state.marketingSales && !this.state.sTEM && !this.state.transportation) {
                 this.setState({foundFolders: [{file: "Please enter a valid search term."}]})
                 this.setState({foundFiles: [{file: "Please enter a valid search term."}]})
+                this.setState({searchRan: true})
+                return console.log("searched.")
             }
 
-            if (driveFiles[i].file.includes(searchTerm) === true && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.english ) {
+            //if (driveFiles[i].file.includes(searchTerm) === true && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
+            //&& !this.state.preK && !this.state.K && !this.state.first && !this.state.second && !this.state.third && !this.state.fourth && !this.state.fifth && !this.state.sixth && !this.state.seventh && !this.state.eighth && !this.state.ninth && !this.state.tenth && !this.state.eleventh && !this.state.twelveth 
+            //&& !this.state.agriculture && !this.state.architecture && !this.state.arts && !this.state.businessManagement && !this.state.educationTraining && !this.state.finance && !this.state.governmentPublic && !this.state.healthScience && !this.state.hospitality && !this.state.humanServices && !this.state.informationTechnology && !this.state.lawSafety && !this.state.manufacturing && !this.state.marketingSales && !this.state.sTEM && !this.state.transportation) {
+            //    if (driveFiles[i].type === "application/vnd.google-apps.folder") {
+            //        foundFolders.push(driveFiles[i])
+            //        console.log(foundFolders)
+            //        this.setState({foundFolders: foundFolders})
+            //        this.setState({searchRan: true})
+            //        return console.log("searched.")
+            //    }
+            //    if (driveFiles[i].type === 'application/vnd.google-apps.document') {
+            //        console.log(driveFiles[i]);
+            //        foundFiles.push(driveFiles[i])
+            //        console.log(foundFiles)
+            //        this.setState({foundFiles: foundFiles})
+            //        this.setState({searchRan: true})
+            //        return console.log("searched.")
+            //    }
+            //}
+
+        //// Subject search terms 
+        let checker = (arr, target) => target.every(v => arr.includes(v));
+
+            if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true) {
+                console.log("the file is found.")
                 if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                     foundFolders.push(driveFiles[i])
                     console.log(foundFolders)
@@ -371,1090 +663,12 @@ class Search extends React.Component {
                     console.log(foundFiles)
                     this.setState({foundFiles: foundFiles})
                 }
-            }
-
-        // Subject search terms 
-
-            // Subjects without keyword
-
-            if (searchTerm === "Search Here" && this.state.math === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'math') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'math') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-            
-            if (searchTerm === "Search Here" && this.state.science) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'science') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'science') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (searchTerm === "Search Here" && this.state.socialStudies) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'socialStudies') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'socialStudies') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (searchTerm === "Search Here" && this.state.languageArts) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'languageArts') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'languageArts') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (searchTerm === "Search Here" && this.state.careers === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'careers') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'careers') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (searchTerm === "Search Here" && this.state.technology === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'technology') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'technology') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-        
-            // Subjects with keyword
-
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.math === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'math') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'math') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.science) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'science') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'science') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.socialStudies) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'socialStudies') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'socialStudies') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.languageArts) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'languageArts') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'languageArts') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.careers === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'careers') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'careers') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-            if (driveFiles[i].file.includes(searchTerm) === true && this.state.technology === true) {
-                if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.subject === 'technology') {
-                    foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.subject === 'technology') {
-                    foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-
-    // Grade Search Terms 
-
-        // Grade without keyword
-        
-        if(searchTerm === "Search Here" && this.state.preK === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'pre-k') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.K === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'K') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.first === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'first') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.second === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'second') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.third === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'third') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.fourth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'fourth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.fifth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'fifth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.sixth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'sixth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.seventh === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'seventh') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.eighth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'eighth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.ninth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'ninth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.tenth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'tenth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.eleventh === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'eleventh') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(searchTerm === "Search Here" && this.state.twelveth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'eleventh') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-        
-
-        // Grade with keyword
-
-        if(driveFiles[i].file.includes(searchTerm) && this.state.preK === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'pre-k') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-//
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.K === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'K') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-//
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.first === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'first') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.second === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'second') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.third === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'third') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.fourth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'fourth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.fifth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'fifth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.sixth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'sixth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.seventh === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'seventh') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.eighth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'eighth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.ninth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'ninth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.tenth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'tenth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.eleventh === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'eleventh') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-        if(driveFiles[i].file.includes(searchTerm) === true && this.state.twelveth === true) {
-            for(var i = 0; i < driveFiles.length; i++) {
-                if(driveFiles[i].properties.grade === 'twelveth') {
-                    if(driveFiles[i].type === "application/vnd.google-apps.folder") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFolders: foundFolders})
-                    }
-                    if(driveFiles[i].type === "application/vnd.google-apps.document") {
-                        foundFolders.push(driveFiles[i]);
-                        this.setState({foundFiles: foundFiles})
-                    }
-                }
-            }
-        }
-
-    //Industry Search Terms
-
-        //Industry Without Keyword
-        if (searchTerm === "Search Here" && this.state.agriculture === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Agriculture, Food & Natural Resources') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Agriculture, Food & Natural Resources') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-        if (searchTerm === "Search Here" && this.state.architecture === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Architecture & Construction') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Architecture & Construction') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.arts === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Arts, Audio/Video Technology, & Communications') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Arts, Audio/Video Technology, & Communications') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.businessManagement === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Business Management & Administration') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Business Management & Administration') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.educationTraining === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Education & Training') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Education & Training') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.finance === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Finance') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Finance') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.governmentPublic === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Government & Public Administration') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Government & Public Administration') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.healthScience === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Health Science') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Health Science') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.hospitality === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Hospitality & Tourism') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Hospitality & Tourism') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.humanServices === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Human Services') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Human Services') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.informationTechnology === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Information Technology') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Information Technology') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.lawSafety === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Law, Public Safety, Corrections & Security') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Law, Public Safety, Corrections & Security') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.manufacturing === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Manufacturing') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Manufacturing') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.marketingSales === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Marketing, Sales & Service') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Marketing, Sales & Service') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.sTEM === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Science, Technology, Engineering & Math') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Science, Technology, Engineering & Math') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (searchTerm === "Search Here" && this.state.transportation === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Transportation, Distribution & Logistics') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Transportation, Distribution & Logistics') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-
-
-        //Industry With Keyword
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.agriculture === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Agriculture, Food & Natural Resources') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Agriculture, Food & Natural Resources') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.architecture === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Architecture & Construction') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Architecture & Construction') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.arts === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Arts, Audio/Video Technology, & Communications') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Arts, Audio/Video Technology, & Communications') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.businessManagement === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Business Management & Administration') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Business Management & Administration') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.educationTraining === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Education & Training') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Education & Training') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.finance === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Finance') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Finance') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.governmentPublic === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Government & Public Administration') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Government & Public Administration') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.healthScience === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Health Science') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Health Science') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.hospitality === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Hospitality & Tourism') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Hospitality & Tourism') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.humanServices === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Human Services') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Human Services') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.informationTechnology === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Information Technology') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Information Technology') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.lawSafety === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Law, Public Safety, Corrections & Security') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Law, Public Safety, Corrections & Security') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.manufacturing === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Manufacturing') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Manufacturing') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.marketingSales === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Marketing, Sales & Service') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Marketing, Sales & Service') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.sTEM === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Science, Technology, Engineering & Math') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Science, Technology, Engineering & Math') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        if (driveFiles[i].file.includes(searchTerm) === true && this.state.transportation === true) {
-            if (driveFiles[i].type === "application/vnd.google-apps.folder" && driveFiles[i].properties.industry === 'Transportation, Distribution & Logistics') {
-                foundFolders.push(driveFiles[i])
-                console.log(foundFolders)
-                this.setState({foundFolders: foundFolders})
-            }
-            if (driveFiles[i].type === 'application/vnd.google-apps.document' && driveFiles[i].properties.industry === 'Transportation, Distribution & Logistics') {
-                foundFiles.push(driveFiles[i])
-                console.log(foundFiles)
-                this.setState({foundFiles: foundFiles})
-            }
-        }
-
-        
+            }       
         }
         this.setState({searchRan: true})
     }
 
 
-
-
-
-    //Industry State Search Functions
-
-    agriculture() {
-        this.setState({agriculture: true})
-    }
-
-    architecture() {
-        this.setState({architecture: true})
-    }
-
-    arts() {
-        this.setState({arts: true})
-    }
-
-    businessManagement() {
-        this.setState({businessManagement: true})
-    }
-
-    educationTraining() {
-        this.setState({educationTraining: true})
-    }
-
-    finance() {
-        this.setState({finance: true})
-    }
-
-    governmentPublic() {
-        this.setState({governmentPublic: true})
-    }
-
-    healthScience() {
-        this.setState({healthScience: true})
-    }
-
-    hospitality() {
-        this.setState({hospitality: true})
-    }
-
-    humanServices() {
-        this.setState({humanServices: true})
-    }
-
-    informationTechnology() {
-        this.setState({informationTechnology: true})
-    }
-
-    lawSafety() {
-        this.setState({lawSafety: true})
-    }
-
-    manufacturing() {
-        this.setState({manufacturing: true})
-    }
-
-    marketingSales() {
-        this.setState({marketingSales: true})
-    }
-
-    sTEM() {
-        this.setState({sTEM: true})
-    }
-
-    transportation() {
-        this.setState({transportation: true})
-    }
 
     //Rendered Component
 
@@ -1476,8 +690,7 @@ class Search extends React.Component {
                                 <hr />
                                 <Row className = "search-box subject-area">
                                     <h2>Subject Area</h2>
-                                    <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''}>
-                                        <option> Pick a subject:</option>
+                                    <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
                                         <option value = "math">Math</option>
                                         <option value = "science">Science</option>
                                         <option value = "socialStudies">Social Studies</option>
@@ -1485,12 +698,17 @@ class Search extends React.Component {
                                         <option value = "careers">Careers</option>
                                         <option value = "technology">Technology</option>
                                     </Form.Control>
+                                    {this.state.subjectArray.map(subject => (
+                                                <div key = {subject}>
+                                                    <ul>
+                                                        <li> {subject} </li>
+                                                    </ul>
+                                                </div>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box grade-level">
                                     <h2> Grade Level </h2>
-                                    <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''}>
-                                        <option> Pick a grade:</option>
+                                    <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''} multiple>
                                         <option value = "pre-k">Pre-K</option>
                                         <option value = "k">K</option>
                                         <option value = "first">1st</option>
@@ -1506,16 +724,21 @@ class Search extends React.Component {
                                         <option value = "eleventh">11th</option>
                                         <option value = "twelveth">12th</option>
                                     </Form.Control>
+                                    {this.state.gradeArray.map(grades => (
+                                                <div key = {grades}>
+                                                    <ul>
+                                                        <li> {grades} </li>
+                                                    </ul>
+                                                </div>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box industry">
                                     <h2> Industry </h2>
-                                    <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''}>
-                                      <option> Pick Industry: </option>
+                                    <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''} multiple>
                                       <option value = "Agriculture, Food and Natural Resources"> Agriculture, Food and Natural Resources </option>
                                       <option value = "Architecture and Construction"> Architecture and Construction </option>
                                       <option value = "Arts, Audio/Video Technology and Communications"> Arts, Audio/Video Technology and Communications </option>
-                                      <option value = "Business Managment and Administration" > Business Managment and Administration </option>
+                                      <option value = "Business Management and Administration" > Business Managment and Administration </option>
                                       <option value = "Education and Training"> Education and Training </option>
                                       <option value = "Finance"> Finance </option>
                                       <option value = "Government and Public Administration"> Government and Public Administration </option>
@@ -1527,11 +750,18 @@ class Search extends React.Component {
                                       <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
                                       <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
                                     </Form.Control>
+                                    {this.state.industryArray.map(industry => (
+                                                <div key = {industry}>
+                                                    <ul>
+                                                        <li> {industry} </li>
+                                                    </ul>
+                                                </div>))}
                                 </Row>
                            </Col>
                            <Col md = {9} className = "course-col">
                                <Row className = "top-row-course-search">
                                    <h2> Search </h2>
+                                   <img src = {images["Colorful-Bananas.jpg"]} />
                                </Row>
                                 <br />
                                 <Row className = "course-box-search">
@@ -1563,67 +793,55 @@ class Search extends React.Component {
                                <hr />
                                <div className = "search-options">
                                 <Row className = "search-box subject-area">
-                                    <h2>Subject Area</h2>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.math}/> <p> Math </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.science} /> <p> Science </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.socialStudies} /> <p> Social Studies </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.languageArts} /> <p> Language Arts </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.careers}/> <p> Careers </p> 
-                                    </div>
-                                    <div className = "check-options">
-                                        <input type = "checkbox" onClick = {this.technology}/> <p> Technology </p> 
-                                    </div>
+                                <h2>Subject Area</h2>
+                                    <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
+                                        <option value = "math">Math</option>
+                                        <option value = "science">Science</option>
+                                        <option value = "socialStudies">Social Studies</option>
+                                        <option value = "languageArts">Language Arts</option>
+                                        <option value = "careers">Careers</option>
+                                        <option value = "technology">Technology</option>
+                                    </Form.Control>
                                 </Row>
                                 <hr />
                                 <Row className = "search-box grade-level">
                                     <h2> Grade Level </h2>
-                                    <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''}>
-                                    <option> Pick a grade:</option>
-                                    <option value = "pre-k">Pre-K</option>
-                                    <option value = "k">K</option>
-                                    <option value = "first">1st</option>
-                                    <option value = "second">2nd</option>
-                                    <option value = "third">3rd</option>
-                                    <option value = "fourth">4th</option>
-                                    <option value = "fifth">5th</option>
-                                    <option value = "sixth">6th</option>
-                                    <option value = "seventh">7th</option>
-                                    <option value = "eighth">8th</option>
-                                    <option value = "ninth">9th</option>
-                                    <option value = "tenth">10th</option>
-                                    <option value = "eleventh">11th</option>
-                                    <option value = "twelveth">12th</option>
+                                    <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''} multiple>
+                                        <option value = "pre-k">Pre-K</option>
+                                        <option value = "k">K</option>
+                                        <option value = "first">1st</option>
+                                        <option value = "second">2nd</option>
+                                        <option value = "third">3rd</option>
+                                        <option value = "fourth">4th</option>
+                                        <option value = "fifth">5th</option>
+                                        <option value = "sixth">6th</option>
+                                        <option value = "seventh">7th</option>
+                                        <option value = "eighth">8th</option>
+                                        <option value = "ninth">9th</option>
+                                        <option value = "tenth">10th</option>
+                                        <option value = "eleventh">11th</option>
+                                        <option value = "twelveth">12th</option>
                                     </Form.Control>
                                 </Row>
                                 <hr />
                                 <Row className = "search-box industry">
                                     <h2> Industry </h2>
-                                    <select>
-                                        <option> Pick Industry: </option>
-                                        <option onClick = {this.agriculture}> Agriculture, Food and Natural Resources </option>
-                                        <option onClick = {this.architecture}> Architecture and Construction </option>
-                                        <option onClick = {this.arts}> Arts, Audio/Video Technology and Communications </option>
-                                        <option onClick = {this.businessManagement}> Business Managment and Administration </option>
-                                        <option onClick = {this.educationTraining}> Education and Training </option>
-                                        <option onClick = {this.finance}> Finance </option>
-                                        <option onClick = {this.governmentPublic}> Government and Public Administration </option>
-                                        <option onClick = {this.healthScience}> Health Science </option>
-                                        <option onClick = {this.hospitality}> Information Technology </option>
-                                        <option onClick = {this.lawSafety}> Law, Public Safety, Corrections and Security </option>
-                                        <option onClick = {this.manufacturing}> Manufacturing </option>
-                                        <option onClick = {this.marketingSales}> Marketing, Sales and Service </option>
-                                        <option onClick = {this.sTEM}> Science, Technology, Engineering and Math </option>
-                                        <option onClick = {this.transportation}> Transportation, Distribution and Logistics </option>
-                                    </select>
+                                    <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''} multiple>
+                                      <option value = "Agriculture, Food and Natural Resources"> Agriculture, Food and Natural Resources </option>
+                                      <option value = "Architecture and Construction"> Architecture and Construction </option>
+                                      <option value = "Arts, Audio/Video Technology and Communications"> Arts, Audio/Video Technology and Communications </option>
+                                      <option value = "Business Management and Administration" > Business Managment and Administration </option>
+                                      <option value = "Education and Training"> Education and Training </option>
+                                      <option value = "Finance"> Finance </option>
+                                      <option value = "Government and Public Administration"> Government and Public Administration </option>
+                                      <option value = "Health Science"> Health Science </option>
+                                      <option value = "Information Technology"> Information Technology </option>
+                                      <option value = "Law, Public Safety, Corrections and Security"> Law, Public Safety, Corrections and Security </option>
+                                      <option value = "Manufacturing"> Manufacturing </option>
+                                      <option value = "Marketing, Sales and Service"> Marketing, Sales and Service </option>
+                                      <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
+                                      <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
+                                    </Form.Control>
                                 </Row>
                                 </div>
                            </Col>
@@ -1641,7 +859,7 @@ class Search extends React.Component {
                                                 <div className = "file-box-search" key={folders}>
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
-                                                <img className = "lesson-pic" src = ""></img>
+                                                <img className = "lesson-pic" src =  {images[folders.properties.imgsrc]}></img>
                                                 <Container>
                                                 <Row>
                                                 <p> Video - {folders.properties.video} </p>
@@ -1651,6 +869,9 @@ class Search extends React.Component {
                                                 </Row>
                                                 <Row>
                                                 <p> Handouts - {folders.properties.handout}</p>
+                                                </Row>
+                                                <Row>
+                                                <p><small>Folder id: {folders.id}</small></p>
                                                 </Row>
                                                 </Container>
 
@@ -1665,6 +886,12 @@ class Search extends React.Component {
                                                 <div className = "file-box-search" key={files}>
                                                     <input type = "checkbox" name = {files.file} value = {files.id} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.description}</p>
+                                                    <Row>
+                                                        subjects: {files.properties.subject}
+                                                    </Row>
+                                                    <Row>
+                                                    <p><small>Doc id: {files.id}</small></p>
+                                                    </Row>
                                                 </div>
                                                 ))}
                                             </Col>
