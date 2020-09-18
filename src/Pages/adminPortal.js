@@ -205,6 +205,7 @@ class adminPortal extends Component {
                     </div>
                 </Col>
             </Row>
+            {this.state.accessToken}
             </Container>
         </div>
     </div>
