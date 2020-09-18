@@ -593,7 +593,7 @@ app.get('/listfolders', (req, res) => {
   })
 })
 
-app.post('/classroomexport', (req, res) => {
+app.post('/classroomexport', async (req, res) => {
   const drive2 = req.app.get('drive2');
   const fileId = req.body.id
   app.set('fileId', fileId);
