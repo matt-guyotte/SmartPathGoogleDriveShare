@@ -115,15 +115,15 @@ class adminPortal extends Component {
 
 
   render() {
-    //if(!this.state.access) {
-    //    return (
-    //        <div>
-    //        <p><strong> Note: </strong></p>
-    //        <p> This is for Smartpath admins only.</p> 
-    //        <GoogleBtn login = {this.loginConfirm} />
-    //        </div>
-    //    )
-    //}
+    if(!this.state.access) {
+        return (
+            <div>
+            <p><strong> Note: </strong></p>
+            <p> This is for Smartpath admins only.</p> 
+            <GoogleBtn login = {this.loginConfirm} />
+            </div>
+        )
+    }
     if (this.state.domains === true && this.state.view != true && this.state.updateFolder != true && this.state.createNew != true) {
         return (
             <div>
