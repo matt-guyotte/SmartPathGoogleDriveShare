@@ -77,6 +77,7 @@ class GoogleBtn extends Component {
           responseType='code,token'
         />
       }
+      <h3> test </h3>
       { this.state.accessToken ?  <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
 
     </div>
