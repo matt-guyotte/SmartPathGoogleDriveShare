@@ -205,6 +205,7 @@ class adminPortal extends Component {
                     </div>
                 </Col>
             </Row>
+            <GoogleBtn />
             {this.state.accessToken}
             </Container>
         </div>
