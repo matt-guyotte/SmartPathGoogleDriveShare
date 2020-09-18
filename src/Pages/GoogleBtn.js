@@ -54,7 +54,7 @@ class GoogleBtn extends Component {
 
   async loginSend () {
     this.props.login();
-    fetch('/accesstokentest', {
+    await fetch('/accesstokentest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
