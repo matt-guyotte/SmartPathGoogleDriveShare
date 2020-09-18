@@ -19,6 +19,7 @@ class GoogleBtn extends Component {
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
     this.logout = this.logout.bind(this);
     this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
+    this.loginSend = this.loginSend.bind(this);
   }
 
   login (response) {
@@ -51,17 +52,18 @@ class GoogleBtn extends Component {
     alert('Failed to log out')
   }
 
+  async loginSend () {
+    this.props.login();
+    fetch('/accesstokentest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        accessToken: this.state.accessToken
+      })
+    }) 
+  }
+
   render() {
-    function loginSend () {
-      this.props.login;
-      await fetch('/accesstokentest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          accessToken: this.state.accessToken
-        })
-      }) 
-    }
     return (
     <div>
       { this.state.isLogined ?
@@ -74,13 +76,12 @@ class GoogleBtn extends Component {
         </GoogleLogout>: <GoogleLogin
           clientId={ CLIENT_ID }
           buttonText='Login'
-          onSuccess={ loginSend }
+          onSuccess={ this.loginSend }
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
           responseType='code,token'
         />
       }
-      <h3> test </h3>
       { this.state.accessToken ?  <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
 
     </div>
