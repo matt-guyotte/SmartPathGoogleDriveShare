@@ -123,7 +123,7 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
-    //listCourses(oAuth2Client);
+    listCourses(oAuth2Client);
   });
 }
 
@@ -156,7 +156,7 @@ function getAccessToken(oAuth2Client, callback) {
       });
       callback(oAuth2Client);
       updateTest(oAuth2Client);
-      //listCourses(oAuth2Client);
+      listCourses(oAuth2Client);
       addProperties(oAuth2Client);
     });
   });
@@ -175,14 +175,14 @@ async function listFiles(auth) {
   const res = await drive.files.list({
     pageSize: 1000,
     fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
-  });
+    orderBy: "folder"});
   const files = res.data.files;
   for(var i = 0; i < files.length; i++) {
       TagFile.count({id: files[i].id}, (err, count) => {
         if(err) return console.log(err);
-        console.log(files[i].id)
+        //console.log(files[i].id)
       })
-      console.log(files[i].id)
+      //console.log(files[i].id)
   }
   const fileArray = [{
     file: '',
@@ -259,24 +259,22 @@ async function listFiles(auth) {
   }
 }
 
-//function listCourses(auth) {
-//  const classroom = google.classroom({version: 'v1', auth: auth});
-//  app.set('classroom', classroom);
-//  classroom.courses.courseWork.list({
-//    courseId: '140229883842',
-//    pageSize: 1000,
-//  }, (err, res) => {
-//    if (err) return console.error('The API returned an error: ' + err);
-//    const courses = res.data
-//    if (courses.courseWork) {
-//      console.log('courses found')
-//    } else {
-//      console.log('No courses found.');
-//    }
-//  });
-//}
-//
-//listCourses();
+function listCourses(auth) {
+  const classroom = google.classroom({version: 'v1', auth: auth});
+  app.set('classroom', classroom);
+  classroom.courses.courseWork.list({
+    courseId: '140229883842',
+    pageSize: 1000,
+  }, (err, res) => {
+    if (err) return console.error('The API returned an error: ' + err);
+    const courses = res.data
+    if (courses.courseWork) {
+      console.log(courses.courseWork)
+    } else {
+      console.log('No courses found.');
+    }
+  });
+}
 
 function addProperties(auth, fileArray) {
   const drive = google.drive({ version: "v3", auth });
@@ -489,30 +487,14 @@ app.post("/makenew", (req, res) => {
   var drive = req.app.get('drive');
   var name = req.body.name;
   var description = req.body.description;
-  var subject = req.body.subject;
-  var grade = req.body.grade;
-  var industry = req.body.industry;
   var type = req.body.type;
-  var video = req.body.video;
-  var rubric = req.body.rubric;
-  var handout = req.body.handout;
   var fileMetadata = {
     'name': name,
     'description': description,
-    "properties": {
-      "subject": subject,
-      "grade": grade,
-      "industry": industry,
-      "imgsrc": imgSrc,
-      "video": video,
-      "rubric": rubric,
-      "handout": handout,
-    },
     'mimeType': type,
   };
   drive.files.create({
     resource: fileMetadata,
-    fields: 'id'
   }, function (err, file) {
     if (err) {
       // Handle error
@@ -545,7 +527,7 @@ app.get('/download', (req, res) => {
   res.download(newPath)
 })
 
-app.post("/downloaddocument", (req, res) => {
+app.post("/downloaddocument", async (req, res) => {
   const drive = req.app.get('drive');
   const fileId = req.body.id
   app.set('fileId', fileId);
@@ -564,9 +546,10 @@ app.post("/downloaddocument", (req, res) => {
     newType === 'text/plain'
   }
   var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
-  console.log(dest);
+  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+  console.log(destSimple)
 
-  drive.files.export({
+  await drive.files.export({
     fileId: fileId, mimeType: newType}, 
     {responseType: 'stream'},
     function(err, response){
@@ -577,6 +560,95 @@ app.post("/downloaddocument", (req, res) => {
         console.log("sent file.")
     })
     .pipe(dest);
+  });
+
+  var fileMetadata = {
+    'name': fileName,
+    'description': "This is " + fileName,
+    'parents': []
+  };
+  console.log(fileMetadata)
+  var media = {
+    mimeType: newType,
+    body: fs.createReadStream(destSimple)
+  };
+  console.log(media)
+  drive.files.create({
+    resource: fileMetadata,
+    media: media,
+  }, function (err, file) {
+    if (err) {
+      console.log("Error for file creation: " + err);
+    } else {
+      console.log(file.name);
+    }
+  });
+})
+
+app.get('/listfolders', (req, res) => {
+  const drive2 = req.app.get('drive2');
+  drive.files.list({fileId: fileId}, (err, res) => {
+    if (err) return console.log(err)
+    res.send(res);
+  })
+})
+
+app.post('/classroomexport', (req, res) => {
+  const drive2 = req.app.get('drive2');
+  const fileId = req.body.id
+  app.set('fileId', fileId);
+  const fileName = req.body.name
+  app.set('fileName', fileName)
+  const parent = req.body.parent
+  const type = req.body.type
+  app.set('type', type)
+  var newType = ''
+  if(type === 'pdf') {
+    newType = 'application/pdf'
+  }
+  if(type === 'docx') {
+    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  }
+  if(type === 'txt') {
+    newType === 'text/plain'
+  }
+  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
+  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+  console.log(destSimple)
+
+  await drive.files.export({
+    fileId: fileId, mimeType: newType}, 
+    {responseType: 'stream'},
+    function(err, response){
+    if(err)return console.log(err);
+    response.data.on('error', err => {
+        console.log(err);
+    }).on('end', ()=>{
+        console.log("sent file.")
+    })
+    .pipe(dest);
+  });
+
+  var fileMetadata = {
+    'name': fileName,
+    'description': "This is " + fileName,
+    'parents': []
+  };
+  console.log(fileMetadata)
+  var media = {
+    mimeType: newType,
+    body: fs.createReadStream(destSimple)
+  };
+  console.log(media)
+  drive.files.create({
+    resource: fileMetadata,
+    media: media,
+  }, function (err, file) {
+    if (err) {
+      console.log("Error for file creation: " + err);
+    } else {
+      console.log(file.name);
+    }
   });
 })
 
@@ -645,4 +717,15 @@ app.get("/updatecourse", (req, res) => {
       if(res) return console.log(res);
     }
   });
+})
+
+app.post("/accesstokentest", (req, res) => {
+  var accessToken = req.body.accessToken
+  app.set('accessToken', accessToken)
+  console.log(req.body.accessToken)
+})
+
+app.get('/getaccesstoken', (req, res) => {
+  var accessToken = req.app.get("accessToken");
+  res.send(accessToken);
 })

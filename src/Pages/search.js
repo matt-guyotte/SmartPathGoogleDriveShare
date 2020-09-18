@@ -54,6 +54,8 @@ class Search extends React.Component {
             subjectArray: [],
             gradeArray: [],
             industryArray: [],
+            classroomFolders: [],
+            classroomParent: '',
 
 
 
@@ -116,6 +118,7 @@ class Search extends React.Component {
         this.searchFunction = this.searchFunction.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
         this.downloadFolder = this.downloadFolder.bind(this);
+        this.classroomExport = this.classroomExport.bind(this); 
         this.downloadTest = this.downloadTest.bind(this);
         
     }
@@ -155,6 +158,20 @@ class Search extends React.Component {
             }
         }
         return driveFiles;
+    }
+
+    async getFoldersClassroom() {
+      await fetch('/listfolders')
+      .then(res => res.json())
+      .then(res => this.setState())
+
+      var driveFilesClassroom = this.state.classroomFolders;
+
+      for(var i = 0; i < driveFilesClassroom.length; i++) {
+        if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
+          this.setState({classroomParent: driveFilesClassroom[i].id})
+        }
+      }
     }
 
     handleChangeSearch(event) {
@@ -568,8 +585,7 @@ class Search extends React.Component {
           }) 
     }
 
-    downloadFile(event) {
-        event.preventDefault();
+    downloadFile() {
         var pathStart = './downloads/'
         var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
         this.setState({newPath : newPath})
@@ -598,6 +614,22 @@ class Search extends React.Component {
               type: this.state.exportFolderType,
             })
           }) 
+    }
+
+    classroomExport() {
+      var pathStart = './downloads/'
+      var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
+      this.setState({newPath : newPath})
+      fetch('/downloaddocument', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            id: this.state.id,
+            name: this.state.fileName,
+            type: this.state.exportFileType,
+            parentId: this.state.parentId,
+          })
+       }) 
     }
 
     
@@ -917,7 +949,12 @@ class Search extends React.Component {
                                     <Form onSubmit = {this.downloadFile} >
                                         <Button type = "submit" className = "btn-primary export-btn"> Export File </Button>
                                     </Form> 
-                                        <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                                        <a href = "http://localhost:8080/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                                    </Modal.Footer>
+                                    <Modal.Footer>
+                                    <Form onSubmit = {this.classroomExport}>
+                                      <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
+                                    </Form>
                                     </Modal.Footer>
                                     <Modal.Footer>
                                       <Button variant="secondary" onClick={this.closeModal}>

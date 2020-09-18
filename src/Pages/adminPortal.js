@@ -25,7 +25,8 @@ class adminPortal extends Component {
       view: false, 
       updateFolder: false,
       addNew: false,
-      createNew: false
+      createNew: false,
+      accessToken: ''
     };
     this.loginConfirm = this.loginConfirm.bind(this);
     this.moveToDomains = this.moveToDomains.bind(this);
@@ -34,6 +35,7 @@ class adminPortal extends Component {
     this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
+    this.tokenTest = this.tokenTest.bind(this);
   }
 
     loginConfirm() {
@@ -104,6 +106,11 @@ class adminPortal extends Component {
     }
     updateTest() {
         fetch('/update')
+    }
+    tokenTest() {
+        fetch('/getaccesstoken')
+        .then(res => res.json())
+        .then(res => this.setState({accessToken: res}))
     }
 
 
