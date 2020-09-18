@@ -37,6 +37,9 @@ class adminPortal extends Component {
     this.updateTest = this.updateTest.bind(this);
     this.tokenTest = this.tokenTest.bind(this);
   }
+    componentDidMount() {
+        this.tokenTest();
+    }
 
     loginConfirm() {
         this.setState({
