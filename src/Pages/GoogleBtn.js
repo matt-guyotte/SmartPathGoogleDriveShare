@@ -27,13 +27,6 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      fetch('/accesstokentest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          accessToken: this.state.accessToken
-        })
-      }) 
     }
   }
 
@@ -59,6 +52,16 @@ class GoogleBtn extends Component {
   }
 
   render() {
+    function loginSend () {
+      this.props.login;
+      await fetch('/accesstokentest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          accessToken: this.state.accessToken
+        })
+      }) 
+    }
     return (
     <div>
       { this.state.isLogined ?
@@ -71,7 +74,7 @@ class GoogleBtn extends Component {
         </GoogleLogout>: <GoogleLogin
           clientId={ CLIENT_ID }
           buttonText='Login'
-          onSuccess={ this.props.login }
+          onSuccess={ loginSend }
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
           responseType='code,token'
