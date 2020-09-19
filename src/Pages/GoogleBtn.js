@@ -30,16 +30,16 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      this.sendToken();
+      this.sendToken(response);
     }
   }
 
-  sendToken() {
+  sendToken(response) {
     fetch('/accesstoken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        accessToken: "this is the access token."
+        accessToken: response
       })
     }) 
   }
