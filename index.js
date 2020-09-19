@@ -122,11 +122,13 @@ function authorize(credentials, callback) {
   const {client_secret, client_id, redirect_uris} = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
+      console.log(oAuth2Client);
 
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, (err, token) => {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
+    console.log(oAuth2Client);
     listFiles(oAuth2Client);
   });
 }
@@ -152,6 +154,7 @@ function getAccessToken(oAuth2Client, callback) {
     rl.close();
     oAuth2Client.getToken(code, (err, token) => {
       if (err) return console.error('Error retrieving access token', err);
+      console.log(token);
       oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
@@ -266,7 +269,26 @@ async function listFiles(auth) {
 
 
 
-/// GOOGLE DRIVE EXPORT TO CLASSROOM 
+/// GOOGLE DRIVE EXPORT TO CLASSROOM
+
+app.post("/accesstokentest", (req, res) => {
+  const SCOPES2 = ['https://www.googleapis.com/auth/drive'];
+  const TOKEN_PATH2 = 'token2.json';
+  var accessToken = req.body.accessToken
+  accessToken.scope = SCOPES2
+  app.set('accessToken', accessToken)
+  console.log(accessToken)
+  fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
+    if (err) return console.log(err);
+    console.log('Token stored to', TOKEN_PATH);
+  })
+})
+
+app.get('/getaccesstoken', (req, res) => {
+  var accessToken = req.app.get("accessToken");
+  res.send(accessToken);
+  console.log(accessToken);
+})
 
 app.get("drivecall2", (req, res) => {
   const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
@@ -354,6 +376,65 @@ app.get("drivecall2", (req, res) => {
       res.send(fileArray)
     }
   }
+})
+
+app.post('/classroomexport', async (req, res) => {
+  const drive2 = req.app.get('drive2');
+  const fileId = req.body.id
+  app.set('fileId', fileId);
+  const fileName = req.body.name
+  app.set('fileName', fileName)
+  const parent = req.body.parent
+  const type = req.body.type
+  app.set('type', type)
+  var newType = ''
+  if(type === 'pdf') {
+    newType = 'application/pdf'
+  }
+  if(type === 'docx') {
+    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  }
+  if(type === 'txt') {
+    newType === 'text/plain'
+  }
+  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
+  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+  console.log(destSimple)
+
+  await drive.files.export({
+    fileId: fileId, mimeType: newType}, 
+    {responseType: 'stream'},
+    function(err, response){
+    if(err)return console.log(err);
+    response.data.on('error', err => {
+        console.log(err);
+    }).on('end', ()=>{
+        console.log("sent file.")
+    })
+    .pipe(dest);
+  });
+
+  var fileMetadata = {
+    'name': fileName,
+    'description': "This is " + fileName,
+    'parents': []
+  };
+  console.log(fileMetadata)
+  var media = {
+    mimeType: newType,
+    body: fs.createReadStream(destSimple)
+  };
+  console.log(media)
+  drive.files.create({
+    resource: fileMetadata,
+    media: media,
+  }, function (err, file) {
+    if (err) {
+      console.log("Error for file creation: " + err);
+    } else {
+      console.log(file.name);
+    }
+  });
 })
 
 
@@ -665,75 +746,4 @@ app.get('/listfolders', (req, res) => {
     if (err) return console.log(err)
     res.send(res);
   })
-})
-
-app.post('/classroomexport', async (req, res) => {
-  const drive2 = req.app.get('drive2');
-  const fileId = req.body.id
-  app.set('fileId', fileId);
-  const fileName = req.body.name
-  app.set('fileName', fileName)
-  const parent = req.body.parent
-  const type = req.body.type
-  app.set('type', type)
-  var newType = ''
-  if(type === 'pdf') {
-    newType = 'application/pdf'
-  }
-  if(type === 'docx') {
-    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  }
-  if(type === 'txt') {
-    newType === 'text/plain'
-  }
-  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
-  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
-  console.log(destSimple)
-
-  await drive.files.export({
-    fileId: fileId, mimeType: newType}, 
-    {responseType: 'stream'},
-    function(err, response){
-    if(err)return console.log(err);
-    response.data.on('error', err => {
-        console.log(err);
-    }).on('end', ()=>{
-        console.log("sent file.")
-    })
-    .pipe(dest);
-  });
-
-  var fileMetadata = {
-    'name': fileName,
-    'description': "This is " + fileName,
-    'parents': []
-  };
-  console.log(fileMetadata)
-  var media = {
-    mimeType: newType,
-    body: fs.createReadStream(destSimple)
-  };
-  console.log(media)
-  drive.files.create({
-    resource: fileMetadata,
-    media: media,
-  }, function (err, file) {
-    if (err) {
-      console.log("Error for file creation: " + err);
-    } else {
-      console.log(file.name);
-    }
-  });
-})
-
-app.post("/accesstokentest", (req, res) => {
-  var accessToken = req.body.accessToken
-  app.set('accessToken', accessToken)
-  console.log(req.body.accessToken)
-})
-
-app.get('/getaccesstoken', (req, res) => {
-  var accessToken = req.app.get("accessToken");
-  res.send(accessToken);
-  console.log(accessToken);
 })
