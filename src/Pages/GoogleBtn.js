@@ -35,7 +35,7 @@ class GoogleBtn extends Component {
   }
 
   sendToken() {
-    fetch('/accesstokentest', {
+    fetch('/accesstoken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
