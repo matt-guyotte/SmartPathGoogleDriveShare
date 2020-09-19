@@ -728,4 +728,5 @@ app.post("/accesstokentest", (req, res) => {
 app.get('/getaccesstoken', (req, res) => {
   var accessToken = req.app.get("accessToken");
   res.send(accessToken);
+  console.log(accessToken);
 })
