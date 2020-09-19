@@ -24,6 +24,7 @@ class GoogleBtn extends Component {
 
   async login (response) {
     if(response.accessToken){
+      console.log(response)
       await this.setState(state => ({
         isLogined: true,
         accessToken: response
@@ -35,7 +36,6 @@ class GoogleBtn extends Component {
           accessToken: this.state.accessToken
         })
       }) 
-      this.props.login();
     }
   }
 
