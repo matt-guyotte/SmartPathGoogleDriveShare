@@ -35,7 +35,7 @@ class GoogleBtn extends Component {
           accessToken: this.state.accessToken
         })
       }) 
-      //this.props.login();
+      this.props.login();
     }
   }
 
