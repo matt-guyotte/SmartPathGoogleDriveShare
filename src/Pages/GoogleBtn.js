@@ -29,14 +29,18 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      await fetch('https://vast-stream-39133.herokuapp.com/accesstokentest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          accessToken: response
-        })
-      }) 
+      this.sendToken(response);
     }
+  }
+
+  sendToken(response) {
+    fetch('/accesstokentest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        accessToken: response
+      })
+    }) 
   }
 
   checkLogin() { 
@@ -81,7 +85,7 @@ class GoogleBtn extends Component {
           onSuccess={ this.login }
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
-          responseType='code,token'
+          responseType='token'
           scope = 'https://www.googleapis.com/auth/drive'
         />
       }
