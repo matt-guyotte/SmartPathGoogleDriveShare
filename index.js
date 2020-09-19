@@ -93,6 +93,11 @@ const {google} = require('googleapis');
 const { file } = require('googleapis/build/src/apis/file');
 const { domain } = require('process');
 
+
+/// GOOGLE DRIVE API MAIN ROUTES 
+
+
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/classroom.courses', 'https://www.googleapis.com/auth/classroom.coursework.students'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -123,7 +128,6 @@ function authorize(credentials, callback) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     listFiles(oAuth2Client);
-    listCourses(oAuth2Client);
   });
 }
 
@@ -259,28 +263,98 @@ async function listFiles(auth) {
   }
 }
 
-function listCourses(auth) {
-  const classroom = google.classroom({version: 'v1', auth: auth});
-  app.set('classroom', classroom);
-  classroom.courses.courseWork.list({
-    courseId: '140229883842',
-    pageSize: 1000,
-  }, (err, res) => {
-    if (err) return console.error('The API returned an error: ' + err);
-    const courses = res.data
-    if (courses.courseWork) {
-      console.log(courses.courseWork)
-    } else {
-      console.log('No courses found.');
-    }
+
+
+
+/// GOOGLE DRIVE EXPORT TO CLASSROOM 
+
+app.get("drivecall2", (req, res) => {
+  const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
+  const TOKEN_PATH2 = 'token2.json';
+
+  // Load client secrets from a local file.
+  fs.readFile('credentials2.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize(JSON.parse(content), listFiles);
   });
-}
 
-function addProperties(auth, fileArray) {
-  const drive = google.drive({ version: "v3", auth });
-  console.log(fileArray);
+  /**
+   * Create an OAuth2 client with the given credentials, and then execute the
+   * given callback function.
+   * @param {Object} credentials The authorization client credentials.
+   * @param {function} callback The callback to call with the authorized client.
+   */
+  function authorize(credentials, callback) {
+    const {client_secret, client_id, redirect_uris} = credentials.web;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
 
-}
+    // Check if we have previously stored a token.
+    fs.readFile(TOKEN_PATH2, (err, token) => {
+      if (err) return getAccessToken(oAuth2Client, callback);
+      oAuth2Client.setCredentials(JSON.parse(token));
+      callback(oAuth2Client);
+    });
+  }
+
+  /**
+   * Lists the names and IDs of up to 10 files.
+   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+   */
+  async function listFiles(auth) {
+    const drive = google.drive({ version: "v3", auth });
+    app.set('drive', drive);
+    const res = await drive.files.list({
+      pageSize: 1000,
+      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+      orderBy: "folder"});
+    const files = res.data.files;
+    const fileArray = [{
+      file: '',
+      id: '',
+      description: '',
+      type: '',
+      properties: {
+        subject: [],
+        grade: [],
+        industry: [],
+        imgsrc: ''
+      },
+      parents: [],
+    }];
+    if (files.length) {
+      const fileDisplay = [];
+      const fileIdArray = [];
+      const description = [];
+      const mimeType = [];
+      const parents = [];
+      var subjectArray = [];
+      var gradeArray = [];
+      var industryArray = [];
+      const imgsrc = [];
+      var newLoop = [];
+      for (var i = 0; i < files.length; i++) {
+        //console.log(newLoop.subject);
+        fileDisplay.push(files[i].name);
+        fileIdArray.push(files[i].id);
+        description.push(files[i].description);
+        mimeType.push(files[i].mimeType);
+        parents.push(files[i].parents);
+      }
+      for (var y = 0; y < fileDisplay.length; y++) {
+        fileArray.push({
+          file: fileDisplay[y],
+          id: fileIdArray[y],
+          description: description[y],
+          type: mimeType[y],
+          parents: parents[y],
+        });
+      }
+      res.send(fileArray)
+    }
+  }
+})
 
 
 // Authentication Routes
@@ -648,73 +722,6 @@ app.post('/classroomexport', async (req, res) => {
       console.log("Error for file creation: " + err);
     } else {
       console.log(file.name);
-    }
-  });
-})
-
-// requiring child_process native module
-const child_process = require('child_process');
-
-const folderpath = './src/Pages/downloads';
-
-app.get("/downloadzip", (req, res) => {
-
-  // we want to use a sync exec to prevent returning response
-  // before the end of the compression process
-  child_process.execSync(`zip -r newzip`, {
-    cwd: folderpath
-  });
-
-  // zip archive of your folder is ready to download
-  res.download(folderpath + '/archive.zip');
-});
-
-app.post("/downloadfolder", (req, res) => {
-  const drive = req.app.get('drive');
-  const fileId = req.body.id
-  app.set('fileId', fileId);
-  const fileName = req.body.name
-  app.set('fileName', fileName)
-  const type = req.body.type
-  app.set('type', type)
-  var newType = ''
-  if(type === 'zip') {
-    newType = '	application/zip'
-  }
-  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
-  console.log(dest);
-
-
-  drive.files.export({
-    fileId: fileId, mimeType: newType}, 
-    {responseType: 'stream'},
-    function(err, response){
-    if(err)return console.log(err);
-    response.data.on('error', err => {
-        console.log(err);
-    }).on('end', ()=>{
-        console.log("sent file.")
-    })
-    .pipe(dest);
-  });
-
-})
-
-app.get("/updatecourse", (req, res) => {
-  const classroom = req.app.get("classroom");
-  classroom.courses.courseWork.create(
-    {courseId: '140229883842'},
-    {requestBody: {
-      title: '10th Grade Biology',
-      section: '2',
-      descriptionHeading: 'Welcome to 10th Grade Biology',
-      description: "We'll be learning about about the structure of living creatures from a combination of textbooks, guest lectures, and lab work. Expect to be excited!",
-      room: '301',
-      courseState: 'PROVISIONED',
-      ownerId: '110003867565919888228',
-    }, function (err, res) {
-      if(err) return console.log(err);
-      if(res) return console.log(res);
     }
   });
 })

@@ -26,7 +26,7 @@ class GoogleBtn extends Component {
     if(response.accessToken){
       await this.setState(state => ({
         isLogined: true,
-        accessToken: response.accessToken
+        accessToken: response
       }));
       await fetch('/accesstokentest', {
         method: 'POST',
