@@ -27,7 +27,7 @@ class GoogleBtn extends Component {
       console.log(response)
       await this.setState(state => ({
         isLogined: true,
-        accessToken: response
+        accessToken: response.accessToken
       }));
       await fetch('/accesstokentest', {
         method: 'POST',
@@ -82,6 +82,7 @@ class GoogleBtn extends Component {
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
           responseType='code,token'
+          scope = 'https://www.googleapis.com/auth/drive'
         />
       }
       { this.state.accessToken ?  <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
