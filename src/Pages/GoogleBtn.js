@@ -29,7 +29,7 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      await fetch('/accesstokentest', {
+      await fetch('https://vast-stream-39133.herokuapp.com/accesstokentest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
