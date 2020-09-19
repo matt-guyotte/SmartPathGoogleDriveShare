@@ -53,7 +53,6 @@ class GoogleBtn extends Component {
   }
 
   async loginSend () {
-    this.props.login();
     await fetch('/accesstokentest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -73,7 +72,8 @@ class GoogleBtn extends Component {
           onLogoutSuccess={ this.logout }
           onFailure={ this.handleLogoutFailure }
         >
-        </GoogleLogout>: <GoogleLogin
+        </GoogleLogout>
+        : <GoogleLogin
           clientId={ CLIENT_ID }
           buttonText='Login'
           onSuccess={ this.loginSend }
