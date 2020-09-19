@@ -272,11 +272,8 @@ async function listFiles(auth) {
 /// GOOGLE DRIVE EXPORT TO CLASSROOM
 
 app.post("/accesstokentest", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive'];
   const TOKEN_PATH2 = 'token2.json';
   var accessToken = req.body.accessToken
-  accessToken.scope = SCOPES2
-  app.set('accessToken', accessToken)
   console.log(accessToken)
   fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
     if (err) return console.log(err);
