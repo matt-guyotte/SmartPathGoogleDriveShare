@@ -90,6 +90,9 @@ class GoogleBtn extends Component {
           scope = 'https://www.googleapis.com/auth/drive'
         />
       }
+      <form onSubmit = {this.sendToken}>
+        <input type = "submit" />
+      </form>
       { this.state.accessToken ?  <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
 
     </div>
