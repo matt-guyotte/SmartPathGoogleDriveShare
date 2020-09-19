@@ -38,7 +38,7 @@ class GoogleBtn extends Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        accessToken: response
+        accessToken: this.state.accessToken
       })
     }) 
   }
