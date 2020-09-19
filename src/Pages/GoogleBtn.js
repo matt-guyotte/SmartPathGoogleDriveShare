@@ -15,6 +15,7 @@ class GoogleBtn extends Component {
     };
 
     this.login = this.login.bind(this);
+    this.sendToken = this.sendToken.bind(this);
     this.checkLogin = this.checkLogin.bind(this); 
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
     this.logout = this.logout.bind(this);
@@ -29,11 +30,11 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      this.sendToken(response);
+      this.sendToken();
     }
   }
 
-  sendToken(response) {
+  sendToken() {
     fetch('/accesstokentest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
