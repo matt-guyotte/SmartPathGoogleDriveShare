@@ -276,13 +276,17 @@ app.post("/accesstoken", (req, res) => {
   var accessToken = req.body.accessToken
   console.log(accessToken)
   console.log("Something Found.")
-  //fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
-  //  if (err) return console.log(err);
-  //  console.log('Token stored to', TOKEN_PATH);
-  //})
+  fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
+    if (err) return console.log(err);
+    console.log('Token stored to', TOKEN_PATH);
+  })
 })
 
 app.get('/getaccesstoken', (req, res) => {
+  fs.readFile('token2.json', (err, content) => {
+    if (err) return console.log(err);
+    console.log(content)
+  })
   var accessToken = req.app.get("accessToken");
   res.send(accessToken);
   console.log(accessToken);
