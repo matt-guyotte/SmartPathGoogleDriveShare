@@ -271,10 +271,11 @@ async function listFiles(auth) {
 
 /// GOOGLE DRIVE EXPORT TO CLASSROOM
 
-app.post("/accesstokentest", (req, res) => {
+app.post("/accesstoken", (req, res) => {
   //const TOKEN_PATH2 = 'token2.json';
   var accessToken = req.body.accessToken
   console.log(accessToken)
+  console.log("Something Found.")
   //fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
   //  if (err) return console.log(err);
   //  console.log('Token stored to', TOKEN_PATH);
