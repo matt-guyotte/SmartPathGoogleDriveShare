@@ -289,7 +289,7 @@ app.get('/getaccesstoken', (req, res) => {
   })
 })
 
-app.get("drivecall2", (req, res) => {
+app.get("/drivecall2", (req, res) => {
   const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
   const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
@@ -302,12 +302,12 @@ app.get("drivecall2", (req, res) => {
     authorize(JSON.parse(content), listFiles);
   });
 
-  /**
-   * Create an OAuth2 client with the given credentials, and then execute the
-   * given callback function.
-   * @param {Object} credentials The authorization client credentials.
-   * @param {function} callback The callback to call with the authorized client.
-   */
+  ///**
+  // * Create an OAuth2 client with the given credentials, and then execute the
+  // * given callback function.
+  // * @param {Object} credentials The authorization client credentials.
+  // * @param {function} callback The callback to call with the authorized client.
+  // */
   function authorize(credentials, callback) {
     const {client_secret, client_id, redirect_uris} = credentials.web;
     const oAuth2Client = new google.auth.OAuth2(
@@ -322,10 +322,10 @@ app.get("drivecall2", (req, res) => {
     });
   }
 
-  /**
-   * Lists the names and IDs of up to 10 files.
-   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-   */
+  ///**
+  // * Lists the names and IDs of up to 10 files.
+  // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+  // */
   async function listFiles(auth) {
     const drive = google.drive({ version: "v3", auth });
     app.set('drive', drive);
