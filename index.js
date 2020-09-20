@@ -262,7 +262,7 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    console.log(fileArray)
+    //console.log(fileArray)
   }
 }
 
@@ -280,22 +280,14 @@ app.post("/accesstoken", async (req, res) => {
     if (err) return console.log(err);
     console.log('Token stored to', TOKEN_PATH2);
   })
-  fs.readFile('token2.json', (err, content) => {
-    if (err) return console.log(err);
-    console.log(JSON.parse(content))
-    console.log("token extracted.")
-  })
 })
 
 app.get('/getaccesstoken', (req, res) => {
   fs.readFile('token2.json', (err, content) => {
     if (err) return console.log(err);
-    console.log(content)
+    console.log(JSON.parse(content))
     console.log("token extracted.")
   })
-  var accessToken = req.app.get("accessToken");
-  res.send(accessToken);
-  console.log(accessToken);
 })
 
 app.get("drivecall2", (req, res) => {
@@ -381,6 +373,7 @@ app.get("drivecall2", (req, res) => {
           parents: parents[y],
         });
       }
+      console.log(fileArray)
       res.send(fileArray)
     }
   }

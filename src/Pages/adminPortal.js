@@ -37,7 +37,7 @@ class adminPortal extends Component {
     this.updateTest = this.updateTest.bind(this);
   }
     componentDidMount() {
-        fetch("/getaccesstoken");
+        fetch("/drivecall2");
     }
 
     loginConfirm() {
