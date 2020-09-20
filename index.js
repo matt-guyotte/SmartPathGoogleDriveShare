@@ -292,6 +292,7 @@ app.get('/getaccesstoken', (req, res) => {
 app.get("drivecall2", (req, res) => {
   const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
   const TOKEN_PATH2 = 'token2.json';
+  console.log("drivecall called.")
 
   // Load client secrets from a local file.
   fs.readFile('credentials2.json', (err, content) => {
