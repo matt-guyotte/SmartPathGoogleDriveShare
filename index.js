@@ -317,6 +317,7 @@ app.get("drivecall2", (req, res) => {
       if (err) return getAccessToken(oAuth2Client, callback);
       oAuth2Client.setCredentials(JSON.parse(token));
       callback(oAuth2Client);
+      console.log(oAuth2Client);
     });
   }
 
