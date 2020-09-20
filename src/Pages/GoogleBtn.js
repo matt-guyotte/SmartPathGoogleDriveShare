@@ -30,7 +30,6 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
-      this.props.login();
       this.sendToken(response);
     }
   }
