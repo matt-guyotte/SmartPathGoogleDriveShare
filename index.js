@@ -286,6 +286,7 @@ app.get('/getaccesstoken', (req, res) => {
   fs.readFile('token2.json', (err, content) => {
     if (err) return console.log(err);
     console.log(content)
+    console.log("token extracted.")
   })
   var accessToken = req.app.get("accessToken");
   res.send(accessToken);
