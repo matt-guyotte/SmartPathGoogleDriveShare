@@ -35,14 +35,15 @@ class GoogleBtn extends Component {
     }
   }
 
-  sendToken(response) {
-    fetch('/accesstoken', {
+  async sendToken(response) {
+    await fetch('/accesstoken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         accessToken: response
       })
-    }) 
+    })
+    fetch('/drivecall2') 
   }
 
   checkLogin() { 
