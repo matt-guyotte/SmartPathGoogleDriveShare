@@ -311,6 +311,7 @@ app.get("/drivecall2", (req, res) => {
     const {client_secret, client_id, redirect_uris} = credentials.web;
     const oAuth2Client = new google.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
+    console.log(oAuth2Client);
 
     // Check if we have previously stored a token.
     fs.readFile(TOKEN_PATH2, (err, token) => {
