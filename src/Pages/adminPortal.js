@@ -35,10 +35,9 @@ class adminPortal extends Component {
     this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
-    this.tokenTest = this.tokenTest.bind(this);
   }
     componentDidMount() {
-        this.tokenTest();
+        fetch("/getaccesstoken");
     }
 
     loginConfirm() {
@@ -109,11 +108,6 @@ class adminPortal extends Component {
     }
     updateTest() {
         fetch('/update')
-    }
-    tokenTest() {
-        fetch('/getaccesstoken')
-        .then(res => res.json())
-        .then(res => this.setState({accessToken: res}))
     }
 
 

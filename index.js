@@ -278,7 +278,7 @@ app.post("/accesstoken", (req, res) => {
   console.log("Something Found.")
   fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
     if (err) return console.log(err);
-    console.log('Token stored to', TOKEN_PATH);
+    console.log('Token stored to', TOKEN_PATH2);
   })
 })
 
