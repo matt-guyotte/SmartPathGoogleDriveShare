@@ -298,7 +298,6 @@ app.get("/drivecall2", (req, res) => {
   fs.readFile('credentials2.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
-    console.log("These are the credentials: " + JSON.parse(content))
     authorize(JSON.parse(content), listFiles);
   });
 
