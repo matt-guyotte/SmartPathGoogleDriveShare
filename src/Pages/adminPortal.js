@@ -35,9 +35,14 @@ class adminPortal extends Component {
     this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
+    this.apiTest = this.apiTest.bind(this);
   }
     componentDidMount() {
         fetch("/drivecall2");
+    }
+
+    apiTest() {
+        fetch("/drivecall2")
     }
 
     loginConfirm() {
@@ -179,6 +184,7 @@ class adminPortal extends Component {
             <Container fluid>
             <h3 className = "admin-title"> <strong> Welcome to the admin portal! </strong> </h3>
             <Row>
+                <Button onClick = {this.apiTest}></Button>
                 <Col md = {6}>
                     <div className = "admin-box" onClick = {this.moveToDomains}> 
                         <h4 className = "admin-box-term"> View Domains and Privileges </h4>
