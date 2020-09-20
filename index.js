@@ -282,7 +282,7 @@ app.post("/accesstoken", async (req, res) => {
   })
   fs.readFile('token2.json', (err, content) => {
     if (err) return console.log(err);
-    console.log(content)
+    console.log(JSON.parse(content))
     console.log("token extracted.")
   })
 })
