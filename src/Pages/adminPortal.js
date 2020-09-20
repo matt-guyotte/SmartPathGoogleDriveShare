@@ -35,11 +35,7 @@ class adminPortal extends Component {
     this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
-    this.apiTest = this.apiTest.bind(this);
   }
-    componentDidMount() {
-        fetch("/drivecall2");
-    }
 
     apiTest() {
         fetch("/drivecall2")
