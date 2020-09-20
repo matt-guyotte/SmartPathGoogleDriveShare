@@ -290,95 +290,95 @@ app.get('/getaccesstoken', (req, res) => {
 })
 
 app.get("drivecall2", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
-  const TOKEN_PATH2 = 'token2.json';
+  //const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
+  //const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
 
-  // Load client secrets from a local file.
-  fs.readFile('credentials2.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Drive API.
-    console.log("These are the credentials: " + JSON.parse(content))
-    authorize(JSON.parse(content), listFiles);
-  });
+ //// Load client secrets from a local file.
+ //fs.readFile('credentials2.json', (err, content) => {
+ //  if (err) return console.log('Error loading client secret file:', err);
+ //  // Authorize a client with credentials, then call the Google Drive API.
+ //  console.log("These are the credentials: " + JSON.parse(content))
+ //  authorize(JSON.parse(content), listFiles);
+ //});
 
-  /**
-   * Create an OAuth2 client with the given credentials, and then execute the
-   * given callback function.
-   * @param {Object} credentials The authorization client credentials.
-   * @param {function} callback The callback to call with the authorized client.
-   */
-  function authorize(credentials, callback) {
-    const {client_secret, client_id, redirect_uris} = credentials.web;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]);
+ ///**
+ // * Create an OAuth2 client with the given credentials, and then execute the
+ // * given callback function.
+ // * @param {Object} credentials The authorization client credentials.
+ // * @param {function} callback The callback to call with the authorized client.
+ // */
+ //function authorize(credentials, callback) {
+ //  const {client_secret, client_id, redirect_uris} = credentials.web;
+ //  const oAuth2Client = new google.auth.OAuth2(
+ //      client_id, client_secret, redirect_uris[0]);
 
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH2, (err, token) => {
-      if (err) return getAccessToken(oAuth2Client, callback);
-      oAuth2Client.setCredentials(JSON.parse(token));
-      callback(oAuth2Client);
-      console.log(oAuth2Client);
-    });
-  }
+ //  // Check if we have previously stored a token.
+ //  fs.readFile(TOKEN_PATH2, (err, token) => {
+ //    if (err) return getAccessToken(oAuth2Client, callback);
+ //    oAuth2Client.setCredentials(JSON.parse(token));
+ //    callback(oAuth2Client);
+ //    console.log(oAuth2Client);
+ //  });
+ //}
 
-  /**
-   * Lists the names and IDs of up to 10 files.
-   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-   */
-  async function listFiles(auth) {
-    const drive = google.drive({ version: "v3", auth });
-    app.set('drive', drive);
-    const res = await drive.files.list({
-      pageSize: 1000,
-      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
-      orderBy: "folder"});
-    const files = res.data.files;
-    const fileArray = [{
-      file: '',
-      id: '',
-      description: '',
-      type: '',
-      properties: {
-        subject: [],
-        grade: [],
-        industry: [],
-        imgsrc: ''
-      },
-      parents: [],
-    }];
-    if (files.length) {
-      const fileDisplay = [];
-      const fileIdArray = [];
-      const description = [];
-      const mimeType = [];
-      const parents = [];
-      var subjectArray = [];
-      var gradeArray = [];
-      var industryArray = [];
-      const imgsrc = [];
-      var newLoop = [];
-      for (var i = 0; i < files.length; i++) {
-        //console.log(newLoop.subject);
-        fileDisplay.push(files[i].name);
-        fileIdArray.push(files[i].id);
-        description.push(files[i].description);
-        mimeType.push(files[i].mimeType);
-        parents.push(files[i].parents);
-      }
-      for (var y = 0; y < fileDisplay.length; y++) {
-        fileArray.push({
-          file: fileDisplay[y],
-          id: fileIdArray[y],
-          description: description[y],
-          type: mimeType[y],
-          parents: parents[y],
-        });
-      }
-      console.log(fileArray)
-      res.send(fileArray)
-    }
-  }
+ ///**
+ // * Lists the names and IDs of up to 10 files.
+ // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ // */
+ //async function listFiles(auth) {
+ //  const drive = google.drive({ version: "v3", auth });
+ //  app.set('drive', drive);
+ //  const res = await drive.files.list({
+ //    pageSize: 1000,
+ //    fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+ //    orderBy: "folder"});
+ //  const files = res.data.files;
+ //  const fileArray = [{
+ //    file: '',
+ //    id: '',
+ //    description: '',
+ //    type: '',
+ //    properties: {
+ //      subject: [],
+ //      grade: [],
+ //      industry: [],
+ //      imgsrc: ''
+ //    },
+ //    parents: [],
+ //  }];
+ //  if (files.length) {
+ //    const fileDisplay = [];
+ //    const fileIdArray = [];
+ //    const description = [];
+ //    const mimeType = [];
+ //    const parents = [];
+ //    var subjectArray = [];
+ //    var gradeArray = [];
+ //    var industryArray = [];
+ //    const imgsrc = [];
+ //    var newLoop = [];
+ //    for (var i = 0; i < files.length; i++) {
+ //      //console.log(newLoop.subject);
+ //      fileDisplay.push(files[i].name);
+ //      fileIdArray.push(files[i].id);
+ //      description.push(files[i].description);
+ //      mimeType.push(files[i].mimeType);
+ //      parents.push(files[i].parents);
+ //    }
+ //    for (var y = 0; y < fileDisplay.length; y++) {
+ //      fileArray.push({
+ //        file: fileDisplay[y],
+ //        id: fileIdArray[y],
+ //        description: description[y],
+ //        type: mimeType[y],
+ //        parents: parents[y],
+ //      });
+ //    }
+ //    console.log(fileArray)
+ //    res.send(fileArray)
+ //  }
+ //}
 })
 
 app.post('/classroomexport', async (req, res) => {
