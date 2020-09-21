@@ -318,13 +318,13 @@ app.get("/drivecall2", (req, res) => {
       if (err) return console.log(err);
       oAuth2Client.getToken(JSON.parse(code), (err, token) => {
         if (err) return console.error('Error retrieving access token', err);
-        console.log(token);
         oAuth2Client.setCredentials(token);
         // Store the token to disk for later program executions
         fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
           if (err) return console.error(err);
           console.log('Token stored to', TOKEN_PATH2);
         });
+        console.log(oAuth2Client);
         callback(oAuth2Client);
       });
     })
