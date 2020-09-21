@@ -290,7 +290,7 @@ app.get("/drivecall2", (req, res) => {
   fs.readFile('credentials2.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
-    authorize2(JSON.parse(content), listFiles);
+    authorize2(JSON.parse(content), listFiles2);
   });
 
   ///**
@@ -315,21 +315,20 @@ app.get("/drivecall2", (req, res) => {
   }
 
   function getAccessToken2(oAuth2Client, callback) {
-    var code = fs.readFile(JSON.parse(TOKENCODE))
-    oAuth2Client.getToken(code, (err, token) => {
-      if (err) return console.error('Error retrieving access token', err);
-      console.log(token);
-      oAuth2Client.setCredentials(token);
-      // Store the token to disk for later program executions
-      fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH2);
+    fs.readFile(JSON.parse(TOKENCODE, (err, code) => {
+      if (err) return console.log(err)
+      oAuth2Client.getToken(code, (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+        console.log(token);
+        oAuth2Client.setCredentials(token);
+        // Store the token to disk for later program executions
+        fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
+          if (err) return console.error(err);
+          console.log('Token stored to', TOKEN_PATH2);
+        });
+        callback(oAuth2Client);
       });
-      callback(oAuth2Client);
-      updateTest(oAuth2Client);
-      listCourses(oAuth2Client);
-      addProperties(oAuth2Client);
-    });
+    }))
   }
 
   ///**

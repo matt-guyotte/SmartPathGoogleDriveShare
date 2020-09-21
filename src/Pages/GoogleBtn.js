@@ -29,7 +29,7 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.code
       }));
-      //this.props.login();
+      this.props.login();
       var accesscode = response.code
       this.sendToken(accesscode);
     }
@@ -43,7 +43,6 @@ class GoogleBtn extends Component {
         accessToken: response
       })
     })
-    fetch('/drivecall2') 
   }
 
   checkLogin() { 
