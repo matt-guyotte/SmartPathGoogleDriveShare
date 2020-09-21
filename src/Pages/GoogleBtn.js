@@ -26,11 +26,11 @@ class GoogleBtn extends Component {
   async login (response) {
     if(response.accessToken){
       console.log(response)
-      await this.setState(state => ({
-        isLogined: true,
-        accessToken: response.accessToken
-      }));
-      this.props.login();
+      //await this.setState(state => ({
+      //  isLogined: true,
+      //  accessToken: response.accessToken
+      //}));
+      //this.props.login();
       this.sendToken(response);
     }
   }
@@ -88,7 +88,7 @@ class GoogleBtn extends Component {
           onSuccess={ this.login }
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
-          responseType='token'
+          responseType='code'
           scope = 'https://www.googleapis.com/auth/drive'
         />
       }
