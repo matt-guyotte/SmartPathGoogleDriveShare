@@ -87,6 +87,7 @@ class GoogleBtn extends Component {
           onSuccess={ this.login }
           onFailure={ this.handleLoginFailure }
           cookiePolicy={ 'single_host_origin' }
+          accessType = "offline"
           responseType='code'
           scope = 'https://www.googleapis.com/auth/drive'
         />
