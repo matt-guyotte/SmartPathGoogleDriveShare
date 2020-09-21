@@ -270,26 +270,19 @@ async function listFiles(auth) {
 
 /// GOOGLE DRIVE EXPORT TO CLASSROOM
 
-app.post("/accesstoken", async (req, res) => {
-  const TOKEN_PATH2 = 'token2.json';
+app.post("/accesstoken", (req, res) => {
+  const TOKEN_PATH2 = 'tokencode.json';
   var accessToken = req.body.accessToken
   console.log("Something Found.")
-  await fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
+  fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
     if (err) return console.log(err);
     console.log('Token stored to', TOKEN_PATH2);
   })
 })
 
-app.get('/getaccesstoken', (req, res) => {
-  fs.readFile('token2.json', (err, content) => {
-    if (err) return console.log(err);
-    console.log(JSON.parse(content))
-    console.log("token extracted.")
-  })
-})
-
 app.get("/drivecall2", (req, res) => {
   const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
+  const TOKENCODE = 'tokencode.json';
   const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
 
@@ -322,26 +315,21 @@ app.get("/drivecall2", (req, res) => {
   }
 
   function getAccessToken2(oAuth2Client, callback) {
-    const authUrl = oAuth2Client.generateAuthUrl({
-      access_type: 'offline',
-      prompt: 'consent',
-      scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-      oAuth2Client.getToken(code, (err, token) => {
-        if (err) return console.error('Error retrieving access token', err);
-        console.log(token);
-        oAuth2Client.setCredentials(token);
-        // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
-          if (err) return console.error(err);
-          console.log('Token stored to', TOKEN_PATH2);
-        });
-        callback(oAuth2Client);
-        updateTest(oAuth2Client);
-        listCourses(oAuth2Client);
-        addProperties(oAuth2Client);
+    var code = fs.readFile(JSON.parse(TOKENCODE))
+    oAuth2Client.getToken(code, (err, token) => {
+      if (err) return console.error('Error retrieving access token', err);
+      console.log(token);
+      oAuth2Client.setCredentials(token);
+      // Store the token to disk for later program executions
+      fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
+        if (err) return console.error(err);
+        console.log('Token stored to', TOKEN_PATH2);
       });
+      callback(oAuth2Client);
+      updateTest(oAuth2Client);
+      listCourses(oAuth2Client);
+      addProperties(oAuth2Client);
+    });
   }
 
   ///**

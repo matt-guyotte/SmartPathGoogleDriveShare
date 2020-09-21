@@ -23,16 +23,16 @@ class GoogleBtn extends Component {
     this.loginSend = this.loginSend.bind(this);
   }
 
-  login (response) {
-    if(response.accessToken){
-      //await this.setState(state => ({
-      //  isLogined: true,
-      //  accessToken: response.accessToken
-      //}));
+  async login (response) {
+    if(response.code){
+      await this.setState(state => ({
+        isLogined: true,
+        accessToken: response.code
+      }));
       //this.props.login();
+      var accesscode = response.code
+      this.sendToken(accesscode);
     }
-    console.log(response)
-    this.sendToken(response);
   }
 
   async sendToken(response) {
