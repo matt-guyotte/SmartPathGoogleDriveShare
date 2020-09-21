@@ -326,9 +326,6 @@ app.get("/drivecall2", (req, res) => {
           console.log('Token stored to', TOKEN_PATH2);
         });
         callback(oAuth2Client);
-        updateTest(oAuth2Client);
-        listCourses(oAuth2Client);
-        addProperties(oAuth2Client);
       });
     })
   }
