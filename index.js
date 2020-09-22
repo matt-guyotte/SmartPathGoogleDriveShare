@@ -177,6 +177,7 @@ function getAccessToken(oAuth2Client, callback) {
 
 async function listFiles(auth) {
   const drive = google.drive({ version: "v3", auth });
+  console.log(drive);
   app.set('drive', drive);
   const res = await drive.files.list({
     pageSize: 1000,
@@ -261,7 +262,7 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    //console.log(fileArray)
+    console.log(fileArray)
   }
 }
 
@@ -326,6 +327,7 @@ app.get("/drivecall2", (req, res) => {
         });
         console.log(oAuth2Client);
         callback(oAuth2Client);
+        listFiles2(oAuth2Client);
       });
     })
   }
