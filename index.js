@@ -389,7 +389,9 @@ app.get("/drivecall2", (req, res) => {
       console.log(fileArray)
       res.send(fileArray)
     }
+    res.send(fileArray)
   }
+  res.send(fileArray)
 })
 
 app.post('/classroomexport', async (req, res) => {
