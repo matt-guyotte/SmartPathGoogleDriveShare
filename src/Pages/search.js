@@ -655,7 +655,7 @@ class Search extends React.Component {
     searchFunction() {
         var searchTerm = this.state.searchTerm;
         var driveFiles = this.organizeFiles();
-        console.log(driveFiles)
+        //console.log(driveFiles)
         this.setState({searchRan: false});
         this.setState({foundFolders: []})
         this.setState({foundFiles: []})
@@ -701,16 +701,16 @@ class Search extends React.Component {
         let checker = (arr, target) => target.every(v => arr.includes(v));
 
             if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true) {
-                console.log("the file is found.")
+                //console.log("the file is found.")
                 if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                     foundFolders.push(driveFiles[i])
-                    console.log(foundFolders)
+                    //console.log(foundFolders)
                     this.setState({foundFolders: foundFolders})
                 }
                 if (driveFiles[i].type === 'application/vnd.google-apps.document') {
                     console.log(driveFiles[i]);
                     foundFiles.push(driveFiles[i])
-                    console.log(foundFiles)
+                    //console.log(foundFiles)
                     this.setState({foundFiles: foundFiles})
                 }
             }       
