@@ -611,13 +611,15 @@ class Search extends React.Component {
           }) 
     }
 
-    async getFoldersClassroom() {
-      await fetch('/drivecall2')
+    getFoldersClassroom() {
+      fetch('/drivecall2')
       .then(res => res.json())
       .then(res => console.log(res))
       .then(res => this.setState({classroomFolders: res}))
 
       var driveFilesClassroom = this.state.classroomFolders;
+      console.log("classroom has been called.")
+      console.log(driveFilesClassroom)
 
       for(var i = 0; i < driveFilesClassroom.length; i++) {
         if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
