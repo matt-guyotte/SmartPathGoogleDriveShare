@@ -614,6 +614,7 @@ class Search extends React.Component {
     async getFoldersClassroom() {
       await fetch('/drivecall2')
       .then(res => res.json())
+      .then(res => console.log(res))
       .then(res => this.setState({classroomFolders: res}))
 
       var driveFilesClassroom = this.state.classroomFolders;
