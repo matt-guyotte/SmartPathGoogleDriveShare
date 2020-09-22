@@ -305,6 +305,7 @@ app.get("/drivecall2", (req, res) => {
     const oAuth2Client = new google.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
     listFiles2(oAuth2Client);
+    getAccessToken2(oAuth2Client, listFiles2)
   }
 
   function getAccessToken2(oAuth2Client, callback) {
