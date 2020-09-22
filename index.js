@@ -92,6 +92,7 @@ const readline = require('readline');
 const {google} = require('googleapis');
 const { file } = require('googleapis/build/src/apis/file');
 const { domain } = require('process');
+const { request } = require('http');
 
 
 /// GOOGLE DRIVE API MAIN ROUTES 
@@ -177,7 +178,6 @@ function getAccessToken(oAuth2Client, callback) {
 
 async function listFiles(auth) {
   const drive = google.drive({ version: "v3", auth });
-  console.log(drive);
   app.set('drive', drive);
   const res = await drive.files.list({
     pageSize: 1000,
@@ -262,14 +262,14 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    //console.log(fileArray)
+    console.log(fileArray)
   }
 }
 
 
 
 
-/// GOOGLE DRIVE EXPORT TO CLASSROOM
+/// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
 app.post("/accesstoken", (req, res) => {
   const TOKEN_PATH2 = 'tokencode.json';
@@ -338,6 +338,7 @@ app.get("/drivecall2", (req, res) => {
   // */
   async function listFiles2(auth) {
     const drive = google.drive({ version: "v3", auth });
+    app.set("drive2", drive2)
     const res = await drive.files.list({
       pageSize: 1000,
       fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
@@ -427,10 +428,13 @@ app.post('/classroomexport', async (req, res) => {
     .pipe(dest);
   });
 
+
+  const filePath = req.body.parentId;
+
   var fileMetadata = {
     'name': fileName,
     'description': "This is " + fileName,
-    'parents': []
+    'parents': [filePath]
   };
   console.log(fileMetadata)
   var media = {
@@ -730,27 +734,27 @@ app.post("/downloaddocument", async (req, res) => {
     .pipe(dest);
   });
 
-  var fileMetadata = {
-    'name': fileName,
-    'description': "This is " + fileName,
-    'parents': []
-  };
-  console.log(fileMetadata)
-  var media = {
-    mimeType: newType,
-    body: fs.createReadStream(destSimple)
-  };
-  console.log(media)
-  drive.files.create({
-    resource: fileMetadata,
-    media: media,
-  }, function (err, file) {
-    if (err) {
-      console.log("Error for file creation: " + err);
-    } else {
-      console.log(file.name);
-    }
-  });
+  //var fileMetadata = {
+  //  'name': fileName,
+  //  'description': "This is " + fileName,
+  //  'parents': []
+  //};
+  //console.log(fileMetadata)
+  //var media = {
+  //  mimeType: newType,
+  //  body: fs.createReadStream(destSimple)
+  //};
+  //console.log(media)
+  //drive.files.create({
+  //  resource: fileMetadata,
+  //  media: media,
+  //}, function (err, file) {
+  //  if (err) {
+  //    console.log("Error for file creation: " + err);
+  //  } else {
+  //    console.log(file.name);
+  //  }
+  //});
 })
 
 app.get('/listfolders', (req, res) => {

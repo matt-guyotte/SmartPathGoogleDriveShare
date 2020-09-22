@@ -48,13 +48,14 @@ class Search extends React.Component {
             industry: '',
             id: '',
             fileName: '',
-            exportFileType: 'pdf',
+            exportFileType: 'docx',
             exportFolderType: 'zip',
             downloadPath: '',
             subjectArray: [],
             gradeArray: [],
             industryArray: [],
             classroomFolders: [],
+            newClassroomFolders: [],
             classroomParent: '',
 
 
@@ -112,12 +113,14 @@ class Search extends React.Component {
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleChangeCheckFile = this.handleChangeCheckFile.bind(this);
         this.handleChangeFileType = this.handleChangeFileType.bind(this);
+        this.handleChangeSetParent = this.handleChangeSetParent.bind(this);
         this.handleChangeSubject = this.handleChangeSubject.bind(this);
         this.handleChangeGrade = this.handleChangeGrade.bind(this);
         this.handleChangeIndustry = this.handleChangeIndustry.bind(this);
         this.searchFunction = this.searchFunction.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
         this.downloadFolder = this.downloadFolder.bind(this);
+        this.getFoldersClassroom = this.getFoldersClassroom.bind(this);
         this.classroomExport = this.classroomExport.bind(this); 
         this.downloadTest = this.downloadTest.bind(this);
         
@@ -160,20 +163,6 @@ class Search extends React.Component {
         return driveFiles;
     }
 
-    async getFoldersClassroom() {
-      await fetch('/listfolders')
-      .then(res => res.json())
-      .then(res => this.setState())
-
-      var driveFilesClassroom = this.state.classroomFolders;
-
-      for(var i = 0; i < driveFilesClassroom.length; i++) {
-        if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
-          this.setState({classroomParent: driveFilesClassroom[i].id})
-        }
-      }
-    }
-
     handleChangeSearch(event) {
         this.setState({
           searchTerm: event.target.value
@@ -187,6 +176,12 @@ class Search extends React.Component {
         this.setState({
             fileName: event.target.name
         })
+    }
+
+    handleChangeSetParent(event) {
+      this.setState({
+        classroomParent: event.target.value
+      })
     }
 
     handleChangeFileType (event) {
@@ -616,7 +611,28 @@ class Search extends React.Component {
           }) 
     }
 
-    classroomExport() {
+    async getFoldersClassroom() {
+      await fetch('/drivecall2')
+      .then(res => res.json())
+      .then(res => this.setState({classroomFolders: res}))
+
+      var driveFilesClassroom = this.state.classroomFolders;
+
+      for(var i = 0; i < driveFilesClassroom.length; i++) {
+        if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
+          var classroom = driveFilesClassroom[i].id;
+          var newArray = [];
+          for(var y = 0; y < driveFilesClassroom.length; y++) {
+            if(driveFilesClassroom[y].parents[0] === classroom) {
+              newArray.push(driveFilesClassroom[y]);
+              this.setState({newClassroomFolders: newArray})
+            }
+          }
+        }
+      }
+    }
+
+    async classroomExport() {
       var pathStart = './downloads/'
       var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
       this.setState({newPath : newPath})
@@ -627,7 +643,7 @@ class Search extends React.Component {
             id: this.state.id,
             name: this.state.fileName,
             type: this.state.exportFileType,
-            parentId: this.state.parentId,
+            parentId: this.state.classroomParent,
           })
        }) 
     }
@@ -946,15 +962,26 @@ class Search extends React.Component {
                                         <option value = "txt">.txt</option>
                                     </select>
                                     </Modal.Footer>
+                                    <Modal.Body> <strong> *Please click this before downloading or exporting: </strong> </Modal.Body>
                                     <Form onSubmit = {this.downloadFile} >
-                                        <Button type = "submit" className = "btn-primary export-btn"> Export File </Button>
+                                        <Button type = "submit" className = "btn-primary export-btn"> Prep File </Button>
                                     </Form> 
+                                    <Modal.Body> Export to Google Classroom: </Modal.Body>
+                                    <GoogleBtn getFiles = {this.classroomExport}/> 
+                                    <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
+                                      {this.state.newClassroomFolders.map(folders => (
+                                        <div className = "file-box-search" key={folders}>
+                                          <p><strong> Pick course to export to: </strong></p>
+                                        <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                        <p> {folders.description} </p>
+                                        </div>))}
+                                        <Form onSubmit = {this.classroomExport}>
+                                          <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
+                                        </Form>
+                                      <Modal.Body> Local Download </Modal.Body>
                                         <a href = "http://localhost:8080/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
                                     </Modal.Footer>
                                     <Modal.Footer>
-                                    <Form onSubmit = {this.classroomExport}>
-                                      <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
-                                    </Form>
                                     </Modal.Footer>
                                     <Modal.Footer>
                                       <Button variant="secondary" onClick={this.closeModal}>

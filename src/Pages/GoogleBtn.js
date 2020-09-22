@@ -29,7 +29,6 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.code
       }));
-      this.props.login();
       var accesscode = response.code
       this.sendToken(accesscode);
     }
@@ -43,6 +42,7 @@ class GoogleBtn extends Component {
         accessToken: response
       })
     })
+    this.props.login();
   }
 
   checkLogin() { 
