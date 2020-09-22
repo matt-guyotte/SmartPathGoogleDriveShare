@@ -331,7 +331,7 @@ app.get("/drivecall2", (req, res) => {
   // */
   async function listFiles2(auth) {
     const drive = google.drive({ version: "v3", auth });
-    app.set("drive2", drive2)
+    app.set("drive2", drive)
     const response = await drive.files.list({
       pageSize: 1000,
       fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
