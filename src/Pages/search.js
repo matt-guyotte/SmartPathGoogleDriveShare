@@ -972,9 +972,7 @@ class Search extends React.Component {
                                     </select>
                                     </Modal.Footer>
                                     <Modal.Body> <strong> *Please click this before downloading or exporting: </strong> </Modal.Body>
-                                    <Form onSubmit = {this.downloadFile} >
-                                        <Button type = "submit" className = "btn-primary export-btn"> Prep File </Button>
-                                    </Form> 
+                                    <Button onClick = {this.downloadFile} className = "btn-primary export-btn"> Prep File </Button>
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
