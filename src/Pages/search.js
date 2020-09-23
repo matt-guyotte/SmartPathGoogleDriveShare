@@ -645,7 +645,7 @@ class Search extends React.Component {
       var pathStart = './downloads/'
       var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
       this.setState({newPath : newPath})
-      fetch('/downloaddocument', {
+      fetch('/classroomexport', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
@@ -978,12 +978,12 @@ class Search extends React.Component {
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
+                                    <h3> Courses </h3>
                                     {this.state.newClassroomFolders.map(folders => (
-                                                <div className = "file-box-search" key={folders}>
-                                                  <h3> Courses </h3>
-                                                <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
-                                                <p> {folders.description} </p>
-                                                </div>))}
+                                      <div className = "file-box-search" key={folders}>
+                                      <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                      <p> {folders.description} </p>
+                                      </div>))}
                                         <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
