@@ -387,7 +387,7 @@ app.get("/drivecall2", (req, res) => {
 })
 
 app.post('/classroomexport', async (req, res) => {
-  const drive2 = req.app.get('drive2');
+  const drive = req.app.get('drive2');
   const fileId = req.body.id
   app.set('fileId', fileId);
   const fileName = req.body.name
@@ -436,7 +436,7 @@ app.post('/classroomexport', async (req, res) => {
     body: fs.createReadStream(destSimple)
   };
   console.log(media)
-  drive.files.cxreate({
+  drive.files.create({
     resource: fileMetadata,
     media: media,
   }, function (err, file) {
