@@ -982,7 +982,7 @@ class Search extends React.Component {
                                       <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                       <p> {folders.description} </p>
                                       </div>))}
-                                        <Form onSubmit = {this.classroomExportFile}>
+                                        <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
                                       <Modal.Body> Local Download </Modal.Body>
