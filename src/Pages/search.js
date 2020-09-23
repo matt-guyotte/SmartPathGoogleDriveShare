@@ -973,12 +973,6 @@ class Search extends React.Component {
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
-                                      {this.state.classroomFolders.map(folders => (
-                                        <div className = "file-box-search" key={folders}>
-                                          <p><strong> Pick course to export to: </strong></p>
-                                        <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
-                                        <p> {folders.description} </p>
-                                        </div>))}
                                         <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
