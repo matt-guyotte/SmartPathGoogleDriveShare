@@ -612,23 +612,24 @@ class Search extends React.Component {
     }
 
     async getFoldersClassroom() {
-      var driveFilesClassroom = []
       await fetch('/drivecall2')
       .then(res => res.json())
       .then(res => console.log(res))
-      .then(res => driveFilesClassroom = res)
+      .then(res => this.organizeClassroomFolders(res))
       console.log("classroom has been called.")
-      console.log(driveFilesClassroom)
+    }
 
-      for(var i = 0; i < driveFilesClassroom.length; i++) {
-        console.log(driveFilesClassroom[i])
-        if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
-          var classroom = driveFilesClassroom[i].id;
+    organizeClassroomFolders(res) {
+      for(var i = 0; i < res.length; i++) {
+        console.log(res[i])
+        if(res[i].file === "Classroom" && res[i].type === 'application/vnd.google-apps.folder') {
+          var classroom = res[i].id;
           console.log("This is the classroom folder. " + classroom)
           var newArray = [];
-          for(var y = 0; y < driveFilesClassroom.length; y++) {
-            if(driveFilesClassroom[y].parents[0] === classroom) {
-              newArray.push(driveFilesClassroom[y]);
+          for(var y = 0; y < res.length; y++) {
+            if(res[y].parents[0] === classroom) {
+              newArray.push(res[y]);
+              console.log(newArray)
               this.setState({newClassroomFolders: newArray})
             }
           }
