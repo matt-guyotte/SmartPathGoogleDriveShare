@@ -319,7 +319,7 @@ app.get("/drivecall2", (req, res) => {
           if (err) return console.error(err);
           console.log('Token stored to', TOKEN_PATH2);
         });
-        console.log(oAuth2Client);
+        //console.log(oAuth2Client);
         callback(oAuth2Client);
         listFiles2(oAuth2Client);
       });
@@ -380,7 +380,7 @@ app.get("/drivecall2", (req, res) => {
           parents: parents[y],
         });
       }
-      console.log(fileArray)
+      //console.log(fileArray)
       res.send(fileArray)
     }
   }
