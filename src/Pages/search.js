@@ -616,8 +616,8 @@ class Search extends React.Component {
       let classroomFiles = [];
       await fetch('/drivecall2')
       .then(res => res.json())
-      .then(res => console.log(res))
       .then(res => this.organizeClassroomFolders(res))
+      .then(res => console.log(res))
       console.log("classroom has been called.")
     }
 
