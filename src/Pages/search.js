@@ -121,6 +121,7 @@ class Search extends React.Component {
         this.downloadFile = this.downloadFile.bind(this);
         this.downloadFolder = this.downloadFolder.bind(this);
         this.getFoldersClassroom = this.getFoldersClassroom.bind(this);
+        this.organizeClassroomFolders = this.organizeClassroomFolders.bind(this);
         this.classroomExport = this.classroomExport.bind(this); 
         this.downloadTest = this.downloadTest.bind(this);
         
@@ -615,13 +616,14 @@ class Search extends React.Component {
       await fetch('/drivecall2')
       .then(res => res.json())
       .then(res => console.log(res))
-      .then(res => this.organizeClassroomFolders(res))
+      .then(res => this.setState({classroomFolders: res}))
       console.log("classroom has been called.")
-      
+      this.organizeClassroomFolders()
     }
 
-    organizeClassroomFolders(res) {
-      console.log(res);
+    organizeClassroomFolders () {
+      console.log(this.state.classroomFolders);
+      var res = this.state.classroomFolders;
       for(var i = 0; i < res.length; i++) {
         console.log(res[i])
         if(res[i].file === "Classroom" && res[i].type === 'application/vnd.google-apps.folder') {
