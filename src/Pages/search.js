@@ -617,9 +617,11 @@ class Search extends React.Component {
       .then(res => console.log(res))
       .then(res => this.organizeClassroomFolders(res))
       console.log("classroom has been called.")
+      
     }
 
     organizeClassroomFolders(res) {
+      console.log(res);
       for(var i = 0; i < res.length; i++) {
         console.log(res[i])
         if(res[i].file === "Classroom" && res[i].type === 'application/vnd.google-apps.folder') {
