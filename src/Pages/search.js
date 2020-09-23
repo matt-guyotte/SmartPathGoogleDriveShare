@@ -634,11 +634,11 @@ class Search extends React.Component {
             if(res[y].parents[0] === classroom) {
               newArray.push(res[y]);
               console.log(newArray)
-              this.setState({newClassroomFolders: newArray})
             }
           }
         }
       }
+      this.setState({newClassroomFolders: newArray})
     }
 
     async classroomExport() {
@@ -978,6 +978,12 @@ class Search extends React.Component {
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
+                                    {this.state.newClassroomFolders.map(folders => (
+                                                <div className = "file-box-search" key={folders}>
+                                                  <h3> Courses </h3>
+                                                <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                                <p> {folders.description} </p>
+                                                </div>))}
                                         <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
