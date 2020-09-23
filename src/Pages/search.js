@@ -626,7 +626,6 @@ class Search extends React.Component {
     organizeClassroomFolders (res) {
       console.log(res);
       for(var i = 0; i < res.length; i++) {
-        console.log(res[i])
         if(res[i].file === "Classroom" && res[i].type === 'application/vnd.google-apps.folder') {
           var classroom = res[i].id;
           console.log("This is the classroom folder. " + classroom)
@@ -979,7 +978,6 @@ class Search extends React.Component {
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
-                                    <Button className = "btn btn-primary" onClick = {this.organizeClassroomFolders}> Pick Course to Export To: </Button>
                                         <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
