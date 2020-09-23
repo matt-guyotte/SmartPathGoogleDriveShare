@@ -619,16 +619,12 @@ class Search extends React.Component {
       console.log(data);
       classroomFiles = data;
       console.log(classroomFiles)
-      //await fetch('/drivecall2')
-      //.then(res => res.json())
-      //.then(res => this.organizeClassroomFolders(res))
-      //.then(res => console.log(res))
+      this.organizeClassroomFolders(data)
       console.log("classroom has been called.")
     }
 
     organizeClassroomFolders (res) {
       console.log(res);
-      var res = this.state.classroomFolders;
       for(var i = 0; i < res.length; i++) {
         console.log(res[i])
         if(res[i].file === "Classroom" && res[i].type === 'application/vnd.google-apps.folder') {
