@@ -100,7 +100,7 @@ const { request } = require('http');
 
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/classroom.courses', 'https://www.googleapis.com/auth/classroom.coursework.students'];
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -436,7 +436,7 @@ app.post('/classroomexport', async (req, res) => {
     body: fs.createReadStream(destSimple)
   };
   console.log(media)
-  drive.files.create({
+  drive.files.cxreate({
     resource: fileMetadata,
     media: media,
   }, function (err, file) {
