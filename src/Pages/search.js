@@ -618,7 +618,6 @@ class Search extends React.Component {
       .then(res => console.log(res))
       .then(res => this.setState({classroomFolders: res}))
       console.log("classroom has been called.")
-      this.organizeClassroomFolders()
     }
 
     organizeClassroomFolders () {
@@ -978,6 +977,7 @@ class Search extends React.Component {
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
+                                    <Button className = "btn btn-primary" onClick = {this.organizeClassroomFolders}> Pick Course to Export To: </Button>
                                         <Form onSubmit = {this.classroomExport}>
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
