@@ -622,6 +622,7 @@ class Search extends React.Component {
       console.log(driveFilesClassroom)
 
       for(var i = 0; i < driveFilesClassroom.length; i++) {
+        console.log(driveFilesClassroom[i])
         if(driveFilesClassroom[i].file === "Classroom" && driveFilesClassroom[i].type === 'application/vnd.google-apps.folder') {
           var classroom = driveFilesClassroom[i].id;
           console.log("This is the classroom folder. " + classroom)
