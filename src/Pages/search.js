@@ -963,16 +963,6 @@ class Search extends React.Component {
                                     <Modal.Body> {this.state.fileName} </Modal.Body>
                                     <Modal.Body> {this.state.newPath} </Modal.Body>
                                     <Modal.Footer>
-                                    <Modal.Body> Export To: </Modal.Body>
-                                    <Modal.Footer>
-                                    <select onChange = {this.handleChangeFileType} value = {this.state.exportFileType || ''}>
-                                        <option value = "pdf">.pdf</option>
-                                        <option value = "docx">.docx</option>
-                                        <option value = "txt">.txt</option>
-                                    </select>
-                                    </Modal.Footer>
-                                    <Modal.Body> <strong> *Please click this before downloading or exporting: </strong> </Modal.Body>
-                                    <Button onClick = {this.downloadFile} className = "btn-primary export-btn"> Prep File </Button>
                                     <Modal.Body> Export to Google Classroom: </Modal.Body>
                                     <GoogleBtn getFiles = {this.classroomExport}/> 
                                     <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
@@ -986,7 +976,17 @@ class Search extends React.Component {
                                           <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                         </Form>
                                       <Modal.Body> Local Download </Modal.Body>
-                                        <a href = "http://localhost:8080/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
+                                      <Modal.Body> Export To: </Modal.Body>
+                                    <Modal.Footer>
+                                    <select onChange = {this.handleChangeFileType} value = {this.state.exportFileType || ''}>
+                                        <option value = "pdf">.pdf</option>
+                                        <option value = "docx">.docx</option>
+                                        <option value = "txt">.txt</option>
+                                    </select>
+                                    </Modal.Footer>
+                                      <Modal.Body> <strong> *Please click this before downloading: </strong> </Modal.Body>
+                                    <Button onClick = {this.downloadFile} className = "btn-primary export-btn"> Prep File </Button>
+                                        <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
                                     </Modal.Footer>
                                     <Modal.Footer>
                                     </Modal.Footer>
