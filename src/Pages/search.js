@@ -959,37 +959,36 @@ class Search extends React.Component {
                                     <Modal.Header closeButton>
                                       <Modal.Title>Export</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>Current File(s) selected: </Modal.Body>
+                                    <Modal.Header>Current File(s) selected: </Modal.Header>
                                     <Modal.Body> {this.state.fileName} </Modal.Body>
-                                    <Modal.Body> {this.state.newPath} </Modal.Body>
-                                    <Modal.Footer>
-                                    <Modal.Body> Export to Google Classroom: </Modal.Body>
-                                    <GoogleBtn getFiles = {this.classroomExport}/> 
-                                    <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button>
-                                    <h3> Courses </h3>
+                                    <Modal.Header> <strong> Export to Google Classroom: </strong> </Modal.Header>
+                                    <Modal.Body> <GoogleBtn getFiles = {this.classroomExport}/> </Modal.Body>
+                                    <Modal.Body> <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button> </Modal.Body>
+                                    <Modal.Body> Courses </Modal.Body>
+                                    <Modal.Body>
                                     {this.state.newClassroomFolders.map(folders => (
                                       <div className = "file-box-search" key={folders}>
                                       <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                       <p> {folders.description} </p>
                                       </div>))}
-                                        <Form onSubmit = {this.classroomExport}>
-                                          <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
-                                        </Form>
-                                      <Modal.Body> Local Download </Modal.Body>
-                                      <Modal.Body> Export To: </Modal.Body>
-                                    <Modal.Footer>
+                                    </Modal.Body>
+                                    <Modal.Body>
+                                      <Form onSubmit = {this.classroomExport}>
+                                        <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
+                                      </Form>
+                                    </Modal.Body>
+                                    <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
+                                    <Modal.Body> Export To: </Modal.Body>
+                                    <Modal.Body>
                                     <select onChange = {this.handleChangeFileType} value = {this.state.exportFileType || ''}>
                                         <option value = "pdf">.pdf</option>
                                         <option value = "docx">.docx</option>
                                         <option value = "txt">.txt</option>
                                     </select>
-                                    </Modal.Footer>
+                                    </Modal.Body>
                                       <Modal.Body> <strong> *Please click this before downloading: </strong> </Modal.Body>
-                                    <Button onClick = {this.downloadFile} className = "btn-primary export-btn"> Prep File </Button>
-                                        <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary export-btn"> Download </Button> </a>
-                                    </Modal.Footer>
-                                    <Modal.Footer>
-                                    </Modal.Footer>
+                                    <Modal.Body> <Button onClick = {this.downloadFile}> Prep File </Button> </Modal.Body>
+                                    <Modal.Body> <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
                                     <Modal.Footer>
                                       <Button variant="secondary" onClick={this.closeModal}>
                                         Close
