@@ -177,6 +177,15 @@ class Search extends React.Component {
         this.setState({
             fileName: event.target.name
         })
+        if(event.target.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+          this.setState({exportFileType: "docx"})
+        }
+        if(event.target.type === 'application/vnd.google-apps.presentation') {
+          this.setState({exportFileType: "pptx"})
+        }
+        if(event.target.type === 'application/vnd.google-apps.spreadsheet') {
+          this.setState({exportFileType: "xlsx"})
+        }
     }
 
     handleChangeSetParent(event) {
@@ -941,7 +950,7 @@ class Search extends React.Component {
                                             <h2> Found Files </h2>
                                                 {this.state.foundFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
-                                                    <input type = "checkbox" name = {files.file} value = {files.id} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
+                                                    <input type = "checkbox" name = {files.file} value = {files.id} type = {files.type} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.description}</p>
                                                     <Row>
                                                         subjects: {files.properties.subject}

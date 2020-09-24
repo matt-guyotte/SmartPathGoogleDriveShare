@@ -405,6 +405,12 @@ app.post('/classroomexport', async (req, res) => {
   if(type === 'txt') {
     newType === 'text/plain'
   }
+  if(type === 'pptx') {
+    newType === 'application/vnd.google-apps.presentation'
+  }
+  if(type === 'xlsx') {
+    newType === 'application/vnd.google-apps.spreadsheet'
+  }
   var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
   var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
   console.log(destSimple)
