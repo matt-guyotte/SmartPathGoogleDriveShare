@@ -93,6 +93,7 @@ const {google} = require('googleapis');
 const { file } = require('googleapis/build/src/apis/file');
 const { domain } = require('process');
 const { request } = require('http');
+const { appsactivity } = require('googleapis/build/src/apis/appsactivity');
 
 
 /// GOOGLE DRIVE API MAIN ROUTES 
@@ -187,9 +188,14 @@ async function listFiles(auth) {
   for(var i = 0; i < files.length; i++) {
       TagFile.count({id: files[i].id}, (err, count) => {
         if(err) return console.log(err);
-        //console.log(files[i].id)
+        if(count === 0) {
+          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+        }
       })
-      //console.log(files[i].id)
   }
   const fileArray = [{
     file: '',
@@ -386,74 +392,6 @@ app.get("/drivecall2", (req, res) => {
   }
 })
 
-app.post('/classroomexport', async (req, res) => {
-  const drive = req.app.get('drive2');
-  const fileId = req.body.id
-  app.set('fileId', fileId);
-  const fileName = req.body.name
-  app.set('fileName', fileName)
-  const parent = req.body.parent
-  const type = req.body.type
-  app.set('type', type)
-  var newType = ''
-  if(type === 'pdf') {
-    newType = 'application/pdf'
-  }
-  if(type === 'docx') {
-    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  }
-  if(type === 'txt') {
-    newType === 'text/plain'
-  }
-  if(type === 'pptx') {
-    newType === 'application/vnd.google-apps.presentation'
-  }
-  if(type === 'xlsx') {
-    newType === 'application/vnd.google-apps.spreadsheet'
-  }
-  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
-  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
-  console.log(destSimple)
-
-  await drive.files.export({
-    fileId: fileId, mimeType: newType}, 
-    {responseType: 'stream'},
-    function(err, response){
-    if(err)return console.log(err);
-    response.data.on('error', err => {
-        console.log(err);
-    }).on('end', ()=>{
-        console.log("sent file.")
-    })
-    .pipe(dest);
-  });
-
-
-  const filePath = req.body.parentId;
-
-  var fileMetadata = {
-    'name': fileName,
-    'description': "This is " + fileName,
-    'parents': [filePath]
-  };
-  console.log(fileMetadata)
-  var media = {
-    mimeType: newType,
-    body: fs.createReadStream(destSimple)
-  };
-  console.log(media)
-  drive.files.create({
-    resource: fileMetadata,
-    media: media,
-  }, function (err, file) {
-    if (err) {
-      console.log("Error for file creation: " + err);
-    } else {
-      console.log(file.name);
-    }
-  });
-})
-
 
 // Authentication Routes
 
@@ -645,14 +583,14 @@ app.post('/update', uploads.single('myFile'), (req, res, done) => {
   var subject = req.body.subject;
   var grade = req.body.grade;
   var industry = req.body.industry;
-  const imageUrl = req.file.filename;
-  var video = req.body.video;
-  var rubric = req.body.rubric;
-  var handout = req.body.handout; 
-  drive.files.update({
-    fileId: fileId,
-    requestBody: {properties: {subject: subject, grade: grade, industry: industry, imgSrc: imageUrl, video: video, rubric: rubric, handout: handout}},
-  })
+  const imageUrl = req.file.filename; 
+  TagFile.findOneAndUpdate(
+    {id: fileId}, 
+    {$push: {subject: subject}},
+    {$push: {grade: grade}},
+    {$push: {industry: industry}},
+    {new: true},
+    (err, data) => {console.log(data)})
 })
 
 app.post("/makenew", (req, res) => {
@@ -700,67 +638,1181 @@ app.get('/download', (req, res) => {
 })
 
 app.post("/downloaddocument", async (req, res) => {
+  const JSZip = require('jszip');
   const drive = req.app.get('drive');
-  const fileId = req.body.id
-  app.set('fileId', fileId);
-  const fileName = req.body.name
-  app.set('fileName', fileName)
-  const type = req.body.type
-  app.set('type', type)
-  var newType = ''
-  if(type === 'pdf') {
-    newType = 'application/pdf'
-  }
-  if(type === 'docx') {
-    newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  }
-  if(type === 'txt') {
-    newType === 'text/plain'
-  }
-  var dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
-  var destSimple = './src/Pages/downloads/' + fileName + '.' + type;
-  console.log(destSimple)
+  const files = req.body.files;
+  app.set('files', files);
+ 
+  var zip = new JSZip();
+  let topFolderPathZip = ''
 
-  await drive.files.export({
-    fileId: fileId, mimeType: newType}, 
-    {responseType: 'stream'},
-    function(err, response){
-    if(err)return console.log(err);
-    response.data.on('error', err => {
-        console.log(err);
-    }).on('end', ()=>{
-        console.log("sent file.")
-    })
-    .pipe(dest);
-  });
+  for(var i = 0; i < files.length; i++) {
+    if (files[i].type != "folder") {
+      const fileId = files[i].id
+      const fileName = files[i].name
+      const type = files[i].type
+      let newType = ''
+      if(type === 'docx') {
+        newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      }
+      if(type === 'pptx') {
+        newType = 'application/vnd.google-apps.presentation'
+      }
+      if(type === 'xlsx') {
+        newType === 'application/vnd.google-apps.spreadsheet'
+      }
 
-  //var fileMetadata = {
-  //  'name': fileName,
-  //  'description': "This is " + fileName,
-  //  'parents': []
-  //};
-  //console.log(fileMetadata)
-  //var media = {
-  //  mimeType: newType,
-  //  body: fs.createReadStream(destSimple)
-  //};
-  //console.log(media)
-  //drive.files.create({
-  //  resource: fileMetadata,
-  //  media: media,
-  //}, function (err, file) {
-  //  if (err) {
-  //    console.log("Error for file creation: " + err);
-  //  } else {
-  //    console.log(file.name);
-  //  }
-  //});
+      const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type, (err) => {if (err) return console.log(err)});
+      const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+      console.log(destSimple)
+
+      await drive.files.export({
+        fileId: fileId, mimeType: newType}, 
+        {responseType: 'stream'},
+        function(err, response){
+        if(err)return console.log(err);
+        response.data.on('error', err => {
+            console.log("Found at 911 " + err);
+        })
+        .pipe(dest, function(){console.log('file path written.')})
+        .on('end', ()=>{
+            console.log("sent file.")
+        })
+      });
+
+      await zip.file(destSimple, fs.readFile(destSimple), () => {if(err) return console.log(err)})
+    }
+
+    if(files[i].type === "folder") {
+      await fs.mkdir('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err) => {
+        if (err) return console.log("At 764: " + err);
+      });
+      const topFolderPath = './src/Pages/downloads/' + files[i].name;
+      const topFolderZip = await zip.folder('./src/Pages/downloads/' + files[i].name);
+      if(files[i].children.length != 0) {
+        //1
+        for(var y = 0; y < files[i].children.length; y++) {
+          const level1 = files[i].children[y]
+          if(level1.type != 'folder') {
+            const fileId1 = level1.id;
+            const fileName1 = level1.name;
+            const type1 = level1.type;
+            const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1, (err) => {if (err) return console.log("776: " + err)});
+            const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
+            const dest1zip = topFolderZip + "/" + fileName1 + '.' + type1;
+            let newType1 = ''
+            if(type1 === 'docx') {
+              newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            }
+            if(type1 === 'pptx') {
+              newType1 = 'application/vnd.google-apps.presentation'
+            }
+            if(type1 === 'xlsx') {
+              newType1 === 'application/vnd.google-apps.spreadsheet'
+            }
+            drive.files.export({
+              fileId: fileId1, mimeType: newType1}, 
+              {responseType: 'stream'},
+              function(err, response){
+              if(err)return console.log(err);
+              response.data.on('error', err => {
+                  console.log("Found at 796 " + err);
+              })
+              .pipe(dest1)
+              .on('end', ()=>{
+                  console.log("sent file.")
+              })
+              console.log("file written.")
+            });
+            await zip.file(dest1zip, fs.readFile(dest1file, (err) => {if (err) return console.log(err)}));
+          }
+          if(level1.type === 'folder') {
+            console.log("at 808 " + topFolderPath)
+            fs.mkdir(topFolderPath + "/" + level1.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+            const level1FolderPath = topFolderPath + "/" + level1.name;
+            const level1ZipPath = await zip.folder(topFolderZip + "/" + level1.name);
+            if(level1.children.length != 0) {
+              //2
+              for(var a = 0; a < level1.children.length; a++) {
+                const level2 = level1.children[a];
+                if(level2.type != 'folder') {
+                  const fileId2 = level2.id
+                  const fileName2 = level2.name
+                  const type2 = level2.type
+                  const dest2 = await fs.createWriteStream(level1FolderPath + "/" + fileName2 + '.' + type2);
+                  const dest2file = level1FolderPath + "/" + fileName2 + '.' + type2
+                  const dest2zip = level1ZipPath + "/" + fileName1 + '.' + type1;
+                  let newType2 = ''
+                  if(type2 === 'docx') {
+                    newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  }
+                  if(type2 === 'pptx') {
+                    newType2 = 'application/vnd.google-apps.presentation'
+                  }
+                  if(type2 === 'xlsx') {
+                    newType2 === 'application/vnd.google-apps.spreadsheet'
+                  }
+                  await drive.files.export({
+                    fileId: fileId2, mimeType: newType2}, 
+                    {responseType: 'stream'},
+                    function(err, response){
+                    if(err)return console.log(err);
+                    response.data.on('error', err => {
+                        console.log("Found at 837 " + err);
+                    })
+                    .pipe(dest2, function(){console.log('file path written.')})
+                  });
+                  await zip.file(dest2zip, fs.readFile(dest2file, (err) => {if(err) return console.log(err)}));
+                }
+                if(level1.type === 'folder') {
+                  await fs.mkdir(level1FolderPath + "/" + level2.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                  const level2FolderPath = level1FolderPath + "/" + level2.name;
+                  const level2ZipPath = await zip.folder(level1ZipPath + "/" + level2.name);
+                  if(level2.children.length != 0) {
+                    //3
+                    for(var b = 0; b < level2.children.length; b++) {
+                      const level3 = level2.children[b];
+                      if(level3.type != 'folder') {
+                        const fileId3 = level3.id
+                        const fileName3 = level3.name
+                        const type3 = level3.type
+                        const dest3 = await fs.createWriteStream(level2FolderPath + "/" + fileName3 + '.' + type3);
+                        const dest3file = level2FolderPath + "/" + fileName3 + '.' + type3
+                        const dest3zip = level2ZipPath + "/" + fileName3 + '.' + type3;
+                        let newType3 = ''
+                        if(type3 === 'docx') {
+                          newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        }
+                        if(type3 === 'pptx') {
+                          newType3 = 'application/vnd.google-apps.presentation'
+                        }
+                        if(type3 === 'xlsx') {
+                          newType3 === 'application/vnd.google-apps.spreadsheet'
+                        }
+                        await drive.files.export({
+                          fileId: fileId3, mimeType: newType3}, 
+                          {responseType: 'stream'},
+                          function(err, response){
+                          if(err)return console.log(err);
+                          response.data.on('error', err => {
+                              console.log("Found at 874 " + err);
+                          })
+                          .pipe(dest3, function(){console.log('file path written.')})
+                        });
+                        await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
+                      }
+                      if(level3.type === 'folder') {
+                        fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                        var level3FolderPath = level2FolderPath + "/" + level3.name;
+                        var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
+                        if(level3.children.length != 0) {
+                          //4
+                          for(var c = 0; c < level3.children.length; c++) {
+                            var level4 = level3.children[c];
+                            if(level4.type != 'folder') {
+                              var fileId4 = level4.id
+                              var fileName4 = level4.name
+                              var type4 = level4.type
+                              var dest4 = fs.createWriteStream(level3FolderPath + "/" + fileName4 + '.' + type4);
+                              var dest4file = level3FolderPath + "/" + fileName4 + '.' + type4;
+                              var dest4zip = level3ZipPath + "/" + fileName4 + '.' + type4;
+                              var newType4 = ''
+                              if(type4 === 'docx') {
+                                newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                              }
+                              if(type4 === 'pptx') {
+                                newType4 = 'application/vnd.google-apps.presentation'
+                              }
+                              if(type4 === 'xlsx') {
+                                newType4 === 'application/vnd.google-apps.spreadsheet'
+                              }
+                              await drive.files.export({
+                                fileId: fileId4, mimeType: newType4}, 
+                                {responseType: 'stream'},
+                                function(err, response){
+                                if(err)return console.log(err);
+                                response.data.on('error', err => {
+                                    console.log(err);
+                                }).on('end', ()=>{
+                                    console.log("sent file.")
+                                })
+                                .pipe(dest4);
+                              });
+                              zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                            }
+                            if(level4.type === 'folder') {
+                              fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                              var level4FolderPath = level3FolderPath + "/" + level4.name;
+                              var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
+                              if(level4.children.length != 0) {
+                                //5
+                                for(var d = 0; d < level4.children.length; d++) {
+                                  var level5 = level4.children[d];
+                                  if(level5.type != 'folder') {
+                                    var fileId5 = level5.id
+                                    var fileName5 = level5.name
+                                    var type5 = level5.type
+                                    var dest5 = fs.createWriteStream(level4FolderPath + "/" + fileName5 + '.' + type5);
+                                    var dest5file = level4FolderPath + "/" + fileName5 + '.' + type5;
+                                    var dest5zip = level4ZipPath + "/" + fileName5 + '.' + type5;
+                                    var newType5 = ''
+                                    if(type5 === 'docx') {
+                                      newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                    }
+                                    if(type5 === 'pptx') {
+                                      newType5 = 'application/vnd.google-apps.presentation'
+                                    }
+                                    if(type5 === 'xlsx') {
+                                      newType5 === 'application/vnd.google-apps.spreadsheet'
+                                    }
+                                    await drive.files.export({
+                                      fileId: fileId5, mimeType: newType5}, 
+                                      {responseType: 'stream'},
+                                      function(err, response){
+                                      if(err)return console.log(err);
+                                      response.data.on('error', err => {
+                                          console.log(err);
+                                      }).on('end', ()=>{
+                                          console.log("sent file.")
+                                      })
+                                      .pipe(dest5);
+                                    });
+                                    zip.file(dest5zip, fs.readFile(dest5file, (err) => {if(err) return console.log(err)}));
+                                  }
+                                  if(level5.type === 'folder') {
+                                    fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                    var level5FolderPath = level4FolderPath + "/" + level5.name;
+                                    var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
+                                    if(level5.children.length != 0) {
+                                      //6
+                                      for(var e = 0; e < level5.children.length; e++) {
+                                        var level6 = level5.children[e];
+                                        if(level6.type != 'folder') {
+                                          var fileId6 = level6.id
+                                          var fileName6 = level6.name
+                                          var type6 = level6.type
+                                          var dest6 = fs.createWriteStream(level5FolderPath + "/" + fileName6 + '.' + type6);
+                                          var dest6file = level5FolderPath + "/" + fileName6 + '.' + type6;
+                                          var dest6zip = level5ZipPath + "/" + fileName6 + '.' + type6;
+                                          var newType6 = ''
+                                          if(type6 === 'docx') {
+                                            newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                          }
+                                          if(type6 === 'pptx') {
+                                            newType6 = 'application/vnd.google-apps.presentation'
+                                          }
+                                          if(type6 === 'xlsx') {
+                                            newType6 === 'application/vnd.google-apps.spreadsheet'
+                                          }
+                                          await drive.files.export({
+                                            fileId: fileId6, mimeType: newType6}, 
+                                            {responseType: 'stream'},
+                                            function(err, response){
+                                            if(err)return console.log(err);
+                                            response.data.on('error', err => {
+                                                console.log(err);
+                                            }).on('end', ()=>{
+                                                console.log("sent file.")
+                                            })
+                                            .pipe(dest6);
+                                          });
+                                          zip.file(dest6zip, fs.readFile(dest6file, (err) => {if(err) return console.log(err)}));
+                                        }
+                                        if(level6.type === 'folder') {
+                                          fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                          var level6FolderPath = level5FolderPath + "/" + level6.name;
+                                          var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
+                                          if(level6.children.length != 0) {
+                                            //7
+                                            for(var f = 0; f < level6.children.length; f++) {
+                                              var level7 = level6.children[f];
+                                              if(level7.type != 'folder') {
+                                                var fileId7 = level7.id
+                                                var fileName7 = level7.name
+                                                var type7 = level7.type
+                                                var dest7 = fs.createWriteStream(level6FolderPath + "/" + fileName7 + '.' + type7);
+                                                var dest7file = level6FolderPath + "/" + fileName7 + '.' + type7;
+                                                var dest7zip = level6ZipPath + "/" + fileName7 + '.' + type7;
+                                                var newType7 = ''
+                                                if(type7 === 'docx') {
+                                                  newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                }
+                                                if(type7 === 'pptx') {
+                                                  newType7 = 'application/vnd.google-apps.presentation'
+                                                }
+                                                if(type7 === 'xlsx') {
+                                                  newType7 === 'application/vnd.google-apps.spreadsheet'
+                                                }
+                                                await drive.files.export({
+                                                  fileId: fileId7, mimeType: newType7}, 
+                                                  {responseType: 'stream'},
+                                                  function(err, response){
+                                                  if(err)return console.log(err);
+                                                  response.data.on('error', err => {
+                                                      console.log(err);
+                                                  }).on('end', ()=>{
+                                                      console.log("sent file.")
+                                                  })
+                                                  .pipe(dest7);
+                                                });
+                                                zip.file(dest7zip, fs.readFile(dest7file, (err) => {if(err) return console.log(err)}));
+                                              }
+                                              if(level7.type === 'folder') {
+                                                fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                                var level7FolderPath = level6FolderPath + "/" + level7.name;
+                                                var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
+                                                if(level7.children.length != 0) {
+                                                  //8
+                                                  for(var g = 0; g < level7.children.length; g++) {
+                                                    var level8 = level7.children[g];
+                                                    if(level8.type != 'folder') {
+                                                      var fileId8 = level8.id
+                                                      var fileName8 = level8.name
+                                                      var type8 = level8.type
+                                                      var dest8 = fs.createWriteStream(level7FolderPath + "/" + fileName8 + '.' + type8);
+                                                      var dest8file = level7FolderPath + "/" + fileName8 + '.' + type8;
+                                                      var dest8zip = level7ZipPath + "/" + fileName8 + '.' + type8;
+                                                      var newType8 = ''
+                                                      if(type8 === 'docx') {
+                                                        newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                      }
+                                                      if(type8 === 'pptx') {
+                                                        newType8 = 'application/vnd.google-apps.presentation'
+                                                      }
+                                                      if(type8 === 'xlsx') {
+                                                        newType8 === 'application/vnd.google-apps.spreadsheet'
+                                                      }
+                                                      await drive.files.export({
+                                                        fileId: fileId8, mimeType: newType8}, 
+                                                        {responseType: 'stream'},
+                                                        function(err, response){
+                                                        if(err)return console.log(err);
+                                                        response.data.on('error', err => {
+                                                            console.log(err);
+                                                        }).on('end', ()=>{
+                                                            console.log("sent file.")
+                                                        })
+                                                        .pipe(dest8);
+                                                      });
+                                                      zip.file(dest8zip, fs.readFile(dest8file, (err) => {if(err) return console.log(err)}));
+                                                    }
+                                                    if(level8.type === 'folder') {
+                                                      fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                                      var level8FolderPath = level7FolderPath + "/" + level8.name;
+                                                      var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
+                                                      if(level8.children.length != 0) {
+                                                        //9
+                                                        for(var h = 0; h < level8.children.length; h++) {
+                                                          var level9 = level8.children[g];
+                                                          if(level9.type != 'folder') {
+                                                            var fileId9 = level9.id
+                                                            var fileName9 = level9.name
+                                                            var type9 = level9.type
+                                                            var dest9 = fs.createWriteStream(level8FolderPath + "/" + fileName9 + '.' + type9);
+                                                            var dest9file = level8FolderPath + "/" + fileName9 + '.' + type9;
+                                                            var dest9zip = level8ZipPath + "/" + fileName9 + '.' + type9;
+                                                            var newType9 = ''
+                                                            if(type9 === 'docx') {
+                                                              newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                            }
+                                                            if(type9 === 'pptx') {
+                                                              newType9 = 'application/vnd.google-apps.presentation'
+                                                            }
+                                                            if(type9 === 'xlsx') {
+                                                              newType9 === 'application/vnd.google-apps.spreadsheet'
+                                                            }
+                                                            await drive.files.export({
+                                                              fileId: fileId9, mimeType: newType9}, 
+                                                              {responseType: 'stream'},
+                                                              function(err, response){
+                                                              if(err)return console.log(err);
+                                                              response.data.on('error', err => {
+                                                                  console.log(err);
+                                                              }).on('end', ()=>{
+                                                                  console.log("sent file.")
+                                                              })
+                                                              .pipe(dest9);
+                                                            });
+                                                            zip.file(dest9zip, fs.readFile(dest9file, (err) => {if(err) return console.log(err)}));
+                                                          }
+                                                          if(level9.type === 'folder') {
+                                                            console.log("maximum file depth reached.")
+                                                          }
+                                                        } 
+                                                      }
+                                                    }
+                                                  } 
+                                                }
+                                              }
+                                            } 
+                                          }
+                                        }
+                                      } 
+                                    }
+                                  }
+                                } 
+                              }
+                            }
+                          } 
+                        }
+                      }
+                    } 
+                  }
+                }
+              } 
+            }
+          }
+        } 
+      }          
+    }
+  }
+  zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
+    .pipe(fs.createWriteStream(topFolderPath + '.zip'))
+    .on('finish', function () {
+    // JSZip generates a readable stream with a "end" event,
+    // but is piped here in a writable stream which emits a "finish" event.
+    console.log("zip file written.");
+    console.log(topFolderPathZip)
+});  
 })
 
-app.get('/listfolders', (req, res) => {
-  const drive2 = req.app.get('drive2');
-  drive.files.list({fileId: fileId}, (err, res) => {
-    if (err) return console.log(err)
-    res.send(res);
-  })
+app.post('/classroomexport', async (req, res) => {
+  const files = req.body.fileArray;
+  const parentFolder = req.body.parentId;
+  const drive = req.app.get('drive2');
+  for(var i = 0; i < files.length; i++) {
+    if (files[i].type != "folder") {
+      const fileName = files[i].name;
+      const type = files[i].type;
+      const description = files[i].description;
+      let newType = ''
+      if(type === 'docx') {
+        newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      }
+      if(type === 'pptx') {
+        newType = 'application/vnd.google-apps.presentation'
+      }
+      if(type === 'xlsx') {
+        newType === 'application/vnd.google-apps.spreadsheet'
+      }
+
+      const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+      console.log(destSimple)
+
+      let newId = ''
+
+      var fileMetadata = {
+        'name': fileName,
+        'description': description,
+        'parents': [filePath]
+      };
+      console.log(fileMetadata)
+      var media = {
+        mimeType: newType,
+        body: fs.createReadStream(destSimple, (err) => {if(err) return console.log(err)})
+      };
+      console.log(media)
+      drive.files.create({
+        resource: fileMetadata,
+        media: media,
+        fields: 'id'
+      }, function (err, file) {
+        if (err) {
+          console.log("Error for file creation: " + err);
+        } else {
+          console.log(file.id);
+          newId = file.id;
+        }
+      });
+    }
+    if(files[i].type === "folder") {
+      const fileName = files[i].name;
+      const description = files[i].description;
+      let newType = 'application/vnd.google-apps.folder'
+
+      const destSimple = './src/Pages/downloads/' + fileName;
+    
+      let newIdFolder = ''
+    
+      var fileMetadata = {
+        'name': fileName,
+        'description': description,
+        'parents': [filePath],
+        'mimeType': newType,
+      };
+      drive.files.create({
+        resource: fileMetadata,
+        fields: 'id',
+      }, function (err, file) {
+        if (err) {
+          console.log("Error for file creation: " + err);
+        } else {
+          newIdFolder = file.id;
+        }
+      });
+
+      if(files[i].children != []) {
+        //1
+        for(var y = 0; y < files[i].children.length; y++) {
+          const level1 = files[i].children[y]; 
+          if (level1.type != "folder") {
+            const fileName1 = level1.name;
+            const type1 = level1.type;
+            const description1 = level1.description;
+            let newType1 = ''
+            if(type1 === 'docx') {
+              newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            }
+            if(type1 === 'pptx') {
+              newType1 = 'application/vnd.google-apps.presentation'
+            }
+            if(type1 === 'xlsx') {
+              newType1 === 'application/vnd.google-apps.spreadsheet'
+            }
+      
+            const destSimple1 = destSimple + fileName1 + '.' + type1;
+      
+            let newId1 = ''
+      
+            var fileMetadata1 = {
+              'name': fileName1,
+              'description': description1,
+              'parents': [newId]
+            };
+            console.log(fileMetadata)
+            var media1 = {
+              mimeType: newType1,
+              body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
+            };
+            console.log(media)
+            drive.files.create({
+              resource: fileMetadata1,
+              media: media1,
+              fields: 'id'
+            }, function (err, file) {
+              if (err) {
+                console.log("Error for file creation: " + err);
+              } else {
+                console.log(file.id);
+                newId1 = file.id;
+              }
+            });
+          }
+          if(level1.type === "folder") {
+            const fileName1 = level1.name;
+            const description1 = level1.description;
+            let newType = 'application/vnd.google-apps.folder'
+          
+            let newIdFolder1 = ''
+          
+            var fileMetadata1 = {
+              'name': fileName,
+              'description': description,
+              'parents': [newIdFolder],
+              'mimeType': newType,
+            };
+            drive.files.create({
+              resource: fileMetadata1,
+              fields: 'id',
+            }, function (err, file) {
+              if (err) {
+                console.log("Error for file creation: " + err);
+              } else {
+                newIdFolder1 = file.id;
+              }
+            });
+            if(level1.children != []) {
+              //2
+              for(var a = 0; a < level1.children.length; a++) {
+                const level12 = level1.children[a]; 
+                if (level2.type != "folder") {
+                  const fileName2 = level2.name;
+                  const type2 = level2.type;
+                  const description2 = level2.description;
+                  let newType2 = ''
+                  if(type2 === 'docx') {
+                    newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  }
+                  if(type2 === 'pptx') {
+                    newType2 = 'application/vnd.google-apps.presentation'
+                  }
+                  if(type2 === 'xlsx') {
+                    newType2 === 'application/vnd.google-apps.spreadsheet'
+                  }
+            
+                  const destSimple2 = destSimple1 + fileName2 + '.' + type2;
+            
+                  let newId2 = ''
+            
+                  var fileMetadata2 = {
+                    'name': fileName2,
+                    'description': description2,
+                    'parents': [newId1]
+                  };
+                  console.log(fileMetadata)
+                  var media2 = {
+                    mimeType: newType2,
+                    body: fs.createReadStream(destSimple2, (err) => {if(err) return console.log(err)})
+                  };
+                  console.log(media)
+                  drive.files.create({
+                    resource: fileMetadata2,
+                    media: media2,
+                    fields: 'id'
+                  }, function (err, file) {
+                    if (err) {
+                      console.log("Error for file creation: " + err);
+                    } else {
+                      console.log(file.id);
+                      newId2 = file.id;
+                    }
+                  });
+                }
+                if(level2.type === "folder") {
+                  const fileName2 = level2.name;
+                  const description2 = level2.description;
+                  let newType2 = 'application/vnd.google-apps.folder'
+                
+                  let newIdFolder2 = ''
+                
+                  var fileMetadata2 = {
+                    'name': fileName2,
+                    'description': description2,
+                    'parents': [newIdFolder1],
+                    'mimeType': newType2,
+                  };
+                  drive.files.create({
+                    resource: fileMetadata2,
+                    fields: 'id',
+                  }, function (err, file) {
+                    if (err) {
+                      console.log("Error for file creation: " + err);
+                    } else {
+                      newIdFolder2 = file.id;
+                    }
+                  });
+                  if(level2.children != []) {
+                    //3
+                    for(var b = 0; b < level2.children.length; b++) {
+                      const level13 = level2.children[b]; 
+                      if (level3.type != "folder") {
+                        const fileName3 = level3.name;
+                        const type3 = level3.type;
+                        const description3 = level3.description;
+                        let newType3 = ''
+                        if(type3 === 'docx') {
+                          newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        }
+                        if(type3 === 'pptx') {
+                          newType3 = 'application/vnd.google-apps.presentation'
+                        }
+                        if(type3 === 'xlsx') {
+                          newType3 === 'application/vnd.google-apps.spreadsheet'
+                        }
+                  
+                        const destSimple3 = destSimple2 + fileName3 + '.' + type3;
+                  
+                        let newId3 = ''
+                  
+                        var fileMetadata3 = {
+                          'name': fileName3,
+                          'description': description3,
+                          'parents': [newId2]
+                        };
+                        console.log(fileMetadata)
+                        var media3 = {
+                          mimeType: newType3,
+                          body: fs.createReadStream(destSimple3, (err) => {if(err) return console.log(err)})
+                        };
+                        console.log(media)
+                        drive.files.create({
+                          resource: fileMetadata3,
+                          media: media3,
+                          fields: 'id'
+                        }, function (err, file) {
+                          if (err) {
+                            console.log("Error for file creation: " + err);
+                          } else {
+                            console.log(file.id);
+                            newId3 = file.id;
+                          }
+                        });
+                      }
+                      if(level3.type === "folder") {
+                        const fileName3 = level3.name;
+                        const description3 = level3.description;
+                        let newType3 = 'application/vnd.google-apps.folder'
+                      
+                        let newIdFolder3 = ''
+                      
+                        var fileMetadata3 = {
+                          'name': fileName3,
+                          'description': description3,
+                          'parents': [newIdFolder2],
+                          'mimeType': newType3,
+                        };
+                        drive.files.create({
+                          resource: fileMetadata3,
+                          fields: 'id',
+                        }, function (err, file) {
+                          if (err) {
+                            console.log("Error for file creation: " + err);
+                          } else {
+                            newIdFolder3 = file.id;
+                          }
+                        });
+                        if(level3.children != []) {
+                          //4
+                          for(var c = 0; c < level3.children.length; c++) {
+                            const level14 = level3.children[c]; 
+                            if (level4.type != "folder") {
+                              const fileName4 = level4.name;
+                              const type4 = level4.type;
+                              const description4 = level4.description;
+                              let newType4 = ''
+                              if(type4 === 'docx') {
+                                newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                              }
+                              if(type4 === 'pptx') {
+                                newType4 = 'application/vnd.google-apps.presentation'
+                              }
+                              if(type4 === 'xlsx') {
+                                newType4 === 'application/vnd.google-apps.spreadsheet'
+                              }
+                        
+                              const destSimple4 = destSimple3 + fileName4 + '.' + type4;
+                        
+                              let newId4 = ''
+                        
+                              var fileMetadata4 = {
+                                'name': fileName4,
+                                'description': description4,
+                                'parents': [newId3]
+                              };
+                              console.log(fileMetadata)
+                              var media4 = {
+                                mimeType: newType4,
+                                body: fs.createReadStream(destSimple4, (err) => {if(err) return console.log(err)})
+                              };
+                              console.log(media)
+                              drive.files.create({
+                                resource: fileMetadata4,
+                                media: media4,
+                                fields: 'id'
+                              }, function (err, file) {
+                                if (err) {
+                                  console.log("Error for file creation: " + err);
+                                } else {
+                                  console.log(file.id);
+                                  newId4 = file.id;
+                                }
+                              });
+                            }
+                            if(level4.type === "folder") {
+                              const fileName4 = level4.name;
+                              const description4 = level4.description;
+                              let newType4 = 'application/vnd.google-apps.folder'
+                            
+                              let newIdFolder4 = ''
+                            
+                              var fileMetadata4 = {
+                                'name': fileName4,
+                                'description': description4,
+                                'parents': [newIdFolder3],
+                                'mimeType': newType4,
+                              };
+                              drive.files.create({
+                                resource: fileMetadata4,
+                                fields: 'id',
+                              }, function (err, file) {
+                                if (err) {
+                                  console.log("Error for file creation: " + err);
+                                } else {
+                                  newIdFolder4 = file.id;
+                                }
+                              });
+                              if(level4.children != []) {
+                                //5
+                                for(var d = 0; d < level4.children.length; d++) {
+                                  const level15 = level4.children[d]; 
+                                  if (level5.type != "folder") {
+                                    const fileName5 = level5.name;
+                                    const type5 = level5.type;
+                                    const description5 = level5.description;
+                                    let newType5 = ''
+                                    if(type5 === 'docx') {
+                                      newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                    }
+                                    if(type5 === 'pptx') {
+                                      newType5 = 'application/vnd.google-apps.presentation'
+                                    }
+                                    if(type5 === 'xlsx') {
+                                      newType5 === 'application/vnd.google-apps.spreadsheet'
+                                    }
+                              
+                                    const destSimple5 = destSimple4 + fileName5 + '.' + type5;
+                              
+                                    let newId5 = ''
+                              
+                                    var fileMetadata5 = {
+                                      'name': fileName5,
+                                      'description': description5,
+                                      'parents': [newId4]
+                                    };
+                                    console.log(fileMetadata)
+                                    var media5 = {
+                                      mimeType: newType5,
+                                      body: fs.createReadStream(destSimple5, (err) => {if(err) return console.log(err)})
+                                    };
+                                    console.log(media)
+                                    drive.files.create({
+                                      resource: fileMetadata5,
+                                      media: media5,
+                                      fields: 'id'
+                                    }, function (err, file) {
+                                      if (err) {
+                                        console.log("Error for file creation: " + err);
+                                      } else {
+                                        console.log(file.id);
+                                        newId5 = file.id;
+                                      }
+                                    });
+                                  }
+                                  if(level5.type === "folder") {
+                                    const fileName5 = level5.name;
+                                    const description5 = level5.description;
+                                    let newType5 = 'application/vnd.google-apps.folder'
+                                  
+                                    let newIdFolder5 = ''
+                                  
+                                    var fileMetadata5 = {
+                                      'name': fileName5,
+                                      'description': description5,
+                                      'parents': [newIdFolder4],
+                                      'mimeType': newType5,
+                                    };
+                                    drive.files.create({
+                                      resource: fileMetadata5,
+                                      fields: 'id',
+                                    }, function (err, file) {
+                                      if (err) {
+                                        console.log("Error for file creation: " + err);
+                                      } else {
+                                        newIdFolder5 = file.id;
+                                      }
+                                    });
+                                    if(level5.children != []) {
+                                      //6
+                                      for(var e = 0; e < level5.children.length; e++) {
+                                        const level16 = level5.children[e]; 
+                                        if (level6.type != "folder") {
+                                          const fileName6 = level6.name;
+                                          const type6 = level6.type;
+                                          const description6 = level6.description;
+                                          let newType6 = ''
+                                          if(type6 === 'docx') {
+                                            newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                          }
+                                          if(type6 === 'pptx') {
+                                            newType6 = 'application/vnd.google-apps.presentation'
+                                          }
+                                          if(type6 === 'xlsx') {
+                                            newType6 === 'application/vnd.google-apps.spreadsheet'
+                                          }
+                                    
+                                          const destSimple6 = destSimple5 + fileName6 + '.' + type6;
+                                    
+                                          let newId6 = ''
+                                    
+                                          var fileMetadata6 = {
+                                            'name': fileName6,
+                                            'description': description6,
+                                            'parents': [newId5]
+                                          };
+                                          console.log(fileMetadata)
+                                          var media6 = {
+                                            mimeType: newType6,
+                                            body: fs.createReadStream(destSimple6, (err) => {if(err) return console.log(err)})
+                                          };
+                                          console.log(media)
+                                          drive.files.create({
+                                            resource: fileMetadata6,
+                                            media: media6,
+                                            fields: 'id'
+                                          }, function (err, file) {
+                                            if (err) {
+                                              console.log("Error for file creation: " + err);
+                                            } else {
+                                              console.log(file.id);
+                                              newId6 = file.id;
+                                            }
+                                          });
+                                        }
+                                        if(level6.type === "folder") {
+                                          const fileName6 = level6.name;
+                                          const description6 = level6.description;
+                                          let newType6 = 'application/vnd.google-apps.folder'
+                                        
+                                          let newIdFolder6 = ''
+                                        
+                                          var fileMetadata6 = {
+                                            'name': fileName6,
+                                            'description': description6,
+                                            'parents': [newIdFolder5],
+                                            'mimeType': newType6,
+                                          };
+                                          drive.files.create({
+                                            resource: fileMetadata6,
+                                            fields: 'id',
+                                          }, function (err, file) {
+                                            if (err) {
+                                              console.log("Error for file creation: " + err);
+                                            } else {
+                                              newIdFolder6 = file.id;
+                                            }
+                                          });
+                                          if(level6.children != []) {
+                                            //7
+                                            for(var f = 0; f < level6.children.length; f++) {
+                                              const level17 = level6.children[f]; 
+                                              if (level7.type != "folder") {
+                                                const fileName7 = level7.name;
+                                                const type7 = level7.type;
+                                                const description7 = level7.description;
+                                                let newType7 = ''
+                                                if(type7 === 'docx') {
+                                                  newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                }
+                                                if(type7 === 'pptx') {
+                                                  newType7 = 'application/vnd.google-apps.presentation'
+                                                }
+                                                if(type7 === 'xlsx') {
+                                                  newType7 === 'application/vnd.google-apps.spreadsheet'
+                                                }
+                                          
+                                                const destSimple7 = destSimple6 + fileName7 + '.' + type7;
+                                          
+                                                let newId7 = ''
+                                          
+                                                var fileMetadata7 = {
+                                                  'name': fileName7,
+                                                  'description': description7,
+                                                  'parents': [newId6]
+                                                };
+                                                console.log(fileMetadata)
+                                                var media7 = {
+                                                  mimeType: newType7,
+                                                  body: fs.createReadStream(destSimple7, (err) => {if(err) return console.log(err)})
+                                                };
+                                                console.log(media)
+                                                drive.files.create({
+                                                  resource: fileMetadata7,
+                                                  media: media7,
+                                                  fields: 'id'
+                                                }, function (err, file) {
+                                                  if (err) {
+                                                    console.log("Error for file creation: " + err);
+                                                  } else {
+                                                    console.log(file.id);
+                                                    newId7 = file.id;
+                                                  }
+                                                });
+                                              }
+                                              if(level7.type === "folder") {
+                                                const fileName7 = level7.name;
+                                                const description7 = level7.description;
+                                                let newType7 = 'application/vnd.google-apps.folder'
+                                              
+                                                let newIdFolder7 = ''
+                                              
+                                                var fileMetadata7 = {
+                                                  'name': fileName7,
+                                                  'description': description7,
+                                                  'parents': [newIdFolder6],
+                                                  'mimeType': newType7,
+                                                };
+                                                drive.files.create({
+                                                  resource: fileMetadata7,
+                                                  fields: 'id',
+                                                }, function (err, file) {
+                                                  if (err) {
+                                                    console.log("Error for file creation: " + err);
+                                                  } else {
+                                                    newIdFolder7 = file.id;
+                                                  }
+                                                });
+                                                if(level7.children != []) {
+                                                  //8
+                                                  for(var g = 0; g < level7.children.length; g++) {
+                                                    const level18 = level7.children[g]; 
+                                                    if (level8.type != "folder") {
+                                                      const fileName8 = level8.name;
+                                                      const type8 = level8.type;
+                                                      const description8 = level8.description;
+                                                      let newType8 = ''
+                                                      if(type8 === 'docx') {
+                                                        newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                      }
+                                                      if(type8 === 'pptx') {
+                                                        newType8 = 'application/vnd.google-apps.presentation'
+                                                      }
+                                                      if(type8 === 'xlsx') {
+                                                        newType8 === 'application/vnd.google-apps.spreadsheet'
+                                                      }
+                                                
+                                                      const destSimple8 = destSimple7 + fileName8 + '.' + type8;
+                                                
+                                                      let newId8 = ''
+                                                
+                                                      var fileMetadata8 = {
+                                                        'name': fileName8,
+                                                        'description': description8,
+                                                        'parents': [newId7]
+                                                      };
+                                                      console.log(fileMetadata)
+                                                      var media8 = {
+                                                        mimeType: newType8,
+                                                        body: fs.createReadStream(destSimple8, (err) => {if(err) return console.log(err)})
+                                                      };
+                                                      console.log(media)
+                                                      drive.files.create({
+                                                        resource: fileMetadata8,
+                                                        media: media8,
+                                                        fields: 'id'
+                                                      }, function (err, file) {
+                                                        if (err) {
+                                                          console.log("Error for file creation: " + err);
+                                                        } else {
+                                                          console.log(file.id);
+                                                          newId8 = file.id;
+                                                        }
+                                                      });
+                                                    }
+                                                    if(level8.type === "folder") {
+                                                      const fileName8 = level8.name;
+                                                      const description8 = level8.description;
+                                                      let newType8 = 'application/vnd.google-apps.folder'
+                                                    
+                                                      let newIdFolder8 = ''
+                                                    
+                                                      var fileMetadata8 = {
+                                                        'name': fileName8,
+                                                        'description': description8,
+                                                        'parents': [newIdFolder7],
+                                                        'mimeType': newType8,
+                                                      };
+                                                      drive.files.create({
+                                                        resource: fileMetadata8,
+                                                        fields: 'id',
+                                                      }, function (err, file) {
+                                                        if (err) {
+                                                          console.log("Error for file creation: " + err);
+                                                        } else {
+                                                          newIdFolder8 = file.id;
+                                                        }
+                                                      });
+                                                      if(level8.children != []) {
+                                                        //9
+                                                        for(var h = 0; h < level8.children.length; h++) {
+                                                          const level19 = level8.children[h]; 
+                                                          if (level9.type != "folder") {
+                                                            const fileName9 = level9.name;
+                                                            const type9 = level9.type;
+                                                            const description9 = level9.description;
+                                                            let newType9 = ''
+                                                            if(type9 === 'docx') {
+                                                              newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                            }
+                                                            if(type9 === 'pptx') {
+                                                              newType9 = 'application/vnd.google-apps.presentation'
+                                                            }
+                                                            if(type9 === 'xlsx') {
+                                                              newType9 === 'application/vnd.google-apps.spreadsheet'
+                                                            }
+                                                      
+                                                            const destSimple9 = destSimple8 + fileName9 + '.' + type9;
+                                                      
+                                                            let newId9 = ''
+                                                      
+                                                            var fileMetadata9 = {
+                                                              'name': fileName9,
+                                                              'description': description9,
+                                                              'parents': [newId8]
+                                                            };
+                                                            console.log(fileMetadata)
+                                                            var media9 = {
+                                                              mimeType: newType9,
+                                                              body: fs.createReadStream(destSimple9, (err) => {if(err) return console.log(err)})
+                                                            };
+                                                            console.log(media)
+                                                            drive.files.create({
+                                                              resource: fileMetadata9,
+                                                              media: media9,
+                                                              fields: 'id'
+                                                            }, function (err, file) {
+                                                              if (err) {
+                                                                console.log("Error for file creation: " + err);
+                                                              } else {
+                                                                console.log(file.id);
+                                                                newId9 = file.id;
+                                                              }
+                                                            });
+                                                          }
+                                                          if(level9.type === "folder") {
+                                                            const fileName9 = level9.name;
+                                                            const description9 = level9.description;
+                                                            let newType9 = 'application/vnd.google-apps.folder'
+                                                          
+                                                            let newIdFolder9 = ''
+                                                          
+                                                            var fileMetadata9 = {
+                                                              'name': fileName9,
+                                                              'description': description9,
+                                                              'parents': [newIdFolder8],
+                                                              'mimeType': newType9,
+                                                            };
+                                                            drive.files.create({
+                                                              resource: fileMetadata9,
+                                                              fields: 'id',
+                                                            }, function (err, file) {
+                                                              if (err) {
+                                                                console.log("Error for file creation: " + err);
+                                                              } else {
+                                                                newIdFolder9 = file.id;
+                                                              }
+                                                            });
+                                                            if(level9.children != []) {
+                                                              console.log("maximum file depth reached.")
+                                                            } 
+                                                          }
+                                                        }
+                                                      } 
+                                                    }
+                                                  }
+                                                } 
+                                              }
+                                            }
+                                          } 
+                                        }
+                                      }
+                                    } 
+                                  }
+                                }
+                              } 
+                            }
+                          }
+                        } 
+                      }
+                    }
+                  } 
+                }
+              }
+            } 
+          }
+        }
+      } 
+    }
+  }
 })
+
+

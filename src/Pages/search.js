@@ -50,6 +50,12 @@ class Search extends React.Component {
             fileName: '',
             exportFileType: 'docx',
             exportFolderType: 'zip',
+            exportFileArray: [{
+              id: '',
+              name: '',
+              type: '',
+              downloadPath: '',
+            }],
             downloadPath: '',
             subjectArray: [],
             gradeArray: [],
@@ -57,8 +63,6 @@ class Search extends React.Component {
             classroomFolders: [],
             newClassroomFolders: [],
             classroomParent: '',
-
-
 
             // Search Terms
 
@@ -171,21 +175,1116 @@ class Search extends React.Component {
     }
 
     handleChangeCheckFile(event) {
-        this.setState({
-            id: event.target.value
-        })
-        this.setState({
-            fileName: event.target.name
-        })
-        if(event.target.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-          this.setState({exportFileType: "docx"})
+      var fileArray = this.organizeFiles();
+      console.log("checkfile called")
+      var exportFileArray = this.state.exportFileArray;
+      var newArray = [];
+      var newType = '';
+      console.log(event.target.title);
+      console.log(event.target.value);
+      if(event.target.title === 'application/vnd.google-apps.document') {
+        newType = "docx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.presentation') {
+        newType = "pptx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.spreadsheet') {
+        newType = "xlsx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.folder') {
+        newType = "folder";
+        newArray.push({id: event.target.value, name: event.target.name, type: newType, children: []})
+        console.log(newArray)
+        // 1 
+        for (var y = 0; y < fileArray.length; y++) {
+          if (fileArray[y].parents[0] === event.target.value) {
+            console.log(fileArray[y]);
+            var parent = fileArray[y].parents[0]
+            if(fileArray[y].type === 'application/vnd.google-apps.document') {
+              console.log(fileArray[y]);
+              newType = "docx";
+              for(var y1 = 0; y1 < newArray.length; y1++) {
+                if(newArray[y1].id === event.target.value) {
+                  newArray[y1].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/vnd.google-apps.presentation') {
+              newType = "pptx"
+              for(var y2 = 0; y2 < newArray.length; y2++) {
+                if(newArray[y2].id === event.target.value) {
+                  newArray[y2].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/vnd.google-apps.spreadsheet') {
+              newType = "xlsx"
+              for(var y3 = 0; y3 < newArray.length; y3++) {
+                if(newArray[y3].id === event.target.value) {
+                  newArray[y3].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/vnd.google-apps.folder') {
+              console.log(fileArray[y])
+              newType = "folder";
+              for (var y4 = 0; y4 < newArray.length; y4++) {
+                if(newArray[y4].id === event.target.value) {
+                  newArray[y4].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent, children: []})
+                  console.log(newArray[y4].children);
+                }
+              }
+              //2
+              for (var a = 0; a < fileArray.length; a++) {
+                if (fileArray[a].parents[0] === fileArray[y].id) {
+                  console.log(fileArray[y]);
+                  console.log(fileArray[a])
+                  var parent = fileArray[a].parents[0]
+                  if(fileArray[a].type === 'application/vnd.google-apps.document') {
+                    newType = "docx";
+                    // level 1
+                    for(var a1 = 0; a1 < newArray.length; a1++) {
+                      if(newArray[a1].id === event.target.value) {
+                        // level 2
+                        for(var aa1; aa1 < newArray[a1].children.length; aa1++) {
+                          if(newArray[a1].children[aa1].id === fileArray[y].id) {
+                            newArray[a1].children[aa1].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/vnd.google-apps.presentation') {
+                    newType = "pptx"
+                     // level 1
+                     for(var a2 = 0; a2 < newArray.length; a2++) {
+                      if(newArray[a2].id === event.target.value) {
+                        // level 2
+                        for(var aa2; aa2 < newArray[a2].children.length; aa2++) {
+                          if(newArray[a2].children[aa2].id === fileArray[y].id) {
+                            newArray[a2].children[aa2].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/vnd.google-apps.spreadsheet') {
+                    newType = "xlsx"
+                    // level 1
+                    for(var a3 = 0; a3 < newArray.length; a3++) {
+                      if(newArray[a3].id === event.target.value) {
+                        // level 2
+                        for(var aa3; aa3 < newArray[a3].children.length; aa3++) {
+                          if(newArray[a3].children[aa3].id === fileArray[y].id) {
+                            newArray[a3].children[aa3].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/vnd.google-apps.folder') {                    
+                    newType = "folder";
+                    // level 1
+                    for(var a4 = 0; a4 < newArray.length; a4++) {
+                      if(newArray[a4].id === event.target.value) {
+                        console.log(newArray[a4].children)
+                        // level 2
+                        for(var aa4 = 0; aa4 < newArray[a4].children.length; aa4++) {
+                          console.log(newArray[a4].children[aa4])
+                          console.log(fileArray[y]);
+                          if(newArray[a4].children[aa4].id === fileArray[y].id) {
+                            console.log(fileArray[y])
+                            newArray[a4].children[aa4].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent, children: []})
+                          }
+                        } 
+                      }
+                    }
+                    //3
+                    for (var b = 0; b < fileArray.length; b++) {
+                      if (fileArray[b].parents[0] === fileArray[a].id) {
+                        var parent = fileArray[b].parents[0]
+                        if(fileArray[b].type === 'application/vnd.google-apps.document') {
+                          newType = "docx";
+                          // level 1
+                          for(var b1 = 0; b1 < newArray.length; b1++) {
+                            if(newArray[b1].id === event.target.value) {
+                              // level 2
+                              for(var bb1 = 0; bb1 < newArray[b1].children.length; bb1++) {
+                                if(newArray[b1].children[bb1].id === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb1 = 0; bbb1 < newArray[b1].children[bb1].children.length; bbb1++) {
+                                    if(newArray[b1].children[bb1].children[bbb1].id === fileArray[a].id) {
+                                      newArray[b1].children[bb1].children[bbb1].children.push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/vnd.google-apps.presentation') {
+                          newType = "pptx"
+                          //level 1
+                          for(var b2 = 0; b2 < newArray.length; b2++) {
+                            if(newArray[b2].id === event.target.value) {
+                              // level 2
+                              for(var bb2 = 0; bb2 < newArray[b2].children.length; bb2++) {
+                                if(newArray[b2].children[bb2].id === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb2 = 0; bbb2 < newArray[b2].children[bb2].children.length; bbb2++) {
+                                    if(newArray[b2].children[bb2].children[bbb2].id === fileArray[a].id) {
+                                      newArray[b2].children[bb2].children[bbb2].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/vnd.google-apps.spreadsheet') {
+                          newType = "xlsx"
+                          //level 1
+                          for(var b3 = 0; b3 < newArray.length; b3++) {
+                            if(newArray[b3].id === event.target.value) {
+                              // level 2
+                              for(var bb3 = 0; bb3 < newArray[b3].children.length; bb3++) {
+                                if(newArray[b3].children[bb3] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb3 = 0; bbb3 < newArray[b3].children[bb3].children.length; bbb3++) {
+                                    if(newArray[b3].children[bb3].children[bbb3].id === fileArray[a].id) {
+                                      newArray[b3].children[bb3].children[bbb3].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/vnd.google-apps.folder') {
+                          newType = "folder";
+                          //level 1
+                          for (var b4 = 0; b4 < newArray.length; b4++) {
+                            if(newArray[b4].id === event.target.value) {
+                              // level 2
+                              for(var bb4 = 0; bb4 < newArray[b4].children.length; bb4++) {
+                                if(newArray[b4].children[bb4].id === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb4 = 0; bbb4 < newArray[b4].children[bb4].children.length; bbb4++) {
+                                    if(newArray[b4].children[bb4].children[bbb4].id === fileArray[a].id) {
+                                      newArray[b4].children[bb4].children[bbb4].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent, children: []})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          //4
+                          for (var c = 0; c < fileArray.length; c++) {
+                            if (fileArray[c].parents[0] === fileArray[b].id) {
+                              var parent = fileArray[c].parents[0]
+                              if(fileArray[c].type === 'application/vnd.google-apps.document') {
+                                newType = "docx";
+                                //level 1 
+                                for(var c1 = 0; c1 < newArray.length; c1++) {
+                                  if(newArray[c1].id === event.target.value) {
+                                    // level 2
+                                    for(var cc1 = 0; cc1 < newArray[c1].children.length; cc1++) {
+                                      if(newArray[c1].children[cc1].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc1 = 0; ccc1 < newArray[c1].children[cc1].children.length; ccc1++) {
+                                          if(newArray[c1].children[cc1].children[ccc1].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc1 = 0; cccc1 < newArray[c1].children[cc1].children[ccc1].children.length; cccc1++) {
+                                              if(newArray[c1].children[cc1].children[ccc1].children[cccc1].id === fileArray[b].id) {
+                                                newArray[c1].children[cc1].children[ccc1].children[cccc1].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/vnd.google-apps.presentation') {
+                                newType = "pptx"
+                                //level 1
+                                for(var c2 = 0; c2 < newArray.length; c2++) {
+                                  if(newArray[c2].id === event.target.value) {
+                                    // level 2
+                                    for(var cc2 = 0; cc2 < newArray[c2].children.length; cc2++) {
+                                      if(newArray[c2].children[cc2].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc2 = 0; ccc2 < newArray[c2].children[cc2].children.length; ccc2++) {
+                                          if(newArray[c2].children[cc2].children[ccc2].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc2 = 0; cccc2 < newArray[c2].children[cc2].children[ccc2].children.length; cccc2++) {
+                                              if(newArray[c2].children[cc2].children[ccc2].children[cccc2].id === fileArray[b].id) {
+                                                newArray[c2].children[cc2].children[ccc2].children[cccc2].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/vnd.google-apps.spreadsheet') {
+                                newType = "xlsx"
+                                //level 1
+                                for(var c3 = 0; c3 < newArray.length; c3++) {
+                                  if(newArray[c3].id === event.target.value) {
+                                    // level 2
+                                    for(var cc3 = 0; cc3 < newArray[c3].children.length; cc3++) {
+                                      if(newArray[c3].children[cc3].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc3 = 0; ccc3 < newArray[c3].children[cc3].children.length; ccc3++) {
+                                          if(newArray[c3].children[cc3].children[ccc3].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc3 = 0; cccc3 < newArray[c3].children[cc3].children[ccc3].children.length; cccc3++) {
+                                              if(newArray[c3].children[cc3].children[ccc3].children[cccc3].id === fileArray[b].id) {
+                                                newArray[c3].children[cc3].children[ccc3].children[cccc3].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/vnd.google-apps.folder') {
+                                newType = "folder";
+                                //level 1
+                                for (var c4 = 0; c4 < newArray.length; c4++) {
+                                  if(newArray[c4].id === event.target.value) {
+                                    // level 2
+                                    for(var cc4 = 0; cc4 < newArray[c4].children.length; cc4++) {
+                                      if(newArray[c4].children[cc4].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc4 = 0; ccc4 < newArray[c4].children[cc4].children.length; ccc4++) {
+                                          if(newArray[c4].children[cc4].children[ccc4].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc4 = 0; cccc4 < newArray[c4].children[cc4].children[ccc4].children.length; cccc4++) {
+                                              if(newArray[c4].children[cc4].children[ccc4].children[cccc4].id === fileArray[b].id) {
+                                                newArray[c4].children[cc4].children[ccc4].children[cccc4].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent, children: []})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                                //5
+                                for (var d = 0; d < fileArray.length; d++) {
+                                  if (fileArray[d].parents[0] === fileArray[c].id) {
+                                    var parent = fileArray[d].parents[0]
+                                    if(fileArray[d].type === 'application/vnd.google-apps.document') {
+                                      newType = "docx";
+                                      //level 1
+                                      for(var d1 = 0; d1 < newArray.length; d1++) {
+                                        if(newArray[d1].id === event.target.value) {
+                                          // level 2
+                                          for(var dd1 = 0; dd1 < newArray[d1].children.length; dd1++) {
+                                            if(newArray[d1].children[dd1].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd1 = 0; ddd1 < newArray[d1].children[dd1].children.length; ddd1++) {
+                                                if(newArray[d1].children[dd1].children[ddd1].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd1 = 0; dddd1 < newArray[d1].children[dd1].children[ddd1].children.length; dddd1++) {
+                                                    if(newArray[d1].children[dd1].children[ddd1].children[dddd1].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd1 = 0; ddddd1 < newArray[d1].children[dd1].children[ddd1].children[dddd1].length; ddddd1++) {
+                                                        if(newArray[d1].children[dd1].children[ddd1].children[dddd1].children[ddddd1].id === fileArray[c].id) {
+                                                          newArray[d1].children[dd1].children[ddd1].children[dddd1].children[ddddd1].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/vnd.google-apps.presentation') {
+                                      //level 1
+                                      newType = "pptx"
+                                      for(var d2 = 0; d2 < newArray.length; d2++) {
+                                        if(newArray[d2].id === event.target.value) {
+                                          // level 2
+                                          for(var dd2 = 0; dd2 < newArray[d2].children.length; dd2++) {
+                                            if(newArray[d2].children[dd2].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd2 = 0; ddd2 < newArray[d2].children[dd2].children.length; ddd2++) {
+                                                if(newArray[d2].children[dd2].children[ddd2].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd2 = 0; dddd2 < newArray[d2].children[dd2].children[ddd2].children.length; dddd2++) {
+                                                    if(newArray[d2].children[dd2].children[ddd2].children[dddd2].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd2 = 0; ddddd2 < newArray[d2].children[dd2].children[ddd2].children[dddd2].length; ddddd2++) {
+                                                        if(newArray[d2].children[dd2].children[ddd2].children[dddd2].children[ddddd2].id === fileArray[c].id) {
+                                                          newArray[d2].children[dd2].children[ddd2].children[dddd2].children[ddddd2].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/vnd.google-apps.spreadsheet') {
+                                      newType = "xlsx"
+                                      //level 1
+                                      for(var d3 = 0; d3 < newArray.length; d3++) {
+                                        if(newArray[d3].id === event.target.value) {
+                                          // level 2
+                                          for(var dd3 = 0; dd3 < newArray[d3].children.length; dd3++) {
+                                            if(newArray[d3].children[dd3].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd3 = 0; ddd3 < newArray[d3].children[dd3].children.length; ddd3++) {
+                                                if(newArray[d3].children[dd3].children[ddd3].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd3 = 0; dddd3 < newArray[d3].children[dd3].children[ddd3].children.length; dddd3++) {
+                                                    if(newArray[d3].children[dd3].children[ddd3].children[dddd3].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd3 = 0; ddddd3 < newArray[d3].children[dd3].children[ddd3].children[dddd3].length; ddddd3++) {
+                                                        if(newArray[d3].children[dd3].children[ddd3].children[dddd3].children[ddddd3].id === fileArray[c].id) {
+                                                          newArray[d3].children[dd3].children[ddd3].children[dddd3].children[ddddd3].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/vnd.google-apps.folder') {
+                                      newType = "folder";
+                                      //level 1
+                                      for(var d4 = 0; d4 < newArray.length; d4++) {
+                                        if(newArray[d4].id === event.target.value) {
+                                          // level 2
+                                          for(var dd4 = 0; dd4 < newArray[d4].children.length; dd4++) {
+                                            if(newArray[d4].children[dd4].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd4 = 0; ddd4 < newArray[d4].children[dd4].children.length; ddd4++) {
+                                                if(newArray[d4].children[dd4].children[ddd4].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd4 = 0; dddd4 < newArray[d4].children[dd4].children[ddd4].children.length; dddd4++) {
+                                                    if(newArray[d4].children[dd4].children[ddd4].children[dddd4].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd4 = 0; ddddd4 < newArray[d4].children[dd4].children[ddd4].children[dddd4].length; ddddd4++) {
+                                                        if(newArray[d4].children[dd4].children[ddd4].children[dddd4].children[ddddd4].id === fileArray[c].id) {
+                                                          newArray[d4].children[dd4].children[ddd4].children[dddd4].children[ddddd4].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent, children: []})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                      //6
+                                      for (var e = 0; e < fileArray.length; e++) {
+                                        if (fileArray[e].parents[0] === fileArray[d].id) {
+                                          var parent = fileArray[e].parents[0]
+                                          if(fileArray[e].type === 'application/vnd.google-apps.document') {
+                                            newType = "docx";
+                                            //level 1
+                                            for(var e1 = 0; e1 < newArray.length; e1++) {
+                                              if(newArray[e1].id === event.target.value) {
+                                                //level 2
+                                                for(var ee1 = 0; ee1 < newArray[e1].children.length; ee1++) {
+                                                  if(newArray[e1].children[ee1].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee1 = 0; eee1 < newArray[e1].children[ee1].children.length; eee1++) {
+                                                      if(newArray[e1].children[ee1].children[eee1].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee1 = 0; eeee1 < newArray[e1].children[ee1].children[eee1].children.length; eeee1++) {
+                                                          if(newArray[e1].children[ee1].children[eee1].children[eeee1].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee1 = 0; eeeee1 < newArray[e1].children[ee1].children[eee1].children[eeee1].length; eeeee1++) {
+                                                              if(newArray[e1].children[ee1].children[eee1].children[eeee1].children[eeeee1].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee1 = 0; eeeeee1 < newArray[e1].children[ee1].children[eee1].children[eeee1].children[eeeee1].length; eeeeee1++) {
+                                                                  if(newArray[e1].children[ee1].children[eee1].children[eeee1].children[eeeee1].children[eeeeee1].id === fileArray[d].id) {
+                                                                    newArray[e1].children[ee1].children[eee1].children[eeee1].children[eeeee1].children[eeeeee1].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/vnd.google-apps.presentation') {
+                                            newType = "pptx"
+                                            //level 1
+                                            for(var e2 = 0; e2 < newArray.length; e2++) {
+                                              if(newArray[e2].id === event.target.value) {
+                                                //level 2
+                                                for(var ee2 = 0; ee2 < newArray[e2].children.length; ee2++) {
+                                                  if(newArray[e2].children[ee2].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee2 = 0; eee2 < newArray[e2].children[ee2].children.length; eee2++) {
+                                                      if(newArray[e2].children[ee2].children[eee2].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee2 = 0; eeee2 < newArray[e2].children[ee2].children[eee2].children.length; eeee2++) {
+                                                          if(newArray[e2].children[ee2].children[eee2].children[eeee2].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee2 = 0; eeeee2 < newArray[e2].children[ee2].children[eee2].children[eeee2].length; eeeee2++) {
+                                                              if(newArray[e2].children[ee2].children[eee2].children[eeee2].children[eeeee2].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee2 = 0; eeeeee2 < newArray[e2].children[ee2].children[eee2].children[eeee2].children[eeeee2].length; eeeeee2++) {
+                                                                  if(newArray[e2].children[ee2].children[eee2].children[eeee2].children[eeeee2].children[eeeeee2].id === fileArray[d].id) {
+                                                                    newArray[e2].children[ee2].children[eee2].children[eeee2].children[eeeee2].children[eeeeee2].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/vnd.google-apps.spreadsheet') {
+                                            newType = "xlsx"
+                                            //level 1
+                                            for(var e3 = 0; e3 < newArray.length; e3++) {
+                                              if(newArray[e3].id === event.target.value) {
+                                                //level 2
+                                                for(var ee3 = 0; ee3 < newArray[e3].children.length; ee3++) {
+                                                  if(newArray[e3].children[ee3].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee3 = 0; eee3 < newArray[e3].children[ee3].children.length; eee3++) {
+                                                      if(newArray[e3].children[ee3].children[eee3].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee3 = 0; eeee3 < newArray[e3].children[ee3].children[eee3].children.length; eeee3++) {
+                                                          if(newArray[e3].children[ee3].children[eee3].children[eeee3].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee3 = 0; eeeee3 < newArray[e3].children[ee3].children[eee3].children[eeee3].length; eeeee3++) {
+                                                              if(newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee3 = 0; eeeeee3 < newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].length; eeeeee3++) {
+                                                                  if(newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].children[eeeeee3].id === fileArray[d].id) {
+                                                                    newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].children[eeeeee3].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/vnd.google-apps.folder') {
+                                            newType = "folder";
+                                            //level 1
+                                            for(var e4 = 0; e4 < newArray.length; e4++) {
+                                              if(newArray[e4].id === event.target.value) {
+                                                //level 2
+                                                for(var ee4 = 0; ee4 < newArray[e4].children.length; ee4++) {
+                                                  if(newArray[e4].children[ee4].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee4 = 0; eee4 < newArray[e4].children[ee4].children.length; eee4++) {
+                                                      if(newArray[e4].children[ee4].children[eee4].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee4 = 0; eeee4 < newArray[e4].children[ee4].children[eee4].children.length; eeee4++) {
+                                                          if(newArray[e4].children[ee4].children[eee4].children[eeee4].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee4 = 0; eeeee4 < newArray[e4].children[ee4].children[eee4].children[eeee4].length; eeeee4++) {
+                                                              if(newArray[e4].children[ee4].children[eee4].children[eeee4].children[eeeee4].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee4 = 0; eeeeee4 < newArray[e4].children[ee4].children[eee4].children[eeee4].children[eeeee4].length; eeeeee4++) {
+                                                                  if(newArray[e4].children[ee4].children[eee4].children[eeee4].children[eeeee4].children[eeeeee4].id === fileArray[d].id) {
+                                                                    newArray[e4].children[ee4].children[eee4].children[eeee4].children[eeeee4].children[eeeeee4].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent, children: []})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                            //7
+                                            for (var f = 0; f < fileArray.length; f++) {
+                                              if (fileArray[f].parents[0] === fileArray[e].id) {
+                                                var parent = fileArray[f].parents[0]
+                                                if(fileArray[f].type === 'application/vnd.google-apps.document') {
+                                                  newType = "docx";
+                                                  //level 1
+                                                  for(var f1 = 0; f1 < newArray.length; f1++) {
+                                                    if(newArray[f1].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff1 = 0; ff1 < newArray[f1].children.length; ff1++) {
+                                                        if(newArray[f1].children[ff1].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff1 = 0; fff1 < newArray[f1].children[ff1].children.length; fff1++) {
+                                                            if(newArray[f1].children[ff1].children[fff1].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff1 = 0; ffff1 < newArray[f1].children[ff1].children[fff1].children.length; ffff1++) {
+                                                                if(newArray[f1].children[ff1].children[fff1].children[ffff1].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff1 = 0; fffff1 < newArray[f1].children[ff1].children[fff1].children[ffff1].length; fffff1++) {
+                                                                    if(newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff1 = 0; ffffff1 < newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].length; ffffff1++) {
+                                                                        if(newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].children[ffffff1].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff1 = 0; fffffff1 < newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].children[ffffff1].length; fffffff1++) {
+                                                                            if(newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].children[ffffff1].children[fffffff1].id === fileArray[e].id) {
+                                                                              newArray[f1].children[ff1].children[fff1].children[ffff1].children[fffff1].children[ffffff1].children[fffffff1].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/vnd.google-apps.presentation') {
+                                                  newType = "pptx"
+                                                  //level 1
+                                                  for(var f2 = 0; f2 < newArray.length; f2++) {
+                                                    if(newArray[f2].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff2 = 0; ff2 < newArray[f2].children.length; ff2++) {
+                                                        if(newArray[f2].children[ff2].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff2 = 0; fff2 < newArray[f2].children[ff2].children.length; fff2++) {
+                                                            if(newArray[f2].children[ff2].children[fff2].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff2 = 0; ffff2 < newArray[f2].children[ff2].children[fff2].children.length; ffff2++) {
+                                                                if(newArray[f2].children[ff2].children[fff2].children[ffff2].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff2 = 0; fffff2 < newArray[f2].children[ff2].children[fff2].children[ffff2].length; fffff2++) {
+                                                                    if(newArray[f2].children[ff2].children[ffff2].children[ffff2].children[fffff2].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff2 = 0; ffffff2 < newArray[f2].children[ff2].children[fff2].children[ffff2].children[fffff2].length; ffffff2++) {
+                                                                        if(newArray[f2].children[ff2].children[fff2].children[ffff2].children[fffff2].children[ffffff2].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff2 = 0; fffffff2 < newArray[f2].children[ff2].children[fff2].children[ffff2].children[fffff2].children[ffffff2].length; fffffff2++) {
+                                                                            if(newArray[f2].children[ff2].children[fff2].children[ffff2].children[fffff2].children[ffffff2].children[fffffff2].id === fileArray[e].id) {
+                                                                              newArray[f2].children[ff2].children[fff2].children[ffff2].children[fffff2].children[ffffff2].children[fffffff2].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/vnd.google-apps.spreadsheet') {
+                                                  newType = "xlsx"
+                                                  //level 1
+                                                  for(var f3 = 0; f3 < newArray.length; f3++) {
+                                                    if(newArray[f3].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff3 = 0; ff3 < newArray[f3].children.length; ff3++) {
+                                                        if(newArray[f3].children[ff3].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff3 = 0; fff3 < newArray[f3].children[ff3].children.length; fff3++) {
+                                                            if(newArray[f3].children[ff3].children[fff3].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff3 = 0; ffff3 < newArray[f3].children[ff3].children[fff3].children.length; ffff3++) {
+                                                                if(newArray[f3].children[ff3].children[fff3].children[ffff3].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff3 = 0; fffff3 < newArray[f3].children[ff3].children[fff3].children[ffff3].length; fffff3++) {
+                                                                    if(newArray[f3].children[ff3].children[ffff3].children[ffff3].children[fffff3].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff3 = 0; ffffff3 < newArray[f3].children[ff3].children[fff3].children[ffff3].children[fffff3].length; ffffff3++) {
+                                                                        if(newArray[f3].children[ff3].children[fff3].children[ffff3].children[fffff3].children[ffffff3].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff3 = 0; fffffff3 < newArray[f3].children[ff3].children[fff3].children[ffff3].children[fffff3].children[ffffff3].length; fffffff3++) {
+                                                                            if(newArray[f3].children[ff3].children[fff3].children[ffff3].children[fffff3].children[ffffff3].children[fffffff3].id === fileArray[e].id) {
+                                                                              newArray[f3].children[ff3].children[fff3].children[ffff3].children[fffff3].children[ffffff3].children[fffffff3].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/vnd.google-apps.folder') {
+                                                  newType = "folder";
+                                                  //level 1
+                                                  for(var f4 = 0; f4 < newArray.length; f4++) {
+                                                    if(newArray[f4].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff4 = 0; ff4 < newArray[f4].children.length; ff4++) {
+                                                        if(newArray[f4].children[ff4].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff4 = 0; fff4 < newArray[f4].children[ff4].children.length; fff4++) {
+                                                            if(newArray[f4].children[ff4].children[fff4].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff4 = 0; ffff4 < newArray[f4].children[ff4].children[fff4].children.length; ffff4++) {
+                                                                if(newArray[f4].children[ff4].children[fff4].children[ffff4].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff4 = 0; fffff4 < newArray[f4].children[ff4].children[fff4].children[ffff4].length; fffff4++) {
+                                                                    if(newArray[f4].children[ff4].children[ffff4].children[ffff4].children[fffff4].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff4 = 0; ffffff4 < newArray[f4].children[ff4].children[fff4].children[ffff4].children[fffff4].length; ffffff4++) {
+                                                                        if(newArray[f4].children[ff4].children[fff4].children[ffff4].children[fffff4].children[ffffff4].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff4 = 0; fffffff4 < newArray[f4].children[ff4].children[fff4].children[ffff4].children[fffff4].children[ffffff4].length; fffffff4++) {
+                                                                            if(newArray[f4].children[ff4].children[fff4].children[ffff4].children[fffff4].children[ffffff4].children[fffffff4].id === fileArray[e].id) {
+                                                                              newArray[f4].children[ff4].children[fff4].children[ffff4].children[fffff4].children[ffffff4].children[fffffff4].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                  //8
+                                                  for (var g = 0; g < fileArray.length; g++) {
+                                                    if (fileArray[g].parents[0] === fileArray[f].id) {
+                                                      var parent = fileArray[g].parents[0]
+                                                      if(fileArray[g].type === 'application/vnd.google-apps.document') {
+                                                        newType = "docx";
+                                                        //level 1
+                                                        for(var g1 = 0; g1 < newArray.length; g1++) {
+                                                          if(newArray[g1].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg1 = 0; gg1 < newArray[g1].children.length; gg1++) {
+                                                              if(newArray[g1].children[gg1].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg1 = 0; ggg1 < newArray[g1].children[gg1].children.length; ggg1++) {
+                                                                  if(newArray[g1].children[gg1].children[ggg1].id === fileArray[a].id) {
+                                                                    //level 4
+                                                                    for(var gggg1 = 0; gggg1 < newArray[g1].children[gg1].children[ggg1].children.length; gggg1++) {
+                                                                      if(newArray[g1].children[gg1].children[ggg1].children[gggg1].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg1 = 0; ggggg1 < newArray[g1].children[gg1].children[ggg1].children[gggg1].length; ggggg1++) {
+                                                                          if(newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg1 = 0; gggggg1 < newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].length; gggggg1++) {
+                                                                              if(newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg1 = 0; ggggggg1 < newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].length; ggggggg1++) {
+                                                                                  if(newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].children[ggggggg1].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg1 = 0; gggggggg1 < newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].children[ggggggg1].length; gggggggg1) {
+                                                                                      if(newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].children[ggggggg1].children[gggggggg1].id === fileArray[f].id) {
+                                                                                        newArray[g1].children[gg1].children[ggg1].children[gggg1].children[ggggg1].children[gggggg1].children[ggggggg1].children[gggggggg1].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/vnd.google-apps.presentation') {
+                                                        newType = "pptx"
+                                                        //level 1
+                                                        for(var g2 = 0; g2 < newArray.length; g2++) {
+                                                          if(newArray[g2].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg2 = 0; gg2 < newArray[g2].children.length; gg2++) {
+                                                              if(newArray[g2].children[gg2].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg2 = 0; ggg2 < newArray[g2].children[gg2].children.length; ggg2++) {
+                                                                  if(newArray[g2].children[gg2].children[ggg2].id === fileArray[a].id) {
+                                                                    //level 4
+                                                                    for(var gggg2 = 0; gggg2 < newArray[g2].children[gg2].children[ggg2].children.length; gggg2++) {
+                                                                      if(newArray[g2].children[gg2].children[ggg2].children[gggg2].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg2 = 0; ggggg2 < newArray[g2].children[gg2].children[ggg2].children[gggg2].length; ggggg2++) {
+                                                                          if(newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg2 = 0; gggggg2 < newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].length; gggggg2++) {
+                                                                              if(newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg2 = 0; ggggggg2 < newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].length; ggggggg2++) {
+                                                                                  if(newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].children[ggggggg2].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg2 = 0; gggggggg2 < newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].children[ggggggg2].length; gggggggg2) {
+                                                                                      if(newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].children[ggggggg2].children[gggggggg2].id === fileArray[f].id) {
+                                                                                        newArray[g2].children[gg2].children[ggg2].children[gggg2].children[ggggg2].children[gggggg2].children[ggggggg2].children[gggggggg2].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/vnd.google-apps.spreadsheet') {
+                                                        newType = "xlsx"
+                                                        //level 1
+                                                        for(var g4 = 0; g4 < newArray.length; g4++) {
+                                                          if(newArray[g4].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg4 = 0; gg4 < newArray[g4].children.length; gg4++) {
+                                                              if(newArray[g4].children[gg4].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg4 = 0; ggg4 < newArray[g4].children[gg4].children.length; ggg4++) {
+                                                                  if(newArray[g4].children[gg4].children[ggg4].id === fileArray[a].id) {
+                                                                    //level 4
+                                                                    for(var gggg4 = 0; gggg4 < newArray[g4].children[gg4].children[ggg4].children.length; gggg4++) {
+                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg4 = 0; ggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].length; ggggg4++) {
+                                                                          if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg4 = 0; gggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].length; gggggg4++) {
+                                                                              if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg4 = 0; ggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].length; ggggggg4++) {
+                                                                                  if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg4 = 0; gggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].length; gggggggg4) {
+                                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].id === fileArray[f].id) {
+                                                                                        newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/vnd.google-apps.folder') {
+                                                        newType = "folder";
+                                                        //level 1
+                                                        for(var g4 = 0; g4 < newArray.length; g4++) {
+                                                          if(newArray[g4].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg4 = 0; gg4 < newArray[g4].children.length; gg4++) {
+                                                              if(newArray[g4].children[gg4].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg4 = 0; ggg4 < newArray[g4].children[gg4].children.length; ggg4++) {
+                                                                  if(newArray[g4].children[gg4].children[ggg4].id === fileArray[a].id) {
+                                                                    //level 4
+                                                                    for(var gggg4 = 0; gggg4 < newArray[g4].children[gg4].children[ggg4].children.length; gggg4++) {
+                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg4 = 0; ggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].length; ggggg4++) {
+                                                                          if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg4 = 0; gggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].length; gggggg4++) {
+                                                                              if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg4 = 0; ggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].length; ggggggg4++) {
+                                                                                  if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg4 = 0; gggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].length; gggggggg4) {
+                                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].id === fileArray[f].id) {
+                                                                                        newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent, children: []})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                        //9
+                                                        for (var h = 0; h < fileArray.length; h++) {
+                                                          if (fileArray[h].parents[0] === fileArray[g].id) {
+                                                            var parent = fileArray[h].parents[0]
+                                                            if(fileArray[h].type === 'application/vnd.google-apps.document') {
+                                                              newType = "docx";
+                                                              //level 1
+                                                              for(var h1 = 0; h1 < newArray.length; h1++) {
+                                                                if(newArray[h1].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh1 = 0; hh1 < newArray[h1].children.length; hh1++) {
+                                                                    if(newArray[h1].children[hh1].id === fileArray[y].id) {
+                                                                      // level 3
+                                                                      for(var hhh1 = 0; hhh1 < newArray[h1].children[hh1].children.length; hhh1++) {
+                                                                        if(newArray[h1].children[hh1].children[hhh1].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh1 = 0; hhhh1 < newArray[h1].children[hh1].children[hhh1].children.length; hhhh1++) {
+                                                                            if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh1 = 0; hhhhh1 < newArray[h1].children[hh1].children[hhh1].children[hhhh1].length; hhhhh1++) {
+                                                                                if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh1 = 0; hhhhhh1 < newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].length; hhhhhh1++) {
+                                                                                    if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh1 = 0; hhhhhhh1 < newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].length; hhhhhhh1++) {
+                                                                                        if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh1 = 0; hhhhhhhh1 < newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].length; hhhhhhhh1) {
+                                                                                            if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].children[hhhhhhhh1].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh1 = 0; hhhhhhhhh1 < newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].children[hhhhhhhh1].length; hhhhhhhhh1++) {
+                                                                                                if(newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].children[hhhhhhhh1].children[hhhhhhhhh1].id === fileArray[g].id) {
+                                                                                                  newArray[h1].children[hh1].children[hhh1].children[hhhh1].children[hhhhh1].children[hhhhhh1].children[hhhhhhh1].children[hhhhhhhh1].children[hhhhhhhhh1].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/vnd.google-apps.presentation') {
+                                                              newType = "pptx"
+                                                              //level 1 
+                                                              for(var h2 = 0; h2 < newArray.length; h2++) {
+                                                                if(newArray[h2].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh2; hh2 < newArray[h2].children.length; hh2++) {
+                                                                    if(newArray[h2].children[hh2].id === fileArray[y].id) {
+                                                                      // level 3
+                                                                      for(var hhh2; hhh2 < newArray[h2].children[hh2].children.length; hhh2++) {
+                                                                        if(newArray[h2].children[hh2].children[hhh2].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh2; hhhh2 < newArray[h2].children[hh2].children[hhh2].children.length; hhhh2++) {
+                                                                            if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh2; hhhhh2 < newArray[h2].children[hh2].children[hhh2].children[hhhh2].length; hhhhh2++) {
+                                                                                if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh2; hhhhhh2 < newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].length; hhhhhh2++) {
+                                                                                    if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh2; hhhhhhh2 < newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].length; hhhhhhh2++) {
+                                                                                        if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh2; hhhhhhhh2 < newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].length; hhhhhhhh2) {
+                                                                                            if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].children[hhhhhhhh2].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh2; hhhhhhhhh2 < newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].children[hhhhhhhh2].length; hhhhhhhhh2++) {
+                                                                                                if(newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].children[hhhhhhhh2].children[hhhhhhhhh2].id === fileArray[g].id) {
+                                                                                                  newArray[h2].children[hh2].children[hhh2].children[hhhh2].children[hhhhh2].children[hhhhhh2].children[hhhhhhh2].children[hhhhhhhh2].children[hhhhhhhhh2].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/vnd.google-apps.spreadsheet') {
+                                                              newType = "xlsx"
+                                                              //level 1
+                                                              for(var h3 = 0; h3 < newArray.length; h3++) {
+                                                                if(newArray[h3].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh3; hh3 < newArray[h3].children.length; hh3++) {
+                                                                    if(newArray[h3].children[hh3].id === fileArray[y].id) {
+                                                                      // level 3
+                                                                      for(var hhh3; hhh3 < newArray[h3].children[hh3].children.length; hhh3++) {
+                                                                        if(newArray[h3].children[hh3].children[hhh3].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh3; hhhh3 < newArray[h3].children[hh3].children[hhh3].children.length; hhhh3++) {
+                                                                            if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh3; hhhhh3 < newArray[h3].children[hh3].children[hhh3].children[hhhh3].length; hhhhh3++) {
+                                                                                if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh3; hhhhhh3 < newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].length; hhhhhh3++) {
+                                                                                    if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh3; hhhhhhh3 < newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].length; hhhhhhh3++) {
+                                                                                        if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh3; hhhhhhhh3 < newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].length; hhhhhhhh3) {
+                                                                                            if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].children[hhhhhhhh3].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh3; hhhhhhhhh3 < newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].children[hhhhhhhh3].length; hhhhhhhhh3++) {
+                                                                                                if(newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].children[hhhhhhhh3].children[hhhhhhhhh3].id === fileArray[g].id) {
+                                                                                                  newArray[h3].children[hh3].children[hhh3].children[hhhh3].children[hhhhh3].children[hhhhhh3].children[hhhhhhh3].children[hhhhhhhh3].children[hhhhhhhhh3].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/vnd.google-apps.folder') {
+                                                              console.log("maximum file depth reached.")                                             
+                                                            }
+                                                          }
+                                                        }                                                        
+                                                      }
+                                                    }
+                                                  }                                                  
+                                                }
+                                              }
+                                            }                                            
+                                          }
+                                        }
+                                      }                                      
+                                    }
+                                  }
+                                }                                
+                              }
+                            }
+                          }                          
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-        if(event.target.type === 'application/vnd.google-apps.presentation') {
-          this.setState({exportFileType: "pptx"})
-        }
-        if(event.target.type === 'application/vnd.google-apps.spreadsheet') {
-          this.setState({exportFileType: "xlsx"})
-        }
+      }
+      console.log(newArray);
+      this.setState({exportFileArray: newArray})
     }
 
     handleChangeSetParent(event) {
@@ -591,18 +1690,14 @@ class Search extends React.Component {
     }
 
     downloadFile() {
-        var pathStart = './downloads/'
-        var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
-        this.setState({newPath : newPath})
-        fetch('/downloaddocument', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({
-              id: this.state.id,
-              name: this.state.fileName,
-              type: this.state.exportFileType,
-            })
-          }) 
+      var exportFileArray = this.state.exportFileArray;
+      fetch('/downloaddocument', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          files: exportFileArray,
+        })
+      }) 
     }
 
     downloadFolder(event) {
@@ -658,9 +1753,7 @@ class Search extends React.Component {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
-            id: this.state.id,
-            name: this.state.fileName,
-            type: this.state.exportFileType,
+            fileArray: this.state.exportFileArray,
             parentId: this.state.classroomParent,
           })
        }) 
@@ -750,7 +1843,7 @@ class Search extends React.Component {
                                <Row className = "searchBar">
                                    <input type = "text" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
                                 </Row>
-                                <Row clasName = "submitButton">
+                                <Row className = "submitButton">
                                    <Button className = "btn btn-primary" onClick = {this.searchFunction}> Submit </Button>
                                 </Row>   
                                 <hr />
@@ -923,8 +2016,9 @@ class Search extends React.Component {
                                             <h2> Found Lessons </h2>
                                                 {this.state.foundFolders.map(folders => (
                                                 <div className = "file-box-search" key={folders}>
-                                                <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                                <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
+                                                <p> {folders.type} </p>
                                                 <img className = "lesson-pic" src =  {images[folders.properties.imgsrc]}></img>
                                                 <Container>
                                                 <Row>
@@ -950,7 +2044,7 @@ class Search extends React.Component {
                                             <h2> Found Files </h2>
                                                 {this.state.foundFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
-                                                    <input type = "checkbox" name = {files.file} value = {files.id} type = {files.type} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
+                                                    <input type = "checkbox" name = {files.file} value = {files.id} title = {files.type} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
                                                     <p> {files.description}</p>
                                                     <Row>
                                                         subjects: {files.properties.subject}
@@ -965,7 +2059,7 @@ class Search extends React.Component {
                                    </Col>
                                </Row>
                                <Modal className = "export-modal" show={this.state.isOpen} onHide={this.closeModal}>
-                                    <Modal.Header closeButton>
+                                    <Modal.Header className = "modal-top" closeButton>
                                       <Modal.Title>Export</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Header>Current File(s) selected: </Modal.Header>
@@ -987,14 +2081,6 @@ class Search extends React.Component {
                                       </Form>
                                     </Modal.Body>
                                     <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
-                                    <Modal.Body> Export To: </Modal.Body>
-                                    <Modal.Body>
-                                    <select onChange = {this.handleChangeFileType} value = {this.state.exportFileType || ''}>
-                                        <option value = "pdf">.pdf</option>
-                                        <option value = "docx">.docx</option>
-                                        <option value = "txt">.txt</option>
-                                    </select>
-                                    </Modal.Body>
                                       <Modal.Body> <strong> *Please click this before downloading: </strong> </Modal.Body>
                                     <Modal.Body> <Button onClick = {this.downloadFile}> Prep File </Button> </Modal.Body>
                                     <Modal.Body> <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>

@@ -182,6 +182,10 @@ display: block;
   float: left;
 }
 
+.modal-top {
+  background-color: #f0f5f7;
+}
+
 /* ADMIN
 ================================ */
 .admin-page {
