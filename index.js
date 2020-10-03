@@ -186,16 +186,16 @@ async function listFiles(auth) {
     orderBy: "folder"});
   const files = res.data.files;
   for(var i = 0; i < files.length; i++) {
-      TagFile.count({id: files[i].id}, (err, count) => {
-        if(err) return console.log(err);
-        if(count === 0) {
-          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-        }
-      })
+      //TagFile.count({id: files[i].id}, (err, count) => {
+      //  if(err) return console.log(err);
+      //  if(count === 0) {
+      //    var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
+      //    newTags.save((err, res) => {
+      //      if (err) return console.log(err);
+      //      console.log(res);
+      //    })
+      //  }
+      //})
   }
   const fileArray = [{
     file: '',
