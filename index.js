@@ -1121,7 +1121,7 @@ app.post('/classroomexport', async (req, res) => {
         if (err) {
           console.log("Error for file creation: " + err);
         } else {
-          console.log(file.id);
+          console.log(file);
           newId = file.id;
         }
       });
@@ -1194,7 +1194,7 @@ app.post('/classroomexport', async (req, res) => {
             if (err) {
               console.log("Error for file creation: " + err);
             } else {
-              console.log(file.id);
+              console.log(file);
               newId1 = file.id;
             }
           });
