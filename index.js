@@ -1149,6 +1149,7 @@ app.post('/classroomexport', async (req, res) => {
         } else {
           newIdFolder = file.id;
         }
+        console.log("top folder id = " + newIdFolder)
       });
       //1
       for(var y = 0; y < files[i].children.length; y++) {
@@ -1218,6 +1219,7 @@ app.post('/classroomexport', async (req, res) => {
             } else {
               newIdFolder1 = file.id;
             }
+            console.log(newIdFolder)
           });
           //2
           for(var a = 0; a < level1.children.length; a++) {
