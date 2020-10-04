@@ -1066,19 +1066,19 @@ app.post("/downloaddocument", async (req, res) => {
       }          
     }
   }
-  zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
-    .pipe(fs.createWriteStream(topFolderPath + '.zip'))
-    .on('finish', function () {
-    // JSZip generates a readable stream with a "end" event,
-    // but is piped here in a writable stream which emits a "finish" event.
-    console.log("zip file written.");
-    console.log(topFolderPathZip)
-});  
+  //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
+  //  .pipe(fs.createWriteStream(topFolderPath + '.zip'))
+  //  .on('finish', function () {
+  //  // JSZip generates a readable stream with a "end" event,
+  //  // but is piped here in a writable stream which emits a "finish" event.
+  //  console.log("zip file written.");
+  //  console.log(topFolderPathZip)
+  //});  
 })
 
 app.post('/classroomexport', (req, res) => {
   const files = req.body.fileArray;
-  console.log("these are the files for export: " + files[0])
+  console.log("these are the files for export: " + files[0].name)
   const parentFolder = req.body.parentId;
   const drive = req.app.get('drive2');
   for(var i = 0; i < files.length; i++) {
@@ -1149,7 +1149,7 @@ app.post('/classroomexport', (req, res) => {
           console.log("Error for file creation: " + err);
         } else {
           newIdFolder = file.id;
-          console.log("This is the top folder id = " + files.id)
+          console.log("This is the top folder id = " + file.id)
         }
         console.log("top folder id = " + newIdFolder)
       });
