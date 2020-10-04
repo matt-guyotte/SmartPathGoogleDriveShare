@@ -42,7 +42,6 @@ class GoogleBtn extends Component {
         accessToken: response
       })
     })
-    this.props.login();
   }
 
   checkLogin() { 
