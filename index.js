@@ -1175,7 +1175,7 @@ app.post('/classroomexport', async (req, res) => {
           var fileMetadata1 = {
             'name': fileName1,
             'description': description1,
-            'parents': [newId]
+            'parents': [newIdFolder]
           };
           console.log(fileMetadata)
           var media1 = {
@@ -1244,7 +1244,7 @@ app.post('/classroomexport', async (req, res) => {
               var fileMetadata2 = {
                 'name': fileName2,
                 'description': description2,
-                'parents': [newId1]
+                'parents': [newIdFolder1]
               };
               console.log(fileMetadata)
               var media2 = {
@@ -1314,7 +1314,7 @@ app.post('/classroomexport', async (req, res) => {
                     var fileMetadata3 = {
                       'name': fileName3,
                       'description': description3,
-                      'parents': [newId2]
+                      'parents': [newIdFolder2]
                     };
                     console.log(fileMetadata)
                     var media3 = {
@@ -1384,7 +1384,7 @@ app.post('/classroomexport', async (req, res) => {
                           var fileMetadata4 = {
                             'name': fileName4,
                             'description': description4,
-                            'parents': [newId3]
+                            'parents': [newIdFolder3]
                           };
                           console.log(fileMetadata)
                           var media4 = {
@@ -1454,7 +1454,7 @@ app.post('/classroomexport', async (req, res) => {
                                 var fileMetadata5 = {
                                   'name': fileName5,
                                   'description': description5,
-                                  'parents': [newId4]
+                                  'parents': [newIdFolder4]
                                 };
                                 console.log(fileMetadata)
                                 var media5 = {
@@ -1524,7 +1524,7 @@ app.post('/classroomexport', async (req, res) => {
                                       var fileMetadata6 = {
                                         'name': fileName6,
                                         'description': description6,
-                                        'parents': [newId5]
+                                        'parents': [newIdFolder5]
                                       };
                                       console.log(fileMetadata)
                                       var media6 = {
@@ -1594,7 +1594,7 @@ app.post('/classroomexport', async (req, res) => {
                                             var fileMetadata7 = {
                                               'name': fileName7,
                                               'description': description7,
-                                              'parents': [newId6]
+                                              'parents': [newIdFolder6]
                                             };
                                             console.log(fileMetadata)
                                             var media7 = {
@@ -1664,7 +1664,7 @@ app.post('/classroomexport', async (req, res) => {
                                                   var fileMetadata8 = {
                                                     'name': fileName8,
                                                     'description': description8,
-                                                    'parents': [newId7]
+                                                    'parents': [newIdFolder7]
                                                   };
                                                   console.log(fileMetadata)
                                                   var media8 = {
@@ -1734,7 +1734,7 @@ app.post('/classroomexport', async (req, res) => {
                                                         var fileMetadata9 = {
                                                           'name': fileName9,
                                                           'description': description9,
-                                                          'parents': [newId8]
+                                                          'parents': [newIdFolder8]
                                                         };
                                                         console.log(fileMetadata)
                                                         var media9 = {
