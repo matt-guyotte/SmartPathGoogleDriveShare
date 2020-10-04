@@ -1104,7 +1104,7 @@ app.post('/classroomexport', async (req, res) => {
       var fileMetadata = {
         'name': fileName,
         'description': description,
-        'parents': [filePath]
+        'parents': [parentId]
       };
       console.log(fileMetadata)
       var media = {
@@ -1137,7 +1137,7 @@ app.post('/classroomexport', async (req, res) => {
       var fileMetadata = {
         'name': fileName,
         'description': description,
-        'parents': [filePath],
+        'parents': [parentId],
         'mimeType': newType,
       };
       drive.files.create({
