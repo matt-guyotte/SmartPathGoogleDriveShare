@@ -1738,11 +1738,11 @@ class Search extends React.Component {
             if(res[y].parents[0] === classroom) {
               newArray.push(res[y]);
               console.log(newArray)
+              this.setState({newClassroomFolders: newArray})
             }
           }
         }
       }
-      this.setState({newClassroomFolders: newArray})
     }
 
     async classroomExport() {
