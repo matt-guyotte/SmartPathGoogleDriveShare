@@ -344,7 +344,7 @@ app.get("/drivecall2", (req, res) => {
       fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
       orderBy: "folder"});
     const files = response.data.files;
-    console.log(files)
+    //console.log(files)
     const fileArray = [{
       file: '',
       id: '',
@@ -1078,7 +1078,7 @@ app.post("/downloaddocument", async (req, res) => {
 
 app.post('/classroomexport', async (req, res) => {
   const files = req.body.fileArray;
-  console.log("these are the files for export: " + files)
+  console.log("these are the files for export: " + files[0])
   const parentFolder = req.body.parentId;
   const drive = req.app.get('drive2');
   for(var i = 0; i < files.length; i++) {
@@ -1133,7 +1133,7 @@ app.post('/classroomexport', async (req, res) => {
 
       const destSimple = './src/Pages/downloads/' + fileName;
     
-      let newIdFolder = ''
+      var newIdFolder = ''
     
       var fileMetadata = {
         'name': fileName,
