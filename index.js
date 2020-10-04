@@ -1178,12 +1178,12 @@ app.post('/classroomexport', async (req, res) => {
             'description': description1,
             'parents': [newIdFolder]
           };
-          console.log("This is the file metadata for level1: " + fileMetadata)
+          console.log("This is the file metadata for level1 files: " + fileMetadata)
           var media1 = {
             mimeType: newType1,
             body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
           };
-          console.log("This is the body for level1: " + media)
+          console.log("This is the body for level1 files: " + media)
           drive.files.create({
             resource: fileMetadata1,
             media: media1,
