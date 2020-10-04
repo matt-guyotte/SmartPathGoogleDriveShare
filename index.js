@@ -1076,7 +1076,7 @@ app.post("/downloaddocument", async (req, res) => {
 });  
 })
 
-app.post('/classroomexport', async (req, res) => {
+app.post('/classroomexport', (req, res) => {
   const files = req.body.fileArray;
   console.log("these are the files for export: " + files[0])
   const parentFolder = req.body.parentId;
