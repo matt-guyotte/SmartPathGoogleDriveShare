@@ -268,7 +268,7 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    console.log(fileArray)
+    //console.log(fileArray)
   }
 }
 
@@ -1111,7 +1111,7 @@ app.post('/classroomexport', async (req, res) => {
         mimeType: newType,
         body: fs.createReadStream(destSimple, (err) => {if(err) return console.log(err)})
       };
-      console.log(media)
+      console.log("This is the body of topfile " + media)
       drive.files.create({
         resource: fileMetadata,
         media: media,
@@ -1178,12 +1178,12 @@ app.post('/classroomexport', async (req, res) => {
             'description': description1,
             'parents': [newIdFolder]
           };
-          console.log(fileMetadata)
+          console.log("This is the file metadata for level1: " + fileMetadata)
           var media1 = {
             mimeType: newType1,
             body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
           };
-          console.log(media)
+          console.log("This is the body for level1: " + media)
           drive.files.create({
             resource: fileMetadata1,
             media: media1,
