@@ -1170,7 +1170,7 @@ app.post('/classroomexport', async (req, res) => {
             newType1 === 'application/vnd.google-apps.spreadsheet'
           }
     
-          const destSimple1 = destSimple + fileName1 + '.' + type1;
+          const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
     
           let newId1 = ''
     
@@ -1240,7 +1240,7 @@ app.post('/classroomexport', async (req, res) => {
                 newType2 === 'application/vnd.google-apps.spreadsheet'
               }
         
-              const destSimple2 = destSimple1 + fileName2 + '.' + type2;
+              const destSimple2 = destSimple1 + '/' + fileName2 + '.' + type2;
         
               let newId2 = ''
         
@@ -1294,7 +1294,7 @@ app.post('/classroomexport', async (req, res) => {
               if(level2.children != []) {
                 //3
                 for(var b = 0; b < level2.children.length; b++) {
-                  const level13 = level2.children[b]; 
+                  const level3 = level2.children[b]; 
                   if (level3.type != "folder") {
                     const fileName3 = level3.name;
                     const type3 = level3.type;
@@ -1310,7 +1310,7 @@ app.post('/classroomexport', async (req, res) => {
                       newType3 === 'application/vnd.google-apps.spreadsheet'
                     }
               
-                    const destSimple3 = destSimple2 + fileName3 + '.' + type3;
+                    const destSimple3 = destSimple2 + '/' + fileName3 + '.' + type3;
               
                     let newId3 = ''
               
@@ -1380,7 +1380,7 @@ app.post('/classroomexport', async (req, res) => {
                             newType4 === 'application/vnd.google-apps.spreadsheet'
                           }
                     
-                          const destSimple4 = destSimple3 + fileName4 + '.' + type4;
+                          const destSimple4 = destSimple3 + "/" + fileName4 + '.' + type4;
                     
                           let newId4 = ''
                     
@@ -1450,7 +1450,7 @@ app.post('/classroomexport', async (req, res) => {
                                   newType5 === 'application/vnd.google-apps.spreadsheet'
                                 }
                           
-                                const destSimple5 = destSimple4 + fileName5 + '.' + type5;
+                                const destSimple5 = destSimple4 + "/" + fileName5 + '.' + type5;
                           
                                 let newId5 = ''
                           
@@ -1520,7 +1520,7 @@ app.post('/classroomexport', async (req, res) => {
                                         newType6 === 'application/vnd.google-apps.spreadsheet'
                                       }
                                 
-                                      const destSimple6 = destSimple5 + fileName6 + '.' + type6;
+                                      const destSimple6 = destSimple5 + "/" + fileName6 + '.' + type6;
                                 
                                       let newId6 = ''
                                 
@@ -1590,7 +1590,7 @@ app.post('/classroomexport', async (req, res) => {
                                               newType7 === 'application/vnd.google-apps.spreadsheet'
                                             }
                                       
-                                            const destSimple7 = destSimple6 + fileName7 + '.' + type7;
+                                            const destSimple7 = destSimple6 + "/" + fileName7 + '.' + type7;
                                       
                                             let newId7 = ''
                                       
@@ -1660,7 +1660,7 @@ app.post('/classroomexport', async (req, res) => {
                                                     newType8 === 'application/vnd.google-apps.spreadsheet'
                                                   }
                                             
-                                                  const destSimple8 = destSimple7 + fileName8 + '.' + type8;
+                                                  const destSimple8 = destSimple7 + "/" + fileName8 + '.' + type8;
                                             
                                                   let newId8 = ''
                                             
@@ -1730,7 +1730,7 @@ app.post('/classroomexport', async (req, res) => {
                                                           newType9 === 'application/vnd.google-apps.spreadsheet'
                                                         }
                                                   
-                                                        const destSimple9 = destSimple8 + fileName9 + '.' + type9;
+                                                        const destSimple9 = destSimple8 + "/" + fileName9 + '.' + type9;
                                                   
                                                         let newId9 = ''
                                                   
