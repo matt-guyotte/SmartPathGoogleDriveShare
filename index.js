@@ -1078,7 +1078,7 @@ app.post("/downloaddocument", async (req, res) => {
 
 app.post('/classroomexport', (req, res) => {
   const files = req.body.fileArray;
-  console.log("these are the files for export: " + files[0].name)
+  console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
   const parentFolder = req.body.parentId;
   const drive = req.app.get('drive2');
   for(var i = 0; i < files.length; i++) {
