@@ -1144,7 +1144,7 @@ app.post('/classroomexport', async (req, res) => {
       await drive.files.create({
         resource: fileMetadata,
         fields: 'id',
-      }, function (err, file) {
+      }, await function (err, file) {
         if (err) {
           console.log("Error for file creation: " + err);
         } else {
@@ -1158,6 +1158,7 @@ app.post('/classroomexport', async (req, res) => {
       for(var y = 0; y < files[i].children.length; y++) {
         const level1 = files[i].children[y]; 
         if (level1.type != "folder") {
+          console.log("top folder id in function = " + newIdFolder)
           const fileName1 = level1.name;
           const type1 = level1.type;
           const description1 = level1.description;
