@@ -1139,20 +1139,21 @@ app.post('/classroomexport', async (req, res) => {
         'parents': [parentFolder],
         'mimeType': newType,
       };
-      await drive.files.create({
-        resource: fileMetadata,
-        fields: 'id',
-      }, await async function (err, file) {
-        if (err) {
-          console.log("Error for file creation: " + err);
-        } else {
-          console.log(file)
-          var newIdFolder = file.data.id;
-          await app.set('newIdFolder', newIdFolder);
-          console.log("This is the top folder id = " + file.data.id)
-        }
-        console.log("top folder id = " + newIdFolder)
-      });
+      await function driveFolderSet1 () {
+        drive.files.create({
+          resource: fileMetadata,
+          fields: 'id',
+        }, function (err, file) {
+          if (err) {
+            console.log("Error for file creation: " + err);
+          } else {
+            console.log(file)
+            var newIdFolder = file.data.id;
+            app.set('newIdFolder', newIdFolder);
+            console.log("This is the top folder id = " + file.data.id)
+          }
+        });
+      }
       //1
       for(var y = 0; y < files[i].children.length; y++) {
         const level1 = files[i].children[y]; 
@@ -1161,6 +1162,7 @@ app.post('/classroomexport', async (req, res) => {
           const fileName1 = level1.name;
           const type1 = level1.type;
           const description1 = level1.description;
+          await driveFolderSet1();
           const newIdFolder = req.app.get('newIdFolder');
           let newType1 = ''
           if(type1 === 'docx') {
