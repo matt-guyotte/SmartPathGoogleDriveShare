@@ -1148,6 +1148,7 @@ app.post('/classroomexport', async (req, res) => {
         if (err) {
           console.log("Error for file creation: " + err);
         } else {
+          console.log(file)
           newIdFolder = file.id;
           console.log("This is the top folder id = " + file.id)
         }
