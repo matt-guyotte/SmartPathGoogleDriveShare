@@ -1080,8 +1080,12 @@ app.post('/classroomexport', async (req, res) => {
   const files = req.body.fileArray;
   console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
   const parentFolder = req.body.parentId;
-  const sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
   }
   const drive = req.app.get('drive2');
   for(var i = 0; i < files.length; i++) {
@@ -1155,6 +1159,7 @@ app.post('/classroomexport', async (req, res) => {
           console.log("This is the top folder id = " + file.data.id)
         }
       });
+      sleep(2000);
       //1
       for(var y = 0; y < files[i].children.length; y++) {
         const level1 = files[i].children[y]; 
