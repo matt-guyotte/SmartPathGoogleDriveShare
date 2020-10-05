@@ -1161,7 +1161,7 @@ app.post('/classroomexport', async (req, res) => {
       });
       //1
       for(var y = 0; y < files[i].children.length; y++) {
-        sleep(2000);
+        sleep(4000);
         const level1 = files[i].children[y]; 
         if (level1.type != "folder") {
           console.log("top folder id in function = " + newIdFolder)
