@@ -1110,7 +1110,7 @@ app.post('/classroomexport', async (req, res) => {
       console.log(fileMetadata)
       var media = {
         mimeType: newType,
-        body: fs.createReadStream(destSimple, (err) => {if(err) return console.log(err)})
+        body: fs.createReadStream(destSimple)
       };
       console.log("This is the body of topfile " + media)
       await drive.files.create({
@@ -1188,7 +1188,7 @@ app.post('/classroomexport', async (req, res) => {
             body: fs.createReadStream(destSimple1)
           };
           console.log("This is the body for level1 files: " + media1)
-          await drive.files.create({
+          drive.files.create({
             resource: fileMetadata1,
             media: media1,
             fields: 'id'
