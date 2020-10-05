@@ -1149,8 +1149,8 @@ app.post('/classroomexport', async (req, res) => {
           console.log("Error for file creation: " + err);
         } else {
           console.log(file)
-          newIdFolder = file.id;
-          console.log("This is the top folder id = " + file.id)
+          newIdFolder = file.data.id;
+          console.log("This is the top folder id = " + file.data.id)
         }
         console.log("top folder id = " + newIdFolder)
       });
@@ -1180,7 +1180,7 @@ app.post('/classroomexport', async (req, res) => {
           var fileMetadata1 = {
             'name': fileName1,
             'description': description1,
-            //'parents': [newIdFolder]
+            'parents': [newIdFolder]
           };
           console.log("This is the file metadata for level1 files: " + fileMetadata1)
           var media1 = {
