@@ -1163,7 +1163,7 @@ app.post('/classroomexport', async (req, res) => {
           const fileName1 = level1.name;
           const type1 = level1.type;
           const description1 = level1.description;
-          const newIdFolder = req.app.get('newIdFolder');
+          var newIdFolder = req.app.get('newIdFolder');
           let newType1 = ''
           if(type1 === 'docx') {
             newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
