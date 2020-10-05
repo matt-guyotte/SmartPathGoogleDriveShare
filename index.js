@@ -1172,6 +1172,7 @@ app.post('/classroomexport', async (req, res) => {
           }
     
           const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
+          console.log("This is the first destination: " + destSimple1)
     
           let newId1 = ''
     
@@ -1183,7 +1184,7 @@ app.post('/classroomexport', async (req, res) => {
           console.log("This is the file metadata for level1 files: " + fileMetadata1)
           var media1 = {
             mimeType: newType1,
-            body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
+            body: fs.createReadStream(destSimple1)
           };
           console.log("This is the body for level1 files: " + media1)
           await drive.files.create({
