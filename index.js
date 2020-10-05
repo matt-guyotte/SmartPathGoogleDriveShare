@@ -1142,7 +1142,7 @@ app.post('/classroomexport', async (req, res) => {
       await drive.files.create({
         resource: fileMetadata,
         fields: 'id',
-      }, await function (err, file) {
+      }, await async function (err, file) {
         if (err) {
           console.log("Error for file creation: " + err);
         } else {
