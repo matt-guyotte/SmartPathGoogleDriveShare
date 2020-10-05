@@ -1148,8 +1148,8 @@ app.post('/classroomexport', async (req, res) => {
             console.log("Error for file creation: " + err);
           } else {
             console.log(file)
-            var newIdFolder = file.data.id;
-            app.set('newIdFolder', newIdFolder);
+            var newIdFolderIn = file.data.id;
+            app.set('newIdFolder', newIdFolderIn);
             console.log("This is the top folder id = " + file.data.id)
           }
         });
