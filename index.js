@@ -1180,19 +1180,19 @@ app.post('/classroomexport', (req, res) => {
             'description': description1,
             'parents': [newIdFolder]
           };
-          console.log("This is the file metadata for level1 files: " + fileMetadata)
+          console.log("This is the file metadata for level1 files: " + fileMetadata1)
           var media1 = {
             mimeType: newType1,
             body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
           };
-          console.log("This is the body for level1 files: " + media)
+          console.log("This is the body for level1 files: " + media1)
           drive.files.create({
             resource: fileMetadata1,
             media: media1,
             fields: 'id'
           }, function (err, file) {
             if (err) {
-              console.log("Error for file creation: " + err);
+              console.log("Error for file creation at 1195: " + err);
             } else {
               console.log(file);
               newId1 = file.id;
