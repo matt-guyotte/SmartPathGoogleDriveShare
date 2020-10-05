@@ -1133,8 +1133,6 @@ app.post('/classroomexport', async (req, res) => {
 
       const destSimple = './src/Pages/downloads/' + fileName;
     
-      var newIdFolder = ''
-    
       var fileMetadata = {
         'name': fileName,
         'description': description,
@@ -1149,7 +1147,7 @@ app.post('/classroomexport', async (req, res) => {
           console.log("Error for file creation: " + err);
         } else {
           console.log(file)
-          newIdFolder = file.data.id;
+          var newIdFolder = file.data.id;
           console.log("This is the top folder id = " + file.data.id)
         }
         console.log("top folder id = " + newIdFolder)
@@ -1207,8 +1205,6 @@ app.post('/classroomexport', async (req, res) => {
           const description1 = level1.description;
           let newType = 'application/vnd.google-apps.folder'
         
-          let newIdFolder1 = ''
-        
           var fileMetadata1 = {
             'name': fileName,
             'description': description,
@@ -1222,9 +1218,9 @@ app.post('/classroomexport', async (req, res) => {
             if (err) {
               console.log("Error for file creation: " + err);
             } else {
-              newIdFolder1 = file.id;
+              var newIdFolder1 = file.id;
+              app.set("newIdFolder1", newIdFolder1)
             }
-            console.log(newIdFolder)
           });
           //2
           for(var a = 0; a < level1.children.length; a++) {
