@@ -1180,7 +1180,7 @@ app.post('/classroomexport', async (req, res) => {
           var fileMetadata1 = {
             'name': fileName1,
             'description': description1,
-            'parents': [newIdFolder]
+            //'parents': [newIdFolder]
           };
           console.log("This is the file metadata for level1 files: " + fileMetadata1)
           var media1 = {
