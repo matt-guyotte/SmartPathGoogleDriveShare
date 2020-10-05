@@ -1076,7 +1076,7 @@ app.post("/downloaddocument", async (req, res) => {
   //});  
 })
 
-app.post('/classroomexport', (req, res) => {
+app.post('/classroomexport', async (req, res) => {
   const files = req.body.fileArray;
   console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
   const parentFolder = req.body.parentId;
@@ -1113,7 +1113,7 @@ app.post('/classroomexport', (req, res) => {
         body: fs.createReadStream(destSimple, (err) => {if(err) return console.log(err)})
       };
       console.log("This is the body of topfile " + media)
-      drive.files.create({
+      await drive.files.create({
         resource: fileMetadata,
         media: media,
         fields: 'id'
@@ -1141,7 +1141,7 @@ app.post('/classroomexport', (req, res) => {
         'parents': [parentFolder],
         'mimeType': newType,
       };
-      drive.files.create({
+      await drive.files.create({
         resource: fileMetadata,
         fields: 'id',
       }, function (err, file) {
@@ -1186,7 +1186,7 @@ app.post('/classroomexport', (req, res) => {
             body: fs.createReadStream(destSimple1, (err) => {if(err) return console.log(err)})
           };
           console.log("This is the body for level1 files: " + media1)
-          drive.files.create({
+          await drive.files.create({
             resource: fileMetadata1,
             media: media1,
             fields: 'id'
@@ -1212,7 +1212,7 @@ app.post('/classroomexport', (req, res) => {
             'parents': [newIdFolder],
             'mimeType': newType,
           };
-          drive.files.create({
+          await drive.files.create({
             resource: fileMetadata1,
             fields: 'id',
           }, function (err, file) {
@@ -1256,7 +1256,7 @@ app.post('/classroomexport', (req, res) => {
                 body: fs.createReadStream(destSimple2, (err) => {if(err) return console.log(err)})
               };
               console.log(media)
-              drive.files.create({
+              await drive.files.create({
                 resource: fileMetadata2,
                 media: media2,
                 fields: 'id'
@@ -1282,7 +1282,7 @@ app.post('/classroomexport', (req, res) => {
                 'parents': [newIdFolder1],
                 'mimeType': newType2,
               };
-              drive.files.create({
+              await drive.files.create({
                 resource: fileMetadata2,
                 fields: 'id',
               }, function (err, file) {
@@ -1326,7 +1326,7 @@ app.post('/classroomexport', (req, res) => {
                       body: fs.createReadStream(destSimple3, (err) => {if(err) return console.log(err)})
                     };
                     console.log(media)
-                    drive.files.create({
+                    await drive.files.create({
                       resource: fileMetadata3,
                       media: media3,
                       fields: 'id'
@@ -1352,7 +1352,7 @@ app.post('/classroomexport', (req, res) => {
                       'parents': [newIdFolder2],
                       'mimeType': newType3,
                     };
-                    drive.files.create({
+                    await drive.files.create({
                       resource: fileMetadata3,
                       fields: 'id',
                     }, function (err, file) {
@@ -1396,7 +1396,7 @@ app.post('/classroomexport', (req, res) => {
                             body: fs.createReadStream(destSimple4, (err) => {if(err) return console.log(err)})
                           };
                           console.log(media)
-                          drive.files.create({
+                          await drive.files.create({
                             resource: fileMetadata4,
                             media: media4,
                             fields: 'id'
@@ -1422,7 +1422,7 @@ app.post('/classroomexport', (req, res) => {
                             'parents': [newIdFolder3],
                             'mimeType': newType4,
                           };
-                          drive.files.create({
+                          await drive.files.create({
                             resource: fileMetadata4,
                             fields: 'id',
                           }, function (err, file) {
@@ -1466,7 +1466,7 @@ app.post('/classroomexport', (req, res) => {
                                   body: fs.createReadStream(destSimple5, (err) => {if(err) return console.log(err)})
                                 };
                                 console.log(media)
-                                drive.files.create({
+                                await drive.files.create({
                                   resource: fileMetadata5,
                                   media: media5,
                                   fields: 'id'
@@ -1492,7 +1492,7 @@ app.post('/classroomexport', (req, res) => {
                                   'parents': [newIdFolder4],
                                   'mimeType': newType5,
                                 };
-                                drive.files.create({
+                                await drive.files.create({
                                   resource: fileMetadata5,
                                   fields: 'id',
                                 }, function (err, file) {
@@ -1536,7 +1536,7 @@ app.post('/classroomexport', (req, res) => {
                                         body: fs.createReadStream(destSimple6, (err) => {if(err) return console.log(err)})
                                       };
                                       console.log(media)
-                                      drive.files.create({
+                                      await drive.files.create({
                                         resource: fileMetadata6,
                                         media: media6,
                                         fields: 'id'
@@ -1562,7 +1562,7 @@ app.post('/classroomexport', (req, res) => {
                                         'parents': [newIdFolder5],
                                         'mimeType': newType6,
                                       };
-                                      drive.files.create({
+                                      await drive.files.create({
                                         resource: fileMetadata6,
                                         fields: 'id',
                                       }, function (err, file) {
@@ -1606,7 +1606,7 @@ app.post('/classroomexport', (req, res) => {
                                               body: fs.createReadStream(destSimple7, (err) => {if(err) return console.log(err)})
                                             };
                                             console.log(media)
-                                            drive.files.create({
+                                            await drive.files.create({
                                               resource: fileMetadata7,
                                               media: media7,
                                               fields: 'id'
@@ -1632,7 +1632,7 @@ app.post('/classroomexport', (req, res) => {
                                               'parents': [newIdFolder6],
                                               'mimeType': newType7,
                                             };
-                                            drive.files.create({
+                                            await drive.files.create({
                                               resource: fileMetadata7,
                                               fields: 'id',
                                             }, function (err, file) {
@@ -1676,7 +1676,7 @@ app.post('/classroomexport', (req, res) => {
                                                     body: fs.createReadStream(destSimple8, (err) => {if(err) return console.log(err)})
                                                   };
                                                   console.log(media)
-                                                  drive.files.create({
+                                                  await drive.files.create({
                                                     resource: fileMetadata8,
                                                     media: media8,
                                                     fields: 'id'
@@ -1702,7 +1702,7 @@ app.post('/classroomexport', (req, res) => {
                                                     'parents': [newIdFolder7],
                                                     'mimeType': newType8,
                                                   };
-                                                  drive.files.create({
+                                                  await drive.files.create({
                                                     resource: fileMetadata8,
                                                     fields: 'id',
                                                   }, function (err, file) {
@@ -1746,7 +1746,7 @@ app.post('/classroomexport', (req, res) => {
                                                           body: fs.createReadStream(destSimple9, (err) => {if(err) return console.log(err)})
                                                         };
                                                         console.log(media)
-                                                        drive.files.create({
+                                                        await drive.files.create({
                                                           resource: fileMetadata9,
                                                           media: media9,
                                                           fields: 'id'
@@ -1772,7 +1772,7 @@ app.post('/classroomexport', (req, res) => {
                                                           'parents': [newIdFolder8],
                                                           'mimeType': newType9,
                                                         };
-                                                        drive.files.create({
+                                                        await drive.files.create({
                                                           resource: fileMetadata9,
                                                           fields: 'id',
                                                         }, function (err, file) {
