@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
 
-import GoogleBtn from './GoogleBtn';
+import GoogleBtn2 from './GoogleBtn2';
 import AdminNavbar from './adminNavbar';
 import DomainView from './domainView';
 import SmartPathView from './smartPathView';
@@ -118,7 +118,7 @@ class adminPortal extends Component {
             <div>
             <p><strong> Note: </strong></p>
             <p> This is for Smartpath admins only.</p> 
-            <GoogleBtn login = {this.loginConfirm} />
+            <GoogleBtn2 login = {this.loginConfirm} />
             </div>
         )
     }

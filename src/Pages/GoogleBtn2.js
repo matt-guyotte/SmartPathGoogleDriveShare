@@ -5,7 +5,7 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 const CLIENT_ID = '844099065946-5jkm6neret5ij7m2gf6285bs1docg64r.apps.googleusercontent.com';
 
 
-class GoogleBtn extends Component {
+class GoogleBtn2 extends Component {
    constructor(props) {
     super(props);
 
@@ -14,34 +14,11 @@ class GoogleBtn extends Component {
       accessToken: ''
     };
 
-    this.login = this.login.bind(this);
-    this.sendToken = this.sendToken.bind(this);
     this.checkLogin = this.checkLogin.bind(this); 
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
     this.logout = this.logout.bind(this);
     this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
     this.loginSend = this.loginSend.bind(this);
-  }
-
-  async login (response) {
-    if(response.code){
-      await this.setState(state => ({
-        isLogined: true,
-        accessToken: response.code
-      }));
-      var accesscode = response.code
-      this.sendToken(accesscode);
-    }
-  }
-
-  async sendToken(response) {
-    await fetch('/accesstoken', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        accessToken: response
-      })
-    })
   }
 
   checkLogin() { 
@@ -83,7 +60,7 @@ class GoogleBtn extends Component {
         : <GoogleLogin
           clientId={ CLIENT_ID }
           buttonText='Login'
-          onSuccess={ this.login }
+          onSuccess={ this.props.login }
           onFailure={ this.handleLoginFailure }
           accessType = 'offline'
           responseType='code'
@@ -96,4 +73,4 @@ class GoogleBtn extends Component {
   }
 }
 
-export default GoogleBtn;
+export default GoogleBtn2;
