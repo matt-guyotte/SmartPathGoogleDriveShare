@@ -1146,19 +1146,23 @@ app.post('/classroomexport', async (req, res) => {
         'parents': [parentFolder],
         'mimeType': newType,
       };
-      drive.files.create({
-        resource: fileMetadata,
-        fields: 'id',
-      },function (err, file) {
-        if (err) {
-          console.log("Error for file creation: " + err);
-        } else {
-          console.log(file)
-          var newIdFolderIn = file.data.id;
-          app.set('newIdFolder', newIdFolderIn);
-          console.log("This is the top folder id = " + file.data.id)
-        }
-      });
+      function driveCreateFolder() {
+        return new Promise(function (resolve, reject) { 
+          drive.files.create({
+            resource: fileMetadata,
+            fields: 'id',
+          }, function (err, file) {
+            if (err) {
+              console.log("Error for file creation: " + err);
+            } else {
+              console.log(file)
+              var newIdFolderIn = file.data.id;
+              app.set('newIdFolder', newIdFolderIn);
+              console.log("This is the top folder id = " + file.data.id)
+            }
+          });
+        })
+      }
       sleep(6000);
       //1
       for(var y = 0; y < files[i].children.length; y++) {
