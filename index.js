@@ -1168,11 +1168,11 @@ app.post('/classroomexport', async (req, res) => {
       //1
       for(var y = 0; y < files[i].children.length; y++) {
         const level1 = files[i].children[y]; 
+        var newIdFolder = req.app.get('newIdFolder');
         if (level1.type != "folder") {
           const fileName1 = level1.name;
           const type1 = level1.type;
           const description1 = level1.description;
-          var newIdFolder = req.app.get('newIdFolder');
           console.log("top folder id in function = " + newIdFolder)
           let newType1 = ''
           if(type1 === 'docx') {
@@ -1220,25 +1220,33 @@ app.post('/classroomexport', async (req, res) => {
           let newType = 'application/vnd.google-apps.folder'
         
           var fileMetadata1 = {
-            'name': fileName,
-            'description': description,
+            'name': fileName1,
+            'description': description1,
             'parents': [newIdFolder],
             'mimeType': newType,
           };
-          await drive.files.create({
-            resource: fileMetadata1,
-            fields: 'id',
-          }, function (err, file) {
-            if (err) {
-              console.log("Error for file creation: " + err);
-            } else {
-              var newIdFolder1 = file.id;
-              app.set("newIdFolder1", newIdFolder1)
-            }
-          });
+          function driveCreateFolder1() {
+            return new Promise(function (resolve, reject) { 
+              drive.files.create({
+                resource: fileMetadata1,
+                fields: 'id',
+              }, function (err, file) {
+                if (err) {
+                  console.log("Error for file creation: " + err);
+                } else {
+                  console.log(file)
+                  var newIdFolderIn1 = file.data.id;
+                  resolve(app.set('newIdFolder1', newIdFolderIn1));
+                }
+              });
+            })
+          }
+          await driveCreateFolder1();
+          sleep(2000);
           //2
           for(var a = 0; a < level1.children.length; a++) {
-            const level12 = level1.children[a]; 
+            const level2 = level1.children[a]; 
+            var newIdFolder1 = req.app.get('newIdFolder1');
             if (level2.type != "folder") {
               const fileName2 = level2.name;
               const type2 = level2.type;
@@ -1287,28 +1295,35 @@ app.post('/classroomexport', async (req, res) => {
               const description2 = level2.description;
               let newType2 = 'application/vnd.google-apps.folder'
             
-              let newIdFolder2 = ''
-            
               var fileMetadata2 = {
                 'name': fileName2,
                 'description': description2,
                 'parents': [newIdFolder1],
                 'mimeType': newType2,
               };
-              await drive.files.create({
-                resource: fileMetadata2,
-                fields: 'id',
-              }, function (err, file) {
-                if (err) {
-                  console.log("Error for file creation: " + err);
-                } else {
-                  newIdFolder2 = file.id;
-                }
-              });
+              function driveCreateFolder2() {
+                return new Promise(function (resolve, reject) { 
+                  drive.files.create({
+                    resource: fileMetadata2,
+                    fields: 'id',
+                  }, function (err, file) {
+                    if (err) {
+                      console.log("Error for file creation: " + err);
+                    } else {
+                      console.log(file)
+                      var newIdFolderIn2 = file.data.id;
+                      resolve(app.set('newIdFolder2', newIdFolderIn2));
+                    }
+                  });
+                })
+              }
+              await driveCreateFolder2();
+              sleep(2000);
               if(level2.children != []) {
                 //3
                 for(var b = 0; b < level2.children.length; b++) {
                   const level3 = level2.children[b]; 
+                  var newIdFolder2 = req.app.get('newIdFolder2');
                   if (level3.type != "folder") {
                     const fileName3 = level3.name;
                     const type3 = level3.type;
@@ -1357,28 +1372,34 @@ app.post('/classroomexport', async (req, res) => {
                     const description3 = level3.description;
                     let newType3 = 'application/vnd.google-apps.folder'
                   
-                    let newIdFolder3 = ''
-                  
                     var fileMetadata3 = {
                       'name': fileName3,
                       'description': description3,
                       'parents': [newIdFolder2],
                       'mimeType': newType3,
                     };
-                    await drive.files.create({
-                      resource: fileMetadata3,
-                      fields: 'id',
-                    }, function (err, file) {
-                      if (err) {
-                        console.log("Error for file creation: " + err);
-                      } else {
-                        newIdFolder3 = file.id;
-                      }
-                    });
+                    function driveCreateFolder3() {
+                      return new Promise(function (resolve, reject) { 
+                        drive.files.create({
+                          resource: fileMetadata3,
+                          fields: 'id',
+                        }, function (err, file) {
+                          if (err) {
+                            console.log("Error for file creation: " + err);
+                          } else {
+                            var newIdFolderIn3 = file.data.id;
+                            resolve(app.set('newIdFolder3', newIdFolderIn3));
+                          }
+                        });
+                      })
+                    }
+                    await driveCreateFolder3();
+                    sleep(2000);
                     if(level3.children != []) {
                       //4
                       for(var c = 0; c < level3.children.length; c++) {
                         const level14 = level3.children[c]; 
+                        var newIdFolder3 = req.app.get('newIdFolder3');
                         if (level4.type != "folder") {
                           const fileName4 = level4.name;
                           const type4 = level4.type;
@@ -1427,28 +1448,34 @@ app.post('/classroomexport', async (req, res) => {
                           const description4 = level4.description;
                           let newType4 = 'application/vnd.google-apps.folder'
                         
-                          let newIdFolder4 = ''
-                        
                           var fileMetadata4 = {
                             'name': fileName4,
                             'description': description4,
                             'parents': [newIdFolder3],
                             'mimeType': newType4,
                           };
-                          await drive.files.create({
-                            resource: fileMetadata4,
-                            fields: 'id',
-                          }, function (err, file) {
-                            if (err) {
-                              console.log("Error for file creation: " + err);
-                            } else {
-                              newIdFolder4 = file.id;
-                            }
-                          });
+                          function driveCreateFolder4() {
+                            return new Promise(function (resolve, reject) { 
+                              drive.files.create({
+                                resource: fileMetadata4,
+                                fields: 'id',
+                              }, function (err, file) {
+                                if (err) {
+                                  console.log("Error for file creation: " + err);
+                                } else {
+                                  var newIdFolderIn4 = file.data.id;
+                                  resolve(app.set('newIdFolder4', newIdFolderIn4));
+                                }
+                              });
+                            })
+                          }
+                          await driveCreateFolder4();
+                          sleep(2000);
                           if(level4.children != []) {
                             //5
                             for(var d = 0; d < level4.children.length; d++) {
-                              const level15 = level4.children[d]; 
+                              const level5 = level4.children[d]; 
+                              var newIdFolder4 = req.app.get('newIdFolder4');
                               if (level5.type != "folder") {
                                 const fileName5 = level5.name;
                                 const type5 = level5.type;
@@ -1497,28 +1524,34 @@ app.post('/classroomexport', async (req, res) => {
                                 const description5 = level5.description;
                                 let newType5 = 'application/vnd.google-apps.folder'
                               
-                                let newIdFolder5 = ''
-                              
                                 var fileMetadata5 = {
                                   'name': fileName5,
                                   'description': description5,
                                   'parents': [newIdFolder4],
                                   'mimeType': newType5,
                                 };
-                                await drive.files.create({
-                                  resource: fileMetadata5,
-                                  fields: 'id',
-                                }, function (err, file) {
-                                  if (err) {
-                                    console.log("Error for file creation: " + err);
-                                  } else {
-                                    newIdFolder5 = file.id;
-                                  }
-                                });
+                                function driveCreateFolder5() {
+                                  return new Promise(function (resolve, reject) { 
+                                    drive.files.create({
+                                      resource: fileMetadata5,
+                                      fields: 'id',
+                                    }, function (err, file) {
+                                      if (err) {
+                                        console.log("Error for file creation: " + err);
+                                      } else {
+                                        var newIdFolderIn5 = file.data.id;
+                                        resolve(app.set('newIdFolder5', newIdFolderIn5));
+                                      }
+                                    });
+                                  })
+                                }
+                                await driveCreateFolder5();
+                                sleep(2000);
                                 if(level5.children != []) {
                                   //6
                                   for(var e = 0; e < level5.children.length; e++) {
-                                    const level16 = level5.children[e]; 
+                                    const level6 = level5.children[e]; 
+                                    var newIdFolder5 = req.app.get('newIdFolder5');
                                     if (level6.type != "folder") {
                                       const fileName6 = level6.name;
                                       const type6 = level6.type;
@@ -1567,28 +1600,34 @@ app.post('/classroomexport', async (req, res) => {
                                       const description6 = level6.description;
                                       let newType6 = 'application/vnd.google-apps.folder'
                                     
-                                      let newIdFolder6 = ''
-                                    
                                       var fileMetadata6 = {
                                         'name': fileName6,
                                         'description': description6,
                                         'parents': [newIdFolder5],
                                         'mimeType': newType6,
                                       };
-                                      await drive.files.create({
-                                        resource: fileMetadata6,
-                                        fields: 'id',
-                                      }, function (err, file) {
-                                        if (err) {
-                                          console.log("Error for file creation: " + err);
-                                        } else {
-                                          newIdFolder6 = file.id;
-                                        }
-                                      });
+                                      function driveCreateFolder6() {
+                                        return new Promise(function (resolve, reject) { 
+                                          drive.files.create({
+                                            resource: fileMetadata6,
+                                            fields: 'id',
+                                          }, function (err, file) {
+                                            if (err) {
+                                              console.log("Error for file creation: " + err);
+                                            } else {
+                                              var newIdFolderIn6 = file.data.id;
+                                              resolve(app.set('newIdFolder6', newIdFolderIn6));
+                                            }
+                                          });
+                                        })
+                                      }
+                                      await driveCreateFolder6();
+                                      sleep(2000);
                                       if(level6.children != []) {
                                         //7
                                         for(var f = 0; f < level6.children.length; f++) {
-                                          const level17 = level6.children[f]; 
+                                          const level7 = level6.children[f]; 
+                                          var newIdFolder6 = req.app.get('newIdFolder6');
                                           if (level7.type != "folder") {
                                             const fileName7 = level7.name;
                                             const type7 = level7.type;
@@ -1637,28 +1676,34 @@ app.post('/classroomexport', async (req, res) => {
                                             const description7 = level7.description;
                                             let newType7 = 'application/vnd.google-apps.folder'
                                           
-                                            let newIdFolder7 = ''
-                                          
                                             var fileMetadata7 = {
                                               'name': fileName7,
                                               'description': description7,
                                               'parents': [newIdFolder6],
                                               'mimeType': newType7,
                                             };
-                                            await drive.files.create({
-                                              resource: fileMetadata7,
-                                              fields: 'id',
-                                            }, function (err, file) {
-                                              if (err) {
-                                                console.log("Error for file creation: " + err);
-                                              } else {
-                                                newIdFolder7 = file.id;
-                                              }
-                                            });
+                                            function driveCreateFolder7() {
+                                              return new Promise(function (resolve, reject) { 
+                                                drive.files.create({
+                                                  resource: fileMetadata7,
+                                                  fields: 'id',
+                                                }, function (err, file) {
+                                                  if (err) {
+                                                    console.log("Error for file creation: " + err);
+                                                  } else {
+                                                    var newIdFolderIn7 = file.data.id;
+                                                    resolve(app.set('newIdFolder7', newIdFolderIn7));
+                                                  }
+                                                });
+                                              })
+                                            }
+                                            await driveCreateFolder7();
+                                            sleep(2000);
                                             if(level7.children != []) {
                                               //8
                                               for(var g = 0; g < level7.children.length; g++) {
-                                                const level18 = level7.children[g]; 
+                                                const level8 = level7.children[g];
+                                                var newIdFolder7 = req.app.get('newIdFolder7'); 
                                                 if (level8.type != "folder") {
                                                   const fileName8 = level8.name;
                                                   const type8 = level8.type;
@@ -1707,28 +1752,34 @@ app.post('/classroomexport', async (req, res) => {
                                                   const description8 = level8.description;
                                                   let newType8 = 'application/vnd.google-apps.folder'
                                                 
-                                                  let newIdFolder8 = ''
-                                                
                                                   var fileMetadata8 = {
                                                     'name': fileName8,
                                                     'description': description8,
                                                     'parents': [newIdFolder7],
                                                     'mimeType': newType8,
                                                   };
-                                                  await drive.files.create({
-                                                    resource: fileMetadata8,
-                                                    fields: 'id',
-                                                  }, function (err, file) {
-                                                    if (err) {
-                                                      console.log("Error for file creation: " + err);
-                                                    } else {
-                                                      newIdFolder8 = file.id;
-                                                    }
-                                                  });
+                                                  function driveCreateFolder8() {
+                                                    return new Promise(function (resolve, reject) { 
+                                                      drive.files.create({
+                                                        resource: fileMetadata8,
+                                                        fields: 'id',
+                                                      }, function (err, file) {
+                                                        if (err) {
+                                                          console.log("Error for file creation: " + err);
+                                                        } else {
+                                                          var newIdFolderIn8 = file.data.id;
+                                                          resolve(app.set('newIdFolder8', newIdFolderIn8));
+                                                        }
+                                                      });
+                                                    })
+                                                  }
+                                                  await driveCreateFolder8();
+                                                  sleep(2000);
                                                   if(level8.children != []) {
                                                     //9
                                                     for(var h = 0; h < level8.children.length; h++) {
-                                                      const level19 = level8.children[h]; 
+                                                      const level9 = level8.children[h]; 
+                                                      var newIdFolder8 = req.app.get('newIdFolder8');
                                                       if (level9.type != "folder") {
                                                         const fileName9 = level9.name;
                                                         const type9 = level9.type;
@@ -1777,24 +1828,28 @@ app.post('/classroomexport', async (req, res) => {
                                                         const description9 = level9.description;
                                                         let newType9 = 'application/vnd.google-apps.folder'
                                                       
-                                                        let newIdFolder9 = ''
-                                                      
                                                         var fileMetadata9 = {
                                                           'name': fileName9,
                                                           'description': description9,
                                                           'parents': [newIdFolder8],
                                                           'mimeType': newType9,
                                                         };
-                                                        await drive.files.create({
-                                                          resource: fileMetadata9,
-                                                          fields: 'id',
-                                                        }, function (err, file) {
-                                                          if (err) {
-                                                            console.log("Error for file creation: " + err);
-                                                          } else {
-                                                            newIdFolder9 = file.id;
-                                                          }
-                                                        });
+                                                        function driveCreateFolder9() {
+                                                          return new Promise(function (resolve, reject) { 
+                                                            drive.files.create({
+                                                              resource: fileMetadata9,
+                                                              fields: 'id',
+                                                            }, function (err, file) {
+                                                              if (err) {
+                                                                console.log("Error for file creation: " + err);
+                                                              } else {
+                                                                var newIdFolderIn9 = file.data.id;
+                                                                resolve(app.set('newIdFolder9', newIdFolderIn9));
+                                                              }
+                                                            });
+                                                          })
+                                                        }
+                                                        await driveCreateFolder9();
                                                         if(level9.children != []) {
                                                           console.log("maximum file depth reached.")
                                                         } 
