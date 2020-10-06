@@ -1164,16 +1164,16 @@ app.post('/classroomexport', async (req, res) => {
         })
       }
       await driveCreateFolder();
-      sleep(6000);
+      sleep(2000);
       //1
       for(var y = 0; y < files[i].children.length; y++) {
         const level1 = files[i].children[y]; 
         if (level1.type != "folder") {
-          console.log("top folder id in function = " + newIdFolder)
           const fileName1 = level1.name;
           const type1 = level1.type;
           const description1 = level1.description;
           var newIdFolder = req.app.get('newIdFolder');
+          console.log("top folder id in function = " + newIdFolder)
           let newType1 = ''
           if(type1 === 'docx') {
             newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
