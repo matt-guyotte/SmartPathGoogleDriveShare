@@ -1163,6 +1163,7 @@ app.post('/classroomexport', async (req, res) => {
           });
         })
       }
+      await driveCreateFolder();
       sleep(6000);
       //1
       for(var y = 0; y < files[i].children.length; y++) {
