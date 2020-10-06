@@ -1157,7 +1157,7 @@ app.post('/classroomexport', async (req, res) => {
             } else {
               console.log(file)
               var newIdFolderIn = file.data.id;
-              app.set('newIdFolder', newIdFolderIn);
+              resolve(app.set('newIdFolder', newIdFolderIn));
               console.log("This is the top folder id = " + file.data.id)
             }
           });
