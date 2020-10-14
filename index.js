@@ -286,7 +286,7 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.files'];
 const TOKEN_PATH = 'tokenExtension.json';
 
 // Load client secrets from a local file.
-fs.readFile('credentials_chrome.json', (err, content) => {
+fs.readFile('credentials_extension.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Drive API.
   authorize(JSON.parse(content), listFiles());
