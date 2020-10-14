@@ -317,6 +317,7 @@ function getAccessToken(oAuth2Client, callback) {
     prompt: 'consent',
     scope: SCOPES,
   });
+  console.log(authUrl);
   res.send(authUrl);
 }
 })
