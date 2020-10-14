@@ -301,7 +301,7 @@ fs.readFile('credentials_extension.json', (err, content) => {
 function authorize(credentials, callback) {
   const {client_secret, client_id} = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
-      client_id, client_secret, redirect_uris[0]);
+      client_id, client_secret);
   getAccessToken(oAuth2Client, callback);
 }
 
