@@ -277,6 +277,171 @@ async function listFiles(auth) {
 
 /// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
+app.post('/setExtensionCredentials', (req, res) => {
+  const TOKEN_PATH = 'tokenExtension.json';
+  var accessToken = req.body.accessToken
+  console.log("Something Found.")
+  fs.writeFile(TOKEN_PATH, JSON.stringify(accessToken), (err) => {
+    if (err) return console.log(err);
+    console.log('Token stored to', TOKEN_PATH2);
+  })
+})
+
+app.get('/setChromeOauth', (req, res) => {
+  // If modifying these scopes, delete token.json.
+const SCOPES = ['https://www.googleapis.com/auth/drive.files'];
+// The file token.json stores the user's access and refresh tokens, and is
+// created automatically when the authorization flow completes for the first
+// time.
+const TOKEN_PATH = 'tokenExtension.json';
+
+// Load client secrets from a local file.
+fs.readFile('credentials_chrome.json', (err, content) => {
+  if (err) return console.log('Error loading client secret file:', err);
+  // Authorize a client with credentials, then call the Google Drive API.
+  authorize(JSON.parse(content), listFiles());
+});
+
+/**
+ * Create an OAuth2 client with the given credentials, and then execute the
+ * given callback function.
+ * @param {Object} credentials The authorization client credentials.
+ * @param {function} callback The callback to call with the authorized client.
+ */
+function authorize(credentials, callback) {
+  const {client_secret, client_id, redirect_uris} = credentials.installed;
+  const oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret, redirect_uris[0]);
+  getAccessToken(oAuth2Client, callback);
+}
+
+/**
+ * Get and store new token after prompting for user authorization, and then
+ * execute the given callback with the authorized OAuth2 client.
+ * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+ * @param {getEventsCallback} callback The callback for the authorized client.
+ */
+function getAccessToken(oAuth2Client, callback) {
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    prompt: 'consent',
+    scope: SCOPES,
+  });
+  res.send(authUrl);
+}
+})
+
+app.post("/getChromeToken", (req, res) => {
+  const accessToken = req.body.accessToken;
+  oAuth2Client.getToken(code, (err, token) => {
+    if (err) return console.error('Error retrieving access token', err);
+    console.log(token);
+    oAuth2Client.setCredentials(token);
+    callback(oAuth2Client);
+  });
+  
+  
+  /**
+   * Lists the names and IDs of up to 10 files.
+   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+   */
+  
+  async function listFiles(auth) {
+    const drive = google.drive({ version: "v3", auth });
+    app.set('drive', drive);
+    const res = await drive.files.list({
+      pageSize: 1000,
+      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+      orderBy: "folder"});
+    const files = res.data.files;
+    for(var i = 0; i < files.length; i++) {
+        //TagFile.count({id: files[i].id}, (err, count) => {
+        //  if(err) return console.log(err);
+        //  if(count === 0) {
+        //    var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
+        //    newTags.save((err, res) => {
+        //      if (err) return console.log(err);
+        //      console.log(res);
+        //    })
+        //  }
+        //})
+    }
+    const fileArray = [{
+      file: '',
+      id: '',
+      description: '',
+      type: '',
+      properties: {
+        subject: [],
+        grade: [],
+        industry: [],
+        imgsrc: ''
+      },
+      parents: [],
+    }];
+    if (files.length) {
+      const fileDisplay = [];
+      const fileIdArray = [];
+      const description = [];
+      const mimeType = [];
+      const parents = [];
+      var subjectArray = [];
+      var gradeArray = [];
+      var industryArray = [];
+      const imgsrc = [];
+      var newLoop = [];
+      for (var i = 0; i < files.length; i++) {
+        await TagFile.find({id: files[i].id}, (err, res) => {
+          if (err) return console.log("This is the error for TagFile " + err);
+          //console.log(res);
+          newLoop = res;
+        })
+        //console.log(newLoop.subject);
+        fileDisplay.push(files[i].name);
+        fileIdArray.push(files[i].id);
+        description.push(files[i].description);
+        mimeType.push(files[i].mimeType);
+        parents.push(files[i].parents);
+        subjectArray.push(newLoop.subject)
+        gradeArray.push(newLoop.grade)
+        industryArray.push(newLoop.industry)
+      }
+      for (var y = 0; y < fileDisplay.length; y++) {
+        for(var j = 0; j < subjectArray.length; j++) {
+          if(subjectArray[j] === undefined) {
+            subjectArray[j] = [];
+          }
+        }
+        for(var j = 0; j < gradeArray.length; j++) {
+          if(gradeArray[j] === undefined) {
+            gradeArray[j] = [];
+          }
+        }
+        for(var j = 0; j < industryArray.length; j++) {
+          if(industryArray[j] === undefined) {
+            industryArray[j] = [];
+          }
+        }
+        fileArray.push({
+          file: fileDisplay[y],
+          id: fileIdArray[y],
+          description: description[y],
+          type: mimeType[y],
+          properties: {
+            subject: subjectArray[y],
+            grade: gradeArray[y],
+            industry: industryArray[y],
+            imgsrc: ''
+          },
+          parents: parents[y],
+        });
+      }
+      res.send(fileArray);
+    }
+  }
+})
+
+
 app.post("/accesstoken", (req, res) => {
   const TOKEN_PATH2 = 'tokencode.json';
   var accessToken = req.body.accessToken
@@ -485,6 +650,7 @@ app.post('/login', (req, res, done) => {
                     for(var y = 0; y < specialUsers.length; y++) {
                       if(specialUsers[i] === data[0].email) {
                         done(null, req.session.sessionID);
+                        res.send(req.session.sessionID);
                       }
                       else {
                         return console.log("user does not match any of our records.")
@@ -1883,3 +2049,6 @@ app.post('/classroomexport', async (req, res) => {
 })
 
 
+
+
+// CHROME EXTENSION REQUESTS

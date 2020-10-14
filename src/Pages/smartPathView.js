@@ -5,6 +5,14 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
 
+function importAll(r) {
+  let images = [];
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
+const images = importAll(require.context('./img', false, /\.(png|jpe?g|svg)$/));
+
 
 class SmartPathView extends Component {
    constructor(props) {
@@ -12,7 +20,7 @@ class SmartPathView extends Component {
 
     this.state = {
       driveFiles: [],
-      newFiles: [],
+      smartPathFiles: [],
     };
     this.organizeFiles = this.organizeFiles.bind(this);
   }
@@ -43,8 +51,8 @@ class SmartPathView extends Component {
         if (driveFiles[i].type === 'application/vnd.google-apps.document') {
             driveFiles[i].click = 'https://docs.google.com/document/d/' + driveFiles[i].id;
         }
-      if (driveFiles[i].id === "1BX5E-EKlk6kU7grAtY9zthnTeM5vGsX-") {
-        
+      if (driveFiles[i].parents[0] === "1BX5E-EKlk6kU7grAtY9zthnTeM5vGsX-") {
+        this.setState({smartPathFiles: driveFiles[i]})
       }
     }
     this.setState({newFiles: driveFiles})
@@ -58,11 +66,22 @@ class SmartPathView extends Component {
      <Link to = "/admin"> <Button className = 'btn btn-primary' onClick = {this.props.moveToSmartpath}> Return to Home </Button> </Link>
         <h3> Smartpath Folder </h3>
         <div> 
-        {this.state.newFiles.map(folders => (
+        {this.state.foundFolders.map(folders => (
         <div className = "file-box-search" key={folders}>
-        <input type = "checkbox" name = {folders.file} value = {folders.id}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
-        <p> {folders.description} </p>
-        <img className = "lesson-pic" src = ""></img>
+          <img className = "lesson-pic" src =  {images[folders.properties.imgsrc]}></img>
+          <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+          <p> {folders.description} </p>
+          <p> {folders.type} </p>
+          <Container>
+            <Row>
+              <h2> Contains: </h2>
+            </Row>
+            <Row>
+              <ul>
+                <li>{folders.children[0]}</li>
+              </ul>
+            </Row>
+          </Container>
         </div>))}
 
         </div>

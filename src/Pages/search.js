@@ -2016,23 +2016,19 @@ class Search extends React.Component {
                                             <h2> Found Lessons </h2>
                                                 {this.state.foundFolders.map(folders => (
                                                 <div className = "file-box-search" key={folders}>
+                                                <img className = "lesson-pic" src =  {images[folders.properties.imgsrc]}></img>
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <p> {folders.type} </p>
-                                                <img className = "lesson-pic" src =  {images[folders.properties.imgsrc]}></img>
                                                 <Container>
-                                                <Row>
-                                                <p> Video - {folders.properties.video} </p>
-                                                </Row>
-                                                <Row>
-                                                <p> Rubric - {folders.properties.rubric} </p>
-                                                </Row>
-                                                <Row>
-                                                <p> Handouts - {folders.properties.handout}</p>
-                                                </Row>
-                                                <Row>
-                                                <p><small>Folder id: {folders.id}</small></p>
-                                                </Row>
+                                                  <Row>
+                                                    <h2> Contains: </h2>
+                                                  </Row>
+                                                  <Row>
+                                                    <ul>
+                                                      <li>{folders.children[0]}</li>
+                                                    </ul>
+                                                  </Row>
                                                 </Container>
 
                                                 </div>))}
@@ -2045,9 +2041,8 @@ class Search extends React.Component {
                                                 {this.state.foundFiles.map(files => (
                                                 <div className = "file-box-search" key={files}>
                                                     <input type = "checkbox" name = {files.file} value = {files.id} title = {files.type} onChange = {this.handleChangeCheckFile}></input> <p className = ""> <a href = {files.click}> {files.file} </a> </p>
-                                                    <p> {files.description}</p>
+                                                    <p> {files.description} </p>
                                                     <Row>
-                                                        subjects: {files.properties.subject}
                                                     </Row>
                                                     <Row>
                                                     <p><small>Doc id: {files.id}</small></p>
