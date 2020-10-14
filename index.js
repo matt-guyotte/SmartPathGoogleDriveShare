@@ -277,16 +277,6 @@ async function listFiles(auth) {
 
 /// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
-app.post('/setExtensionCredentials', (req, res) => {
-  const TOKEN_PATH = 'tokenExtension.json';
-  var accessToken = req.body.accessToken
-  console.log("Something Found.")
-  fs.writeFile(TOKEN_PATH, JSON.stringify(accessToken), (err) => {
-    if (err) return console.log(err);
-    console.log('Token stored to', TOKEN_PATH2);
-  })
-})
-
 app.get('/setChromeOauth', (req, res) => {
   // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive.files'];
