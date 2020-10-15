@@ -313,7 +313,7 @@ function authorize(credentials, callback) {
  */
 function getAccessToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
+    access_type: 'online',
     prompt: 'consent',
     scope: SCOPES,
   });
