@@ -101,7 +101,7 @@ const { appsactivity } = require('googleapis/build/src/apis/appsactivity');
 
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.files'];
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -279,7 +279,7 @@ async function listFiles(auth) {
 
 app.get('/setChromeOauth', (req, res) => {
   // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.files'];
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -444,7 +444,7 @@ app.post("/accesstoken", (req, res) => {
 })
 
 app.get("/drivecall2", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive.files'];
+  const SCOPES2 = ['https://www.googleapis.com/auth/drive.file'];
   const TOKENCODE = 'tokencode.json';
   const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
