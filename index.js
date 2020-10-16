@@ -931,7 +931,7 @@ app.get("/drivecall3", (req, res) => {
         // Store the token to disk for later program executions
         fs.writeFile(TOKEN_PATH3, JSON.stringify(token), (err) => {
           if (err) return console.error(err);
-          console.log('Token stored to', TOKEN_PATH2);
+          console.log('Token stored to', TOKEN_PATH3);
         });
         //console.log(oAuth2Client);
         callback(oAuth2Client);
@@ -994,7 +994,7 @@ app.get("/drivecall3", (req, res) => {
           parents: parents[y],
         });
       }
-      //console.log(fileArray)
+      console.log(fileArray)
       res.send(fileArray)
     }
   }
