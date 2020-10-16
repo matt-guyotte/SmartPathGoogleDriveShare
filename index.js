@@ -277,522 +277,7 @@ async function listFiles(auth) {
 
 /// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
-app.get('/setChromeOauth', (req, res) => {
-  // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
-const TOKEN_PATH = 'tokenExtension.json';
-
-// Load client secrets from a local file.
-fs.readFile('credentials2.json', (err, content) => {
-  if (err) return console.log('Error loading client secret file:', err);
-  // Authorize a client with credentials, then call the Google Drive API.
-  authorize(JSON.parse(content), listFiles());
-});
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  const {client_secret, client_id, redirect_uris} = credentials.web;
-  const oAuth2Client = new google.auth.OAuth2(
-    client_id, client_secret, redirect_uris[0]);
-  getAccessToken(oAuth2Client, callback);
-}
-
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-function getAccessToken(oAuth2Client, callback) {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    prompt: 'consent',
-    scope: SCOPES,
-  });
-  console.log(authUrl);
-  res.send(authUrl);
-}
-})
-
-app.post("/getChromeToken", (req, res) => {
-  const accessToken = req.body.accessToken;
-  oAuth2Client.getToken(code, (err, token) => {
-    if (err) return console.error('Error retrieving access token', err);
-    console.log(token);
-    oAuth2Client.setCredentials(token);
-    callback(oAuth2Client);
-  });
-  
-  
-  /**
-   * Lists the names and IDs of up to 10 files.
-   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-   */
-  
-  async function listFiles(auth) {
-    const drive = google.drive({ version: "v3", auth });
-    app.set('drive', drive);
-    const res = await drive.files.list({
-      pageSize: 1000,
-      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
-      orderBy: "folder"});
-    const files = res.data.files;
-    for(var i = 0; i < files.length; i++) {
-        //TagFile.count({id: files[i].id}, (err, count) => {
-        //  if(err) return console.log(err);
-        //  if(count === 0) {
-        //    var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
-        //    newTags.save((err, res) => {
-        //      if (err) return console.log(err);
-        //      console.log(res);
-        //    })
-        //  }
-        //})
-    }
-    const fileArray = [{
-      file: '',
-      id: '',
-      description: '',
-      type: '',
-      properties: {
-        subject: [],
-        grade: [],
-        industry: [],
-        imgsrc: ''
-      },
-      parents: [],
-    }];
-    if (files.length) {
-      const fileDisplay = [];
-      const fileIdArray = [];
-      const description = [];
-      const mimeType = [];
-      const parents = [];
-      var subjectArray = [];
-      var gradeArray = [];
-      var industryArray = [];
-      const imgsrc = [];
-      var newLoop = [];
-      for (var i = 0; i < files.length; i++) {
-        await TagFile.find({id: files[i].id}, (err, res) => {
-          if (err) return console.log("This is the error for TagFile " + err);
-          //console.log(res);
-          newLoop = res;
-        })
-        //console.log(newLoop.subject);
-        fileDisplay.push(files[i].name);
-        fileIdArray.push(files[i].id);
-        description.push(files[i].description);
-        mimeType.push(files[i].mimeType);
-        parents.push(files[i].parents);
-        subjectArray.push(newLoop.subject)
-        gradeArray.push(newLoop.grade)
-        industryArray.push(newLoop.industry)
-      }
-      for (var y = 0; y < fileDisplay.length; y++) {
-        for(var j = 0; j < subjectArray.length; j++) {
-          if(subjectArray[j] === undefined) {
-            subjectArray[j] = [];
-          }
-        }
-        for(var j = 0; j < gradeArray.length; j++) {
-          if(gradeArray[j] === undefined) {
-            gradeArray[j] = [];
-          }
-        }
-        for(var j = 0; j < industryArray.length; j++) {
-          if(industryArray[j] === undefined) {
-            industryArray[j] = [];
-          }
-        }
-        fileArray.push({
-          file: fileDisplay[y],
-          id: fileIdArray[y],
-          description: description[y],
-          type: mimeType[y],
-          properties: {
-            subject: subjectArray[y],
-            grade: gradeArray[y],
-            industry: industryArray[y],
-            imgsrc: ''
-          },
-          parents: parents[y],
-        });
-      }
-      res.send(fileArray);
-    }
-  }
-})
-
-
-app.post("/accesstoken", (req, res) => {
-  const TOKEN_PATH2 = 'tokencode.json';
-  var accessToken = req.body.accessToken
-  console.log("Something Found.")
-  fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
-    if (err) return console.log(err);
-    console.log('Token stored to', TOKEN_PATH2);
-  })
-})
-
-app.get("/drivecall2", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive.file'];
-  const TOKENCODE = 'tokencode.json';
-  const TOKEN_PATH2 = 'token2.json';
-  console.log("drivecall called.")
-
-  // Load client secrets from a local file.
-  fs.readFile('credentials2.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Drive API.
-    authorize2(JSON.parse(content), listFiles);
-  });
-
-  ///**
-  // * Create an OAuth2 client with the given credentials, and then execute the
-  // * given callback function.
-  // * @param {Object} credentials The authorization client credentials.
-  // * @param {function} callback The callback to call with the authorized client.
-  // */
-  function authorize2(credentials, callback) {
-    const {client_secret, client_id, redirect_uris} = credentials.web;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]);
-    listFiles2(oAuth2Client);
-    getAccessToken2(oAuth2Client, listFiles2)
-  }
-
-  function getAccessToken2(oAuth2Client, callback) {
-    fs.readFile(TOKENCODE, (err, code) => {
-      if (err) return console.log(err);
-      oAuth2Client.getToken(JSON.parse(code), (err, token) => {
-        if (err) return console.error('Error retrieving access token', err);
-        oAuth2Client.setCredentials(token);
-        // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
-          if (err) return console.error(err);
-          console.log('Token stored to', TOKEN_PATH2);
-        });
-        //console.log(oAuth2Client);
-        callback(oAuth2Client);
-        listFiles2(oAuth2Client);
-      });
-    })
-  }
-
-  ///**
-  // * Lists the names and IDs of up to 10 files.
-  // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-  // */
-  async function listFiles2(auth) {
-    const drive = google.drive({ version: "v3", auth });
-    app.set("drive2", drive)
-    const response = await drive.files.list({
-      pageSize: 1000,
-      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
-      orderBy: "folder"});
-    const files = response.data.files;
-    //console.log(files)
-    const fileArray = [{
-      file: '',
-      id: '',
-      description: '',
-      type: '',
-      properties: {
-        subject: [],
-        grade: [],
-        industry: [],
-        imgsrc: ''
-      },
-      parents: [],
-    }];
-    if (files.length) {
-      const fileDisplay = [];
-      const fileIdArray = [];
-      const description = [];
-      const mimeType = [];
-      const parents = [];
-      var subjectArray = [];
-      var gradeArray = [];
-      var industryArray = [];
-      const imgsrc = [];
-      var newLoop = [];
-      for (var i = 0; i < files.length; i++) {
-        //console.log(newLoop.subject);
-        fileDisplay.push(files[i].name);
-        fileIdArray.push(files[i].id);
-        description.push(files[i].description);
-        mimeType.push(files[i].mimeType);
-        parents.push(files[i].parents);
-      }
-      for (var y = 0; y < fileDisplay.length; y++) {
-        fileArray.push({
-          file: fileDisplay[y],
-          id: fileIdArray[y],
-          description: description[y],
-          type: mimeType[y],
-          parents: parents[y],
-        });
-      }
-      //console.log(fileArray)
-      res.send(fileArray)
-    }
-  }
-})
-
-
-// Authentication Routes
-
-app.post("/register", (req, res, done) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  const domain = req.body.domain;
-  Domains.find({name: "Domains"}, (err, res) => {
-    if (err) return console.log(err);
-    var foundDomains = res[0].domains;
-    for(var i = 0; i < foundDomains.length; i++) {
-      if(foundDomains[i] === domain) {
-        bcrypt.hash(password, 10, (err, hash) => {
-          var addedUser = new User ({
-              email: email,
-              password: hash,
-              domain: domain,
-          })
-          addedUser.save((err, data) => {
-              if (err) {
-                  return done(err); 
-              }
-              req.session.sessionID = data._id; 
-              console.log(req.session.sessionID); 
-              done(null, data); 
-              console.log(data); 
-          })
-        })
-      }
-      if(foundDomains[i] !== domain) {
-        SpecialUsers.find({name: "Special Users"}, (err, res) => {
-          if (err) return console.log(err);
-          var specialEmails = res[0].emails;
-          for(var y = 0; y < specialEmails.length; y++) {
-            if(specialEmails[i] === email) {
-              bcrypt.hash(password, 10, (err, hash) => {
-                if(err) return console.log(err);
-                var addedUser = new User ({
-                    email: email,
-                    password: hash,
-                    domain: domain,
-                })
-                addedUser.save((err, data) => {
-                    if (err) {
-                        return done(err); 
-                    }
-                    req.session.sessionID = data._id; 
-                    console.log(req.session.sessionID); 
-                    done(null, data); 
-                    console.log(data); 
-                })
-              })
-            }
-          }
-        })
-      }
-    }
-  })
-}); 
-
-app.post('/login', (req, res, done) => {
-  const email = req.body.email; 
-  const password = req.body.password;
-  User.find({email: email}, (err, data) => {
-      if (err) { 
-          done(err); 
-          console.log("email not found.")
-      }
-      else { 
-      console.log('user found!'); 
-      bcrypt.compare(password, data[0].password, (err, result) => {
-          if(err) {
-              done(err);
-              console.log('passwords do not match.')
-          }
-          if(result === true) {
-            req.session.sessionID = data[0]._id; 
-            console.log(data);
-            Domains.find({name: "Domains"}, (err, res) => {
-              if (err) return console.log(err);
-              var foundDomains = res[0].domains;
-              for(var i = 0; i < foundDomains.length; i++) {
-                if(foundDomains[i] === data[0].domain) {
-                  done(null, req.session.sessionID);
-                  console.log(req.session.sessionID); 
-                }
-                if(foundDomains[i] !== data[0].domain) {
-                  SpecialUsers.find({name: "Special Users"}, (err, res) => {
-                    if(err) return console.log(err);
-                    var specialUsers = res[0].emails;
-                    for(var y = 0; y < specialUsers.length; y++) {
-                      if(specialUsers[i] === data[0].email) {
-                        done(null, req.session.sessionID);
-                        res.send(req.session.sessionID);
-                      }
-                      else {
-                        return console.log("user does not match any of our records.")
-                      }
-                    }
-                  })
-                }
-              }
-            })
-          }
-          else {
-              console.log("outside error found")
-          }
-      }) 
-      }
-  })
-})
-
-app.get('/login2', (req, res) => {
-  if(req.session.sessionID) {
-      res.send(true);
-      console.log("login2 ran.")
-  }
-  else{ 
-      res.send(false); 
-  }   
-})
-
-app.get('/logout', function (req, res, done) {
-  console.log("logout called.")
-  if (req.session.sessionID) {
-    req.session.destroy();
-    }
-  });
-
-  //Api Routes
-
-app.get('/apicall', (req, res, done) => {
-  console.log("apicall called.")
-  console.log(req.session.sessionID)
-  if(req.session.sessionID) {
-      console.log(req.session.sessionID)
-      res.send(true);
-  }
-  else {
-  done(null)
-  }
-})
-
-app.get('/domains', (req, res) => {
-  Domains.find({name: "Domains"}, (err, data) => {
-    if (err) return console.log(err);
-    console.log(data)
-    res.send(data);
-  })
-})
-
-app.post('/adddomain', (req, res) => {
-  const newDomains = req.body.domain;
-  console.log(newDomains)
-  Domains.findOneAndUpdate(
-    {name: "Domains"}, 
-    {$push: {domains: newDomains}},
-    {new: true},
-    (err, data) => {console.log(data)})
-})
-
-app.get('/specialusers', (req, res) => {
-  SpecialUsers.find({name: "Special Users"}, (err, data) => {
-    if(err) return console.log(err);
-    console.log(data);
-    res.send(data);
-  })
-})
-
-app.post('/addspecialuser', (req, res) => {
-  const newUser = req.body.specialUser;
-  console.log(newUser)
-  Domains.findOneAndUpdate(
-    {name: "Special Users"}, 
-    {$push: {emails: newDomains}},
-    {new: true},
-    (err, data) => {console.log(data)})
-})
-
-app.get('/api', (req, res, done) => {
-  var fileArray = req.app.get('fileArray');
-  res.send(fileArray);
-  console.log("sent.");
-  done;
-})
-
-app.post('/update', uploads.single('myFile'), (req, res, done) => {
-  var drive = req.app.get('drive');
-  var fileId = req.body.id;
-  var subject = req.body.subject;
-  var grade = req.body.grade;
-  var industry = req.body.industry;
-  const imageUrl = req.file.filename; 
-  TagFile.findOneAndUpdate(
-    {id: fileId}, 
-    {$push: {subject: subject}},
-    {$push: {grade: grade}},
-    {$push: {industry: industry}},
-    {new: true},
-    (err, data) => {console.log(data)})
-})
-
-app.post("/makenew", (req, res) => {
-  var drive = req.app.get('drive');
-  var name = req.body.name;
-  var description = req.body.description;
-  var type = req.body.type;
-  var fileMetadata = {
-    'name': name,
-    'description': description,
-    'mimeType': type,
-  };
-  drive.files.create({
-    resource: fileMetadata,
-  }, function (err, file) {
-    if (err) {
-      // Handle error
-      console.error(err);
-    } else {
-      console.log(file.id);
-    }
-  });
-})
-
-app.post('/profile', uploads.single('myFile'), function (req, res) {
-  var drive = req.app.get('drive');
-  const id = req.body.fileId; 
-  console.log(id);
-  const image = req.file.filename;
-  console.log(image);
-  drive.files.update({
-    fileId: id,
-    requestBody: {properties: {imgsrc: image}},
-  })
-})
-
-app.get('/download', (req, res) => {
-  console.log("file downloaded.")
-  const fileName = req.app.get('fileName');
-  const type = req.app.get('type')
-  var pathStart = './src/Pages/downloads/'
-  var newPath = pathStart.concat(fileName + '.' + type)
-  console.log(newPath)
-  res.download(newPath)
-})
+// Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
   const JSZip = require('jszip');
@@ -1232,6 +717,292 @@ app.post("/downloaddocument", async (req, res) => {
   //  console.log(topFolderPathZip)
   //});  
 })
+
+
+//Web App Routes
+
+app.post("/accesstoken", (req, res) => {
+  const TOKEN_PATH2 = 'tokencode.json';
+  var accessToken = req.body.accessToken
+  console.log("Something Found.")
+  fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
+    if (err) return console.log(err);
+    console.log('Token stored to', TOKEN_PATH2);
+  })
+})
+
+app.get("/drivecall2", (req, res) => {
+  const SCOPES2 = ['https://www.googleapis.com/auth/drive.file'];
+  const TOKENCODE = 'tokencode.json';
+  const TOKEN_PATH2 = 'token2.json';
+  console.log("drivecall called.")
+
+  // Load client secrets from a local file.
+  fs.readFile('credentials2.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize2(JSON.parse(content), listFiles);
+  });
+
+  ///**
+  // * Create an OAuth2 client with the given credentials, and then execute the
+  // * given callback function.
+  // * @param {Object} credentials The authorization client credentials.
+  // * @param {function} callback The callback to call with the authorized client.
+  // */
+  function authorize2(credentials, callback) {
+    const {client_secret, client_id, redirect_uris} = credentials.web;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+    listFiles2(oAuth2Client);
+    getAccessToken2(oAuth2Client, listFiles2)
+  }
+
+  function getAccessToken2(oAuth2Client, callback) {
+    fs.readFile(TOKENCODE, (err, code) => {
+      if (err) return console.log(err);
+      oAuth2Client.getToken(JSON.parse(code), (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+        oAuth2Client.setCredentials(token);
+        // Store the token to disk for later program executions
+        fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
+          if (err) return console.error(err);
+          console.log('Token stored to', TOKEN_PATH2);
+        });
+        //console.log(oAuth2Client);
+        callback(oAuth2Client);
+        listFiles2(oAuth2Client);
+      });
+    })
+  }
+
+  ///**
+  // * Lists the names and IDs of up to 10 files.
+  // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+  // */
+  async function listFiles2(auth) {
+    const drive = google.drive({ version: "v3", auth });
+    app.set("drive2", drive)
+    const response = await drive.files.list({
+      pageSize: 1000,
+      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+      orderBy: "folder"});
+    const files = response.data.files;
+    //console.log(files)
+    const fileArray = [{
+      file: '',
+      id: '',
+      description: '',
+      type: '',
+      properties: {
+        subject: [],
+        grade: [],
+        industry: [],
+        imgsrc: ''
+      },
+      parents: [],
+    }];
+    if (files.length) {
+      const fileDisplay = [];
+      const fileIdArray = [];
+      const description = [];
+      const mimeType = [];
+      const parents = [];
+      var subjectArray = [];
+      var gradeArray = [];
+      var industryArray = [];
+      const imgsrc = [];
+      var newLoop = [];
+      for (var i = 0; i < files.length; i++) {
+        //console.log(newLoop.subject);
+        fileDisplay.push(files[i].name);
+        fileIdArray.push(files[i].id);
+        description.push(files[i].description);
+        mimeType.push(files[i].mimeType);
+        parents.push(files[i].parents);
+      }
+      for (var y = 0; y < fileDisplay.length; y++) {
+        fileArray.push({
+          file: fileDisplay[y],
+          id: fileIdArray[y],
+          description: description[y],
+          type: mimeType[y],
+          parents: parents[y],
+        });
+      }
+      //console.log(fileArray)
+      res.send(fileArray)
+    }
+  }
+})
+
+
+
+// Extension Routes
+
+app.get('/setChromeOauth', (req, res) => {
+  // If modifying these scopes, delete token.json.
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+// The file token.json stores the user's access and refresh tokens, and is
+// created automatically when the authorization flow completes for the first
+// time.
+const TOKEN_PATH = 'tokenExtension.json';
+
+// Load client secrets from a local file.
+fs.readFile('credentials2.json', (err, content) => {
+  if (err) return console.log('Error loading client secret file:', err);
+  // Authorize a client with credentials, then call the Google Drive API.
+  authorize(JSON.parse(content), listFiles());
+});
+
+/**
+ * Create an OAuth2 client with the given credentials, and then execute the
+ * given callback function.
+ * @param {Object} credentials The authorization client credentials.
+ * @param {function} callback The callback to call with the authorized client.
+ */
+function authorize(credentials, callback) {
+  const {client_secret, client_id, redirect_uris} = credentials.web;
+  const oAuth2Client = new google.auth.OAuth2(
+    client_id, client_secret, redirect_uris[0]);
+  getAccessToken(oAuth2Client, callback);
+}
+
+/**
+ * Get and store new token after prompting for user authorization, and then
+ * execute the given callback with the authorized OAuth2 client.
+ * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+ * @param {getEventsCallback} callback The callback for the authorized client.
+ */
+function getAccessToken(oAuth2Client, callback) {
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    prompt: 'consent',
+    scope: SCOPES,
+  });
+  console.log(authUrl);
+  res.send(authUrl);
+}
+})
+
+app.post("/getChromeToken", (req, res) => {
+  const TOKEN_PATH3 = 'tokencode_extension.json';
+  var accessToken = req.body.accessToken
+  console.log("Something Found.")
+  fs.writeFile(TOKEN_PATH3, JSON.stringify(accessToken), (err) => {
+    if (err) return console.log(err);
+    console.log('Token stored to', TOKEN_PATH3);
+  })
+})
+
+app.get("/drivecall3", (req, res) => {
+  const SCOPES3 = ['https://www.googleapis.com/auth/drive.file'];
+  const TOKENCODE = 'tokencode_extension.json';
+  const TOKEN_PATH3 = 'token3.json';
+  console.log("drivecall called.")
+
+  // Load client secrets from a local file.
+  fs.readFile('credentials2.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize3(JSON.parse(content), listFiles3);
+  });
+
+  ///**
+  // * Create an OAuth2 client with the given credentials, and then execute the
+  // * given callback function.
+  // * @param {Object} credentials The authorization client credentials.
+  // * @param {function} callback The callback to call with the authorized client.
+  // */
+  function authorize3(credentials, callback) {
+    const {client_secret, client_id, redirect_uris} = credentials.web;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+    listFiles3(oAuth2Client);
+    getAccessToken3(oAuth2Client, listFiles3)
+  }
+
+  function getAccessToken3(oAuth2Client, callback) {
+    fs.readFile(TOKENCODE, (err, code) => {
+      if (err) return console.log(err);
+      oAuth2Client.getToken(JSON.parse(code), (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+        oAuth2Client.setCredentials(token);
+        // Store the token to disk for later program executions
+        fs.writeFile(TOKEN_PATH3, JSON.stringify(token), (err) => {
+          if (err) return console.error(err);
+          console.log('Token stored to', TOKEN_PATH2);
+        });
+        //console.log(oAuth2Client);
+        callback(oAuth2Client);
+        listFiles3(oAuth2Client);
+      });
+    })
+  }
+
+  ///**
+  // * Lists the names and IDs of up to 10 files.
+  // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+  // */
+  async function listFiles3(auth) {
+    const drive = google.drive({ version: "v3", auth });
+    app.set("drive3", drive)
+    const response = await drive.files.list({
+      pageSize: 1000,
+      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+      orderBy: "folder"});
+    const files = response.data.files;
+    //console.log(files)
+    const fileArray = [{
+      file: '',
+      id: '',
+      description: '',
+      type: '',
+      properties: {
+        subject: [],
+        grade: [],
+        industry: [],
+        imgsrc: ''
+      },
+      parents: [],
+    }];
+    if (files.length) {
+      const fileDisplay = [];
+      const fileIdArray = [];
+      const description = [];
+      const mimeType = [];
+      const parents = [];
+      var subjectArray = [];
+      var gradeArray = [];
+      var industryArray = [];
+      const imgsrc = [];
+      var newLoop = [];
+      for (var i = 0; i < files.length; i++) {
+        //console.log(newLoop.subject);
+        fileDisplay.push(files[i].name);
+        fileIdArray.push(files[i].id);
+        description.push(files[i].description);
+        mimeType.push(files[i].mimeType);
+        parents.push(files[i].parents);
+      }
+      for (var y = 0; y < fileDisplay.length; y++) {
+        fileArray.push({
+          file: fileDisplay[y],
+          id: fileIdArray[y],
+          description: description[y],
+          type: mimeType[y],
+          parents: parents[y],
+        });
+      }
+      //console.log(fileArray)
+      res.send(fileArray)
+    }
+  }
+})
+
+// Push To Drive 
+
+  // Web App Push 
 
 app.post('/classroomexport', async (req, res) => {
   const files = req.body.fileArray;
@@ -2039,7 +1810,1058 @@ app.post('/classroomexport', async (req, res) => {
   }
 })
 
+  // Extension Push
 
+app.post('/classroomexport2', async (req, res) => {
+  const files = req.body.fileArray;
+  console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
+  const parentFolder = req.body.parentId;
+  function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+  const drive = req.app.get('drive3');
+  for(var i = 0; i < files.length; i++) {
+    if (files[i].type != "folder") {
+      const fileName = files[i].name;
+      const type = files[i].type;
+      const description = files[i].description;
+      let newType = ''
+      if(type === 'docx') {
+        newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      }
+      if(type === 'pptx') {
+        newType = 'application/vnd.google-apps.presentation'
+      }
+      if(type === 'xlsx') {
+        newType === 'application/vnd.google-apps.spreadsheet'
+      }
+
+      const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+      console.log(destSimple)
+
+      let newId = ''
+
+      var fileMetadata = {
+        'name': fileName,
+        'description': description,
+        'parents': [parentFolder]
+      };
+      console.log(fileMetadata)
+      var media = {
+        mimeType: newType,
+        body: fs.createReadStream(destSimple)
+      };
+      console.log("This is the body of topfile " + media)
+      await drive.files.create({
+        resource: fileMetadata,
+        media: media,
+        fields: 'id'
+      }, function (err, file) {
+        if (err) {
+          console.log("Error for file creation: " + err);
+        } else {
+          console.log(file);
+          newId = file.id;
+        }
+      });
+    }
+    if(files[i].type === "folder") {
+      const fileName = files[i].name;
+      const description = files[i].description;
+      let newType = 'application/vnd.google-apps.folder'
+
+      const destSimple = './src/Pages/downloads/' + fileName;
+    
+      var fileMetadata = {
+        'name': fileName,
+        'description': description,
+        'parents': [parentFolder],
+        'mimeType': newType,
+      };
+      function driveCreateFolder() {
+        return new Promise(function (resolve, reject) { 
+          drive.files.create({
+            resource: fileMetadata,
+            fields: 'id',
+          }, function (err, file) {
+            if (err) {
+              console.log("Error for file creation: " + err);
+            } else {
+              console.log(file)
+              var newIdFolderIn = file.data.id;
+              resolve(app.set('newIdFolder', newIdFolderIn));
+              console.log("This is the top folder id = " + file.data.id)
+            }
+          });
+        })
+      }
+      await driveCreateFolder();
+      sleep(2000);
+      //1
+      for(var y = 0; y < files[i].children.length; y++) {
+        const level1 = files[i].children[y]; 
+        var newIdFolder = req.app.get('newIdFolder');
+        if (level1.type != "folder") {
+          const fileName1 = level1.name;
+          const type1 = level1.type;
+          const description1 = level1.description;
+          console.log("top folder id in function = " + newIdFolder)
+          let newType1 = ''
+          if(type1 === 'docx') {
+            newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          }
+          if(type1 === 'pptx') {
+            newType1 = 'application/vnd.google-apps.presentation'
+          }
+          if(type1 === 'xlsx') {
+            newType1 === 'application/vnd.google-apps.spreadsheet'
+          }
+    
+          const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
+          console.log("This is the first destination: " + destSimple1)
+    
+          let newId1 = ''
+    
+          var fileMetadata1 = {
+            'name': fileName1,
+            'description': description1,
+            'parents': [newIdFolder]
+          };
+          console.log("This is the file metadata for level1 files: " + fileMetadata1)
+          var media1 = {
+            mimeType: newType1,
+            body: fs.createReadStream(destSimple1)
+          };
+          console.log("This is the body for level1 files: " + media1)
+          drive.files.create({
+            resource: fileMetadata1,
+            media: media1,
+            fields: 'id'
+          }, function (err, file) {
+            if (err) {
+              console.log("Error for file creation at 1195: " + err);
+            } else {
+              //console.log(file);
+              newId1 = file.id;
+            }
+          });
+        }
+        if(level1.type === "folder") {
+          const fileName1 = level1.name;
+          const description1 = level1.description;
+          let newType = 'application/vnd.google-apps.folder'
+        
+          var fileMetadata1 = {
+            'name': fileName1,
+            'description': description1,
+            'parents': [newIdFolder],
+            'mimeType': newType,
+          };
+          function driveCreateFolder1() {
+            return new Promise(function (resolve, reject) { 
+              drive.files.create({
+                resource: fileMetadata1,
+                fields: 'id',
+              }, function (err, file) {
+                if (err) {
+                  console.log("Error for file creation: " + err);
+                } else {
+                  console.log(file)
+                  var newIdFolderIn1 = file.data.id;
+                  resolve(app.set('newIdFolder1', newIdFolderIn1));
+                }
+              });
+            })
+          }
+          await driveCreateFolder1();
+          sleep(2000);
+          //2
+          for(var a = 0; a < level1.children.length; a++) {
+            const level2 = level1.children[a]; 
+            var newIdFolder1 = req.app.get('newIdFolder1');
+            if (level2.type != "folder") {
+              const fileName2 = level2.name;
+              const type2 = level2.type;
+              const description2 = level2.description;
+              let newType2 = ''
+              if(type2 === 'docx') {
+                newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+              }
+              if(type2 === 'pptx') {
+                newType2 = 'application/vnd.google-apps.presentation'
+              }
+              if(type2 === 'xlsx') {
+                newType2 === 'application/vnd.google-apps.spreadsheet'
+              }
+        
+              const destSimple2 = destSimple1 + '/' + fileName2 + '.' + type2;
+        
+              let newId2 = ''
+        
+              var fileMetadata2 = {
+                'name': fileName2,
+                'description': description2,
+                'parents': [newIdFolder1]
+              };
+              console.log(fileMetadata)
+              var media2 = {
+                mimeType: newType2,
+                body: fs.createReadStream(destSimple2, (err) => {if(err) return console.log(err)})
+              };
+              console.log(media)
+              await drive.files.create({
+                resource: fileMetadata2,
+                media: media2,
+                fields: 'id'
+              }, function (err, file) {
+                if (err) {
+                  console.log("Error for file creation: " + err);
+                } else {
+                  console.log(file.id);
+                  newId2 = file.id;
+                }
+              });
+            }
+            if(level2.type === "folder") {
+              const fileName2 = level2.name;
+              const description2 = level2.description;
+              let newType2 = 'application/vnd.google-apps.folder'
+            
+              var fileMetadata2 = {
+                'name': fileName2,
+                'description': description2,
+                'parents': [newIdFolder1],
+                'mimeType': newType2,
+              };
+              function driveCreateFolder2() {
+                return new Promise(function (resolve, reject) { 
+                  drive.files.create({
+                    resource: fileMetadata2,
+                    fields: 'id',
+                  }, function (err, file) {
+                    if (err) {
+                      console.log("Error for file creation: " + err);
+                    } else {
+                      console.log(file)
+                      var newIdFolderIn2 = file.data.id;
+                      resolve(app.set('newIdFolder2', newIdFolderIn2));
+                    }
+                  });
+                })
+              }
+              await driveCreateFolder2();
+              sleep(2000);
+              if(level2.children != []) {
+                //3
+                for(var b = 0; b < level2.children.length; b++) {
+                  const level3 = level2.children[b]; 
+                  var newIdFolder2 = req.app.get('newIdFolder2');
+                  if (level3.type != "folder") {
+                    const fileName3 = level3.name;
+                    const type3 = level3.type;
+                    const description3 = level3.description;
+                    let newType3 = ''
+                    if(type3 === 'docx') {
+                      newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    }
+                    if(type3 === 'pptx') {
+                      newType3 = 'application/vnd.google-apps.presentation'
+                    }
+                    if(type3 === 'xlsx') {
+                      newType3 === 'application/vnd.google-apps.spreadsheet'
+                    }
+              
+                    const destSimple3 = destSimple2 + '/' + fileName3 + '.' + type3;
+              
+                    let newId3 = ''
+              
+                    var fileMetadata3 = {
+                      'name': fileName3,
+                      'description': description3,
+                      'parents': [newIdFolder2]
+                    };
+                    console.log(fileMetadata)
+                    var media3 = {
+                      mimeType: newType3,
+                      body: fs.createReadStream(destSimple3, (err) => {if(err) return console.log(err)})
+                    };
+                    console.log(media)
+                    await drive.files.create({
+                      resource: fileMetadata3,
+                      media: media3,
+                      fields: 'id'
+                    }, function (err, file) {
+                      if (err) {
+                        console.log("Error for file creation: " + err);
+                      } else {
+                        console.log(file.id);
+                        newId3 = file.id;
+                      }
+                    });
+                  }
+                  if(level3.type === "folder") {
+                    const fileName3 = level3.name;
+                    const description3 = level3.description;
+                    let newType3 = 'application/vnd.google-apps.folder'
+                  
+                    var fileMetadata3 = {
+                      'name': fileName3,
+                      'description': description3,
+                      'parents': [newIdFolder2],
+                      'mimeType': newType3,
+                    };
+                    function driveCreateFolder3() {
+                      return new Promise(function (resolve, reject) { 
+                        drive.files.create({
+                          resource: fileMetadata3,
+                          fields: 'id',
+                        }, function (err, file) {
+                          if (err) {
+                            console.log("Error for file creation: " + err);
+                          } else {
+                            var newIdFolderIn3 = file.data.id;
+                            resolve(app.set('newIdFolder3', newIdFolderIn3));
+                          }
+                        });
+                      })
+                    }
+                    await driveCreateFolder3();
+                    sleep(2000);
+                    if(level3.children != []) {
+                      //4
+                      for(var c = 0; c < level3.children.length; c++) {
+                        const level14 = level3.children[c]; 
+                        var newIdFolder3 = req.app.get('newIdFolder3');
+                        if (level4.type != "folder") {
+                          const fileName4 = level4.name;
+                          const type4 = level4.type;
+                          const description4 = level4.description;
+                          let newType4 = ''
+                          if(type4 === 'docx') {
+                            newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                          }
+                          if(type4 === 'pptx') {
+                            newType4 = 'application/vnd.google-apps.presentation'
+                          }
+                          if(type4 === 'xlsx') {
+                            newType4 === 'application/vnd.google-apps.spreadsheet'
+                          }
+                    
+                          const destSimple4 = destSimple3 + "/" + fileName4 + '.' + type4;
+                    
+                          let newId4 = ''
+                    
+                          var fileMetadata4 = {
+                            'name': fileName4,
+                            'description': description4,
+                            'parents': [newIdFolder3]
+                          };
+                          console.log(fileMetadata)
+                          var media4 = {
+                            mimeType: newType4,
+                            body: fs.createReadStream(destSimple4, (err) => {if(err) return console.log(err)})
+                          };
+                          console.log(media)
+                          await drive.files.create({
+                            resource: fileMetadata4,
+                            media: media4,
+                            fields: 'id'
+                          }, function (err, file) {
+                            if (err) {
+                              console.log("Error for file creation: " + err);
+                            } else {
+                              console.log(file.id);
+                              newId4 = file.id;
+                            }
+                          });
+                        }
+                        if(level4.type === "folder") {
+                          const fileName4 = level4.name;
+                          const description4 = level4.description;
+                          let newType4 = 'application/vnd.google-apps.folder'
+                        
+                          var fileMetadata4 = {
+                            'name': fileName4,
+                            'description': description4,
+                            'parents': [newIdFolder3],
+                            'mimeType': newType4,
+                          };
+                          function driveCreateFolder4() {
+                            return new Promise(function (resolve, reject) { 
+                              drive.files.create({
+                                resource: fileMetadata4,
+                                fields: 'id',
+                              }, function (err, file) {
+                                if (err) {
+                                  console.log("Error for file creation: " + err);
+                                } else {
+                                  var newIdFolderIn4 = file.data.id;
+                                  resolve(app.set('newIdFolder4', newIdFolderIn4));
+                                }
+                              });
+                            })
+                          }
+                          await driveCreateFolder4();
+                          sleep(2000);
+                          if(level4.children != []) {
+                            //5
+                            for(var d = 0; d < level4.children.length; d++) {
+                              const level5 = level4.children[d]; 
+                              var newIdFolder4 = req.app.get('newIdFolder4');
+                              if (level5.type != "folder") {
+                                const fileName5 = level5.name;
+                                const type5 = level5.type;
+                                const description5 = level5.description;
+                                let newType5 = ''
+                                if(type5 === 'docx') {
+                                  newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                }
+                                if(type5 === 'pptx') {
+                                  newType5 = 'application/vnd.google-apps.presentation'
+                                }
+                                if(type5 === 'xlsx') {
+                                  newType5 === 'application/vnd.google-apps.spreadsheet'
+                                }
+                          
+                                const destSimple5 = destSimple4 + "/" + fileName5 + '.' + type5;
+                          
+                                let newId5 = ''
+                          
+                                var fileMetadata5 = {
+                                  'name': fileName5,
+                                  'description': description5,
+                                  'parents': [newIdFolder4]
+                                };
+                                console.log(fileMetadata)
+                                var media5 = {
+                                  mimeType: newType5,
+                                  body: fs.createReadStream(destSimple5, (err) => {if(err) return console.log(err)})
+                                };
+                                console.log(media)
+                                await drive.files.create({
+                                  resource: fileMetadata5,
+                                  media: media5,
+                                  fields: 'id'
+                                }, function (err, file) {
+                                  if (err) {
+                                    console.log("Error for file creation: " + err);
+                                  } else {
+                                    console.log(file.id);
+                                    newId5 = file.id;
+                                  }
+                                });
+                              }
+                              if(level5.type === "folder") {
+                                const fileName5 = level5.name;
+                                const description5 = level5.description;
+                                let newType5 = 'application/vnd.google-apps.folder'
+                              
+                                var fileMetadata5 = {
+                                  'name': fileName5,
+                                  'description': description5,
+                                  'parents': [newIdFolder4],
+                                  'mimeType': newType5,
+                                };
+                                function driveCreateFolder5() {
+                                  return new Promise(function (resolve, reject) { 
+                                    drive.files.create({
+                                      resource: fileMetadata5,
+                                      fields: 'id',
+                                    }, function (err, file) {
+                                      if (err) {
+                                        console.log("Error for file creation: " + err);
+                                      } else {
+                                        var newIdFolderIn5 = file.data.id;
+                                        resolve(app.set('newIdFolder5', newIdFolderIn5));
+                                      }
+                                    });
+                                  })
+                                }
+                                await driveCreateFolder5();
+                                sleep(2000);
+                                if(level5.children != []) {
+                                  //6
+                                  for(var e = 0; e < level5.children.length; e++) {
+                                    const level6 = level5.children[e]; 
+                                    var newIdFolder5 = req.app.get('newIdFolder5');
+                                    if (level6.type != "folder") {
+                                      const fileName6 = level6.name;
+                                      const type6 = level6.type;
+                                      const description6 = level6.description;
+                                      let newType6 = ''
+                                      if(type6 === 'docx') {
+                                        newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                      }
+                                      if(type6 === 'pptx') {
+                                        newType6 = 'application/vnd.google-apps.presentation'
+                                      }
+                                      if(type6 === 'xlsx') {
+                                        newType6 === 'application/vnd.google-apps.spreadsheet'
+                                      }
+                                
+                                      const destSimple6 = destSimple5 + "/" + fileName6 + '.' + type6;
+                                
+                                      let newId6 = ''
+                                
+                                      var fileMetadata6 = {
+                                        'name': fileName6,
+                                        'description': description6,
+                                        'parents': [newIdFolder5]
+                                      };
+                                      console.log(fileMetadata)
+                                      var media6 = {
+                                        mimeType: newType6,
+                                        body: fs.createReadStream(destSimple6, (err) => {if(err) return console.log(err)})
+                                      };
+                                      console.log(media)
+                                      await drive.files.create({
+                                        resource: fileMetadata6,
+                                        media: media6,
+                                        fields: 'id'
+                                      }, function (err, file) {
+                                        if (err) {
+                                          console.log("Error for file creation: " + err);
+                                        } else {
+                                          console.log(file.id);
+                                          newId6 = file.id;
+                                        }
+                                      });
+                                    }
+                                    if(level6.type === "folder") {
+                                      const fileName6 = level6.name;
+                                      const description6 = level6.description;
+                                      let newType6 = 'application/vnd.google-apps.folder'
+                                    
+                                      var fileMetadata6 = {
+                                        'name': fileName6,
+                                        'description': description6,
+                                        'parents': [newIdFolder5],
+                                        'mimeType': newType6,
+                                      };
+                                      function driveCreateFolder6() {
+                                        return new Promise(function (resolve, reject) { 
+                                          drive.files.create({
+                                            resource: fileMetadata6,
+                                            fields: 'id',
+                                          }, function (err, file) {
+                                            if (err) {
+                                              console.log("Error for file creation: " + err);
+                                            } else {
+                                              var newIdFolderIn6 = file.data.id;
+                                              resolve(app.set('newIdFolder6', newIdFolderIn6));
+                                            }
+                                          });
+                                        })
+                                      }
+                                      await driveCreateFolder6();
+                                      sleep(2000);
+                                      if(level6.children != []) {
+                                        //7
+                                        for(var f = 0; f < level6.children.length; f++) {
+                                          const level7 = level6.children[f]; 
+                                          var newIdFolder6 = req.app.get('newIdFolder6');
+                                          if (level7.type != "folder") {
+                                            const fileName7 = level7.name;
+                                            const type7 = level7.type;
+                                            const description7 = level7.description;
+                                            let newType7 = ''
+                                            if(type7 === 'docx') {
+                                              newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                            }
+                                            if(type7 === 'pptx') {
+                                              newType7 = 'application/vnd.google-apps.presentation'
+                                            }
+                                            if(type7 === 'xlsx') {
+                                              newType7 === 'application/vnd.google-apps.spreadsheet'
+                                            }
+                                      
+                                            const destSimple7 = destSimple6 + "/" + fileName7 + '.' + type7;
+                                      
+                                            let newId7 = ''
+                                      
+                                            var fileMetadata7 = {
+                                              'name': fileName7,
+                                              'description': description7,
+                                              'parents': [newIdFolder6]
+                                            };
+                                            console.log(fileMetadata)
+                                            var media7 = {
+                                              mimeType: newType7,
+                                              body: fs.createReadStream(destSimple7, (err) => {if(err) return console.log(err)})
+                                            };
+                                            console.log(media)
+                                            await drive.files.create({
+                                              resource: fileMetadata7,
+                                              media: media7,
+                                              fields: 'id'
+                                            }, function (err, file) {
+                                              if (err) {
+                                                console.log("Error for file creation: " + err);
+                                              } else {
+                                                console.log(file.id);
+                                                newId7 = file.id;
+                                              }
+                                            });
+                                          }
+                                          if(level7.type === "folder") {
+                                            const fileName7 = level7.name;
+                                            const description7 = level7.description;
+                                            let newType7 = 'application/vnd.google-apps.folder'
+                                          
+                                            var fileMetadata7 = {
+                                              'name': fileName7,
+                                              'description': description7,
+                                              'parents': [newIdFolder6],
+                                              'mimeType': newType7,
+                                            };
+                                            function driveCreateFolder7() {
+                                              return new Promise(function (resolve, reject) { 
+                                                drive.files.create({
+                                                  resource: fileMetadata7,
+                                                  fields: 'id',
+                                                }, function (err, file) {
+                                                  if (err) {
+                                                    console.log("Error for file creation: " + err);
+                                                  } else {
+                                                    var newIdFolderIn7 = file.data.id;
+                                                    resolve(app.set('newIdFolder7', newIdFolderIn7));
+                                                  }
+                                                });
+                                              })
+                                            }
+                                            await driveCreateFolder7();
+                                            sleep(2000);
+                                            if(level7.children != []) {
+                                              //8
+                                              for(var g = 0; g < level7.children.length; g++) {
+                                                const level8 = level7.children[g];
+                                                var newIdFolder7 = req.app.get('newIdFolder7'); 
+                                                if (level8.type != "folder") {
+                                                  const fileName8 = level8.name;
+                                                  const type8 = level8.type;
+                                                  const description8 = level8.description;
+                                                  let newType8 = ''
+                                                  if(type8 === 'docx') {
+                                                    newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                  }
+                                                  if(type8 === 'pptx') {
+                                                    newType8 = 'application/vnd.google-apps.presentation'
+                                                  }
+                                                  if(type8 === 'xlsx') {
+                                                    newType8 === 'application/vnd.google-apps.spreadsheet'
+                                                  }
+                                            
+                                                  const destSimple8 = destSimple7 + "/" + fileName8 + '.' + type8;
+                                            
+                                                  let newId8 = ''
+                                            
+                                                  var fileMetadata8 = {
+                                                    'name': fileName8,
+                                                    'description': description8,
+                                                    'parents': [newIdFolder7]
+                                                  };
+                                                  console.log(fileMetadata)
+                                                  var media8 = {
+                                                    mimeType: newType8,
+                                                    body: fs.createReadStream(destSimple8, (err) => {if(err) return console.log(err)})
+                                                  };
+                                                  console.log(media)
+                                                  await drive.files.create({
+                                                    resource: fileMetadata8,
+                                                    media: media8,
+                                                    fields: 'id'
+                                                  }, function (err, file) {
+                                                    if (err) {
+                                                      console.log("Error for file creation: " + err);
+                                                    } else {
+                                                      console.log(file.id);
+                                                      newId8 = file.id;
+                                                    }
+                                                  });
+                                                }
+                                                if(level8.type === "folder") {
+                                                  const fileName8 = level8.name;
+                                                  const description8 = level8.description;
+                                                  let newType8 = 'application/vnd.google-apps.folder'
+                                                
+                                                  var fileMetadata8 = {
+                                                    'name': fileName8,
+                                                    'description': description8,
+                                                    'parents': [newIdFolder7],
+                                                    'mimeType': newType8,
+                                                  };
+                                                  function driveCreateFolder8() {
+                                                    return new Promise(function (resolve, reject) { 
+                                                      drive.files.create({
+                                                        resource: fileMetadata8,
+                                                        fields: 'id',
+                                                      }, function (err, file) {
+                                                        if (err) {
+                                                          console.log("Error for file creation: " + err);
+                                                        } else {
+                                                          var newIdFolderIn8 = file.data.id;
+                                                          resolve(app.set('newIdFolder8', newIdFolderIn8));
+                                                        }
+                                                      });
+                                                    })
+                                                  }
+                                                  await driveCreateFolder8();
+                                                  sleep(2000);
+                                                  if(level8.children != []) {
+                                                    //9
+                                                    for(var h = 0; h < level8.children.length; h++) {
+                                                      const level9 = level8.children[h]; 
+                                                      var newIdFolder8 = req.app.get('newIdFolder8');
+                                                      if (level9.type != "folder") {
+                                                        const fileName9 = level9.name;
+                                                        const type9 = level9.type;
+                                                        const description9 = level9.description;
+                                                        let newType9 = ''
+                                                        if(type9 === 'docx') {
+                                                          newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                        }
+                                                        if(type9 === 'pptx') {
+                                                          newType9 = 'application/vnd.google-apps.presentation'
+                                                        }
+                                                        if(type9 === 'xlsx') {
+                                                          newType9 === 'application/vnd.google-apps.spreadsheet'
+                                                        }
+                                                  
+                                                        const destSimple9 = destSimple8 + "/" + fileName9 + '.' + type9;
+                                                  
+                                                        let newId9 = ''
+                                                  
+                                                        var fileMetadata9 = {
+                                                          'name': fileName9,
+                                                          'description': description9,
+                                                          'parents': [newIdFolder8]
+                                                        };
+                                                        console.log(fileMetadata)
+                                                        var media9 = {
+                                                          mimeType: newType9,
+                                                          body: fs.createReadStream(destSimple9, (err) => {if(err) return console.log(err)})
+                                                        };
+                                                        console.log(media)
+                                                        await drive.files.create({
+                                                          resource: fileMetadata9,
+                                                          media: media9,
+                                                          fields: 'id'
+                                                        }, function (err, file) {
+                                                          if (err) {
+                                                            console.log("Error for file creation: " + err);
+                                                          } else {
+                                                            console.log(file.id);
+                                                            newId9 = file.id;
+                                                          }
+                                                        });
+                                                      }
+                                                      if(level9.type === "folder") {
+                                                        const fileName9 = level9.name;
+                                                        const description9 = level9.description;
+                                                        let newType9 = 'application/vnd.google-apps.folder'
+                                                      
+                                                        var fileMetadata9 = {
+                                                          'name': fileName9,
+                                                          'description': description9,
+                                                          'parents': [newIdFolder8],
+                                                          'mimeType': newType9,
+                                                        };
+                                                        function driveCreateFolder9() {
+                                                          return new Promise(function (resolve, reject) { 
+                                                            drive.files.create({
+                                                              resource: fileMetadata9,
+                                                              fields: 'id',
+                                                            }, function (err, file) {
+                                                              if (err) {
+                                                                console.log("Error for file creation: " + err);
+                                                              } else {
+                                                                var newIdFolderIn9 = file.data.id;
+                                                                resolve(app.set('newIdFolder9', newIdFolderIn9));
+                                                              }
+                                                            });
+                                                          })
+                                                        }
+                                                        await driveCreateFolder9();
+                                                        if(level9.children != []) {
+                                                          console.log("maximum file depth reached.")
+                                                        } 
+                                                      }
+                                                    }
+                                                  } 
+                                                }
+                                              }
+                                            } 
+                                          }
+                                        }
+                                      } 
+                                    }
+                                  }
+                                } 
+                              }
+                            }
+                          } 
+                        }
+                      }
+                    } 
+                  }
+                }
+              } 
+            }
+          } 
+        }
+      } 
+    }
+  }
+})
+
+// Authentication Routes
+
+app.post("/register", (req, res, done) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const domain = req.body.domain;
+  Domains.find({name: "Domains"}, (err, res) => {
+    if (err) return console.log(err);
+    var foundDomains = res[0].domains;
+    for(var i = 0; i < foundDomains.length; i++) {
+      if(foundDomains[i] === domain) {
+        bcrypt.hash(password, 10, (err, hash) => {
+          var addedUser = new User ({
+              email: email,
+              password: hash,
+              domain: domain,
+          })
+          addedUser.save((err, data) => {
+              if (err) {
+                  return done(err); 
+              }
+              req.session.sessionID = data._id; 
+              console.log(req.session.sessionID); 
+              done(null, data); 
+              console.log(data); 
+          })
+        })
+      }
+      if(foundDomains[i] !== domain) {
+        SpecialUsers.find({name: "Special Users"}, (err, res) => {
+          if (err) return console.log(err);
+          var specialEmails = res[0].emails;
+          for(var y = 0; y < specialEmails.length; y++) {
+            if(specialEmails[i] === email) {
+              bcrypt.hash(password, 10, (err, hash) => {
+                if(err) return console.log(err);
+                var addedUser = new User ({
+                    email: email,
+                    password: hash,
+                    domain: domain,
+                })
+                addedUser.save((err, data) => {
+                    if (err) {
+                        return done(err); 
+                    }
+                    req.session.sessionID = data._id; 
+                    console.log(req.session.sessionID); 
+                    done(null, data); 
+                    console.log(data); 
+                })
+              })
+            }
+          }
+        })
+      }
+    }
+  })
+}); 
+
+app.post('/login', (req, res, done) => {
+  const email = req.body.email; 
+  const password = req.body.password;
+  User.find({email: email}, (err, data) => {
+      if (err) { 
+          done(err); 
+          console.log("email not found.")
+      }
+      else { 
+      console.log('user found!'); 
+      bcrypt.compare(password, data[0].password, (err, result) => {
+          if(err) {
+              done(err);
+              console.log('passwords do not match.')
+          }
+          if(result === true) {
+            req.session.sessionID = data[0]._id; 
+            console.log(data);
+            Domains.find({name: "Domains"}, (err, res) => {
+              if (err) return console.log(err);
+              var foundDomains = res[0].domains;
+              for(var i = 0; i < foundDomains.length; i++) {
+                if(foundDomains[i] === data[0].domain) {
+                  done(null, req.session.sessionID);
+                  console.log(req.session.sessionID); 
+                }
+                if(foundDomains[i] !== data[0].domain) {
+                  SpecialUsers.find({name: "Special Users"}, (err, res) => {
+                    if(err) return console.log(err);
+                    var specialUsers = res[0].emails;
+                    for(var y = 0; y < specialUsers.length; y++) {
+                      if(specialUsers[i] === data[0].email) {
+                        done(null, req.session.sessionID);
+                        res.send(req.session.sessionID);
+                      }
+                      else {
+                        return console.log("user does not match any of our records.")
+                      }
+                    }
+                  })
+                }
+              }
+            })
+          }
+          else {
+              console.log("outside error found")
+          }
+      }) 
+      }
+  })
+})
+
+app.get('/login2', (req, res) => {
+  if(req.session.sessionID) {
+      res.send(true);
+      console.log("login2 ran.")
+  }
+  else{ 
+      res.send(false); 
+  }   
+})
+
+app.get('/logout', function (req, res, done) {
+  console.log("logout called.")
+  if (req.session.sessionID) {
+    req.session.destroy();
+    }
+  });
+
+  //Api Routes
+
+app.get('/apicall', (req, res, done) => {
+  console.log("apicall called.")
+  console.log(req.session.sessionID)
+  if(req.session.sessionID) {
+      console.log(req.session.sessionID)
+      res.send(true);
+  }
+  else {
+  done(null)
+  }
+})
+
+app.get('/domains', (req, res) => {
+  Domains.find({name: "Domains"}, (err, data) => {
+    if (err) return console.log(err);
+    console.log(data)
+    res.send(data);
+  })
+})
+
+app.post('/adddomain', (req, res) => {
+  const newDomains = req.body.domain;
+  console.log(newDomains)
+  Domains.findOneAndUpdate(
+    {name: "Domains"}, 
+    {$push: {domains: newDomains}},
+    {new: true},
+    (err, data) => {console.log(data)})
+})
+
+app.get('/specialusers', (req, res) => {
+  SpecialUsers.find({name: "Special Users"}, (err, data) => {
+    if(err) return console.log(err);
+    console.log(data);
+    res.send(data);
+  })
+})
+
+app.post('/addspecialuser', (req, res) => {
+  const newUser = req.body.specialUser;
+  console.log(newUser)
+  Domains.findOneAndUpdate(
+    {name: "Special Users"}, 
+    {$push: {emails: newDomains}},
+    {new: true},
+    (err, data) => {console.log(data)})
+})
+
+app.get('/api', (req, res, done) => {
+  var fileArray = req.app.get('fileArray');
+  res.send(fileArray);
+  console.log("sent.");
+  done;
+})
+
+app.post('/update', uploads.single('myFile'), (req, res, done) => {
+  var drive = req.app.get('drive');
+  var fileId = req.body.id;
+  var subject = req.body.subject;
+  var grade = req.body.grade;
+  var industry = req.body.industry;
+  const imageUrl = req.file.filename; 
+  TagFile.findOneAndUpdate(
+    {id: fileId}, 
+    {$push: {subject: subject}},
+    {$push: {grade: grade}},
+    {$push: {industry: industry}},
+    {new: true},
+    (err, data) => {console.log(data)})
+})
+
+app.post("/makenew", (req, res) => {
+  var drive = req.app.get('drive');
+  var name = req.body.name;
+  var description = req.body.description;
+  var type = req.body.type;
+  var fileMetadata = {
+    'name': name,
+    'description': description,
+    'mimeType': type,
+  };
+  drive.files.create({
+    resource: fileMetadata,
+  }, function (err, file) {
+    if (err) {
+      // Handle error
+      console.error(err);
+    } else {
+      console.log(file.id);
+    }
+  });
+})
+
+app.post('/profile', uploads.single('myFile'), function (req, res) {
+  var drive = req.app.get('drive');
+  const id = req.body.fileId; 
+  console.log(id);
+  const image = req.file.filename;
+  console.log(image);
+  drive.files.update({
+    fileId: id,
+    requestBody: {properties: {imgsrc: image}},
+  })
+})
+
+app.get('/download', (req, res) => {
+  console.log("file downloaded.")
+  const fileName = req.app.get('fileName');
+  const type = req.app.get('type')
+  var pathStart = './src/Pages/downloads/'
+  var newPath = pathStart.concat(fileName + '.' + type)
+  console.log(newPath)
+  res.download(newPath)
+})
 
 
 // CHROME EXTENSION REQUESTS
