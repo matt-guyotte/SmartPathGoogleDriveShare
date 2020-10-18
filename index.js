@@ -888,6 +888,7 @@ function getAccessToken(oAuth2Client, callback) {
 app.post("/getChromeToken", (req, res) => {
   const TOKEN_PATH3 = 'tokencode_extension.json';
   var accessToken = req.body.accessToken
+  console.log(accessToken)
   console.log("Something Found.")
   fs.writeFile(TOKEN_PATH3, JSON.stringify(accessToken), (err) => {
     if (err) return console.log(err);
