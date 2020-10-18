@@ -925,7 +925,7 @@ app.get("/drivecall3", (req, res) => {
 
   function getAccessToken3(oAuth2Client, callback) {
     fs.readFile(TOKENCODE, (err, code) => {
-      if (err) return console.log(err);
+      if (err) return console.log("Error at fs read: " + err);
       oAuth2Client.getToken(JSON.parse(code), (err, token) => {
         if (err) return console.error('Error retrieving access token', err);
         oAuth2Client.setCredentials(token);
