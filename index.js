@@ -780,11 +780,11 @@ app.get("/drivecall2", (req, res) => {
   // * Lists the names and IDs of up to 10 files.
   // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
   // */
-  async function listFiles2(auth) {
+  function listFiles2(auth) {
     const drive = google.drive({ version: "v3", auth });
     console.log(drive.drive);
     app.set("drive2", drive)
-    const response = await drive.files.list({
+    const response = drive.files.list({
       pageSize: 1000,
       fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
       orderBy: "folder"});
