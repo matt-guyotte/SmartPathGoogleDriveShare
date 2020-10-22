@@ -2062,7 +2062,7 @@ class Search extends React.Component {
                                     <Modal.Body> <Button onClick = {this.downloadFile}> Prep File </Button> </Modal.Body>
                                     <Modal.Body> {this.state.fileName} </Modal.Body>
                                     <Modal.Header> <strong> Export to Google Classroom: </strong> </Modal.Header>
-                                    <Modal.Body> <GoogleBtn getFiles = {this.classroomExport}/> </Modal.Body>
+                                    <Modal.Body> <GoogleBtn/> </Modal.Body>
                                     <Modal.Body> <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button> </Modal.Body>
                                     <Modal.Body> Courses </Modal.Body>
                                     <Modal.Body>
