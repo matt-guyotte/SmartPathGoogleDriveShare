@@ -733,7 +733,6 @@ app.post("/accesstoken", (req, res) => {
 })
 
 app.get("/drivecall2", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive'];
   const TOKENCODE = 'tokencode.json';
   const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
@@ -838,9 +837,9 @@ app.get("/drivecall2", (req, res) => {
 
 // Extension Routes
 
-app.get('/setChromeOauth', (req, res) => {
+app.get('/setchromeoauth', (req, res) => {
   // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
