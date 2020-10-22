@@ -758,8 +758,8 @@ app.get("/drivecall2", (req, res) => {
     getAccessToken2(oAuth2Client, listFiles2)
   }
 
-  function getAccessToken2(oAuth2Client, callback) {
-    fs.readFile(TOKENCODE, (err, code) => {
+  async function getAccessToken2(oAuth2Client, callback) {
+    await fs.readFile(TOKENCODE, (err, code) => {
       if (err) return console.log(err);
       oAuth2Client.getToken(JSON.parse(code), (err, token) => {
         if (err) return console.error('Error retrieving access token', err);
@@ -780,11 +780,11 @@ app.get("/drivecall2", (req, res) => {
   // * Lists the names and IDs of up to 10 files.
   // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
   // */
-  function listFiles2(auth) {
+  async function listFiles2(auth) {
     const drive = google.drive({ version: "v3", auth });
     console.log(drive.drive);
     app.set("drive2", drive)
-    const response = drive.files.list({
+    const response = await drive.files.list({
       pageSize: 1000,
       fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
       orderBy: "folder"});
