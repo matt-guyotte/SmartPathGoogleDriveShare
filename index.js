@@ -763,6 +763,7 @@ app.get("/drivecall2", (req, res) => {
     await fs.readFile(TOKENCODE, (err, code) => {
       if (err) return console.log(err);
       oAuth2Client.getToken(JSON.parse(code), (err, token) => {
+        console.log(token)
         if (err) return console.error('Error retrieving access token', err);
         oAuth2Client.setCredentials(token);
         // Store the token to disk for later program executions
