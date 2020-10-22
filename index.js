@@ -759,18 +759,13 @@ app.get("/drivecall2", (req, res) => {
     getAccessToken2(oAuth2Client, listFiles2)
   }
 
-  async function getAccessToken2(oAuth2Client, callback) {
-    await fs.readFile(TOKENCODE, (err, code) => {
+  function getAccessToken2(oAuth2Client, callback) {
+    fs.readFile(TOKENCODE, (err, code) => {
       if (err) return console.log("error at reading token " + err);
       oAuth2Client.getToken(JSON.parse(code), (err, token) => {
         console.log(token)
         if (err) return console.error('Error retrieving access token', err);
         oAuth2Client.setCredentials(token);
-        // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH2, JSON.stringify(token), (err) => {
-          if (err) return console.error(err);
-          console.log('Token stored to', TOKEN_PATH2);
-        });
         //console.log(oAuth2Client);
         callback(oAuth2Client);
         listFiles2(oAuth2Client);
