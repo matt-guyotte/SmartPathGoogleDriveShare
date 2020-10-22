@@ -725,6 +725,7 @@ app.post("/accesstoken", (req, res) => {
   const TOKEN_PATH2 = 'tokencode.json';
   var accessToken = req.body.accessToken
   console.log("Something Found.")
+  console.log(accessToken);
   fs.writeFile(TOKEN_PATH2, JSON.stringify(accessToken), (err) => {
     if (err) return console.log(err);
     console.log('Token stored to', TOKEN_PATH2);
@@ -732,7 +733,7 @@ app.post("/accesstoken", (req, res) => {
 })
 
 app.get("/drivecall2", (req, res) => {
-  const SCOPES2 = ['https://www.googleapis.com/auth/drive.file'];
+  const SCOPES2 = ['https://www.googleapis.com/auth/drive'];
   const TOKENCODE = 'tokencode.json';
   const TOKEN_PATH2 = 'token2.json';
   console.log("drivecall called.")
