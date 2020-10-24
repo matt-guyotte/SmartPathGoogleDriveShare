@@ -882,7 +882,7 @@ function getAccessToken(oAuth2Client, callback) {
 }
 })
 
-app.post("/getChromeToken", (req, res) => {
+app.post("/getchrometoken", (req, res) => {
   const TOKEN_PATH3 = 'tokencode_extension.json';
   var accessToken = req.body.accessToken
   console.log(accessToken)
@@ -891,10 +891,109 @@ app.post("/getChromeToken", (req, res) => {
     if (err) return console.log(err);
     console.log('Token stored to', TOKEN_PATH3);
   })
+
+  // Load client secrets from a local file.
+  fs.readFile('credentials2.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize3(JSON.parse(content), listFiles3);
+  });
+
+  ///**
+  // * Create an OAuth2 client with the given credentials, and then execute the
+  // * given callback function.
+  // * @param {Object} credentials The authorization client credentials.
+  // * @param {function} callback The callback to call with the authorized client.
+  // */
+  function authorize3(credentials, callback) {
+    const {client_secret, client_id, redirect_uris} = credentials.web;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+    listFiles3(oAuth2Client);
+    getAccessToken3(oAuth2Client, listFiles3)
+  }
+
+  function getAccessToken3(oAuth2Client, callback) {
+    fs.readFile(TOKENCODE, (err, code) => {
+      if (err) return console.log("Error at fs read: " + err);
+      oAuth2Client.getToken(JSON.parse(code), (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+        oAuth2Client.setCredentials(token);
+        // Store the token to disk for later program executions
+        fs.writeFile(TOKEN_PATH3, JSON.stringify(token), (err) => {
+          if (err) return console.error(err);
+          console.log('Token stored to', TOKEN_PATH3);
+        });
+        //console.log(oAuth2Client);
+        callback(oAuth2Client);
+        listFiles3(oAuth2Client);
+      });
+    })
+  }
+
+  ///**
+  // * Lists the names and IDs of up to 10 files.
+  // * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+  // */
+  async function listFiles3(auth) {
+    const drive = google.drive({ version: "v3", auth });
+    app.set("drive3", drive)
+    const response = await drive.files.list({
+      pageSize: 1000,
+      fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
+      orderBy: "folder"});
+    const files = response.data.files;
+    //console.log(files)
+    const fileArray = [{
+      file: '',
+      id: '',
+      description: '',
+      type: '',
+      properties: {
+        subject: [],
+        grade: [],
+        industry: [],
+        imgsrc: ''
+      },
+      parents: [],
+    }];
+    if (files.length) {
+      const fileDisplay = [];
+      const fileIdArray = [];
+      const description = [];
+      const mimeType = [];
+      const parents = [];
+      var subjectArray = [];
+      var gradeArray = [];
+      var industryArray = [];
+      const imgsrc = [];
+      var newLoop = [];
+      for (var i = 0; i < files.length; i++) {
+        //console.log(newLoop.subject);
+        fileDisplay.push(files[i].name);
+        fileIdArray.push(files[i].id);
+        description.push(files[i].description);
+        mimeType.push(files[i].mimeType);
+        parents.push(files[i].parents);
+      }
+      for (var y = 0; y < fileDisplay.length; y++) {
+        fileArray.push({
+          file: fileDisplay[y],
+          id: fileIdArray[y],
+          description: description[y],
+          type: mimeType[y],
+          parents: parents[y],
+        });
+      }
+      console.log(fileArray)
+      res.send(fileArray)
+    }
+  }
+
 })
 
 app.get("/drivecall3", (req, res) => {
-  const SCOPES3 = ['https://www.googleapis.com/auth/drive.file'];
+  const SCOPES3 = ['https://www.googleapis.com/auth/drive'];
   const TOKENCODE = 'tokencode_extension.json';
   const TOKEN_PATH3 = 'token3.json';
   console.log("drivecall called.")
