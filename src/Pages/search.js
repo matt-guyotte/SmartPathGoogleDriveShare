@@ -1832,7 +1832,7 @@ class Search extends React.Component {
     //Rendered Component
 
     render() {
-        if(this.state.session === true && this.state.searchRan === false) {
+        if(this.state.session === false && this.state.searchRan === false) {
             return (
                 <div>
                     <TopNavbar />
@@ -1840,12 +1840,12 @@ class Search extends React.Component {
                         <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
-                               <Row className = "searchBar">
-                                   <input type = "text" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
+                               <Row>
+                                 <div className = "searchBar">
+                                    <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
+                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
+                                  </div>
                                 </Row>
-                                <Row className = "submitButton">
-                                   <Button className = "btn btn-primary" onClick = {this.searchFunction}> Submit </Button>
-                                </Row>   
                                 <hr />
                                 <Row className = "search-box subject-area">
                                     <h2>Subject Area</h2>
@@ -1918,17 +1918,6 @@ class Search extends React.Component {
                                 </Row>
                            </Col>
                            <Col md = {9} className = "course-col">
-                               <Row className = "top-row-course-search">
-                                   <h2> Search </h2>
-                                   <img src = {images["Colorful-Bananas.jpg"]} />
-                               </Row>
-                                <br />
-                                <Row className = "course-box-search">
-                                   <Col>
-                                   {this.state.id}
-                                   {this.state.downloadLink}
-                                   </Col>
-                               </Row>
                            </Col>  
                         </Row>
                         </div>
@@ -1936,7 +1925,7 @@ class Search extends React.Component {
                 </div>
             )
         }
-        if(this.state.session === true && this.state.searchRan === true) {
+        if(this.state.session === false && this.state.searchRan === true) {
             return (
                 <div>
                    <TopNavbar />
@@ -1944,10 +1933,11 @@ class Search extends React.Component {
                        <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
-                               <Row className = "searchBar">
-                                   <input type = "text" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                   <br />
-                                   <Button className = "btn btn-primary" onClick = {this.searchFunction}> Submit </Button>
+                               <Row>
+                                  <div className = "searchBar">
+                                    <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
+                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
+                                  </div>
                                </Row>
                                <hr />
                                <div className = "search-options">
@@ -2096,9 +2086,13 @@ class Search extends React.Component {
             return (
                 <div>
                     <TopNavbar />
-                    <Container>
+                      <div className = "whole">
+                        <Container>
                         <Row>
                             <h2> Welcome! </h2>
+                        </Row>
+                        <Row>
+                            <h2> This app allows you transfer smartpath lessons to your Google Drive. Easily.</h2>
                         </Row>
                         <Row>
                             <h2> If you have just logged in, please refresh the page. </h2> 
@@ -2109,8 +2103,8 @@ class Search extends React.Component {
                         <Row>
                             <Link to = "/login"> <Button className = "btn btn-primary"> Login </Button> </Link>
                         </Row>
-                    </Container>
-                    
+                        </Container>
+                      </div>                  
                 </div>
             )
         }

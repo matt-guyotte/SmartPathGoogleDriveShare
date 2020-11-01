@@ -268,7 +268,7 @@ async function listFiles(auth) {
       });
     }
     app.set('fileArray', fileArray);
-    //console.log(fileArray)
+    console.log(fileArray)
   }
 }
 
