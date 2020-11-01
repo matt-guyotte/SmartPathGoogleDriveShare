@@ -132,7 +132,10 @@ class Search extends React.Component {
     }
     
 
-    openModal = () => this.setState({ isOpen: true });
+    openModal() {
+      this.setState({ isOpen: true });
+      this.downloadFile();
+    }
     closeModal = () => this.setState({ isOpen: false });
 
     async componentDidMount() {
@@ -2048,8 +2051,6 @@ class Search extends React.Component {
                                       <Modal.Title>Export</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Header>Current File(s) selected: </Modal.Header>
-                                    <Modal.Body> <strong> *Please click this before exporting or downloading: </strong> </Modal.Body>
-                                    <Modal.Body> <Button onClick = {this.downloadFile}> Prep File </Button> </Modal.Body>
                                     <Modal.Body> {this.state.fileName} </Modal.Body>
                                     <Modal.Header> <strong> Export to Google Classroom: </strong> </Modal.Header>
                                     <Modal.Body> <GoogleBtn/> </Modal.Body>
