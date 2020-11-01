@@ -87,7 +87,7 @@ class GoogleBtn extends Component {
           onFailure={ this.handleLoginFailure }
           accessType = 'offline'
           responseType='code'
-          scope = 'https://www.googleapis.com/auth/drive.file'
+          scope = 'https://www.googleapis.com/auth/drive'
         />
   }
 
