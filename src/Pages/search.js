@@ -1829,6 +1829,7 @@ class Search extends React.Component {
             }       
         }
         this.setState({searchRan: true})
+        console.log("searchRan changed")
     }
 
 
