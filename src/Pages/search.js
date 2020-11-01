@@ -132,9 +132,9 @@ class Search extends React.Component {
     }
     
 
-    openModal() {
+    async openModal() {
+      await this.downloadFile();
       this.setState({ isOpen: true });
-      this.downloadFile();
     }
     closeModal = () => this.setState({ isOpen: false });
 
