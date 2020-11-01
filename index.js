@@ -778,7 +778,6 @@ app.get("/drivecall2", (req, res) => {
   // */
   async function listFiles2(auth) {
     const drive = google.drive({ version: "v3", auth });
-    console.log(drive.files);
     app.set("drive2", drive)
     const response = await drive.files.list({
       pageSize: 1000,
@@ -827,7 +826,7 @@ app.get("/drivecall2", (req, res) => {
           parents: parents[y],
         });
       }
-      //console.log(fileArray)
+      console.log(fileArray)
       res.send(fileArray)
     }
   }
