@@ -116,6 +116,7 @@ class Search extends React.Component {
         this.organizeFiles = this.organizeFiles.bind(this);
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleChangeCheckFile = this.handleChangeCheckFile.bind(this);
+        this.exportFunction = this.exportFunction.bind(this);
         this.handleChangeFileType = this.handleChangeFileType.bind(this);
         this.handleChangeSetParent = this.handleChangeSetParent.bind(this);
         this.handleChangeSubject = this.handleChangeSubject.bind(this);
@@ -132,11 +133,9 @@ class Search extends React.Component {
     }
     
 
-    async openModal() {
-      await this.downloadFile();
-      this.setState({ isOpen: true });
-    }
+    openModal = () => this.setState({ isOpen: true });
     closeModal = () => this.setState({ isOpen: false });
+
 
     async componentDidMount() {
         fetch('/api')
@@ -178,6 +177,11 @@ class Search extends React.Component {
         this.setState({
           searchTerm: event.target.value
         })
+    }
+
+    exportFunction() {
+      this.openModal();
+      this.downloadFile();
     }
 
     handleChangeCheckFile(event) {
@@ -2009,7 +2013,7 @@ class Search extends React.Component {
                            </Col>
                            <Col md = {9} className = "course-col">
                                <Row className = "top-row-course">
-                                    <Button className = "btn-primary export-btn" onClick = {this.openModal} value = {this.state.exportFileType || ''}> Export </Button>
+                                    <Button className = "btn-primary export-btn" onClick = {this.exportFunction} value = {this.state.exportFileType || ''}> Export </Button>
                                </Row>
                                 <br />
                                 <Row className = "course-box-search">

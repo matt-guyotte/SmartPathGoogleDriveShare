@@ -322,7 +322,7 @@ app.post("/downloaddocument", async (req, res) => {
         })
       });
 
-      await zip.file(destSimple, fs.readFile(destSimple), () => {if(err) return console.log(err)})
+      //await zip.file(destSimple, fs.readFile(destSimple), () => {if(err) return console.log(err)})
     }
 
     if(files[i].type === "folder") {
@@ -366,7 +366,7 @@ app.post("/downloaddocument", async (req, res) => {
               })
               console.log("file written.")
             });
-            await zip.file(dest1zip, fs.readFile(dest1file, (err) => {if (err) return console.log(err)}));
+            //await zip.file(dest1zip, fs.readFile(dest1file, (err) => {if (err) return console.log(err)}));
           }
           if(level1.type === 'folder') {
             console.log("at 808 " + topFolderPath)
@@ -404,7 +404,7 @@ app.post("/downloaddocument", async (req, res) => {
                     })
                     .pipe(dest2, function(){console.log('file path written.')})
                   });
-                  await zip.file(dest2zip, fs.readFile(dest2file, (err) => {if(err) return console.log(err)}));
+                  //await zip.file(dest2zip, fs.readFile(dest2file, (err) => {if(err) return console.log(err)}));
                 }
                 if(level1.type === 'folder') {
                   await fs.mkdir(level1FolderPath + "/" + level2.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -441,7 +441,7 @@ app.post("/downloaddocument", async (req, res) => {
                           })
                           .pipe(dest3, function(){console.log('file path written.')})
                         });
-                        await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
+                        //await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
                       }
                       if(level3.type === 'folder') {
                         fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -480,7 +480,7 @@ app.post("/downloaddocument", async (req, res) => {
                                 })
                                 .pipe(dest4);
                               });
-                              zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                              //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                             }
                             if(level4.type === 'folder') {
                               fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -519,7 +519,7 @@ app.post("/downloaddocument", async (req, res) => {
                                       })
                                       .pipe(dest5);
                                     });
-                                    zip.file(dest5zip, fs.readFile(dest5file, (err) => {if(err) return console.log(err)}));
+                                    //zip.file(dest5zip, fs.readFile(dest5file, (err) => {if(err) return console.log(err)}));
                                   }
                                   if(level5.type === 'folder') {
                                     fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -558,7 +558,7 @@ app.post("/downloaddocument", async (req, res) => {
                                             })
                                             .pipe(dest6);
                                           });
-                                          zip.file(dest6zip, fs.readFile(dest6file, (err) => {if(err) return console.log(err)}));
+                                          //zip.file(dest6zip, fs.readFile(dest6file, (err) => {if(err) return console.log(err)}));
                                         }
                                         if(level6.type === 'folder') {
                                           fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -597,7 +597,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                   })
                                                   .pipe(dest7);
                                                 });
-                                                zip.file(dest7zip, fs.readFile(dest7file, (err) => {if(err) return console.log(err)}));
+                                                //zip.file(dest7zip, fs.readFile(dest7file, (err) => {if(err) return console.log(err)}));
                                               }
                                               if(level7.type === 'folder') {
                                                 fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -636,7 +636,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                         })
                                                         .pipe(dest8);
                                                       });
-                                                      zip.file(dest8zip, fs.readFile(dest8file, (err) => {if(err) return console.log(err)}));
+                                                      //zip.file(dest8zip, fs.readFile(dest8file, (err) => {if(err) return console.log(err)}));
                                                     }
                                                     if(level8.type === 'folder') {
                                                       fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
@@ -675,7 +675,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                               })
                                                               .pipe(dest9);
                                                             });
-                                                            zip.file(dest9zip, fs.readFile(dest9file, (err) => {if(err) return console.log(err)}));
+                                                            //zip.file(dest9zip, fs.readFile(dest9file, (err) => {if(err) return console.log(err)}));
                                                           }
                                                           if(level9.type === 'folder') {
                                                             console.log("maximum file depth reached.")
