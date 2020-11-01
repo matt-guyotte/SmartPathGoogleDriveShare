@@ -1765,6 +1765,7 @@ class Search extends React.Component {
     
 
     searchFunction() {
+        console.log("search function run");
         var searchTerm = this.state.searchTerm;
         var driveFiles = this.organizeFiles();
         //console.log(driveFiles)
