@@ -1855,10 +1855,8 @@ class Search extends React.Component {
                            <Col md = {3} className = "search-col">
                                <Row>
                                  <div className = "searchBar">
-                                   <form onSubmit = {this.searchFunction}>
                                     <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                    <Button className = "btn btn-primary submitButton" type = "submit"> Submit </Button> 
-                                   </form>
+                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
                                   </div>
                                 </Row>
                                 <hr />
@@ -1948,14 +1946,12 @@ class Search extends React.Component {
                        <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
-                                <Row>
-                                 <div className = "searchBar">
-                                   <form onSubmit = {this.searchFunction}>
+                               <Row>
+                                  <div className = "searchBar">
                                     <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                    <Button className = "btn btn-primary submitButton" type = "submit"> Submit </Button> 
-                                   </form>
+                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
                                   </div>
-                                </Row>
+                               </Row>
                                <hr />
                                <div className = "search-options">
                                 <Row className = "search-box subject-area">
