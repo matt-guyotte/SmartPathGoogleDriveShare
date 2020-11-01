@@ -1103,7 +1103,7 @@ app.get("/drivecall3", (req, res) => {
 
 app.post('/classroomexport', async (req, res) => {
   const files = req.body.fileArray;
-  console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
+  console.log(fileArray)
   const parentFolder = req.body.parentId;
   function sleep(milliseconds) {
     const date = Date.now();
