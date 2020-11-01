@@ -188,19 +188,20 @@ class Search extends React.Component {
       var newType = '';
       console.log(event.target.title);
       console.log(event.target.value);
-      if(event.target.title === 'application/vnd.google-apps.document') {
-        newType = "docx"
-        newArray.push({id: event.target.value, name: event.target.name, type: newType})
-      }
-      if(event.target.title === 'application/vnd.google-apps.presentation') {
-        newType = "pptx"
-        newArray.push({id: event.target.value, name: event.target.name, type: newType})
-      }
-      if(event.target.title === 'application/vnd.google-apps.spreadsheet') {
-        newType = "xlsx"
-        newArray.push({id: event.target.value, name: event.target.name, type: newType})
-      }
-      if(event.target.title === 'application/vnd.google-apps.folder') {
+      if(event.target.checked === true) {
+        if(event.target.title === 'application/vnd.google-apps.document') {
+          newType = "docx"
+          newArray.push({id: event.target.value, name: event.target.name, type: newType})
+        }
+        if(event.target.title === 'application/vnd.google-apps.presentation') {
+          newType = "pptx"
+          newArray.push({id: event.target.value, name: event.target.name, type: newType})
+        }
+        if(event.target.title === 'application/vnd.google-apps.spreadsheet') {
+          newType = "xlsx"
+          newArray.push({id: event.target.value, name: event.target.name, type: newType})
+        }
+        if(event.target.title === 'application/vnd.google-apps.folder') {
         newType = "folder";
         newArray.push({id: event.target.value, name: event.target.name, type: newType, children: []})
         console.log(newArray)
@@ -1288,6 +1289,10 @@ class Search extends React.Component {
             }
           }
         }
+        }
+      }
+      if(event.target.checked === false) {
+        newArray = [];
       }
       console.log(newArray);
       this.setState({exportFileArray: newArray})
@@ -1850,8 +1855,10 @@ class Search extends React.Component {
                            <Col md = {3} className = "search-col">
                                <Row>
                                  <div className = "searchBar">
+                                   <form onSubmit = {this.searchFunction}>
                                     <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
+                                    <Button className = "btn btn-primary submitButton" type = "submit"> Submit </Button> 
+                                   </form>
                                   </div>
                                 </Row>
                                 <hr />
@@ -1941,12 +1948,14 @@ class Search extends React.Component {
                        <div className = "whole">
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
-                               <Row>
-                                  <div className = "searchBar">
+                                <Row>
+                                 <div className = "searchBar">
+                                   <form onSubmit = {this.searchFunction}>
                                     <input type = "text" className = "searchBarBar" value = {this.state.searchTerm || ''} onChange = {this.handleChangeSearch} />
-                                    <Button className = "btn btn-primary submitButton" onClick = {this.searchFunction}> Submit </Button> 
+                                    <Button className = "btn btn-primary submitButton" type = "submit"> Submit </Button> 
+                                   </form>
                                   </div>
-                               </Row>
+                                </Row>
                                <hr />
                                <div className = "search-options">
                                 <Row className = "search-box subject-area">
