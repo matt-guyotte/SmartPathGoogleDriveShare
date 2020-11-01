@@ -1835,7 +1835,7 @@ class Search extends React.Component {
     //Rendered Component
 
     render() {
-        if(this.state.session === false && this.state.searchRan === false) {
+        if(this.state.session === true && this.state.searchRan === false) {
             return (
                 <div>
                     <TopNavbar />
@@ -1928,7 +1928,7 @@ class Search extends React.Component {
                 </div>
             )
         }
-        if(this.state.session === false && this.state.searchRan === true) {
+        if(this.state.session === true && this.state.searchRan === true) {
             return (
                 <div>
                    <TopNavbar />
