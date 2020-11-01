@@ -1761,9 +1761,6 @@ class Search extends React.Component {
     }
 
     async classroomExport() {
-      var pathStart = './downloads/'
-      var newPath = pathStart.concat(this.state.fileName + '.' + this.state.exportFileType)
-      this.setState({newPath : newPath})
       fetch('/classroomexport', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
