@@ -2101,19 +2101,40 @@ class Search extends React.Component {
                       <div className = "whole">
                         <Container>
                         <Row>
-                            <h2> Welcome! </h2>
+                          <Col className = "front-title">
+                            <h2> <strong> Welcome! </strong> </h2>
+                          </Col>
                         </Row>
                         <Row>
-                            <h2> This app allows you transfer smartpath lessons to your Google Drive. Easily.</h2>
+                          <Col className = "front-image-container">
+                          <img className = "front-image" src = "http://www.smartpathed.com/hosted/images/db/a51ca08e9d4eb0b53283d95f743cc4/shutterstock_565675849.jpg"></img>
+                          </Col>
+                        </Row>
+                        <Row className = "front-descrip">
+                          <Col>
+                            <h2> With the Smart. Future. Workforce. Connect. app, you can transfer engaging and exciting smartpath lessons to your Google Drive.</h2>
+                          </Col>
+                        </Row>
+                        <Row className = "front-descrip">
+                          <Col>
+                            <h2> <strong> Easily. </strong> </h2>
+                          </Col>
+                        </Row>
+                        <Row className = "features-section">
+                          <Col className = "feature text-center">
+                            <h5> <strong> Search </strong> </h5>
+                          </Col>
+                          <Col className = "feature text-center">
+                          <h5> <strong> Download </strong> </h5> 
+                          </Col>
+                          <Col className = "feature text-center">
+                          <h5> <strong> Export </strong> </h5>
+                          </Col>
                         </Row>
                         <Row>
-                            <h2> If you have just logged in, please refresh the page. </h2> 
-                        </Row>
-                        <Row>
-                            <h2> Otherwise, please login. </h2>
-                        </Row>
-                        <Row>
-                            <Link to = "/login"> <Button className = "btn btn-primary"> Login </Button> </Link>
+                          <Col>
+                            <h3> <small> *If you have just logged in, please refresh the page. Otherwise, please login. </small> </h3> <Link to = "/login"> <Button className = "btn btn-primary"> Login </Button> </Link>
+                          </Col>
                         </Row>
                         </Container>
                       </div>                  
