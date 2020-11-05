@@ -43,7 +43,8 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema ({
     email: String,
     password: String,
-    domain: String
+    domain: String,
+    active: Boolean,
 }); 
 var tagSchema = new Schema ({
   id: String,
@@ -86,6 +87,15 @@ const storage = multer.diskStorage({
 
 const uploads = multer({storage})
 console.log(multer)
+
+const nodemailer = require('nodemailer');
+var transport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+     user: 'smartpathverification@gmail.com',
+     pass: process.env.EMAIL_PASS,
+  }
+});
 
 const fs = require('fs');
 const readline = require('readline');
@@ -2722,15 +2732,19 @@ app.post("/register", (req, res, done) => {
   const password = req.body.password;
   const domain = req.body.domain;
   Domains.find({name: "Domains"}, (err, res) => {
-    if (err) return console.log(err);
+    if (err) {
+      return console.log(err); 
+    }
     var foundDomains = res[0].domains;
     for(var i = 0; i < foundDomains.length; i++) {
       if(foundDomains[i] === domain) {
         bcrypt.hash(password, 10, (err, hash) => {
+          if (err) return console.log(err);
           var addedUser = new User ({
               email: email,
               password: hash,
               domain: domain,
+              active: false,
           })
           addedUser.save((err, data) => {
               if (err) {
@@ -2745,7 +2759,10 @@ app.post("/register", (req, res, done) => {
       }
       if(foundDomains[i] !== domain) {
         SpecialUsers.find({name: "Special Users"}, (err, res) => {
-          if (err) return console.log(err);
+          if (err) {
+            res.send('User does not have verified domain.')
+            return console.log(err)
+          };
           var specialEmails = res[0].emails;
           for(var y = 0; y < specialEmails.length; y++) {
             if(specialEmails[i] === email) {
@@ -2755,11 +2772,26 @@ app.post("/register", (req, res, done) => {
                     email: email,
                     password: hash,
                     domain: domain,
+                    active: false
                 })
                 addedUser.save((err, data) => {
                     if (err) {
                         return done(err); 
                     }
+                    const emailClick = 'http://vast-stream-39133.herokuapp.com/verify/' + data._id
+                    const message = {
+                      from: 'smartpathverification@gmail.com', // Sender address
+                      to: req.body.email, // List of recipients
+                      subject: 'Email Verification Required - Think Future Workforce Connect', // Subject line
+                      text: 'Please click here to verify your email: ' + emailClick // Plain text body
+                    };
+                    transport.sendMail(message, function(err, info) {
+                        if (err) {
+                          console.log(err)
+                        } else {
+                          console.log(info);
+                        }
+                    });
                     req.session.sessionID = data._id; 
                     console.log(req.session.sessionID); 
                     done(null, data); 
@@ -2774,6 +2806,19 @@ app.post("/register", (req, res, done) => {
   })
 }); 
 
+app.post('/verify/*', (req, res) => {
+  const wholeurl = req.url;
+  const code = wholeurl.slice(8);
+
+  User.find({_id: code}, {$set: {active: true}}, {new: true}, (err, data) => {
+    if(err) return console.log(err);
+    req.session.sessionID = data._id;
+    res.send("Your Email is now authenticated!")
+    done(null, data)
+  })
+
+})
+
 app.post('/login', (req, res, done) => {
   const email = req.body.email; 
   const password = req.body.password;
@@ -2781,6 +2826,9 @@ app.post('/login', (req, res, done) => {
       if (err) { 
           done(err); 
           console.log("email not found.")
+      }
+      if(data.active === false) {
+        res.send('email not yet authenticated.')
       }
       else { 
       console.log('user found!'); 
