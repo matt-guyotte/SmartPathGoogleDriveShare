@@ -44,8 +44,9 @@ class TopNavbar extends React.Component {
                         <Navbar.Brand className = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                         <Navbar.Collapse className = "ml-auto">
                             <Row className = "ml-auto">
-                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link> <Link to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 
-                            <Nav.Item className = "ml-auto nav-item" onClick = {this.callLogout}> <Nav.Link> <Link to = "/login"> Logout  </Link> </Nav.Link> </Nav.Item> 
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item" href = "https://docs.google.com/document/d/12b80gIjqMsWPMMzJBxQ3uxAtmzHoxtKXsuqtdkiwcbk/" target = "_blank"> Privacy </Nav.Link> </Nav.Item> 
+                            <Nav.Item className = "ml-auto nav-item" onClick = {this.callLogout}> <Nav.Link className = "nav-item"> <Link to = "/login"> Logout  </Link> </Nav.Link> </Nav.Item> 
                             </Row>
                         </Navbar.Collapse>
                     </Container>
@@ -61,6 +62,7 @@ class TopNavbar extends React.Component {
                         <Navbar.Brand className = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                         <Row className = "nav-item-row">
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item" href = "https://docs.google.com/document/d/12b80gIjqMsWPMMzJBxQ3uxAtmzHoxtKXsuqtdkiwcbk/" target = "_blank"> Privacy </Nav.Link> </Nav.Item>  
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item" to = "/login"> Login </Link> </Nav.Link> </Nav.Item> 
                         </Row>
                     </Container>

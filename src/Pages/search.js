@@ -2123,17 +2123,35 @@ class Search extends React.Component {
                         <Row className = "features-section">
                           <Col className = "feature text-center">
                             <h5> <strong> Search </strong> </h5>
+                            <p> With our engaging and tag-based search system, you can find the lesson you need within seconds.</p>
+                            <ul>
+                              <li> Innovative Tag System </li>
+                              <li> Find Lessons by Grade, Subject, or Industry </li>
+                              <li> No pain of searching the whole drive manually! </li>
+                            </ul>
                           </Col>
                           <Col className = "feature text-center">
                           <h5> <strong> Download </strong> </h5> 
+                          <p> Download access to a wide range of courses. </p>
+                          <ul>
+                            <li> Innovative Tag System </li>
+                            <li> Find Lessons by Grade, Subject, or Industry </li>
+                            <li> No pain of searching the whole drive manually! </li>
+                          </ul>
                           </Col>
                           <Col className = "feature text-center">
                           <h5> <strong> Export </strong> </h5>
+                          <p> Once you have selected your course, and logged into your google account, we will:</p>
+                          <ul>
+                            <li> Find your Google Drive classroom folders, </li>
+                            <li> You pick the one that you want to export to, </li>
+                            <li> and we will write the file to your folder, making it easily accessible within Google Classroom! </li>
+                          </ul>
                           </Col>
                         </Row>
                         <Row>
                           <Col>
-                            <h3> <small> *If you have just logged in, please refresh the page. Otherwise, please login. </small> </h3> <Link to = "/login"> <Button className = "btn btn-primary"> Login </Button> </Link>
+                            <h3> <small> *If you have just logged in, please refresh the page. Otherwise, please login. </small> </h3>
                           </Col>
                         </Row>
                         </Container>
