@@ -9,6 +9,7 @@ import Search from './Pages/search';
 import adminPortal from './Pages/adminPortal'
 import Login from './Pages/login';
 import Register from './Pages/register';
+import Privacy from './Pages/Privacy';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path = "/admin" component = {adminPortal} />
         <Route path = "/signin" component = {Register}/>
         <Route path = "/login" component = {Login}/>
+        <Route path = "/privacy" component = {Privacy}/>
         </div>
       </Switch>
     </Router>
