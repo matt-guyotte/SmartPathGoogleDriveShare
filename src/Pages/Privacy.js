@@ -71,7 +71,7 @@ class Privacy extends React.Component {
             <Container>
                 <Row className = "privacy-title">
                     <Col>
-                        <h2> <strong> Privacy policy </strong> </h2>
+                        <h2> <strong> Privacy Policy </strong> </h2>
                         <p> <small> last updated: November 8th 2020 </small> </p>
                     </Col>
                 </Row>
@@ -130,16 +130,24 @@ class Privacy extends React.Component {
                 <Row className = "privacy-content"> 
                     <Col>
                         <p> <strong> What Google Drive Information We Collect: </strong>
-                            As part of our Think. Future. Workforce. Connect app, we collect the following Google Drive information:
-                            Email
-                            Full permissive use of your google classroom drive folders, in order to the export and upload our lesson plans upon request from the user. 
-                        </p>       
+                            As part of our Think. Future. Workforce. Connect app, we collect the following Google Drive information: </p> 
+                            <ul>
+                                <li> Your email. </li>
+                                <li> Full permissive use of your google classroom drive folders, in order to the export and upload our lesson plans upon request from the user. </li>
+                            </ul>                              
                     </Col>
                     <Col>
                         <p> <strong> What We Do With Your Drive Information: </strong>
-                            As part of the flow for our app, we use the metadata from your classroom folders in order to export and download our smartpath lesson plans into them. We do not share your information with any third parties. For more general information, refer to the “What we do with your information” section outlined earlier in this policy.                                                        
+                            As part of the flow for our app, we use the metadata from your Drive classroom folders in order to export and download our smartpath lesson plans into them. We do not share your information with any third parties. For more general information, refer to the “What we do with your information” section outlined earlier in this policy.                                                        
                             As referred to in the “What We Do With The Information We Gather” section, from time to time, we may also use your information to contact you for market research purposes, to help improve our services. 
                         </p>
+                    </Col>
+                    <Col>
+                        <p> <strong> Who We Share Your Information With </strong> 
+                            Once we recieve your infomation, we do not share it with any third parties. Information about your Google Drive data stays within the app, and only used within the context of 
+                            sending lesson plans to the Google Classroom Drive folder of your choosing. 
+                        </p>
+
                     </Col>
                 </Row>
             </Container>
