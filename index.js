@@ -4,6 +4,9 @@ var app = express();
 require('dotenv').config(); 
 var path = require("path"); 
 
+const enforce = require('express-sslify');
+app.use(enforce.HTTPS());
+
 //// serve up production assets
 app.use(express.static('build'));
 app.use(express.static('img'));
@@ -65,14 +68,14 @@ const TagFile = mongoose.model('TagFile', tagSchema)
 const Domains = mongoose.model('Domains', domainSchema)
 const SpecialUsers = mongoose.model('SpecialUsers', specialUsersSchema)
 
-function makeNewTag() {
-  TagFile.remove({}, (err, res) => {
-    if (err) return console.log(err);
-    console.log("deleted files")
-  });
-}
-
-makeNewTag();
+//function makeNewTag() {
+//  TagFile.remove({}, (err, res) => {
+//    if (err) return console.log(err);
+//    console.log("deleted files")
+//  });
+//}
+//
+//makeNewTag();
 
 app.use(express.static('img'));
 const multer = require('multer');
@@ -195,18 +198,6 @@ async function listFiles(auth) {
     fields: "nextPageToken, files(id, name, mimeType, description, properties, parents)",
     orderBy: "folder"});
   const files = res.data.files;
-  for(var i = 0; i < files.length; i++) {
-      //TagFile.count({id: files[i].id}, (err, count) => {
-      //  if(err) return console.log(err);
-      //  if(count === 0) {
-      //    var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
-      //    newTags.save((err, res) => {
-      //      if (err) return console.log(err);
-      //      console.log(res);
-      //    })
-      //  }
-      //})
-  }
   const fileArray = [{
     file: '',
     id: '',
@@ -220,6 +211,113 @@ async function listFiles(auth) {
     },
     parents: [],
   }];
+  for(var i = 0; i < files.length; i++) {
+    TagFile.count({id: files[i].id}, (err, count) => {
+      if(err) return console.log(err);
+      if(count === 0) {
+        //ALL
+        if(!files[i].subject && !files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id});
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+        }
+        if(files[i].subject && files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade, industry: files[i].industry})
+        }
+        //SUBJECT
+        if(files[i].subject && !files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject]})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject})
+        }
+        if(files[i].subject && files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade]})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade})
+        }
+        if(files[i].subject && !files[i].grade && files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], industry: [files[i].properties.industry]})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject, industry: files[i].industry})
+        }
+        //GRADE
+        if(!files[i].subject && files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, grade: files[i].grade})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({grade: files[i].properties.grade})
+        }
+        if(files[i].subject && files[i].grade && !files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: files[i].subject, grade: files[i].grade})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade})
+        }
+        if(!files[i].subject && files[i].grade && files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({grade: files[i].properties.grade, industry: files[i].industry})
+        }
+        //INDUSTRY
+        if(!files[i].subject && !files[i].grade && files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({industry: files[i].industry})
+        }
+        if(files[i].subject && !files[i].grade && files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, subject: files[i].subject, industry: files[i].industry})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({subject: files[i].properties.subject, industry: files[i].industry})
+        }
+        if(!files[i].subject && files[i].grade && files[i].industry) {
+          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
+          newTags.save((err, res) => {
+            if (err) return console.log(err);
+            console.log(res);
+          })
+          fileArray.push({grade: files[i].properties.grade, industry: files[i].industry})
+        }
+      }
+      if(count > 1) {
+        TagFile.find({id: files[i].id}, (err, res) => {
+          if(err) return console.log(err);
+          fileArray.push({subject: res[0].subject, grade: res[0].grade, industry: res[0].industry})
+        })
+      }
+      else {
+        return;
+      }
+    })
+  }
   if (files.length) {
     const fileDisplay = [];
     const fileIdArray = [];
@@ -1167,6 +1265,8 @@ app.post('/classroomexport', async (req, res) => {
           newId = file.id;
         }
       });
+      var result = "classroom export complete!"
+      app.set('result', result)
     }
     if(files[i].type === "folder") {
       const fileName = files[i].name;
@@ -1199,6 +1299,8 @@ app.post('/classroomexport', async (req, res) => {
         })
       }
       await driveCreateFolder();
+      var result = "classroom export complete!"
+      app.set('result', result)
       sleep(2000);
       //1
       for(var y = 0; y < files[i].children.length; y++) {
@@ -1248,6 +1350,8 @@ app.post('/classroomexport', async (req, res) => {
               newId1 = file.id;
             }
           });
+          var result = "classroom export complete!"
+          app.set('result', result)
         }
         if(level1.type === "folder") {
           const fileName1 = level1.name;
@@ -1277,6 +1381,8 @@ app.post('/classroomexport', async (req, res) => {
             })
           }
           await driveCreateFolder1();
+          var result = "classroom export complete!"
+          app.set('result', result)
           sleep(2000);
           //2
           for(var a = 0; a < level1.children.length; a++) {
@@ -1324,6 +1430,8 @@ app.post('/classroomexport', async (req, res) => {
                   newId2 = file.id;
                 }
               });
+              var result = "classroom export complete!"
+              app.set('result', result)
             }
             if(level2.type === "folder") {
               const fileName2 = level2.name;
@@ -1353,6 +1461,8 @@ app.post('/classroomexport', async (req, res) => {
                 })
               }
               await driveCreateFolder2();
+              var result = "classroom export complete!"
+              app.set('result', result)
               sleep(2000);
               if(level2.children != []) {
                 //3
@@ -1401,6 +1511,8 @@ app.post('/classroomexport', async (req, res) => {
                         newId3 = file.id;
                       }
                     });
+                    var result = "classroom export complete!"
+                    app.set('result', result)
                   }
                   if(level3.type === "folder") {
                     const fileName3 = level3.name;
@@ -1429,6 +1541,8 @@ app.post('/classroomexport', async (req, res) => {
                       })
                     }
                     await driveCreateFolder3();
+                    var result = "classroom export complete!"
+                    app.set('result', result)
                     sleep(2000);
                     if(level3.children != []) {
                       //4
@@ -1477,6 +1591,8 @@ app.post('/classroomexport', async (req, res) => {
                               newId4 = file.id;
                             }
                           });
+                          var result = "classroom export complete!"
+                          app.set('result', result)
                         }
                         if(level4.type === "folder") {
                           const fileName4 = level4.name;
@@ -1505,6 +1621,8 @@ app.post('/classroomexport', async (req, res) => {
                             })
                           }
                           await driveCreateFolder4();
+                          var result = "classroom export complete!"
+                          app.set('result', result)
                           sleep(2000);
                           if(level4.children != []) {
                             //5
@@ -1553,6 +1671,8 @@ app.post('/classroomexport', async (req, res) => {
                                     newId5 = file.id;
                                   }
                                 });
+                                var result = "classroom export complete!"
+                                app.set('result', result)
                               }
                               if(level5.type === "folder") {
                                 const fileName5 = level5.name;
@@ -1581,6 +1701,8 @@ app.post('/classroomexport', async (req, res) => {
                                   })
                                 }
                                 await driveCreateFolder5();
+                                var result = "classroom export complete!"
+                                app.set('result', result)
                                 sleep(2000);
                                 if(level5.children != []) {
                                   //6
@@ -1629,6 +1751,8 @@ app.post('/classroomexport', async (req, res) => {
                                           newId6 = file.id;
                                         }
                                       });
+                                      var result = "classroom export complete!"
+                                      app.set('result', result)
                                     }
                                     if(level6.type === "folder") {
                                       const fileName6 = level6.name;
@@ -1657,6 +1781,8 @@ app.post('/classroomexport', async (req, res) => {
                                         })
                                       }
                                       await driveCreateFolder6();
+                                      var result = "classroom export complete!"
+                                      app.set('result', result)
                                       sleep(2000);
                                       if(level6.children != []) {
                                         //7
@@ -1705,6 +1831,8 @@ app.post('/classroomexport', async (req, res) => {
                                                 newId7 = file.id;
                                               }
                                             });
+                                            var result = "classroom export complete!"
+                                            app.set('result', result)
                                           }
                                           if(level7.type === "folder") {
                                             const fileName7 = level7.name;
@@ -1733,6 +1861,8 @@ app.post('/classroomexport', async (req, res) => {
                                               })
                                             }
                                             await driveCreateFolder7();
+                                            var result = "classroom export complete!"
+                                            app.set('result', result)
                                             sleep(2000);
                                             if(level7.children != []) {
                                               //8
@@ -1781,6 +1911,8 @@ app.post('/classroomexport', async (req, res) => {
                                                       newId8 = file.id;
                                                     }
                                                   });
+                                                  var result = "classroom export complete!"
+                                                  app.set('result', result)
                                                 }
                                                 if(level8.type === "folder") {
                                                   const fileName8 = level8.name;
@@ -1809,6 +1941,8 @@ app.post('/classroomexport', async (req, res) => {
                                                     })
                                                   }
                                                   await driveCreateFolder8();
+                                                  var result = "classroom export complete!"
+                                                  app.set('result', result)
                                                   sleep(2000);
                                                   if(level8.children != []) {
                                                     //9
@@ -1857,6 +1991,8 @@ app.post('/classroomexport', async (req, res) => {
                                                             newId9 = file.id;
                                                           }
                                                         });
+                                                        var result = "classroom export complete!"
+                                                        app.set('result', result)
                                                       }
                                                       if(level9.type === "folder") {
                                                         const fileName9 = level9.name;
@@ -1885,6 +2021,8 @@ app.post('/classroomexport', async (req, res) => {
                                                           })
                                                         }
                                                         await driveCreateFolder9();
+                                                        var result = "classroom export complete!"
+                                                        app.set('result', result)
                                                         if(level9.children != []) {
                                                           console.log("maximum file depth reached.")
                                                         } 
@@ -1917,7 +2055,12 @@ app.post('/classroomexport', async (req, res) => {
   }
 })
 
-  // Extension Push
+app.get('/exportresult', (req, res) => {
+  const exportresult = req.app.get('exportresult');
+  res.send(exportresult);
+})
+
+// Extension Push
 
 app.post('/classroomexport2', async (req, res) => {
   const files = req.body.fileArray;

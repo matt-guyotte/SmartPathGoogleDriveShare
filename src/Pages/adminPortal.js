@@ -113,15 +113,15 @@ class adminPortal extends Component {
 
 
   render() {
-    if(!this.state.access) {
-        return (
-            <div>
-            <p><strong> Note: </strong></p>
-            <p> This is for Smartpath admins only.</p> 
-            <GoogleBtn2 login = {this.loginConfirm} />
-            </div>
-        )
-    }
+    //if(!this.state.access) {
+    //    return (
+    //        <div>
+    //        <p><strong> Note: </strong></p>
+    //        <p> This is for Smartpath admins only.</p> 
+    //        <GoogleBtn2 login = {this.loginConfirm} />
+    //        </div>
+    //    )
+    //}
     if (this.state.domains === true && this.state.view != true && this.state.updateFolder != true && this.state.createNew != true) {
         return (
             <div>
@@ -180,25 +180,24 @@ class adminPortal extends Component {
             <Container fluid>
             <h3 className = "admin-title"> <strong> Welcome to the admin portal! </strong> </h3>
             <Row>
-                <Button onClick = {this.apiTest}></Button>
-                <Col md = {6}>
+                <Col lg = {6}>
                     <div className = "admin-box" onClick = {this.moveToDomains}> 
                         <h4 className = "admin-box-term"> View Domains and Privileges </h4>
                     </div>
                 </Col>
-                <Col md = {6}>
+                <Col lg = {6}>
                     <div className = "admin-box"onClick = {this.moveToSmartpath}>
                         <h4 className = "admin-box-term"> View Smartpath Folder </h4>
                     </div>
                 </Col>
             </Row>
             <Row>
-                <Col md = {6}>
+                <Col lg = {6}>
                     <div className = "admin-box" onClick = {this.moveToUpdateFolder}> 
                         <h4 className = "admin-box-term"> Edit a Lesson / Add Image </h4>
                     </div>
                 </Col>
-                <Col md = {6}>
+                <Col lg = {6}>
                     <div className = "admin-box" onClick = {this.moveToAddNew}> 
                         <h4 className = "admin-box-term"> Add a Lesson </h4>
                     </div>

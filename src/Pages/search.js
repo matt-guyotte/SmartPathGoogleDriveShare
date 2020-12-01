@@ -63,6 +63,8 @@ class Search extends React.Component {
             classroomFolders: [],
             newClassroomFolders: [],
             classroomParent: '',
+            exportResult: '',
+            visible: true,
 
             // Search Terms
 
@@ -122,6 +124,9 @@ class Search extends React.Component {
         this.handleChangeSubject = this.handleChangeSubject.bind(this);
         this.handleChangeGrade = this.handleChangeGrade.bind(this);
         this.handleChangeIndustry = this.handleChangeIndustry.bind(this);
+        this.removeTagSubject = this.removeTagSubject.bind(this);
+        this.removeTagGrade = this.removeTagGrade.bind(this);
+        this.removeTagIndustry = this.removeTagIndustry.bind(this);
         this.searchFunction = this.searchFunction.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
         this.downloadFolder = this.downloadFolder.bind(this);
@@ -1384,6 +1389,7 @@ class Search extends React.Component {
               this.setState({technology: false})
             }
         }
+        this.setState({visible: true})
         console.log(this.state.subjectArray)
     }
 
@@ -1530,6 +1536,7 @@ class Search extends React.Component {
               this.setState({twelveth: false})
             }
         }
+        this.setState({visible: true})
     }
 
     handleChangeIndustry(event) {
@@ -1695,6 +1702,43 @@ class Search extends React.Component {
               this.setState({transportation: false})
             }
         }
+        this.setState({visible: true})
+    }
+
+    removeTagSubject(event) {
+      const subject = event.target.value;
+      const array = this.state.subjectArray;
+      for (var i = 0; i < array.length; i++) {
+        if(array[i][0] === subject) {
+          array[i].splice(0, 1);
+          this.setState({subjectArray: array})
+        }
+      }
+      this.setState({visible: false})
+    }
+
+    removeTagGrade(event) {
+      const grade = event.target.value;
+      const array = this.state.gradeArray;
+      for (var i = 0; i < array.length; i++) {
+        if(array[i][0] === grade) {
+          array[i].splice(0, 1);
+          this.setState({gradeArray: array})
+        }
+      }
+      this.setState({visible: false})
+    }
+
+    removeTagIndustry(event) {
+      const industry = event.target.value;
+      const array = this.state.industryArray;
+      for (var i = 0; i < array.length; i++) {
+        if(array[i][0] === industry) {
+          array[i].splice(i, 1);
+          this.setState({industryArray: array})
+        }
+      }
+      this.setState({visible: false})
     }
 
     downloadTest() {
@@ -1761,7 +1805,7 @@ class Search extends React.Component {
     }
 
     async classroomExport() {
-      fetch('/classroomexport', {
+      await fetch('/classroomexport', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
@@ -1769,6 +1813,9 @@ class Search extends React.Component {
             parentId: this.state.classroomParent,
           })
        }) 
+       fetch('/exportresult')
+       .then(res => res.json())
+       .then(res => this.setState({exportResult: res}))
     }
 
     
@@ -1838,6 +1885,9 @@ class Search extends React.Component {
             }       
         }
         this.setState({searchRan: true})
+        this.setState({subjectArray: []})
+        this.setState({gradeArray: []})
+        this.setState({industryArray: []})
         console.log("searchRan changed")
     }
 
@@ -1846,6 +1896,7 @@ class Search extends React.Component {
     //Rendered Component
 
     render() {
+      let buttonClass = this.state.visible ? "visibleYes" : "visibleNo";
         if(this.state.session === true && this.state.searchRan === false) {
             return (
                 <div>
@@ -1872,11 +1923,9 @@ class Search extends React.Component {
                                         <option value = "technology">Technology</option>
                                     </Form.Control>
                                     {this.state.subjectArray.map(subject => (
-                                                <div key = {subject}>
-                                                    <ul>
-                                                        <li> {subject} </li>
-                                                    </ul>
-                                                </div>))}
+                                                <Button className = {buttonClass} value = {subject} onClick = {this.removeTagSubject}>
+                                                  {subject}
+                                                </Button>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box grade-level">
@@ -1898,11 +1947,9 @@ class Search extends React.Component {
                                         <option value = "twelveth">12th</option>
                                     </Form.Control>
                                     {this.state.gradeArray.map(grades => (
-                                                <div key = {grades}>
-                                                    <ul>
-                                                        <li> {grades} </li>
-                                                    </ul>
-                                                </div>))}
+                                                <Button className = {buttonClass} value = {grades} onClick = {this.removeTagGrade}>
+                                                {grades}
+                                              </Button>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box industry">
@@ -1924,11 +1971,9 @@ class Search extends React.Component {
                                       <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
                                     </Form.Control>
                                     {this.state.industryArray.map(industry => (
-                                                <div key = {industry}>
-                                                    <ul>
-                                                        <li> {industry} </li>
-                                                    </ul>
-                                                </div>))}
+                                                <Button className = {buttonClass} value = {industry} onClick = {this.removeTagIndustry}>
+                                                {industry}
+                                              </Button>))}
                                 </Row>
                            </Col>
                            <Col md = {9} className = "course-col">
@@ -1965,6 +2010,10 @@ class Search extends React.Component {
                                         <option value = "careers">Careers</option>
                                         <option value = "technology">Technology</option>
                                     </Form.Control>
+                                    {this.state.subjectArray.map(subject => (
+                                                <Button className = {buttonClass} value = {subject} onClick = {this.removeTagSubject}>
+                                                  {subject}
+                                                </Button>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box grade-level">
@@ -1985,6 +2034,10 @@ class Search extends React.Component {
                                         <option value = "eleventh">11th</option>
                                         <option value = "twelveth">12th</option>
                                     </Form.Control>
+                                    {this.state.gradeArray.map(grades => (
+                                                <Button className = {buttonClass} value = {grades} onClick = {this.removeTagGrade}>
+                                                {grades}
+                                              </Button>))}
                                 </Row>
                                 <hr />
                                 <Row className = "search-box industry">
@@ -2005,6 +2058,10 @@ class Search extends React.Component {
                                       <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
                                       <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
                                     </Form.Control>
+                                    {this.state.industryArray.map(industry => (
+                                                <Button className = {buttonClass} value = {industry} onClick = {this.removeTagIndustry}>
+                                                {industry}
+                                              </Button>))}
                                 </Row>
                                 </div>
                            </Col>
@@ -2079,6 +2136,7 @@ class Search extends React.Component {
                                         <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
                                       </Form>
                                     </Modal.Body>
+                                    <Modal.Body> {this.state.exportResult} </Modal.Body>
                                     <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
                                     <Modal.Body> <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
                                     <Modal.Footer>
