@@ -4,6 +4,8 @@ var app = express();
 require('dotenv').config(); 
 var path = require("path"); 
 
+app.use(requireHTTPS);
+
 //// serve up production assets
 app.use(express.static('build'));
 app.use(express.static('img'));
