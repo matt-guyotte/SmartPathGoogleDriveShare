@@ -4,9 +4,6 @@ var app = express();
 require('dotenv').config(); 
 var path = require("path"); 
 
-const enforce = require('express-sslify');
-app.use(enforce.HTTPS());
-
 //// serve up production assets
 app.use(express.static('build'));
 app.use(express.static('img'));
