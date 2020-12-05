@@ -387,6 +387,12 @@ function requireHTTPS(req, res, next) {
 
 app.use(requireHTTPS);
 
+/// GENERAL REDIRECT 
+
+app.get("https://connect.smartpathed.com", (req, res) => {
+  res.redirect('https://www.connect.smartpathed.com');
+})
+
 /// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
 // Setting Files to Local 
