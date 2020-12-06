@@ -22,6 +22,12 @@ class AdminNavbar extends React.Component {
                         <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link to = "/"> Search </Link> </Nav.Link> </Nav.Item> 
                         <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> Logout </Nav.Link> </Nav.Item>
                         </Row>
+                        <Row className = "ml-auto">
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Home </Link> </Nav.Link> </Nav.Item> 
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/"> Search </Link> </Nav.Link> </Nav.Item>
+                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/privacy"> Privacy </Link> </Nav.Link> </Nav.Item>  
+                            <Nav.Item className = "ml-auto nav-item" onClick = {this.callLogout}> <Nav.Link className = "nav-item"> <Link className = "nav-item" to = "/login"> Logout </Link> </Nav.Link> </Nav.Item>
+                        </Row>
                     </Navbar.Collapse>
                 </Container>
                 </Navbar>

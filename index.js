@@ -393,6 +393,15 @@ app.get("https://connect.smartpathed.com", (req, res) => {
   res.redirect('https://www.connect.smartpathed.com');
 })
 
+app.get("https://connect.smartpathed.com/privacy", (req, res) => {
+  res.redirect('https://www.connect.smartpathed.com/privacy');
+})
+
+app.get("https://connect.smartpathed.com/admin", (req, res) => {
+  res.redirect('https://www.connect.smartpathed.com/admin');
+})
+
+
 /// GOOGLE DRIVE EXPORT TO CLASSROOMs
 
 // Setting Files to Local 
