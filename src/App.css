@@ -89,6 +89,10 @@ Nav.Item, .nav-item {
   padding: 2%;
 }
 
+.limited-use {
+  background-color: #f2eb0c
+}
+
 .front-image-container {
   height: 60vh;
   width: 100%;

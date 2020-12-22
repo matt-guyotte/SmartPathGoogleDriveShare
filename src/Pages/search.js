@@ -2159,6 +2159,11 @@ class Search extends React.Component {
                       <div className = "whole">
                         <Container>
                         <Row>
+                          <div class = "limited-use">
+                            <h4> Think. Future. Workforce. Connect.'s' use of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements. </h4>
+                          </div>
+                        </Row>
+                        <Row>
                           <Col className = "front-title">
                             <h2> <strong> Welcome! </strong> </h2>
                           </Col>

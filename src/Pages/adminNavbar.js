@@ -18,11 +18,6 @@ class AdminNavbar extends React.Component {
                     <Navbar.Brand class = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                     <Navbar.Collapse className = "ml-auto">
                         <Row className = "ml-auto">
-                        <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link to = "/admin"> Admin Home </Link> </Nav.Link>  </Nav.Item> 
-                        <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link to = "/"> Search </Link> </Nav.Link> </Nav.Item> 
-                        <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> Logout </Nav.Link> </Nav.Item>
-                        </Row>
-                        <Row className = "ml-auto">
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Home </Link> </Nav.Link> </Nav.Item> 
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/"> Search </Link> </Nav.Link> </Nav.Item>
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/privacy"> Privacy </Link> </Nav.Link> </Nav.Item>  

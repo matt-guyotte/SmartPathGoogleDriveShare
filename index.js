@@ -390,7 +390,7 @@ app.use(requireHTTPS);
 /// GENERAL REDIRECT 
 
 app.get("https://connect.smartpathed.com", (req, res) => {
-  res.redirect('https://www.connect.smartpathed.com');
+  res.redirect("https://www.connect.smartpathed.com");
 })
 
 app.get("https://connect.smartpathed.com/privacy", (req, res) => {
