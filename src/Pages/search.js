@@ -1840,8 +1840,8 @@ class Search extends React.Component {
             if(this.state.searchTerm === "Search Here" && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
             && !this.state.preK && !this.state.K && !this.state.first && !this.state.second && !this.state.third && !this.state.fourth && !this.state.fifth && !this.state.sixth && !this.state.seventh && !this.state.eighth && !this.state.ninth && !this.state.tenth && !this.state.eleventh && !this.state.twelveth 
             && !this.state.agriculture && !this.state.architecture && !this.state.arts && !this.state.businessManagement && !this.state.educationTraining && !this.state.finance && !this.state.governmentPublic && !this.state.healthScience && !this.state.hospitality && !this.state.humanServices && !this.state.informationTechnology && !this.state.lawSafety && !this.state.manufacturing && !this.state.marketingSales && !this.state.sTEM && !this.state.transportation) {
-                this.setState({foundFolders: [{file: "Please enter a valid search term."}]})
-                this.setState({foundFiles: [{file: "Please enter a valid search term."}]})
+                this.setState({foundFolders: "Please enter a valid search term."})
+                this.setState({foundFiles: "Please enter a valid search term."})
                 this.setState({searchRan: true})
                 return console.log("searched.")
             }
