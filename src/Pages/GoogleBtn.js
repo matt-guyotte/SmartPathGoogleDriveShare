@@ -85,8 +85,7 @@ class GoogleBtn extends Component {
           buttonText='Login'
           onSuccess={ this.login }
           onFailure={ this.handleLoginFailure }
-          accessType = 'offline'
-          responseType='code'
+          responseType='profileObj'
           scope = 'https://www.googleapis.com/auth/drive'
         />
   }
