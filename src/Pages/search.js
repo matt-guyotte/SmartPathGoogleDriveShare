@@ -1825,7 +1825,7 @@ class Search extends React.Component {
         console.log("search function run");
         var searchTerm = this.state.searchTerm;
         var driveFiles = this.organizeFiles();
-        //console.log(driveFiles)
+        console.log(driveFiles)
         this.setState({searchRan: false});
         this.setState({foundFolders: []})
         this.setState({foundFiles: []})
