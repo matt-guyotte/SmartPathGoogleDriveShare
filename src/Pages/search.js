@@ -1930,6 +1930,9 @@ class Search extends React.Component {
         var subjectArray = this.state.subjectArray;
         var gradeArray = this.state.gradeArray;
         var industryArray = this.state.indutryArray;
+        console.log(subjectArray);
+        console.log(gradeArray);
+        console.log(industryArray);
         for(var i = 0; i < driveFiles.length; i++) {
 
           if (driveFiles[i].properties.subject && driveFiles[i].properties.subject.length === 0) {
