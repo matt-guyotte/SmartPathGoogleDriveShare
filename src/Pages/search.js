@@ -2000,7 +2000,7 @@ class Search extends React.Component {
               //console.log("the file is found.")
               if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                   foundFolders.push(driveFiles[i])
-                  //console.log(foundFolders)
+                  console.log(foundFolders)
                   this.setState({foundFolders: foundFolders})
               }
               if (driveFiles[i].type === 'application/vnd.google-apps.document') {
@@ -2212,22 +2212,22 @@ class Search extends React.Component {
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <p> {folders.type} </p>
+                                                { folders.children ? (
                                                 <Container>
                                                   <Row>
                                                     <h2> Contains: </h2>
                                                   </Row>
-                                                  { folders.children ? (
                                                     <Row>
                                                       <ul>
                                                         <li>{folders.children[0]}</li>
                                                       </ul>
                                                     </Row>
+                                                  </Container>
                                                   )
                                                   : (
                                                   <Row>
                                                   </Row>
                                                   )}
-                                                </Container>
 
                                                 </div>))}
                                             </Col>
