@@ -1929,7 +1929,7 @@ class Search extends React.Component {
         var foundFolders = [];
         var subjectArray = this.state.subjectArray;
         var gradeArray = this.state.gradeArray;
-        var industryArray = this.state.indutryArray;
+        var industryArray = this.state.industryArray;
         console.log(subjectArray);
         console.log(gradeArray);
         console.log(industryArray);
