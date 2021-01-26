@@ -1340,6 +1340,7 @@ class Search extends React.Component {
             }
             if (this.state.math === true) {
               this.setState({math: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Math');
             }
             console.log(this.state.subjectArray)
         }
@@ -1353,6 +1354,7 @@ class Search extends React.Component {
             }
             if (this.state.science === true) {
               this.setState({science: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Science');
             }
             console.log(this.state.subjectArray)
         }
@@ -1360,40 +1362,52 @@ class Search extends React.Component {
             if (this.state.socialStudies === false) {
               this.setState({socialStudies: true})
               subjectArrayVar.push('Social Studies');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.socialStudies === true) {
               this.setState({socialStudies: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Social Studies');
             }
         }
         if(event.target.value === 'languageArts') {
             if (this.state.languageArts === false) {
               this.setState({languageArts: true})
               subjectArrayVar.push('Language Arts');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.languageArts === true) {
               this.setState({languageArts: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Language Arts');
             }
         }
         if(event.target.value === 'careers') {
             if (this.state.careers === false) {
               this.setState({careers: true})
               subjectArrayVar.push('Careers');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.careers === true) {
               this.setState({careers: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Careers');
             }
         }
         if(event.target.value === 'technology') {
             if (this.state.technology === false) {
               this.setState({technology: true})
               subjectArrayVar.push('Technology');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.technology === true) {
               this.setState({technology: false})
+              subjectArrayVar = subjectArrayVar.filter(e => e !== 'Technology');
             }
         }
         this.setState({visible: true})
@@ -1407,7 +1421,9 @@ class Search extends React.Component {
             if (this.state.preK === false) {
               this.setState({preK: true})
               gradeArrayVar.push('Pre-K');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.preK === true) {
               this.setState({preK: false})
@@ -1417,7 +1433,9 @@ class Search extends React.Component {
             if (this.state.K === false) {
               this.setState({K: true})
               gradeArrayVar.push('K');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.K === true) {
               this.setState({K: false})
@@ -1427,7 +1445,9 @@ class Search extends React.Component {
             if (this.state.first === false) {
               this.setState({first: true})
               gradeArrayVar.push('1st');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.first === true) {
               this.setState({first: false})
@@ -1437,7 +1457,9 @@ class Search extends React.Component {
             if (this.state.second === false) {
               this.setState({second: true})
               gradeArrayVar.push('2nd');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.second === true) {
               this.setState({second: false})
@@ -1447,7 +1469,9 @@ class Search extends React.Component {
             if (this.state.third === false) {
               this.setState({third: true})
               gradeArrayVar.push('3rd');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.third === true) {
               this.setState({third: false})
@@ -1457,7 +1481,9 @@ class Search extends React.Component {
             if (this.state.fourth === false) {
               this.setState({fourth: true})
               gradeArrayVar.push('4th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.fourth === true) {
               this.setState({fourth: false})
@@ -1467,7 +1493,9 @@ class Search extends React.Component {
             if (this.state.fifth === false) {
               this.setState({fifth: true})
               gradeArrayVar.push('5th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.fifth === true) {
               this.setState({fifth: false})
@@ -1477,7 +1505,9 @@ class Search extends React.Component {
             if (this.state.sixth === false) {
               this.setState({sixth: true})
               gradeArrayVar.push('6th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.sixth === true) {
               this.setState({sixth: false})
@@ -1487,7 +1517,9 @@ class Search extends React.Component {
             if (this.state.seventh === false) {
               this.setState({seventh: true})
               gradeArrayVar.push('7th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.seventh === true) {
               this.setState({seventh: false})
@@ -1497,7 +1529,9 @@ class Search extends React.Component {
             if (this.state.eighth === false) {
               this.setState({eighth: true})
               gradeArrayVar.push('8th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.eighth === true) {
               this.setState({eighth: false})
@@ -1507,7 +1541,9 @@ class Search extends React.Component {
             if (this.state.ninth === false) {
               this.setState({ninth: true})
               gradeArrayVar.push('9th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.ninth === true) {
               this.setState({ninth: false})
@@ -1517,7 +1553,9 @@ class Search extends React.Component {
             if (this.state.tenth === false) {
               this.setState({tenth: true})
               gradeArrayVar.push('10th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.tenth === true) {
               this.setState({tenth: false})
@@ -1527,7 +1565,9 @@ class Search extends React.Component {
             if (this.state.eleventh === false) {
               this.setState({eleventh: true})
               gradeArrayVar.push('11th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.eleventh === true) {
               this.setState({eleventh: false})
@@ -1537,7 +1577,9 @@ class Search extends React.Component {
             if (this.state.twelveth === false) {
               this.setState({twelveth: true})
               gradeArrayVar.push('12th');
-              this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar]})
+              for (var i = 0; i < gradeArrayVar.length; i++) {
+                this.setState({gradeArray: [...this.state.gradeArray, gradeArrayVar[i]]})
+              }
             }
             if (this.state.twelveth === true) {
               this.setState({twelveth: false})
@@ -1553,160 +1595,208 @@ class Search extends React.Component {
             if (this.state.agriculture === false) {
               this.setState({agriculture: true})
               industryArrayVar.push("Agriculture, Food and Natural Resources");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.agriculture === true) {
               this.setState({agriculture: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Agriculture, Food and Natural Resources');
             }
         }
         if(event.target.value === "Architecture and Construction") {
             if (this.state.architecture === false) {
               this.setState({architecture: true})
               industryArrayVar.push("Architecture and Construction");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.architecture === true) {
               this.setState({architecture: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Architecture and Construction');
             }
         }
         if(event.target.value === "Arts, Audio/Video Technology and Communications") {
             if (this.state.arts === false) {
               this.setState({arts: true})
               industryArrayVar.push("Arts, Audio/Video Technology and Communications");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.arts === true) {
               this.setState({arts: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Arts, Audio/Video Technology and Communications');
             }
         }
         if(event.target.value === "Business Management and Administration") {
             if (this.state.businessManagement === false) {
               this.setState({businessManagement: true})
               industryArrayVar.push("Business Management and Administration");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.businessManagement === true) {
               this.setState({businessManagement: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Business Management and Administration');
             }
         }
         if(event.target.value === "Education and Training") {
             if (this.state.educationTraining === false) {
               this.setState({educationTraining: true})
               industryArrayVar.push("Education and Training");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.educationTraining === true) {
               this.setState({educationTraining: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Education and Training');
             }
         }
         if(event.target.value === "Finance") {
             if (this.state.finance === false) {
               this.setState({finance: true})
               industryArrayVar.push("Finance");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.finance === true) {
               this.setState({finance: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Finance');
             }
         }
         if(event.target.value === "Government and Public Administration") {
             if (this.state.governmentPublic === false) {
               this.setState({governmentPublic: true})
               industryArrayVar.push("Government and Public Administration");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.governmentPublic === true) {
               this.setState({governmentPublic: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Government and Public Administration');
             }
         }
         if(event.target.value === "Health Science") {
             if (this.state.healthScience === false) {
               this.setState({healthScience: true})
               industryArrayVar.push("Health Science");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.healthScience === true) {
               this.setState({healthScience: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Health Science');
             }
         }
         if(event.target.value === "Hospitality and Tourism") {
             if (this.state.hospitality === false) {
               this.setState({hospitality: true})
               industryArrayVar.push("Hospitality and Tourism");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.hospitality === true) {
               this.setState({hospitality: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Hospitality and Tourism');
             }
         }
         if(event.target.value === "Human Services") {
             if (this.state.humanServices === false) {
               this.setState({humanServices: true})
               industryArrayVar.push("Human Services");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.humanServices === true) {
               this.setState({humanServices: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Human Services');
             }
         }
         if(event.target.value === "Information Technology") {
             if (this.state.informationTechnology === false) {
               this.setState({informationTechnology: true})
-              industryArrayVar.push("Human Services");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              industryArrayVar.push("Information Technology");
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.informationTechnology === true) {
               this.setState({informationTechnology: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Information Technology');
             }
         }
         if(event.target.value === "Law, Public Safety, Corrections and Security") {
             if (this.state.lawSafety === false) {
               this.setState({lawSafety: true})
               industryArrayVar.push("Law, Public Safety, Corrections and Security");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.lawSafety === true) {
               this.setState({lawSafety: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Law, Public Safety, Corrections and Security');
             }
         }
         if(event.target.value === "Manufacturing") {
             if (this.state.manufacturing === false) {
               this.setState({manufacturing: true})
               industryArrayVar.push("Manufacturing");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.manufacturing === true) {
               this.setState({manufacturing: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Manufacturing');
             }
         }
         if(event.target.value === "Marketing, Sales and Service") {
             if (this.state.marketingSales === false) {
               this.setState({marketingSales: true})
               industryArrayVar.push("Marketing, Sales and Service");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.marketingSales === true) {
               this.setState({marketingSales: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Marketing, Sales and Service');
             }
         }
         if(event.target.value === "Science, Technology, Engineering and Math") {
             if (this.state.sTEM === false) {
               this.setState({sTEM: true})
               industryArrayVar.push("Science, Technology, Engineering and Math");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.sTEM === true) {
               this.setState({sTEM: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Science, Technology, Engineering and Math');
             }
         }
         if(event.target.value === "Transportation, Distribution and Logistics") {
             if (this.state.transportation === false) {
               this.setState({transportation: true})
               industryArrayVar.push("Transportation, Distribution and Logistics");
-              this.setState({industryArray: [...this.state.industryArray, industryArrayVar]})
+              for (var i = 0; i < industryArrayVar.length; i++) {
+                this.setState({industryArray: [...this.state.industryArray, industryArrayVar[i]]})
+              }
             }
             if (this.state.transportation === true) {
               this.setState({transportation: false})
+              industryArrayVar = industryArrayVar.filter(e => e !== 'Transportation, Distribution and Logistics');
             }
         }
         this.setState({visible: true})
