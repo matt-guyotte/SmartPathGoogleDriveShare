@@ -1334,7 +1334,9 @@ class Search extends React.Component {
             if (this.state.math === false) {
               this.setState({math: true})
               subjectArrayVar.push('Math');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.math === true) {
               this.setState({math: false})
@@ -1345,7 +1347,9 @@ class Search extends React.Component {
             if (this.state.science === false) {
               this.setState({science: true})
               subjectArrayVar.push('Science');
-              this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar]})
+              for (var i = 0; i < subjectArrayVar.length; i++) {
+                this.setState({subjectArray: [...this.state.subjectArray, subjectArrayVar[i]]})
+              }
             }
             if (this.state.science === true) {
               this.setState({science: false})
