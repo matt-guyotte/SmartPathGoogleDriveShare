@@ -1933,15 +1933,15 @@ class Search extends React.Component {
         for(var i = 0; i < driveFiles.length; i++) {
 
           if (driveFiles[i].properties.subject && driveFiles[i].properties.subject.length === 0) {
-            driveFiles[i].properties.subject = "none"
+            driveFiles[i].properties.subject = ["none"]
           }
 
           if (driveFiles[i].properties.grade && driveFiles[i].properties.grade.length === 0) {
-            driveFiles[i].properties.grade = "none"
+            driveFiles[i].properties.grade = ["none"]
           }
 
           if (driveFiles[i].properties.industry && driveFiles[i].properties.industry.length === 0) {
-            driveFiles[i].properties.industry = "none"
+            driveFiles[i].properties.industry = ["none"]
           }
 
         }
