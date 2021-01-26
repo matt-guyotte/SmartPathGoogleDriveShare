@@ -273,7 +273,8 @@ async function listFiles(auth) {
         }
       }
     }
-    console.log(subjectArray)
+    //console.log(subjectArray)
+    console.log(gradeArray)
     for(var j = 0; j < subjectArray.length; j++) {
       if (subjectArray[j] === 'hold') {
         subjectArray[j] = [];
@@ -286,19 +287,20 @@ async function listFiles(auth) {
       if (gradeArray[k] === 'hold') {
         gradeArray[k] = [];
       }
-      if(!(gradeArray[j] instanceof Array) && gradeArray[j] !== 'hold'){
-        gradeArray[j] = [gradeArray[j]];
+      if(!(gradeArray[k] instanceof Array) && gradeArray[k] !== 'hold'){
+        gradeArray[k] = [gradeArray[k]];
       }
     }
     for(var l = 0; l < industryArray.length; l++) {
       if (industryArray[l] === 'hold') {
         industryArray[l] = [];
       }
-      if(!(industryArray[j] instanceof Array) && industryArray[j] !== 'hold'){
-        industryArray[j] = [industryArray[j]];
+      if(!(industryArray[l] instanceof Array) && industryArray[l] !== 'hold'){
+        industryArray[l] = [industryArray[l]];
       }
     }
-    console.log(subjectArray);
+    //console.log(subjectArray);
+    console.log(gradeArray)
     for (var y = 0; y < fileDisplay.length; y++) {
       fileArray.push({
         file: fileDisplay[y],
