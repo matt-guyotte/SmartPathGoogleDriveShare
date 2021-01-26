@@ -2006,7 +2006,7 @@ class Search extends React.Component {
               if (driveFiles[i].type === 'application/vnd.google-apps.document') {
                   //console.log(driveFiles[i]);
                   foundFiles.push(driveFiles[i])
-                  //console.log(foundFiles)
+                  console.log(foundFiles)
                   this.setState({foundFiles: foundFiles})
               }
           }
