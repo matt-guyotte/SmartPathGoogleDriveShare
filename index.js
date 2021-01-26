@@ -234,6 +234,8 @@ async function listFiles(auth) {
         industryArray.push('hold');
       }
       if(files[i].properties) {
+
+        //IF EQUALS UNDEFINED
         if(files[i].properties.subject && typeof files[i].properties.grade === "undefined" && typeof files[i].properties.industry === "undefined") {
           subjectArray.push(files[i].properties.subject);
           gradeArray.push('hold');
@@ -271,23 +273,32 @@ async function listFiles(auth) {
         }
       }
     }
-    //console.log(subjectArray)
+    console.log(subjectArray)
     for(var j = 0; j < subjectArray.length; j++) {
       if (subjectArray[j] === 'hold') {
         subjectArray[j] = [];
+      }
+      if(!(subjectArray[j] instanceof Array) && subjectArray[j] !== 'hold'){
+        subjectArray[j] = [subjectArray[j]];
       }
     }
     for(var k = 0; k < gradeArray.length; k++) {
       if (gradeArray[k] === 'hold') {
         gradeArray[k] = [];
       }
+      if(!(gradeArray[j] instanceof Array) && gradeArray[j] !== 'hold'){
+        gradeArray[j] = [gradeArray[j]];
+      }
     }
     for(var l = 0; l < industryArray.length; l++) {
       if (industryArray[l] === 'hold') {
         industryArray[l] = [];
       }
+      if(!(industryArray[j] instanceof Array) && industryArray[j] !== 'hold'){
+        industryArray[j] = [industryArray[j]];
+      }
     }
-    //console.log(subjectArray);
+    console.log(subjectArray);
     for (var y = 0; y < fileDisplay.length; y++) {
       fileArray.push({
         file: fileDisplay[y],
@@ -334,7 +345,7 @@ async function listFiles(auth) {
         if(err) return console.log(err);
         //console.log(count);
         //console.log(count + " is the number of results")
-        console.log(fileArray[k1])
+        //console.log(fileArray[k1])
         if(count === 0) {
           //ALL
           if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length === 0) {
@@ -342,7 +353,7 @@ async function listFiles(auth) {
             var newTags1 = new TagFile({id: fileArray[k1].id});
             newTags1.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
@@ -350,7 +361,7 @@ async function listFiles(auth) {
             var newTags2 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], grade: [fileArray[k1].properties.grade], industry: [fileArray[k1].properties.industry] })
             newTags2.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           ////SUBJECT
@@ -358,21 +369,21 @@ async function listFiles(auth) {
             var newTags3 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject]})
             newTags3.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length === 0) {
             var newTags4 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], grade: [fileArray[k1].properties.grade]})
             newTags4.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length >= 1) {
             var newTags5 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], industry: [fileArray[k1].properties.industry]})
             newTags5.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           ////GRADE
@@ -380,14 +391,14 @@ async function listFiles(auth) {
             var newTags6 = new TagFile({id: fileArray[k1].id, grade: fileArray[k1].grade})
             newTags6.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
             var newTags7 = new TagFile({id: fileArray[k1].id, grade: fileArray[k1].grade, industry: fileArray[k1].industry})
             newTags7.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           ////INDUSTRY
@@ -395,7 +406,7 @@ async function listFiles(auth) {
             var newTags8 = new TagFile({id: fileArray[k1].id, industry: fileArray[k1].industry})
             newTags8.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           else {
@@ -405,7 +416,7 @@ async function listFiles(auth) {
         if(count > 1) {
           TagFile.find({id: fileArray[k1].id}, (err, res) => {
             if(err) return console.log(err);
-            console.log(res);
+            //console.log(res);
             for (let k2 = 0; k2 < res.subject.length; k2++) {
               fileArray[k1].properties.subject.push(res.subject[k2])
             }
