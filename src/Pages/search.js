@@ -1981,37 +1981,10 @@ class Search extends React.Component {
             //}
 
         //// Subject search terms 
-        let checker = (arr, target) => target.every(v => arr.includes(v));
+          let checker = (arr, target) => target.every(v => arr.includes(v));
 
-            if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true) {
-                //console.log("the file is found.")
-                if (driveFiles[i].type === "application/vnd.google-apps.folder") {
-                    foundFolders.push(driveFiles[i])
-                    //console.log(foundFolders)
-                    this.setState({foundFolders: foundFolders})
-                }
-                if (driveFiles[i].type === 'application/vnd.google-apps.document') {
-                    //console.log(driveFiles[i]);
-                    foundFiles.push(driveFiles[i])
-                    //console.log(foundFiles)
-                    this.setState({foundFiles: foundFiles})
-                }
-            }
-            if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.grade, gradeArray) === true) {
-              //console.log("the file is found.")
-              if (driveFiles[i].type === "application/vnd.google-apps.folder") {
-                  foundFolders.push(driveFiles[i])
-                  //console.log(foundFolders)
-                  this.setState({foundFolders: foundFolders})
-              }
-              if (driveFiles[i].type === 'application/vnd.google-apps.document') {
-                  //console.log(driveFiles[i]);
-                  foundFiles.push(driveFiles[i])
-                  //console.log(foundFiles)
-                  this.setState({foundFiles: foundFiles})
-              }
-            }
-            if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.industry, industryArray) === true) {
+          if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true && 
+          checker(driveFiles[i].properties.grade, gradeArray) === true && checker(driveFiles[i].properties.industry, industryArray) === true) {
               //console.log("the file is found.")
               if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                   foundFolders.push(driveFiles[i])
