@@ -1930,9 +1930,9 @@ class Search extends React.Component {
         var subjectArray = this.state.subjectArray;
         var gradeArray = this.state.gradeArray;
         var industryArray = this.state.industryArray;
-        console.log(subjectArray);
-        console.log(gradeArray);
-        console.log(industryArray);
+        //console.log(subjectArray);
+        //console.log(gradeArray);
+        //console.log(industryArray);
         for(var i = 0; i < driveFiles.length; i++) {
 
           if (driveFiles[i].properties.subject && driveFiles[i].properties.subject.length === 0) {
@@ -1957,7 +1957,7 @@ class Search extends React.Component {
           }
 
         }
-        console.log(driveFiles)
+        //console.log(driveFiles)
 
         for(var i = 0; i < driveFiles.length; i++) {
 
@@ -2000,7 +2000,7 @@ class Search extends React.Component {
               //console.log("the file is found.")
               if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                   foundFolders.push(driveFiles[i])
-                  console.log(foundFolders)
+                  console.log(driveFiles[i])
                   this.setState({foundFolders: foundFolders})
               }
               if (driveFiles[i].type === 'application/vnd.google-apps.document') {
