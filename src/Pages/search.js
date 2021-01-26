@@ -1339,6 +1339,7 @@ class Search extends React.Component {
             if (this.state.math === true) {
               this.setState({math: false})
             }
+            console.log(this.state.subjectArray)
         }
         if(event.target.value === 'science') {
             if (this.state.science === false) {
@@ -1349,6 +1350,7 @@ class Search extends React.Component {
             if (this.state.science === true) {
               this.setState({science: false})
             }
+            console.log(this.state.subjectArray)
         }
         if(event.target.value === 'socialStudies') {
             if (this.state.socialStudies === false) {
