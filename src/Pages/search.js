@@ -1825,7 +1825,7 @@ class Search extends React.Component {
         console.log("search function run");
         var searchTerm = this.state.searchTerm;
         var driveFiles = this.organizeFiles();
-        console.log(driveFiles)
+        //console.log(driveFiles)
         this.setState({searchRan: false});
         this.setState({foundFolders: []})
         this.setState({foundFiles: []})
@@ -1847,6 +1847,11 @@ class Search extends React.Component {
           if (driveFiles[i].properties.industry && driveFiles[i].properties.industry.length === 0) {
             driveFiles[i].properties.industry = "none"
           }
+
+        }
+        console.log(driveFiles)
+
+        for(var i = 0; i < driveFiles.length; i++) {
 
         // Plain search terms
 
