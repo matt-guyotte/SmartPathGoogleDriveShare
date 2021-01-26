@@ -83,18 +83,6 @@ class adminPortal extends Component {
             })
         }
     }
-    moveToAddNew() {
-        if(this.state.addNew === false) {
-            this.setState({
-                addNew: true
-            })
-        }
-        if(this.state.addNew === true) {
-            this.setState({
-                addNew: false
-            })
-        }
-    }
     moveToCreateNew() {
         if(this.state.createNew === false) {
             this.setState({

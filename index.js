@@ -104,6 +104,7 @@ const { file } = require('googleapis/build/src/apis/file');
 const { domain } = require('process');
 const { request } = require('http');
 const { appsactivity } = require('googleapis/build/src/apis/appsactivity');
+const { stringify } = require('querystring');
 
 
 /// GOOGLE DRIVE API MAIN ROUTES 
@@ -208,156 +209,86 @@ async function listFiles(auth) {
     },
     parents: [],
   }];
-  for(var i = 0; i < files.length; i++) {
-    TagFile.count({id: files[i].id}, (err, count) => {
-      if(err) return console.log(err);
-      if(count === 0) {
-        //ALL
-        if(!files[i].subject && !files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id});
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-        }
-        if(files[i].subject && files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade], industry: [files[i].properties.industry] })
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade, industry: files[i].industry})
-        }
-        //SUBJECT
-        if(files[i].subject && !files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject]})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject})
-        }
-        if(files[i].subject && files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], grade: [files[i].properties.grade]})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade})
-        }
-        if(files[i].subject && !files[i].grade && files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: [files[i].properties.subject], industry: [files[i].properties.industry]})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject, industry: files[i].industry})
-        }
-        //GRADE
-        if(!files[i].subject && files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, grade: files[i].grade})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({grade: files[i].properties.grade})
-        }
-        if(files[i].subject && files[i].grade && !files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: files[i].subject, grade: files[i].grade})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject, grade: files[i].properties.grade})
-        }
-        if(!files[i].subject && files[i].grade && files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({grade: files[i].properties.grade, industry: files[i].industry})
-        }
-        //INDUSTRY
-        if(!files[i].subject && !files[i].grade && files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({industry: files[i].industry})
-        }
-        if(files[i].subject && !files[i].grade && files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, subject: files[i].subject, industry: files[i].industry})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({subject: files[i].properties.subject, industry: files[i].industry})
-        }
-        if(!files[i].subject && files[i].grade && files[i].industry) {
-          var newTags = new TagFile({id: files[i].id, grade: files[i].grade, industry: files[i].industry})
-          newTags.save((err, res) => {
-            if (err) return console.log(err);
-            console.log(res);
-          })
-          fileArray.push({grade: files[i].properties.grade, industry: files[i].industry})
-        }
-      }
-      if(count > 1) {
-        TagFile.find({id: files[i].id}, (err, res) => {
-          if(err) return console.log(err);
-          fileArray.push({subject: res[0].subject, grade: res[0].grade, industry: res[0].industry})
-        })
-      }
-      else {
-        return;
-      }
-    })
-  }
   if (files.length) {
     const fileDisplay = [];
     const fileIdArray = [];
     const description = [];
     const mimeType = [];
     const parents = [];
-    var subjectArray = [];
-    var gradeArray = [];
-    var industryArray = [];
+    const subjectArray = [];
+    const gradeArray = [];
+    const industryArray = [];
     const imgsrc = [];
     var newLoop = [];
     for (var i = 0; i < files.length; i++) {
-      await TagFile.find({id: files[i].id}, (err, res) => {
-        if (err) return console.log("This is the error for TagFile " + err);
-        //console.log(res);
-        newLoop = res;
-      })
+      //console.log(files[i]);
       //console.log(newLoop.subject);
       fileDisplay.push(files[i].name);
       fileIdArray.push(files[i].id);
       description.push(files[i].description);
       mimeType.push(files[i].mimeType);
       parents.push(files[i].parents);
-      subjectArray.push(newLoop.subject)
-      gradeArray.push(newLoop.grade)
-      industryArray.push(newLoop.industry)
+      if (typeof files[i].properties === 'undefined') {
+        subjectArray.push('hold');
+        gradeArray.push('hold');
+        industryArray.push('hold');
+      }
+      if(files[i].properties) {
+        if(files[i].properties.subject && typeof files[i].properties.grade === "undefined" && typeof files[i].properties.industry === "undefined") {
+          subjectArray.push(files[i].properties.subject);
+          gradeArray.push('hold');
+          industryArray.push('hold');
+        }
+        if(files[i].properties.subject && files[i].properties.grade && typeof files[i].properties.industry === "undefined") {
+          subjectArray.push(files[i].properties.subject);
+          gradeArray.push(files[i].properties.grade);
+          industryArray.push('hold');
+        }
+        if(files[i].properties.subject && files[i].properties.grade && files[i].properties.industry) {
+          subjectArray.push(files[i].properties.subject);
+          gradeArray.push(files[i].properties.grade);
+          industryArray.push(files[i].properties.industry);
+        }
+        if(files[i].properties.subject && typeof files[i].properties.grade === "undefined" && files[i].properties.industry) {
+          subjectArray.push(files[i].properties.subject);
+          gradeArray.push('hold');
+          industryArray.push(files[i].properties.industry);
+        }
+        if(typeof files[i].properties.subject === "undefined" && files[i].properties.grade && files[i].properties.industry) {
+          subjectArray.push('hold');
+          gradeArray.push(files[i].properties.grade);
+          industryArray.push(files[i].properties.industry);
+        }
+        if(typeof files[i].properties.subject === "undefined" && files[i].properties.grade && typeof files[i].properties.industry === "undefined") {
+          subjectArray.push('hold');
+          gradeArray.push(files[i].properties.grade);
+          industryArray.push('hold');
+        }
+        if(typeof files[i].properties.subject === "undefined" && typeof files[i].properties.grade === "undefined" && files[i].properties.industry) {
+          subjectArray.push('hold');
+          gradeArray.push('hold');
+          industryArray.push(files[i].properties.industry);
+        }
+      }
     }
+    //console.log(subjectArray)
+    for(var j = 0; j < subjectArray.length; j++) {
+      if (subjectArray[j] === 'hold') {
+        subjectArray[j] = [];
+      }
+    }
+    for(var k = 0; k < gradeArray.length; k++) {
+      if (gradeArray[k] === 'hold') {
+        gradeArray[k] = [];
+      }
+    }
+    for(var l = 0; l < industryArray.length; l++) {
+      if (industryArray[l] === 'hold') {
+        industryArray[l] = [];
+      }
+    }
+    //console.log(subjectArray);
     for (var y = 0; y < fileDisplay.length; y++) {
-      for(var j = 0; j < subjectArray.length; j++) {
-        if(subjectArray[j] === undefined) {
-          subjectArray[j] = [];
-        }
-      }
-      for(var j = 0; j < gradeArray.length; j++) {
-        if(gradeArray[j] === undefined) {
-          gradeArray[j] = [];
-        }
-      }
-      for(var j = 0; j < industryArray.length; j++) {
-        if(industryArray[j] === undefined) {
-          industryArray[j] = [];
-        }
-      }
       fileArray.push({
         file: fileDisplay[y],
         id: fileIdArray[y],
@@ -372,8 +303,128 @@ async function listFiles(auth) {
         parents: parents[y],
       });
     }
+    //console.log(fileArray)
+    for(let k1 = 0; k1 < fileArray.length; k1++) {
+      if (typeof fileArray[k1] === 'undefined') {
+        fileArray.splice(k, 1)
+      }
+      if (fileArray[k1].file === '') {
+        fileArray.splice(k, 1)
+      }
+      if (typeof fileArray[k1].properties.subject === "undefined") {
+        fileArray[k1].properties.subject = [];
+      }
+      if (typeof fileArray[k1].properties.grade === "undefined") {
+        fileArray[k1].properties.grade = [];
+      }
+      if (typeof fileArray[k1].properties.industry === "undefined") {
+        fileArray[k1].properties.industry = [];
+      }
+      //if (typeof fileArray[k1].properties.subject === "string") {
+      //  fileArray[k1].properties.subject = [fileArray[k1].properties.subject];
+      //}
+      //if (typeof fileArray[k1].properties.grade === "string") {
+      //  fileArray[k1].properties.grade = [fileArray[k1].properties.grade];
+      //}
+      //if (typeof fileArray[k1].properties.industry === "string") {
+      //  fileArray[k1].properties.industry = [fileArray[k1].properties.industry];
+      //}
+      
+      await TagFile.countDocuments({id: fileArray[k1].id}, (err, count) => {
+        if(err) return console.log(err);
+        //console.log(count);
+        //console.log(count + " is the number of results")
+        console.log(fileArray[k1])
+        if(count === 0) {
+          //ALL
+          if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length === 0) {
+            //console.log(fileArray[k1])
+            var newTags1 = new TagFile({id: fileArray[k1].id});
+            newTags1.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
+            console.log(fileArray[k1])
+            var newTags2 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], grade: [fileArray[k1].properties.grade], industry: [fileArray[k1].properties.industry] })
+            newTags2.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          ////SUBJECT
+          if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length === 0) {
+            var newTags3 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject]})
+            newTags3.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length === 0) {
+            var newTags4 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], grade: [fileArray[k1].properties.grade]})
+            newTags4.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length >= 1) {
+            var newTags5 = new TagFile({id: fileArray[k1].id, subject: [fileArray[k1].properties.subject], industry: [fileArray[k1].properties.industry]})
+            newTags5.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          ////GRADE
+          if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length === 0) {
+            var newTags6 = new TagFile({id: fileArray[k1].id, grade: fileArray[k1].grade})
+            newTags6.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
+            var newTags7 = new TagFile({id: fileArray[k1].id, grade: fileArray[k1].grade, industry: fileArray[k1].industry})
+            newTags7.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          ////INDUSTRY
+          if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length >= 1) {
+            var newTags8 = new TagFile({id: fileArray[k1].id, industry: fileArray[k1].industry})
+            newTags8.save((err, res) => {
+              if (err) return console.log(err);
+              console.log(res);
+            })
+          }
+          else {
+            console.log("not found")
+          }
+        }
+        if(count > 1) {
+          TagFile.find({id: fileArray[k1].id}, (err, res) => {
+            if(err) return console.log(err);
+            console.log(res);
+            for (let k2 = 0; k2 < res.subject.length; k2++) {
+              fileArray[k1].properties.subject.push(res.subject[k2])
+            }
+            for (let k3 = 0; k3 < res.grade.length; k3++) {
+              fileArray[k1].properties.grade.push(res.grade[k3])
+            }
+            for (let k4 = 0; k4 < res.industry.length; k4++) {
+              fileArray[k1].properties.industry.push(res.industry[k4])
+            }
+          })
+        }
+        else {
+          return;
+        }
+        //console.log(fileArray);
+      })
+    }
+    //console.log(fileArray)
     app.set('fileArray', fileArray);
-    console.log(fileArray)
   }
 }
 
@@ -3131,6 +3182,9 @@ app.post("/makenew", (req, res) => {
   var name = req.body.name;
   var description = req.body.description;
   var type = req.body.type;
+  var subject = req.body.subjectArray;
+  var grade = req.body.gradeArray;
+  var industry = req.body.industryArray;
   var fileMetadata = {
     'name': name,
     'description': description,
@@ -3144,6 +3198,11 @@ app.post("/makenew", (req, res) => {
       console.error(err);
     } else {
       console.log(file.id);
+      var newTag = new TagFile({id: file.id, subject: subject, grade: grade, industry: industry});
+        newTag.save((err, res) => {
+          if (err) return console.log(err);
+          console.log(res);
+        })
     }
   });
 })
