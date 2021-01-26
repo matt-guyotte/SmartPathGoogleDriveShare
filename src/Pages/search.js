@@ -1943,6 +1943,15 @@ class Search extends React.Component {
           if (driveFiles[i].properties.industry && driveFiles[i].properties.industry.length === 0) {
             driveFiles[i].properties.industry = ["none"]
           }
+          if (subjectArray.length === 0) {
+            subjectArray = ['none']
+          }
+          if (gradeArray.length === 0) {
+            gradeArray = ['none']
+          }
+          if (industryArray.length === 0) {
+            industryArray = ['none']
+          }
 
         }
         console.log(driveFiles)
@@ -1997,6 +2006,10 @@ class Search extends React.Component {
                   //console.log(foundFiles)
                   this.setState({foundFiles: foundFiles})
               }
+          }
+          else {
+            this.setState({foundFolders: "No results found."})
+            this.setState({foundFiles: "No results found."})
           }         
         }
         this.setState({searchRan: true})
