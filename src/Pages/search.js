@@ -2216,11 +2216,17 @@ class Search extends React.Component {
                                                   <Row>
                                                     <h2> Contains: </h2>
                                                   </Row>
+                                                  { folders.children ? (
+                                                    <Row>
+                                                      <ul>
+                                                        <li>{folders.children[0]}</li>
+                                                      </ul>
+                                                    </Row>
+                                                  )
+                                                  : (
                                                   <Row>
-                                                    <ul>
-                                                      <li>{folders.children[0]}</li>
-                                                    </ul>
                                                   </Row>
+                                                  )}
                                                 </Container>
 
                                                 </div>))}
