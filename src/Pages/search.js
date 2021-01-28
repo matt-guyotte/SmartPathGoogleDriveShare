@@ -1930,7 +1930,7 @@ class Search extends React.Component {
         var subjectArray = this.state.subjectArray;
         var gradeArray = this.state.gradeArray;
         var industryArray = this.state.industryArray;
-        //console.log(subjectArray);
+        console.log(subjectArray);
         //console.log(gradeArray);
         //console.log(industryArray);
         for(var i = 0; i < driveFiles.length; i++) {
@@ -2009,10 +2009,7 @@ class Search extends React.Component {
                   console.log(foundFiles)
                   this.setState({foundFiles: foundFiles})
               }
-          }
-          else {
-            console.log("else was called")
-          }         
+          }       
         }
         this.setState({searchRan: true})
         this.setState({subjectArray: []})
