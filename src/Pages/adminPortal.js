@@ -7,6 +7,7 @@ import Link from 'react-router-dom/Link';
 
 import GoogleBtn2 from './GoogleBtn2';
 import AdminNavbar from './adminNavbar';
+import Footer from './Footer'
 import DomainView from './domainView';
 import SmartPathView from './smartPathView';
 import UpdateFolder from "./updateFolder";
@@ -193,6 +194,7 @@ class adminPortal extends Component {
             {this.state.accessToken}
             </Container>
         </div>
+
     </div>
     )
     }
