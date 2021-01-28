@@ -33,9 +33,6 @@ class UpdateFolder extends React.Component {
     this.handleChangeSubject = this.handleChangeSubject.bind(this);
     this.handleChangeGrade = this.handleChangeGrade.bind(this);
     this.handleChangeIndustry = this.handleChangeIndustry.bind(this);
-    this.handleChangeVideo = this.handleChangeVideo.bind(this);
-    this.handleChangeRubric = this.handleChangeRubric.bind(this);
-    this.handleChangeHandout = this.handleChangeHandout.bind(this);
 
   }
 
@@ -242,45 +239,6 @@ handleChangeIndustry(event) {
   }
 }
 
-  handleChangeVideo() {
-    if(this.state.video === false) {
-      this.setState({
-        video: true
-      })
-    }
-    if(this.state.video === true) {
-      this.setState({
-        video: false
-      })
-    }
-  }
-
-  handleChangeRubric() {
-    if(this.state.rubric === false) {
-      this.setState({
-        rubric: true
-      })
-    }
-    if(this.state.rubric === true) {
-      this.setState({
-        rubric: false
-      })
-    }
-  }
-
-  handleChangeHandout() {
-    if(this.state.handout === false) {
-      this.setState({
-        handout: true
-      })
-    }
-    if(this.state.handout === true) {
-      this.setState({
-        handout: false
-      })
-    }
-  }
-
   render() {
     return (
     <div className = "admin-page whole">
@@ -349,11 +307,7 @@ handleChangeIndustry(event) {
             <option value = "Marketing, Sales and Service"> Marketing, Sales and Service </option>
             <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
             <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
-          </Form.Control>
-        <h3> Does it contain? </h3>
-          <input type = "checkbox" onClick = {this.handleChangeVideo} /> <p> Video? </p>
-          <input type = "checkbox" onClick = {this.handleChangeRubric} /> <p> Rubric? </p>
-          <input type = "checkbox" onClick = {this.handleChangeHandout} /> <p> Handout? </p> 
+          </Form.Control> 
           <Button className = "btn btn-primary" type = "submit">Submit </Button>
           </Form>
 
