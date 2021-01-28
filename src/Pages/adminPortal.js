@@ -32,7 +32,6 @@ class adminPortal extends Component {
     this.moveToDomains = this.moveToDomains.bind(this);
     this.moveToSmartpath = this.moveToSmartpath.bind(this);
     this.moveToUpdateFolder = this.moveToUpdateFolder.bind(this);
-    this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToCreateNew = this.moveToCreateNew.bind(this);
     this.updateTest = this.updateTest.bind(this);
   }
