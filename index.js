@@ -3181,13 +3181,17 @@ app.post('/update', uploads.single('myFile'), (req, res, done) => {
   var grade = req.body.grade;
   var industry = req.body.industry;
   const imageUrl = req.file.filename; 
-  TagFile.findOneAndUpdate(
-    {id: fileId}, 
-    {$push: {subject: subject}},
-    {$push: {grade: grade}},
-    {$push: {industry: industry}},
-    {new: true},
-    (err, data) => {console.log(data)})
+  TagFile.find({id: fileId}, (err, res) => {
+    if (err) return console.log(err);
+    console.log(res);
+    for (var i = 0; i > subject.length; i++) {
+      if(!res[0].subject.includes(subject[i])) {
+        res[0].subject.push(subject[i]);
+      }
+      console.log(res[0].subject)
+    }
+    res.save()
+  })
 })
 
 app.post("/makenew", (req, res) => {

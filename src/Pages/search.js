@@ -1807,8 +1807,8 @@ class Search extends React.Component {
       const subject = event.target.value;
       const array = this.state.subjectArray;
       for (var i = 0; i < array.length; i++) {
-        if(array[i][0] === subject) {
-          array[i].splice(0, 1);
+        if(array[i] === subject) {
+          array.splice(i, 1);
           this.setState({subjectArray: array})
         }
       }
@@ -1819,8 +1819,8 @@ class Search extends React.Component {
       const grade = event.target.value;
       const array = this.state.gradeArray;
       for (var i = 0; i < array.length; i++) {
-        if(array[i][0] === grade) {
-          array[i].splice(0, 1);
+        if(array[i] === grade) {
+          array.splice(i, 1);
           this.setState({gradeArray: array})
         }
       }
@@ -1831,8 +1831,8 @@ class Search extends React.Component {
       const industry = event.target.value;
       const array = this.state.industryArray;
       for (var i = 0; i < array.length; i++) {
-        if(array[i][0] === industry) {
-          array[i].splice(i, 1);
+        if(array[i] === industry) {
+          array.splice(i, 1);
           this.setState({industryArray: array})
         }
       }
