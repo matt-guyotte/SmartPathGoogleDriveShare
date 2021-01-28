@@ -1,5 +1,6 @@
 import React from 'react'; 
 import TopNavbar from './navbar'; 
+import Footer from './Footer';
 import {Container} from 'react-bootstrap'; 
 import {Row} from 'react-bootstrap';
 import {Col} from 'react-bootstrap'; 
@@ -69,6 +70,7 @@ class Privacy extends React.Component {
         <div>
             <TopNavbar />
             <Container>
+                <div className = "whole"> </div>
                 <Row className = "privacy-title">
                     <Col>
                         <h2> <strong> Privacy Policy </strong> </h2>
@@ -151,6 +153,7 @@ class Privacy extends React.Component {
                     </Col>
                 </Row>
             </Container>
+            <Footer />
         </div>
       )
     }

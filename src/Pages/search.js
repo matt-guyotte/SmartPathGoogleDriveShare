@@ -11,6 +11,7 @@ import Link from 'react-router-dom/Link';
 import Redirect from 'react-router-dom/Redirect'
 
 import TopNavbar from './navbar';
+import Footer from './Footer'
 import GoogleBtn from './GoogleBtn';
 import Register from './register';
 import Login from './login';
@@ -2029,7 +2030,7 @@ class Search extends React.Component {
                 <div>
                     <TopNavbar />
                     <Container fluid>
-                        <div className = "whole">
+                        <div className = "whole"> </div>
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
                                <Row>
@@ -2106,8 +2107,8 @@ class Search extends React.Component {
                            <Col md = {9} className = "course-col">
                            </Col>  
                         </Row>
-                        </div>
                     </Container>
+                    <Footer />
                 </div>
             )
         }
@@ -2116,7 +2117,7 @@ class Search extends React.Component {
                 <div>
                    <TopNavbar />
                    <Container fluid>
-                       <div className = "whole">
+                       <div className = "whole"> </div>
                         <Row className = "searchPage"> 
                            <Col md = {3} className = "search-col">
                                <Row>
@@ -2280,8 +2281,8 @@ class Search extends React.Component {
                                 </Modal>
                            </Col>  
                         </Row>
-                        </div>
                     </Container>
+                    <Footer />
                 </div>
             )
         }
@@ -2289,11 +2290,11 @@ class Search extends React.Component {
             return (
                 <div>
                     <TopNavbar />
-                      <div className = "whole">
+                      <div className = "whole"> </div>
                         <Container>
                         <Row>
                           <div class = "limited-use">
-                            <h4> Think. Future. Workforce. Connect.'s' use of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements. </h4>
+                            <p> Think. Future. Workforce. Connect.'s' use of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements. </p>
                           </div>
                         </Row>
                         <Row>
@@ -2330,9 +2331,9 @@ class Search extends React.Component {
                           <h5> <strong> Download </strong> </h5> 
                           <p> Download access to a wide range of courses. </p>
                           <ul>
-                            <li> Innovative Tag System </li>
-                            <li> Find Lessons by Grade, Subject, or Industry </li>
-                            <li> No pain of searching the whole drive manually! </li>
+                            <li> Quick Login Download </li>
+                            <li> Choice of Export or Local Download! </li>
+                            <li> Microsoft Word, Powerpoint, and Excel Supported </li>
                           </ul>
                           </Col>
                           <Col className = "feature text-center">
@@ -2347,11 +2348,11 @@ class Search extends React.Component {
                         </Row>
                         <Row>
                           <Col>
-                            <h3> <small> *If you have just logged in, please refresh the page. Otherwise, please login. </small> </h3>
+                            <p> <small> <strong> *If you have just logged in, please refresh the page. Otherwise, please login. </strong> </small> </p> <div type = "button"> <Link to = "/login"> Login </Link> </div>
                           </Col>
                         </Row>
                         </Container>
-                      </div>                  
+                        <Footer />                  
                 </div>
             )
         }

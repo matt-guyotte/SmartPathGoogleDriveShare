@@ -164,7 +164,8 @@ class adminPortal extends Component {
     return (
     <div>
         <AdminNavbar />
-        <div className = "admin-page whole">
+        <div className = "whole"> </div>
+        <div className = "page">
             <Container fluid>
             <h3 className = "admin-title"> <strong> Welcome to the admin portal! </strong> </h3>
             <Row>
@@ -194,7 +195,7 @@ class adminPortal extends Component {
             {this.state.accessToken}
             </Container>
         </div>
-
+        <Footer />
     </div>
     )
     }

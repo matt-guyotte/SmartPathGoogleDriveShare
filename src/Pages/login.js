@@ -1,5 +1,6 @@
 import React from 'react'; 
 import TopNavbar from './navbar'; 
+import Footer from './Footer';
 import {Container} from 'react-bootstrap'; 
 import {Row} from 'react-bootstrap';
 import {Col} from 'react-bootstrap'; 
@@ -77,7 +78,8 @@ class Login extends React.Component {
             <div>
                 <TopNavbar login = {this.navbarConnect}/>
                 <Container fluid>
-                    <Row className = "justify-content-center auto top-pad"> 
+                  <div className = "whole"> </div>
+                    <Row className = "justify-content-center auto top-pad login-box"> 
                         <Form onSubmit = {this.submitFunction}>
                           <Form.Group>
                           <Form.Label>Email address</Form.Label>
@@ -97,6 +99,7 @@ class Login extends React.Component {
                         </Form>
                     </Row>
                 </Container>
+                <Footer />
             </div>
         )
       }

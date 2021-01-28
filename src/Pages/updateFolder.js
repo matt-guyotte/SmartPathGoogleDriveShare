@@ -6,6 +6,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
 
+import AdminNavbar from './adminNavbar';
+import Footer from './Footer';
+
 
 class UpdateFolder extends React.Component {
    constructor(props) {
@@ -241,85 +244,88 @@ handleChangeIndustry(event) {
 
   render() {
     return (
-    <div className = "admin-page whole">
-    <Container>
-     <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
-        <h3> Update Lesson </h3>
-          <Form onSubmit = {this.addSubject}>
-          <h4> Enter Drive Folder Id of Lesson to Change </h4>
-          <Form.Control input = "true" name = "email" value= {this.state.id || ''} placeholder="Enter file/folder id" onChange = {this.handleChangeId} required />
-          <hr />
-          <h4> Description* </h4>
-          <Form.Control input = "true" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription}/>
-          <h4> Subject </h4>
-          <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
-            <option value = "math">Math</option>
-            <option value = "science">Science</option>
-            <option value = "socialStudies">Social Studies</option>
-            <option value = "languageArts">Language Arts</option>
-            <option value = "careers">Careers</option>
-            <option value = "technology">Technology</option>
-          </Form.Control>
-          {this.state.subjectArray.map(subject => (
-            <div key = {subject}>
-                <ul>
-                    <li> {subject} </li>
-                </ul>
-            </div>))}
-          <hr />
-        <h4> Grade </h4>
-          <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''} multiple>
-          <option value = "pre-k">Pre-K</option>
-          <option value = "k">K</option>
-          <option value = "first">1st</option>
-          <option value = "second">2nd</option>
-          <option value = "third">3rd</option>
-          <option value = "fourth">4th</option>
-          <option value = "fifth">5th</option>
-          <option value = "sixth">6th</option>
-          <option value = "seventh">7th</option>
-          <option value = "eighth">8th</option>
-          <option value = "ninth">9th</option>
-          <option value = "tenth">10th</option>
-          <option value = "eleventh">11th</option>
-          <option value = "twelveth">12th</option>
-          </Form.Control>
-          {this.state.gradeArray.map(grades => (
-            <div key = {grades}>
-                <ul>
-                    <li> {grades} </li>
-                </ul>
-            </div>))}
-          <hr />
-        <h4> Industry </h4>
-          <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''} multiple>
-            <option value = "Agriculture, Food and Natural Resources"> Agriculture, Food and Natural Resources </option>
-            <option value = "Architecture and Construction"> Architecture and Construction </option>
-            <option value = "Arts, Audio/Video Technology and Communications"> Arts, Audio/Video Technology and Communications </option>
-            <option value = "Business Managment and Administration"> Business Managment and Administration </option>
-            <option value = "Education and Training"> Education and Training </option>
-            <option value = "Finance"> Finance </option>
-            <option value = "Government and Public Administration"> Government and Public Administration </option>
-            <option value = "Health Science"> Health Science </option>
-            <option value = "Information Technology"> Information Technology </option>
-            <option value = "Law, Public Safety, Corrections and Security"> Law, Public Safety, Corrections and Security </option>
-            <option value = "Manufacturing"> Manufacturing </option>
-            <option value = "Marketing, Sales and Service"> Marketing, Sales and Service </option>
-            <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
-            <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
-          </Form.Control> 
-          <Button className = "btn btn-primary" type = "submit">Submit </Button>
-          </Form>
+    <div>
+      <AdminNavbar />
+      <div className = "whole"> </div>
+        <Container>
+          <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
+          <h3> Update Lesson </h3>
+            <Form onSubmit = {this.addSubject}>
+            <h4> Enter Drive Folder Id of Lesson to Change </h4>
+            <Form.Control input = "true" name = "email" value= {this.state.id || ''} placeholder="Enter file/folder id" onChange = {this.handleChangeId} required />
+            <hr />
+            <h4> Description* </h4>
+            <Form.Control input = "true" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription}/>
+            <h4> Subject </h4>
+            <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
+              <option value = "math">Math</option>
+              <option value = "science">Science</option>
+              <option value = "socialStudies">Social Studies</option>
+              <option value = "languageArts">Language Arts</option>
+              <option value = "careers">Careers</option>
+              <option value = "technology">Technology</option>
+            </Form.Control>
+            {this.state.subjectArray.map(subject => (
+              <div key = {subject}>
+                  <ul>
+                      <li> {subject} </li>
+                  </ul>
+              </div>))}
+            <hr />
+          <h4> Grade </h4>
+            <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''} multiple>
+            <option value = "pre-k">Pre-K</option>
+            <option value = "k">K</option>
+            <option value = "first">1st</option>
+            <option value = "second">2nd</option>
+            <option value = "third">3rd</option>
+            <option value = "fourth">4th</option>
+            <option value = "fifth">5th</option>
+            <option value = "sixth">6th</option>
+            <option value = "seventh">7th</option>
+            <option value = "eighth">8th</option>
+            <option value = "ninth">9th</option>
+            <option value = "tenth">10th</option>
+            <option value = "eleventh">11th</option>
+            <option value = "twelveth">12th</option>
+            </Form.Control>
+            {this.state.gradeArray.map(grades => (
+              <div key = {grades}>
+                  <ul>
+                      <li> {grades} </li>
+                  </ul>
+              </div>))}
+            <hr />
+          <h4> Industry </h4>
+            <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''} multiple>
+              <option value = "Agriculture, Food and Natural Resources"> Agriculture, Food and Natural Resources </option>
+              <option value = "Architecture and Construction"> Architecture and Construction </option>
+              <option value = "Arts, Audio/Video Technology and Communications"> Arts, Audio/Video Technology and Communications </option>
+              <option value = "Business Managment and Administration"> Business Managment and Administration </option>
+              <option value = "Education and Training"> Education and Training </option>
+              <option value = "Finance"> Finance </option>
+              <option value = "Government and Public Administration"> Government and Public Administration </option>
+              <option value = "Health Science"> Health Science </option>
+              <option value = "Information Technology"> Information Technology </option>
+              <option value = "Law, Public Safety, Corrections and Security"> Law, Public Safety, Corrections and Security </option>
+              <option value = "Manufacturing"> Manufacturing </option>
+              <option value = "Marketing, Sales and Service"> Marketing, Sales and Service </option>
+              <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
+              <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
+            </Form.Control> 
+            <Button className = "btn btn-primary" type = "submit">Submit </Button>
+            </Form>
 
-        <h3> Add Image </h3>
-          <form action="/profile" enctype="multipart/form-data" method="POST"> 
-          <h3> Enter Id of Drive Folder/File </h3>
-            <input type = "text" name = "fileId" />
-          <h3> Upload picture </h3>
-            <input type="file" name="myFile" accept="image/png, image/jpeg" />
-            <input type="submit" value="Upload Photo"/>
-          </form>
+          <h3> Add Image </h3>
+            <form action="/profile" enctype="multipart/form-data" method="POST"> 
+            <h3> Enter Id of Drive Folder/File </h3>
+              <input type = "text" name = "fileId" />
+            <h3> Upload picture </h3>
+              <input type="file" name="myFile" accept="image/png, image/jpeg" />
+              <input type="submit" value="Upload Photo"/>
+            </form>
         </Container>
+        <Footer />
     </div>
     )
   }

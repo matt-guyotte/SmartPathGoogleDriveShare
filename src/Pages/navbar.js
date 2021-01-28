@@ -41,7 +41,7 @@ class TopNavbar extends React.Component {
                 <div>
                     <Navbar expand = 'lg' bg = '#FFFFFF' variant = 'light' className = 'nav-bar'>
                     <Container fluid>
-                        <Navbar.Brand className = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
+                        <Navbar.Brand className = "navpic-container"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                         <Navbar.Collapse className = "ml-auto">
                             <Row className = "ml-auto">
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 
@@ -59,7 +59,7 @@ class TopNavbar extends React.Component {
                 <div>
                     <Navbar expand = 'lg' bg = '#FFFFFF' variant = 'light' className = 'nav-bar'>
                     <Container fluid>
-                        <Navbar.Brand className = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
+                        <Navbar.Brand className = "navpic-container"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
                         <Navbar.Collapse className = "ml-auto">
                             <Row className = "ml-auto">
                             <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 

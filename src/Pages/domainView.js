@@ -7,6 +7,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Link from 'react-router-dom/Link';
 
+import AdminNavbar from './adminNavbar';
+import Footer from './Footer';
+
 
 class DomainView extends Component {
    constructor(props) {
@@ -74,7 +77,8 @@ class DomainView extends Component {
 
   render() {
     return (
-    <div className = "admin-page whole">
+    <div>
+      <div className = "whole"> </div>
       <Container fluid>
         <Button className = 'btn btn-primary' onClick = {this.props.moveToDomains}> Return to Home </Button>
         <h3> Domains </h3>
@@ -116,7 +120,7 @@ class DomainView extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-
+            
         <Modal show={this.state.isOpen2} onHide={this.closeModal2}>
           <Modal.Header closeButton>
             <Modal.Title>Add Special User</Modal.Title>

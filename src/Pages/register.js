@@ -1,11 +1,14 @@
 import React from 'react'; 
 import TopNavbar from './navbar'; 
+import Footer from './Footer'; 
 import {Container} from 'react-bootstrap'; 
 import {Row} from 'react-bootstrap';
 import {Col} from 'react-bootstrap'; 
 import {Form} from 'react-bootstrap';
 import {Button} from 'react-bootstrap'; 
 import { Redirect } from "react-router-dom";
+
+
 
 
 
@@ -82,8 +85,9 @@ class Register extends React.Component {
         return (
             <div>
                 <TopNavbar login = {this.navbarConnect}/>
+                <div className = "whole"> </div>
                 <Container fluid>
-                    <Row className = "justify-content-center auto top-pad"> 
+                    <Row className = "justify-content-center auto top-pad login-box"> 
                         <Form onSubmit = {this.submitFunction}>
                         <Form.Group>
                           <Form.Group>
@@ -109,6 +113,7 @@ class Register extends React.Component {
                         </Form>
                     </Row>
                 </Container>
+                <Footer />
             </div>
         )
       }
