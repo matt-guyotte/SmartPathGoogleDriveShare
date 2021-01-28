@@ -2011,8 +2011,6 @@ class Search extends React.Component {
               }
           }
           else {
-            this.setState({foundFolders: [{file: "No results found."}]})
-            this.setState({foundFiles: [{file: "No results found."}]})
             console.log("else was called")
           }         
         }
