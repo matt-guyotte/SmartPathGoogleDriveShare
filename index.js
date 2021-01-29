@@ -3187,14 +3187,13 @@ app.post('/update', (req, res, done) => {
       console.log(res);
       console.log(subject);
       for (let i = 0; i > subject.length; i++) {
-        console.log(i)
-        console.log(subject[i]);
         if(!res[0].subject.includes(subject[i])) {
           res[0].subject.push(subject[i]);
           console.log(res[0].subject)
         }
         else {
           console.log(res[0].subject)
+          console.log("else was called.")
         }      
       }
     })
