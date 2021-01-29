@@ -3182,7 +3182,7 @@ app.post('/update', (req, res, done) => {
   let grade = req.body.grade;
   let industry = req.body.industry;
   async function update() {
-    await TagFile.find({id: fileId}, (err, res) => {
+    await TagFile.find({id: fileId}, await function (err, res) {
       if (err) return console.log(err);
       console.log(res);
       console.log(subject);
