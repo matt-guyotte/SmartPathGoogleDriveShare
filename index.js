@@ -3180,29 +3180,26 @@ app.post('/update', async (req, res, done) => {
   let subject = req.body.subject;
   let grade = req.body.grade;
   let industry = req.body.industry;
-  function update() {
-    await TagFile.findOne({id: fileId}, function (err, res) {
-      if (err) return console.log(err);
-      //console.log(res);
-      //console.log(subject);
-      takeRes(res);
-    })
-    function takeRes(res) {
-      console.log(res)
-      for (let i = 0; i > subject.length; i++) {
-        if(!res[0].subject.includes(subject[i])) {
-          res[0].subject.push(subject[i]);
-          console.log(res[0].subject)
-          console.log("first was called")
-        }
-        else {
-          console.log(res[0].subject)
-          console.log("else was called.")
-        }      
+  await TagFile.findOne({id: fileId}, function (err, res) {
+    if (err) return console.log(err);
+    //console.log(res);
+    //console.log(subject);
+    takeRes(res);
+  })
+  function takeRes(res) {
+    console.log(res)
+    for (let i = 0; i > subject.length; i++) {
+      if(!res[0].subject.includes(subject[i])) {
+        res[0].subject.push(subject[i]);
+        console.log(res[0].subject)
+        console.log("first was called")
       }
+      else {
+        console.log(res[0].subject)
+        console.log("else was called.")
+      }      
     }
   }
-  update();
 })
 
 app.post("/makenew", (req, res) => {
