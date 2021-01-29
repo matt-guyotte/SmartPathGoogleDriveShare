@@ -55,18 +55,7 @@ class Footer extends React.Component {
         if(!this.state.redirect && this.state.access) {
             return (
                 <div id = "footer">
-                    <Navbar expand = 'lg' bg = '#FFFFFF' variant = 'light' className = 'nav-bar'>
-                    <Container fluid>
-                        <Navbar.Brand className = "logo-class"><Link to = "/"> <img src = "https://i.imgur.com/34fasol.png" className = 'navpic' placeholder = "logo" /> </Link> </Navbar.Brand>
-                        <Navbar.Collapse className = "ml-auto">
-                            <Row className = "ml-auto">
-                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/admin"> Admin Portal </Link> </Nav.Link> </Nav.Item> 
-                            <Nav.Item className = "ml-auto nav-item"> <Nav.Link className = "nav-item"> <Link className = "nav-item nav-item-link" to = "/privacy"> Privacy </Link> </Nav.Link> </Nav.Item>  
-                            <Nav.Item className = "ml-auto nav-item" onClick = {this.callLogout}> <Nav.Link className = "nav-item"> <Link className = "nav-item" to = "/login"> Logout </Link> </Nav.Link> </Nav.Item>
-                            </Row>
-                        </Navbar.Collapse>
-                    </Container>
-                    </Navbar>
+                    <p className = "footer-objects"> <small> ©{new Date().getFullYear()} Smartpath Ed. </small> </p> 
                 </div>
             )
         }
