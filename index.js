@@ -3181,7 +3181,7 @@ app.post('/update', async (req, res, done) => {
   let grade = req.body.grade;
   let industry = req.body.industry;
   function update() {
-    TagFile.findOne({id: fileId}, function (err, res) {
+    await TagFile.findOne({id: fileId}, function (err, res) {
       if (err) return console.log(err);
       //console.log(res);
       //console.log(subject);
