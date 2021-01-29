@@ -3187,8 +3187,8 @@ app.post('/update', (req, res, done) => {
     for (var i = 0; i > subject.length; i++) {
       if(!res[0].subject.includes(subject[i])) {
         res[0].subject.push(subject[i]);
-      }
-      console.log(res[0].subject)
+        console.log(res[0].subject)
+      }      
     }
   })
 })
