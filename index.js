@@ -3188,6 +3188,9 @@ app.post('/update', (req, res, done) => {
       if(!res[0].subject.includes(subject[i])) {
         res[0].subject.push(subject[i]);
         console.log(res[0].subject)
+      }
+      else{
+        console.log(res[0].subject)
       }      
     }
   })
