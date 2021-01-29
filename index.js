@@ -3186,6 +3186,10 @@ app.post('/update', (req, res, done) => {
       if (err) return console.log(err);
       console.log(res);
       console.log(subject);
+      takeRes(res);
+    })
+    function takeRes(res) {
+      console.log(res)
       for (let i = 0; i > subject.length; i++) {
         if(!res[0].subject.includes(subject[i])) {
           res[0].subject.push(subject[i]);
@@ -3197,7 +3201,7 @@ app.post('/update', (req, res, done) => {
           console.log("else was called.")
         }      
       }
-    })
+    }
   }
   update();
 })
