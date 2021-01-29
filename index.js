@@ -3184,6 +3184,7 @@ app.post('/update', (req, res, done) => {
   TagFile.find({id: fileId}, (err, res) => {
     if (err) return console.log(err);
     console.log(res);
+    console.log(subject);
     for (var i = 0; i > subject.length; i++) {
       console.log(subject[i]);
       if(!res[0].subject.includes(subject[i])) {
