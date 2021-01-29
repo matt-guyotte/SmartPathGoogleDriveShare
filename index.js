@@ -3175,28 +3175,31 @@ app.get('/api', (req, res, done) => {
 })
 
 app.post('/update', (req, res, done) => {
-  var drive = req.app.get('drive');
-  var fileId = req.body.id;
-  var subject = req.body.subject;
+  let drive = req.app.get('drive');
+  let fileId = req.body.id;
+  let subject = req.body.subject;
   console.log(subject)
-  var grade = req.body.grade;
-  var industry = req.body.industry;
-  TagFile.find({id: fileId}, (err, res) => {
-    if (err) return console.log(err);
-    console.log(res);
-    console.log(subject);
-    for (var i = 0; i > subject.length; i++) {
-      console.log(i)
-      console.log(subject[i]);
-      if(!res[0].subject.includes(subject[i])) {
-        res[0].subject.push(subject[i]);
-        console.log(res[0].subject)
+  let grade = req.body.grade;
+  let industry = req.body.industry;
+  async function update() {
+    await TagFile.find({id: fileId}, (err, res) => {
+      if (err) return console.log(err);
+      console.log(res);
+      console.log(subject);
+      for (let i = 0; i > subject.length; i++) {
+        console.log(i)
+        console.log(subject[i]);
+        if(!res[0].subject.includes(subject[i])) {
+          res[0].subject.push(subject[i]);
+          console.log(res[0].subject)
+        }
+        else {
+          console.log(res[0].subject)
+        }      
       }
-      else {
-        console.log(res[0].subject)
-      }      
-    }
-  })
+    })
+  }
+  update();
 })
 
 app.post("/makenew", (req, res) => {
