@@ -3174,15 +3174,14 @@ app.get('/api', (req, res, done) => {
   done;
 })
 
-app.post('/update', (req, res, done) => {
+app.post('/update', async (req, res, done) => {
   let drive = req.app.get('drive');
   let fileId = req.body.id;
   let subject = req.body.subject;
-  console.log(subject)
   let grade = req.body.grade;
   let industry = req.body.industry;
-  async function update() {
-    await TagFile.findOne({id: fileId}, function (err, res) {
+  function update() {
+    TagFile.findOne({id: fileId}, function (err, res) {
       if (err) return console.log(err);
       //console.log(res);
       //console.log(subject);
