@@ -3174,13 +3174,12 @@ app.get('/api', (req, res, done) => {
   done;
 })
 
-app.post('/update', uploads.single('myFile'), (req, res, done) => {
+app.post('/update', (req, res, done) => {
   var drive = req.app.get('drive');
   var fileId = req.body.id;
   var subject = req.body.subject;
   var grade = req.body.grade;
   var industry = req.body.industry;
-  const imageUrl = req.file.filename; 
   TagFile.find({id: fileId}, (err, res) => {
     if (err) return console.log(err);
     console.log(res);
