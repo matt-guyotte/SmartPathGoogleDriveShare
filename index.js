@@ -436,7 +436,7 @@ async function listFiles(auth) {
         //console.log(fileArray);
       })
     }
-    //console.log(fileArray)
+    console.log(fileArray)
     app.set('fileArray', fileArray);
   }
 }
@@ -3178,6 +3178,7 @@ app.post('/update', (req, res, done) => {
   var drive = req.app.get('drive');
   var fileId = req.body.id;
   var subject = req.body.subject;
+  console.log(subject)
   var grade = req.body.grade;
   var industry = req.body.industry;
   TagFile.find({id: fileId}, (err, res) => {
