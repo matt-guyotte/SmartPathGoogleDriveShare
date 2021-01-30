@@ -3184,6 +3184,7 @@ app.post('/update', async (req, res, done) => {
   console.log(response);
 
   for (let i = 0; i > subject.length; i++) {
+    console.log(response)
     if (!response[0].subject.includes(subject[i])) {
       response[0].subject.push(subject[i]);
       console.log(response[0].subject);
