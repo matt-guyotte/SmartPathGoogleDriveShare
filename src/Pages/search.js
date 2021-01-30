@@ -1932,8 +1932,6 @@ class Search extends React.Component {
         var gradeArray = this.state.gradeArray;
         var industryArray = this.state.industryArray;
         console.log(subjectArray);
-        //console.log(gradeArray);
-        //console.log(industryArray);
         for(var i = 0; i < driveFiles.length; i++) {
 
           if (driveFiles[i].properties.subject && driveFiles[i].properties.subject.length === 0) {
@@ -1996,8 +1994,9 @@ class Search extends React.Component {
         //// Subject search terms 
           let checker = (arr, target) => target.every(v => arr.includes(v));
 
-          if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true && 
-          checker(driveFiles[i].properties.grade, gradeArray) === true && checker(driveFiles[i].properties.industry, industryArray) === true) {
+          if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true 
+          //&& checker(driveFiles[i].properties.grade, gradeArray) === true && checker(driveFiles[i].properties.industry, industryArray) === true
+          ) {
               //console.log("the file is found.")
               if (driveFiles[i].type === "application/vnd.google-apps.folder") {
                   foundFolders.push(driveFiles[i])
