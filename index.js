@@ -3183,16 +3183,8 @@ app.post('/update', async (req, res, done) => {
   let response = await TagFile.find({ id: fileId });
   console.log(response);
 
-  for (let i = 0; i > subject.length; i++) {
-    console.log(response)
-    if (!response[0].subject.includes(subject[i])) {
-      response[0].subject.push(subject[i]);
-      console.log(response[0].subject);
-      console.log("first was called");
-    } else {
-      console.log(response[0].subject);
-      console.log("else was called.");
-    }
+  for (let i = 0; i > 3; i++) {
+    console.log(i);
   }
 })
 
