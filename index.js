@@ -51,11 +51,9 @@ var tagSchema = new Schema ({
   subject: Array,
   grade: Array, 
   industry: Array,
-  contains: {
-    contains1: String,
-    contains2: String, 
-    contains3: String, 
-  }
+  contains1: String,
+  contains2: String, 
+  contains3: String, 
 })
 var domainSchema = new Schema ({
   name: String,
@@ -212,6 +210,11 @@ async function listFiles(auth) {
       industry: [],
       imgsrc: ''
     },
+    contains: {
+      contains1: "",
+      contains2: "",
+      contains3: "",
+    },
     parents: [],
   }];
   if (files.length) {
@@ -278,8 +281,6 @@ async function listFiles(auth) {
         }
       }
     }
-    //console.log(subjectArray)
-    console.log(gradeArray)
     for(var j = 0; j < subjectArray.length; j++) {
       if (subjectArray[j] === 'hold') {
         subjectArray[j] = [];
@@ -304,8 +305,6 @@ async function listFiles(auth) {
         industryArray[l] = [industryArray[l]];
       }
     }
-    //console.log(subjectArray);
-    console.log(gradeArray)
     for (var y = 0; y < fileDisplay.length; y++) {
       fileArray.push({
         file: fileDisplay[y],
@@ -366,10 +365,10 @@ async function listFiles(auth) {
           //ALL
           if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length === 0) {
             //console.log(fileArray[k1])
-            var newTags1 = new TagFile({id: fileArray[k1].id});
+            var newTags1 = new TagFile({id: fileArray[k1].id, contains1: '', contains2: '', contains3: ''});
             newTags1.save((err, res) => {
               if (err) return console.log(err);
-              //console.log(res);
+              console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
@@ -429,18 +428,36 @@ async function listFiles(auth) {
             console.log("not found")
           }
         }
-        if(count > 1) {
-          TagFile.find({id: fileArray[k1].id}, (err, res) => {
+        if(count >= 1) {
+          TagFile.findOne({id: fileArray[k1].id}, (err, res) => {
             if(err) return console.log(err);
-            //console.log(res);
-            for (let k2 = 0; k2 < res.subject.length; k2++) {
-              fileArray[k1].properties.subject.push(res.subject[k2])
+            console.log(res);
+
+            // Subject, Grade, Industry //
+            if(res.subject.length > 0 && res.subject !== [Array]) {
+              for (let k2 = 0; k2 < res.subject.length; k2++) {
+                fileArray[k1].properties.subject.push(res.subject[k2])
+              }
             }
-            for (let k3 = 0; k3 < res.grade.length; k3++) {
-              fileArray[k1].properties.grade.push(res.grade[k3])
+            if(res.grade.length > 0 && res.grade !== [Array]) {
+              for (let k3 = 0; k3 < res.grade.length; k3++) {
+                fileArray[k1].properties.grade.push(res.grade[k3])
+              }
             }
-            for (let k4 = 0; k4 < res.industry.length; k4++) {
-              fileArray[k1].properties.industry.push(res.industry[k4])
+            if(res.industry.length > 0 && res.industry !== [Array]) {
+              for (let k4 = 0; k4 < res.industry.length; k4++) {
+                fileArray[k1].properties.industry.push(res.industry[k4])
+              }
+            }
+            // 3 Contains //
+            if(res.contains1) {
+              res.contains1 = fileArray[k1].contains.contains1; 
+            }
+            if(res.contains2) {
+              res.contains2 = fileArray[k1].contains.contains2;
+            }
+            if(res.contains3) {
+              res.contains3 = fileArray[k1].contains.contains3;
             }
           })
         }
@@ -450,7 +467,7 @@ async function listFiles(auth) {
         //console.log(fileArray);
       })
     }
-    console.log(fileArray)
+    //console.log(fileArray)
     app.set('fileArray', fileArray);
   }
 }
@@ -3252,21 +3269,21 @@ app.post('/update', async (req, res) => {
         })
       }
       if(contains1) {
-        res.contains.contains1 = contains1;
+        res.contains1 = contains1;
         res.save((err, data) => {
           if(err) return console.log(err);
           console.log(data);
         })
       }
       if(contains2) {
-        res.contains.contains2 = contains2;
+        res.contains2 = contains2;
         res.save((err, data) => {
           if(err) return console.log(err);
           console.log(data);
         })
       }
       if(contains3) {
-        res.contains.contains3 = contains3;
+        res.contains3 = contains3;
         res.save((err, data) => {
           if(err) return console.log(err);
           console.log(data);
