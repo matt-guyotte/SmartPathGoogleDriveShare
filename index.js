@@ -3174,7 +3174,7 @@ app.get('/api', (req, res, done) => {
   done;
 })
 
-app.post('/update', async (req, res, done) => {
+app.post('/update', async (req, res) => {
   let drive = req.app.get('drive');
   let fileId = req.body.id;
   let subject = req.body.subject;
