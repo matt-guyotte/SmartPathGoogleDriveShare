@@ -3188,12 +3188,15 @@ app.post('/update', async (req, res) => {
           res[0].subject.push(subject[i]);
           var newSubjects = res[0].subject;
           console.log(newSubjects);
-          res.save((err, data) => {
-            if(err) return console.log(err);
-            done(null, data);
-          })
+        }
+        else {
+          console.log("all subjects included")
         }
       }
+      res.save((err, data) => {
+        if(err) return console.log(err);
+        done(null, data);
+      })
 
     }
   });
