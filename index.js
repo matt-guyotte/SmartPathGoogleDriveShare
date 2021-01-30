@@ -3193,9 +3193,9 @@ app.post('/update', async (req, res) => {
           console.log("all subjects included")
         }
       }
-      res.save((err, data, done) => {
+      res.save((err, data) => {
         if(err) return console.log(err);
-        done(null, data);
+        console.log(data);
       })
 
     }
