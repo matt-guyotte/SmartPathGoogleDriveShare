@@ -3180,8 +3180,8 @@ app.post('/update', async (req, res, done) => {
   let subject = req.body.subject;
   let grade = req.body.grade;
   let industry = req.body.industry;
-  const res = await TagFile.findOne({id: fileId}).exec();
-  takeRes(res);
+  const response = await TagFile.findOne({id: fileId}).exec();
+  takeRes(response);
   function takeRes(file) {
     for (let i = 0; i > subject.length; i++) {
       if(!file[0].subject.includes(subject[i])) {
