@@ -50,7 +50,12 @@ var tagSchema = new Schema ({
   id: String,
   subject: Array,
   grade: Array, 
-  industry: Array
+  industry: Array,
+  contains: {
+    contains1: String,
+    contains2: String, 
+    contains3: String, 
+  }
 })
 var domainSchema = new Schema ({
   name: String,
@@ -332,6 +337,15 @@ async function listFiles(auth) {
       }
       if (typeof fileArray[k1].properties.industry === "undefined") {
         fileArray[k1].properties.industry = [];
+      }
+      if(fileArray[k1].properties.subject === [Array]) {
+        fileArray[k1].properties.subject === [];
+      }
+      if(fileArray[k1].properties.grade === [Array]) {
+        fileArray[k1].properties.grade === [];
+      }
+      if(fileArray[k1].properties.industry === [Array]) {
+        fileArray[k1].properties.industry === [];
       }
       //if (typeof fileArray[k1].properties.subject === "string") {
       //  fileArray[k1].properties.subject = [fileArray[k1].properties.subject];
@@ -3177,12 +3191,22 @@ app.get('/api', (req, res, done) => {
 app.post('/update', async (req, res) => {
   let drive = req.app.get('drive');
   let fileId = req.body.id;
+  let description = req.body.description;
   let subject = req.body.subject;
   let grade = req.body.grade;
   let industry = req.body.industry;
+  let contains1 = req.body.contains1;
+  let contains2 = req.body.contains2;
+  let contains3 = req.body.contains3;
   let response = await TagFile.findOne({ id: fileId }, (err, res, done) => {
     if (err) return console.log(err);
     else {
+      if (description) {
+        drive.files.update({
+          fileId: fileId,
+          requestBody: {description: description},
+        })
+      }
       if(subject) {
         for (var i = 0; i < subject.length; i++) {
           if(!res.subject.includes(subject[i])) {
@@ -3222,6 +3246,27 @@ app.post('/update', async (req, res) => {
             console.log("all industries included")
           }
         }
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
+      }
+      if(contains1) {
+        res.contains.contains1 = contains1;
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
+      }
+      if(contains2) {
+        res.contains.contains2 = contains2;
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
+      }
+      if(contains3) {
+        res.contains.contains3 = contains3;
         res.save((err, data) => {
           if(err) return console.log(err);
           console.log(data);

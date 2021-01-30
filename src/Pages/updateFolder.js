@@ -21,6 +21,9 @@ class UpdateFolder extends React.Component {
       subject: "",
       grade: "",
       industry: "",
+      contains1: '',
+      contains2: '',
+      contains3: '',
       subjectArray: [],
       gradeArray: [],
       industryArray: [],
@@ -93,6 +96,7 @@ class UpdateFolder extends React.Component {
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         id: this.state.id,
+        description: this.state.description,
         subject: this.state.subjectArray,
         grade: this.state.gradeArray,
         industry: this.state.industryArray,
@@ -126,6 +130,24 @@ class UpdateFolder extends React.Component {
   handleChangeDescription(event) {
     this.setState({
       description: event.target.value
+    })
+  }
+
+  handleChangeContains1(event) {
+    this.setState({
+      contains1: event.target.value
+    })
+  }
+
+  handleChangeContains2(event) {
+    this.setState({
+      contains2: event.target.value
+    })
+  }
+
+  handleChangeContains3(event) {
+    this.setState({
+      contains3: event.target.value
     })
   }
 
@@ -649,13 +671,15 @@ removeTagIndustry(event) {
         <Container>
           <div className = "page">
           <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
-          <h3> Update Lesson </h3>
+          <hr />
+          <h2> Update Lesson </h2>
+          <br />
             <Form onSubmit = {this.update}>
-            <h4> Enter Drive Folder Id of Lesson to Change </h4>
+            <h4> Enter Drive Folder Id of Lesson to Change* </h4>
             <Form.Control input = "true" name = "email" value= {this.state.id || ''} placeholder="Enter file/folder id" onChange = {this.handleChangeId} required />
             <br />
-            <h4> Description* </h4>
-            <Form.Control input = "true" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription}/>
+            <h4> Description </h4>
+            <Form.Control as="textarea" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription}/>
             <hr />
             <h4> Subject </h4>
             <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
@@ -710,6 +734,14 @@ removeTagIndustry(event) {
               <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
               <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
             </Form.Control> 
+            <br />
+            <h4> What does it contain? (add three) </h4>
+            <br />
+            <Form.Control input = "true" name = "contains" value= {this.state.contains1 || ''} placeholder="Enter first file" onChange = {this.handleChangeContains1.bind(this)} />
+            <br />
+            <Form.Control input = "true" name = "contains" value= {this.state.contains2 || ''} placeholder="Enter second file" onChange = {this.handleChangeContains2.bind(this)} />
+            <br/>
+            <Form.Control input = "true" name = "contains" value= {this.state.contains3 || ''} placeholder="Enter third file" onChange = {this.handleChangeContains3.bind(this)} />
             <br />
             <Button className = "btn btn-primary" type = "submit">Submit </Button>
             </Form>
