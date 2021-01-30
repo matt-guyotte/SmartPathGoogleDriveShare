@@ -368,7 +368,7 @@ async function listFiles(auth) {
             var newTags1 = new TagFile({id: fileArray[k1].id, contains1: '', contains2: '', contains3: ''});
             newTags1.save((err, res) => {
               if (err) return console.log(err);
-              console.log(res);
+              //console.log(res);
             })
           }
           if(fileArray[k1].properties.subject.length >= 1 && fileArray[k1].properties.grade.length >= 1 && fileArray[k1].properties.industry.length >= 1) {
@@ -431,7 +431,7 @@ async function listFiles(auth) {
         if(count >= 1) {
           TagFile.findOne({id: fileArray[k1].id}, (err, res) => {
             if(err) return console.log(err);
-            console.log(res);
+            //console.log(res);
 
             // Subject, Grade, Industry //
             if(res.subject.length > 0 && res.subject !== [Array]) {
@@ -467,7 +467,7 @@ async function listFiles(auth) {
         //console.log(fileArray);
       })
     }
-    //console.log(fileArray)
+    console.log(fileArray)
     app.set('fileArray', fileArray);
   }
 }
@@ -3230,6 +3230,7 @@ app.post('/update', async (req, res) => {
             res.subject.push(subject[i]);
             var newSubjects = res.subject;
             console.log(newSubjects);
+            console.log(res);
           }
           else {
             console.log("all subjects included")
