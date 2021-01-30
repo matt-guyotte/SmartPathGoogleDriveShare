@@ -32,9 +32,8 @@ class adminPortal extends Component {
     this.loginConfirm = this.loginConfirm.bind(this);
     this.moveToDomains = this.moveToDomains.bind(this);
     this.moveToSmartpath = this.moveToSmartpath.bind(this);
+    this.moveToAddNew = this.moveToAddNew.bind(this);
     this.moveToUpdateFolder = this.moveToUpdateFolder.bind(this);
-    this.moveToCreateNew = this.moveToCreateNew.bind(this);
-    this.updateTest = this.updateTest.bind(this);
   }
 
     apiTest() {
@@ -83,20 +82,17 @@ class adminPortal extends Component {
             })
         }
     }
-    moveToCreateNew() {
-        if(this.state.createNew === false) {
+    moveToAddNew() {
+        if(this.state.addNew === false) {
             this.setState({
-                createNew: true
+                addNew: true
             })
         }
-        if(this.state.createNew === true) {
+        if(this.state.addNew === true) {
             this.setState({
-                createNew: false
+                addNew: false
             })
         }
-    }
-    updateTest() {
-        fetch('/update')
     }
 
 
