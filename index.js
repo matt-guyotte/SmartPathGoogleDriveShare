@@ -3183,9 +3183,8 @@ app.post('/update', async (req, res) => {
   let response = await TagFile.find({ id: fileId }, (err, res) => {
     if (err) return console.log(err);
     else {
-      console.log(subject);
       for (var i = 0; i < subject.length; i++) {
-        console.log(subject);
+        console.log(res);
       }
     }
   });
