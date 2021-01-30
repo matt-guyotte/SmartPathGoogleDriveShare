@@ -3181,16 +3181,16 @@ app.post('/update', async (req, res, done) => {
   let grade = req.body.grade;
   let industry = req.body.industry;
   const res = await TagFile.findOne({id: fileId}).exec();
-  takeRes(res)
-  function takeRes(res) {
+  takeRes(res);
+  function takeRes(file) {
     for (let i = 0; i > subject.length; i++) {
-      if(!res[0].subject.includes(subject[i])) {
-        res[0].subject.push(subject[i]);
-        console.log(res[0].subject)
+      if(!file[0].subject.includes(subject[i])) {
+        file[0].subject.push(subject[i]);
+        console.log(file[0].subject)
         console.log("first was called")
       }
       else {
-        console.log(res[0].subject)
+        console.log(file[0].subject)
         console.log("else was called.")
       }      
     }
