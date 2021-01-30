@@ -70,14 +70,14 @@ const TagFile = mongoose.model('TagFile', tagSchema)
 const Domains = mongoose.model('Domains', domainSchema)
 const SpecialUsers = mongoose.model('SpecialUsers', specialUsersSchema)
 
-function makeNewTag() {
-  TagFile.remove({}, (err, res) => {
-    if (err) return console.log(err);
-    console.log("deleted files")
-  });
-}
-
-makeNewTag();
+//function makeNewTag() {
+//  TagFile.remove({}, (err, res) => {
+//    if (err) return console.log(err);
+//    console.log("deleted files")
+//  });
+//}
+//
+//makeNewTag();
 
 app.use(express.static('img'));
 const multer = require('multer');
