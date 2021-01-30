@@ -1995,7 +1995,7 @@ class Search extends React.Component {
           let checker = (arr, target) => target.every(v => arr.includes(v));
 
           if(driveFiles[i].file.includes(searchTerm) === true && checker(driveFiles[i].properties.subject, subjectArray) === true 
-          //&& checker(driveFiles[i].properties.grade, gradeArray) === true && checker(driveFiles[i].properties.industry, industryArray) === true
+          && checker(driveFiles[i].properties.grade, gradeArray) === true && checker(driveFiles[i].properties.industry, industryArray) === true
           ) {
               //console.log("the file is found.")
               if (driveFiles[i].type === "application/vnd.google-apps.folder") {
