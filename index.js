@@ -3180,19 +3180,16 @@ app.post('/update', async (req, res, done) => {
   let subject = req.body.subject;
   let grade = req.body.grade;
   let industry = req.body.industry;
-  const response = await TagFile.findOne({id: fileId}).exec();
-  takeRes(response);
-  function takeRes(file) {
-    for (let i = 0; i > subject.length; i++) {
-      if(!file[0].subject.includes(subject[i])) {
-        file[0].subject.push(subject[i]);
-        console.log(file[0].subject)
-        console.log("first was called")
-      }
-      else {
-        console.log(file[0].subject)
-        console.log("else was called.")
-      }      
+  let res = await TagFile.find({ id: fileId }).lean();
+
+  for (let i = 0; i > subject.length; i++) {
+    if (!res[0].subject.includes(subject[i])) {
+      res[0].subject.push(subject[i]);
+      console.log(res[0].subject);
+      console.log("first was called");
+    } else {
+      console.log(res[0].subject);
+      console.log("else was called.");
     }
   }
 })
