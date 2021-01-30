@@ -3193,7 +3193,7 @@ app.post('/update', async (req, res) => {
           console.log("all subjects included")
         }
       }
-      res.save((err, data) => {
+      res.save((err, data, done) => {
         if(err) return console.log(err);
         done(null, data);
       })
