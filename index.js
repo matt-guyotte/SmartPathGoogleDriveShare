@@ -3183,9 +3183,12 @@ app.post('/update', async (req, res, done) => {
   let response = await TagFile.find({ id: fileId });
   console.log(response);
 
-  for (let i = 0; i > 3; i++) {
-    console.log(i);
+  function testing() {
+    for (let i = 0; i > 3; i++) {
+      return i;
+    }
   }
+  testing();
 })
 
 app.post("/makenew", (req, res) => {
