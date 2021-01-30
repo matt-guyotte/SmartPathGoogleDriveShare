@@ -3183,21 +3183,50 @@ app.post('/update', async (req, res) => {
   let response = await TagFile.findOne({ id: fileId }, (err, res, done) => {
     if (err) return console.log(err);
     else {
-      for (var i = 0; i < subject.length; i++) {
-        if(!res.subject.includes(subject[i])) {
-          res.subject.push(subject[i]);
-          var newSubjects = res.subject;
-          console.log(newSubjects);
+      if(subject) {
+        for (var i = 0; i < subject.length; i++) {
+          if(!res.subject.includes(subject[i])) {
+            res.subject.push(subject[i]);
+            var newSubjects = res.subject;
+            console.log(newSubjects);
+          }
+          else {
+            console.log("all subjects included")
+          }
         }
-        else {
-          console.log("all subjects included")
-        }
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
       }
-      res.save((err, data) => {
-        if(err) return console.log(err);
-        console.log(data);
-      })
-
+      if(grade) {
+        for (var i = 0; i < grade.length; i++) {
+          if(!res.grade.includes(grade[i])) {
+            res.grade.push(grade[i]);
+          }
+          else {
+            console.log("all grades included")
+          }
+        }
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
+      }
+      if(industry) {
+        for (var i = 0; i < industry.length; i++) {
+          if(!res.industry.includes(industry[i])) {
+            res.industry.push(industry[i]);
+          }
+          else {
+            console.log("all industries included")
+          }
+        }
+        res.save((err, data) => {
+          if(err) return console.log(err);
+          console.log(data);
+        })
+      }
     }
   });
   console.log(response);
