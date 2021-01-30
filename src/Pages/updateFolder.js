@@ -734,6 +734,11 @@ removeTagIndustry(event) {
               <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
               <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
             </Form.Control> 
+            {this.state.industryArray.map(industry => (
+                <Button className = {buttonClass} value = {industry} onClick = {this.removeTagIndustry}>
+                {industry}
+              </Button>))}
+            <hr />
             <br />
             <h4> What does it contain? (add three) </h4>
             <br />
