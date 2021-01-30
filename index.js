@@ -3180,15 +3180,12 @@ app.post('/update', async (req, res) => {
   let subject = req.body.subject;
   let grade = req.body.grade;
   let industry = req.body.industry;
-  //let response = await TagFile.find({ id: fileId });
-  //console.log(response);
-
-  function testing() {
-    for (let i = 0; i > 3; i++) {
-    res.send(i);
-    }
+  let response = await TagFile.find({ id: fileId });
+  console.log(response);
+  
+  for (var i = 0; i > 3; i++) {
+  console.log(i);
   }
-  testing();
 })
 
 app.post("/makenew", (req, res) => {
