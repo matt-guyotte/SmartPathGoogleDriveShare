@@ -1971,25 +1971,22 @@ class Search extends React.Component {
                 return console.log("searched.")
             }
 
-            //if (driveFiles[i].file.includes(searchTerm) === true && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
-            //&& !this.state.preK && !this.state.K && !this.state.first && !this.state.second && !this.state.third && !this.state.fourth && !this.state.fifth && !this.state.sixth && !this.state.seventh && !this.state.eighth && !this.state.ninth && !this.state.tenth && !this.state.eleventh && !this.state.twelveth 
-            //&& !this.state.agriculture && !this.state.architecture && !this.state.arts && !this.state.businessManagement && !this.state.educationTraining && !this.state.finance && !this.state.governmentPublic && !this.state.healthScience && !this.state.hospitality && !this.state.humanServices && !this.state.informationTechnology && !this.state.lawSafety && !this.state.manufacturing && !this.state.marketingSales && !this.state.sTEM && !this.state.transportation) {
-            //    if (driveFiles[i].type === "application/vnd.google-apps.folder") {
-            //        foundFolders.push(driveFiles[i])
-            //        console.log(foundFolders)
-            //        this.setState({foundFolders: foundFolders})
-            //        this.setState({searchRan: true})
-            //        return console.log("searched.")
-            //    }
-            //    if (driveFiles[i].type === 'application/vnd.google-apps.document') {
-            //        console.log(driveFiles[i]);
-            //        foundFiles.push(driveFiles[i])
-            //        console.log(foundFiles)
-            //        this.setState({foundFiles: foundFiles})
-            //        this.setState({searchRan: true})
-            //        return console.log("searched.")
-            //    }
-            //}
+            if(driveFiles[i].includes(searchTerm) === true 
+            && subjectArray === ["none"]
+            && gradeArray === ["none"]
+            && industryArray === ["none"]) {
+              if (driveFiles[i].type === "application/vnd.google-apps.folder") {
+                foundFolders.push(driveFiles[i])
+                console.log(driveFiles[i])
+                this.setState({foundFolders: foundFolders})
+              }
+              if (driveFiles[i].type === 'application/vnd.google-apps.document') {
+                //console.log(driveFiles[i]);
+                foundFiles.push(driveFiles[i])
+                console.log(foundFiles)
+                this.setState({foundFiles: foundFiles})
+              }
+            }
 
         //// Subject search terms 
           let checker = (arr, target) => target.every(v => arr.includes(v));
