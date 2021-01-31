@@ -43,9 +43,6 @@ class AddNew extends React.Component {
     this.removeTagSubject = this.removeTagSubject.bind(this);
     this.removeTagGrade = this.removeTagGrade.bind(this);
     this.removeTagIndustry = this.removeTagIndustry.bind(this);
-    this.handleChangeVideo = this.handleChangeVideo.bind(this);
-    this.handleChangeRubric = this.handleChangeRubric.bind(this);
-    this.handleChangeHandout = this.handleChangeHandout.bind(this);
   }
 
   addSubject() {
@@ -633,11 +630,11 @@ removeTagIndustry(event) {
     let buttonClass = this.state.visible ? "visibleYes" : "visibleNo";
     return (
     <div>
-      <AdminNavbar />
       <div className = "whole"> </div>
       <Container>
         <div className = "page">
           <Button className = 'btn btn-primary' onClick = {this.props.moveToAddNew}> Return to Home </Button>
+          <hr />
           <h3> Add Lesson </h3>
             <Form onSubmit = {this.createNew}>
             <Form.Control as="select" onChange = {this.handleChangeType} value = {this.state.type || ''}>
@@ -645,10 +642,13 @@ removeTagIndustry(event) {
             <option value = "application/vnd.google-apps.folder">Folder</option>
             <option value = "application/vnd.google-apps.document">Document</option>
             </Form.Control>
+            <br />
             <h4> Name* </h4>
             <Form.Control input = "true" name = "name" value= {this.state.name || ''} placeholder="Enter name" onChange = {this.handleChangeName} required />
+            <br />
             <h4> Description* </h4>
             <Form.Control input = "true" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription} required />
+            <hr /> 
             <h4> Subject* </h4>
             <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
             <option value = "math"> Math</option>
