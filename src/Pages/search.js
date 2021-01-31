@@ -1971,7 +1971,7 @@ class Search extends React.Component {
                 return console.log("searched.")
             }
 
-            if(driveFiles[i].includes(searchTerm) === true 
+            if(driveFiles[i].file.includes(searchTerm) === true 
             && subjectArray === ["none"]
             && gradeArray === ["none"]
             && industryArray === ["none"]) {
