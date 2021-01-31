@@ -2270,7 +2270,7 @@ class Search extends React.Component {
                                     </Modal.Body>
                                     <Modal.Body> {this.state.exportResult} </Modal.Body>
                                     <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
-                                    <Modal.Body> <a href = "https://vast-stream-39133.herokuapp.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
+                                    <Modal.Body> <a href = "https://connect.smartpathed.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
                                     <Modal.Footer>
                                       <Button variant="secondary" onClick={this.closeModal}>
                                         Close
