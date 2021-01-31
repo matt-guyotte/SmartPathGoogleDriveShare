@@ -548,7 +548,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      await fs.mkdirSync('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err) => {
+      await fs.mkdirSync((path.join('./src/Pages/downloads/', fileName), { recursive: true }, (err) => {
         if (err) return console.log("At 764: " + err);
         console.log("folder transfer worked")
       });
