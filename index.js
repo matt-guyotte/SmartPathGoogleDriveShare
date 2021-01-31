@@ -2,7 +2,7 @@ var express = require ('express');
 var app = express(); 
 
 require('dotenv').config(); 
-var path = require("path"); 
+const path = require("path"); 
 
 //// serve up production assets
 app.use(express.static('build'));
@@ -548,7 +548,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      await fs.mkdirSync(path.join('./src/Pages/downloads/', fileName), { recursive: true }, (err) => {
+      const destFolder = await fs.mkdirSync(path.join('./src/Pages/downloads/', fileName), { recursive: true }, (err) => {
         if (err) return console.log("At 764: " + err);
         console.log("folder transfer worked")
       });
