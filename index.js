@@ -3007,10 +3007,28 @@ app.post("/register", (req, res, done) => {
           })
           addedUser.save((err, data) => {
               if (err) {
+                var errReturn = "error in verification."
+                app.set("registerReturn", errReturn);
                   return done(err); 
               }
+              const emailClick = 'https:/connect.smartpathed.com/verify/' + data._id
+              const message = {
+                from: 'smartpathverification@gmail.com', // Sender address
+                to: req.body.email, // List of recipients
+                subject: 'Email Verification Required - Think Future Workforce Connect', // Subject line
+                text: 'Please click here to verify your email: ' + emailClick // Plain text body
+              };
+              transport.sendMail(message, function(err, info) {
+                  if (err) {
+                    console.log(err)
+                  } else {
+                    console.log(info);
+                  }
+              });
               req.session.sessionID = data._id; 
               console.log(req.session.sessionID); 
+              var successReturn = "User registered! Please check your email to verify."
+              app.set("registerReturn", successReturn);
               done(null, data); 
               console.log(data); 
           })
@@ -3036,7 +3054,7 @@ app.post("/register", (req, res, done) => {
                     if (err) {
                         return done(err); 
                     }
-                    const emailClick = 'http://vast-stream-39133.herokuapp.com/verify/' + data._id
+                    const emailClick = 'https:/connect.smartpathed.com/verify/' + data._id
                     const message = {
                       from: 'smartpathverification@gmail.com', // Sender address
                       to: req.body.email, // List of recipients
@@ -3052,13 +3070,17 @@ app.post("/register", (req, res, done) => {
                     });
                     req.session.sessionID = data._id; 
                     console.log(req.session.sessionID); 
+                    var successReturn = "User registered! Please check your email to verify."
+                    app.set("registerReturn", successReturn);
                     done(null, data); 
                     console.log(data); 
                 })
               })
             }
             else {
-              console.log("user does not have a verified domain.")
+              console.log("User does not have a verified domain.");
+              var errReturn = "Error in verification."
+              app.set("registerReturn", errReturn);
             }
           }
         })
@@ -3067,9 +3089,15 @@ app.post("/register", (req, res, done) => {
   })
 }); 
 
+app.get("/registerConfirm", (req, res) => {
+  var returned = req.app.get("registerReturn");
+  res.send(returned);
+})
+
 app.post('/verify/*', (req, res) => {
   const wholeurl = req.url;
-  const code = wholeurl.slice(8);
+  var cut = "verify/"
+  var code = wholeurl.slice(wholeurl.indexOf(cut) + cut.length);
 
   User.find({_id: code}, {$set: {active: true}}, {new: true}, (err, data) => {
     if(err) return console.log(err);

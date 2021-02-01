@@ -8,8 +8,8 @@ import {Form} from 'react-bootstrap';
 import {Button} from 'react-bootstrap'; 
 import { Redirect } from "react-router-dom";
 
-
-
+import RegisterSuccess from "./registerSuccess";
+import RegisterFailure from "./registerFailure";
 
 
 class Register extends React.Component {
@@ -19,6 +19,7 @@ class Register extends React.Component {
           redirect: '',
           email: '',
           password: '',
+          registerMessage: '',
         }
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -46,9 +47,9 @@ class Register extends React.Component {
       })
     }
 
-    submitFunction(event) {
+    async submitFunction(event) {
       event.preventDefault();
-      fetch('/register', {
+      await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -61,9 +62,9 @@ class Register extends React.Component {
     }
 
     submitFunction2() {
-      fetch('/register')
+      fetch('/registerConfirm')
         .then(res => res.text())
-        .then(res => this.setState({redirect: res}))
+        .then(res => this.setState({registerMessage: res}))
     }
 
 
@@ -74,10 +75,17 @@ class Register extends React.Component {
     }
 
     render() {
-      if(this.state.redirect) {
+      if(this.state.registerMessage === "User registered! Please check your email to verify.") {
         return (
           <div>
-            <Redirect to = "/"/>
+            <RegisterSuccess />
+          </div>
+        )
+      }
+      if(this.state.registerMessage === "Error in verification.") {
+        return (
+          <div>
+            <RegisterFailure />
           </div>
         )
       }
@@ -106,6 +114,7 @@ class Register extends React.Component {
                           <Form.Text className="text-muted">
                             Re-enter email domain (example: tim<strong>@smartpathed.com</strong>)
                           </Form.Text>
+                          <p class = "register-error"> <strong> {this.state.registerMessage} </strong> </p>
                           </Form.Group>
                           <Button variant="primary" type="submit">
                             Submit
