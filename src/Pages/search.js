@@ -1302,6 +1302,7 @@ class Search extends React.Component {
         }
         }
       this.setState({exportFileArray: newArray})
+      console.log(newArray);
       }
       if(event.target.checked === false) {
         newArray = [];
