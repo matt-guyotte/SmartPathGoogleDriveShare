@@ -56,10 +56,8 @@ class SmartPathView extends Component {
         if (driveFiles[i].type === 'application/vnd.google-apps.document') {
             driveFiles[i].click = 'https://docs.google.com/document/d/' + driveFiles[i].id;
         }
+        return driveFiles;
     }
-    return driveFiles;
-    
-}
 
     var smartPathFiles = []
     for(var i = 0; i < driveFiles.length; i++) {
