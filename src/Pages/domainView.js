@@ -117,7 +117,7 @@ class DomainView extends Component {
           </Modal.Header>
           <Modal.Body>Enter domain here:</Modal.Body>
           <Form onSubmit = {this.addDomain}>
-          <Form.Control input = "true" name = "email" value= {this.state.newSpecialUser || ''} placeholder="Enter domain" onChange = {this.handleChangeDomain} required />
+          <Form.Control input = "true" name = "email" value= {this.state.newDomain || ''} placeholder="Enter domain" onChange = {this.handleChangeDomain} required />
           <Button className = "btn btn-primary" type = 'submit'> Submit </Button>
           </Form>
           <Modal.Body> Make sure to add @ before domain name. example: <strong> @smartpathed.com </strong> </Modal.Body>
@@ -134,7 +134,7 @@ class DomainView extends Component {
           </Modal.Header>
           <Modal.Body>Enter user email here:</Modal.Body>
           <Form onSubmit = {this.addSpecialUser}>
-          <Form.Control input = "true" name = "email" value= {this.state.newDomain || ''} placeholder="Enter user email" onChange = {this.handleChangeSpecialUser} required />
+          <Form.Control input = "true" name = "email" value= {this.state.newSpecialUser || ''} placeholder="Enter user email" onChange = {this.handleChangeSpecialUser} required />
           <Button className = "btn btn-primary" type = 'submit'> Submit </Button>
           </Form>
           <Modal.Footer>
