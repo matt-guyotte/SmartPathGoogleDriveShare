@@ -3092,6 +3092,7 @@ app.post("/register", (req, res, done) => {
 app.get("/registerConfirm", (req, res) => {
   var returned = req.app.get("registerReturn");
   res.send(returned);
+  console.log(returned);
 })
 
 app.post('/verify/*', (req, res) => {
