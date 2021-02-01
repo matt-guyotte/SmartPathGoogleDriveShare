@@ -7,7 +7,7 @@ import {Col} from 'react-bootstrap';
 import {Form} from 'react-bootstrap';
 import {Button} from 'react-bootstrap'; 
 import { Redirect } from "react-router-dom";
-
+import Link from 'react-router-dom/Link';
 
 
 
@@ -31,7 +31,7 @@ class RegisterFailure extends React.Component {
                     <Row className = "text-center"> 
                         <p> Your account domain could not be verified. </p>
                         <p> Please check with an admin for permission. </p>
-                        <Button class = "btn btn-primary"> <Redirect to = "/"> Go back to home page </Redirect> </Button>
+                        <Button class = "btn btn-primary"> <Link to = "/"> Go back to home page </Link> </Button>
                     </Row>
                 </Container>
                 <Footer />
