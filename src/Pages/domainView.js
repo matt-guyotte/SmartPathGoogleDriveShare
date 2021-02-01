@@ -126,7 +126,7 @@ class DomainView extends Component {
             <Modal.Title>Add Special User</Modal.Title>
           </Modal.Header>
           <Modal.Body>Enter user email here:</Modal.Body>
-          <Form onSubmit = {this.addDomain}>
+          <Form onSubmit = {this.addSpecialUser}>
           <Form.Control input = "true" name = "email" value= {this.state.newDomain || ''} placeholder="Enter email" onChange = {this.handleChangeDomain} required />
           <Button className = "btn btn-primary" type = 'submit'> Submit </Button>
           </Form>

@@ -32,7 +32,7 @@ class RegisterFailure extends React.Component {
                         <p> Your account domain could not be verified. </p>
                         <br />
                         <p> Please check with an admin for permission. </p>
-                        <Button class = "btn btn-primary"> <a href = "https://connect.smartpathed.com/#/"> Go back to home page </a> </Button>
+                        <Button className = "btn btn-primary"> <a href = "https://connect.smartpathed.com/#/"> Go back to home page </a> </Button>
                     </div>
                 </Container>
                 <Footer />

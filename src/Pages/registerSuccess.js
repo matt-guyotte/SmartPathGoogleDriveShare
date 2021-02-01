@@ -33,7 +33,7 @@ class RegisterSuccess extends React.Component {
                         <p> Your account has been created! </p>
                         <br />
                         <p> Please check your email to verify. </p>
-                        <Button class = "btn btn-primary"> <a href = "https://connect.smartpathed.com/#/"> Go back to home page </a> </Button>
+                        <Button className = "btn btn-primary"> <a href = "https://connect.smartpathed.com/#/"> Go back to home page </a> </Button>
                     </div>
                 </Container>
                 <Footer />
