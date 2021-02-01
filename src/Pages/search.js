@@ -199,7 +199,6 @@ class Search extends React.Component {
       var newType = '';
       console.log(event.target.title);
       console.log(event.target.value);
-      console.log(event.target.children)
       if(event.target.checked === true) {
         if(event.target.title === 'application/vnd.google-apps.document') {
           newType = "docx"
@@ -1302,12 +1301,13 @@ class Search extends React.Component {
           }
         }
         }
+      this.setState({exportFileArray: newArray})
       }
       if(event.target.checked === false) {
         newArray = [];
       }
       console.log(newArray);
-      this.setState({exportFileArray: newArray})
+      //this.setState({exportFileArray: newArray})
     }
 
     handleChangeSetParent(event) {
