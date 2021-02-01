@@ -31,7 +31,7 @@ class RegisterSuccess extends React.Component {
                     <Row className = "text-center"> 
                         <p> Your account has been created! </p>
                         <p> Please check your email to verify. </p>
-                        <Button class = "btn btn-primary"> <Redirect to = "/"> Go back to home page </Link> </Button>
+                        <Button class = "btn btn-primary"> <Redirect to = "/"> Go back to home page </Redirect> </Button>
                     </Row>
                 </Container>
                 <Footer />
