@@ -3072,8 +3072,7 @@ app.post("/register", (req, res, done) => {
               })
             }
             else {
-              app.set("registerReturn", errReturn);
-              done(null);
+              console.log("user is not found");
             }
           }
         })
