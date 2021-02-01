@@ -3222,7 +3222,7 @@ app.post('/addspecialuser', (req, res) => {
   console.log(newUser)
   Domains.findOneAndUpdate(
     {name: "Special Users"}, 
-    {$push: {emails: newDomains}},
+    {$push: {emails: newUser}},
     {new: true},
     (err, data) => {console.log(data)})
 })
