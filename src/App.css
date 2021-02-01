@@ -54,6 +54,10 @@ body {
   margin-bottom: 2%;
 }
 
+.text-center {
+  text-align: center;
+}
+
     /* HEADER */
 
 .nav-item-link {

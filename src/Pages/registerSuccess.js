@@ -28,7 +28,7 @@ class RegisterSuccess extends React.Component {
             <div>
                 <TopNavbar login = {this.navbarConnect}/>
                 <div className = "whole"> </div>
-                <Container fluid>
+                <Container>
                     <Row className = "text-center"> 
                         <p> Your account has been created! </p>
                         <p> Please check your email to verify. </p>
