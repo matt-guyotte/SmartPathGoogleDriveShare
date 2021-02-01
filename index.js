@@ -3058,7 +3058,6 @@ app.post("/register", (req, res, done) => {
               })
             }
             else {
-              res.send('User does not have verified domain.');
               console.log("user does not have a verified domain.")
             }
           }
