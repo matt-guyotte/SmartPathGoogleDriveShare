@@ -48,6 +48,9 @@ class Search extends React.Component {
             grade: '',
             industry: '',
             id: '',
+            contains1: '',
+            contains2: '',
+            contains3: '',
             fileName: '',
             exportFileType: 'docx',
             exportFolderType: 'zip',
@@ -176,6 +179,7 @@ class Search extends React.Component {
                 driveFiles[i].click = 'https://docs.google.com/document/d/' + driveFiles[i].id;
             }
         }
+        console.log(driveFiles);
         return driveFiles;
         
     }
@@ -2216,7 +2220,7 @@ class Search extends React.Component {
                                                   </Row>
                                                     <Row>
                                                       <ul>
-                                                        <li>{folders.children[0]}</li>
+                                                        <li>{folders.properties.contain}</li>
                                                       </ul>
                                                     </Row>
                                                   </Container>
