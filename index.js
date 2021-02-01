@@ -3007,9 +3007,7 @@ app.post("/register", (req, res, done) => {
           })
           addedUser.save((err, data) => {
               if (err) {
-                var errReturn = "error in verification."
-                app.set("registerReturn", errReturn);
-                  return done(err); 
+                return done(err); 
               }
               const emailClick = 'https:/connect.smartpathed.com/verify/' + data._id
               const message = {
@@ -3027,8 +3025,6 @@ app.post("/register", (req, res, done) => {
               });
               req.session.sessionID = data._id; 
               console.log(req.session.sessionID); 
-              var successReturn = "User registered! Please check your email to verify."
-              app.set("registerReturn", successReturn);
               done(null, data); 
               console.log(data); 
           })
@@ -3070,8 +3066,6 @@ app.post("/register", (req, res, done) => {
                     });
                     req.session.sessionID = data._id; 
                     console.log(req.session.sessionID); 
-                    var successReturn = "User registered! Please check your email to verify."
-                    app.set("registerReturn", successReturn);
                     done(null, data); 
                     console.log(data); 
                 })
