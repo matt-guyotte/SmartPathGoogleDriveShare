@@ -218,7 +218,7 @@ class Search extends React.Component {
         console.log(newArray)
         // 1 
         for (var y = 0; y < fileArray.length; y++) {
-          if (fileArray[y].parents[0] !== "undefined" && fileArray[y].parents[0] === event.target.value) {
+          if (typeof fileArray[y].parents !== "undefined" && fileArray[y].parents[0] === event.target.value) {
             console.log(fileArray[y]);
             var parent = fileArray[y].parents[0]
             if(fileArray[y].type === 'application/vnd.google-apps.document') {
