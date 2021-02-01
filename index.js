@@ -3019,7 +3019,6 @@ app.post("/register", (req, res, done) => {
       if(foundDomains[i] !== domain) {
         SpecialUsers.find({name: "Special Users"}, (err, res) => {
           if (err) {
-            res.send('User does not have verified domain.')
             return console.log(err)
           };
           var specialEmails = res[0].emails;
@@ -3057,6 +3056,10 @@ app.post("/register", (req, res, done) => {
                     console.log(data); 
                 })
               })
+            }
+            else {
+              res.send('User does not have verified domain.');
+              console.log("user does not have a verified domain.")
             }
           }
         })
