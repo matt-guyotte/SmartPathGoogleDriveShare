@@ -158,6 +158,7 @@ class Search extends React.Component {
 
     organizeFiles() {
         var driveFiles = this.state.driveFiles;
+        console.log(driveFiles);
         for (var i = 0; i < driveFiles.length; i++) {
           if(driveFiles[i].parents === undefined) {continue}
             for(var y = 0; y < driveFiles.length; y++) {
