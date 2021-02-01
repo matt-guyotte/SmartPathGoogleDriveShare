@@ -3078,8 +3078,6 @@ app.post("/register", (req, res, done) => {
               })
             }
             else {
-              console.log("User does not have a verified domain.");
-              var errReturn = "Error in verification."
               app.set("registerReturn", errReturn);
               done(null);
             }
@@ -3091,9 +3089,13 @@ app.post("/register", (req, res, done) => {
 }); 
 
 app.get("/registerConfirm", (req, res) => {
-  var returned = req.app.get("registerReturn");
-  res.send(returned);
-  console.log(returned);
+  if(req.session.sessionID) {
+    res.send(true);
+    console.log("registerConfirm ran.")
+  }
+  else{ 
+      res.send(false); 
+  }
 })
 
 app.post('/verify/*', (req, res) => {

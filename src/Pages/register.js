@@ -49,7 +49,7 @@ class Register extends React.Component {
 
     async submitFunction(event) {
       event.preventDefault();
-      fetch('/register', {
+      await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -75,14 +75,14 @@ class Register extends React.Component {
     }
 
     render() {
-      if(this.state.registerMessage === "User registered! Please check your email to verify.") {
+      if(this.state.registerMessage === true) {
         return (
           <div>
             <RegisterSuccess />
           </div>
         )
       }
-      if(this.state.registerMessage === "Error in verification.") {
+      if(this.state.registerMessage === false) {
         return (
           <div>
             <RegisterFailure />
