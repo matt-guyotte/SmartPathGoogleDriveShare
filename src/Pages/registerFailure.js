@@ -27,9 +27,10 @@ class RegisterFailure extends React.Component {
             <div>
                 <TopNavbar login = {this.navbarConnect}/>
                 <div className = "whole"> </div>
-                <Container fluid>
+                <Container>
                     <Row className = "text-center"> 
                         <p> Your account domain could not be verified. </p>
+                        <br />
                         <p> Please check with an admin for permission. </p>
                         <Button class = "btn btn-primary"> <a href = "https://connect.smartpathed.com/#/"> Go back to home page </a> </Button>
                     </Row>
