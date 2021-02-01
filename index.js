@@ -3081,6 +3081,7 @@ app.post("/register", (req, res, done) => {
               console.log("User does not have a verified domain.");
               var errReturn = "Error in verification."
               app.set("registerReturn", errReturn);
+              done(null);
             }
           }
         })
