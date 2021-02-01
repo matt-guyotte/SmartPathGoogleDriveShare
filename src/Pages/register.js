@@ -19,7 +19,7 @@ class Register extends React.Component {
           redirect: '',
           email: '',
           password: '',
-          registerMessage: '',
+          registerMessage: undefined,
         }
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -63,7 +63,7 @@ class Register extends React.Component {
 
     submitFunction2() {
       fetch('/registerConfirm')
-        .then(res => res.text())
+        .then(res => res.json())
         .then(res => this.setState({registerMessage: res}))
     }
 
