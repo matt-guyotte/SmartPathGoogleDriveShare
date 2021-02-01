@@ -47,9 +47,9 @@ class Register extends React.Component {
       })
     }
 
-    async submitFunction(event) {
+    submitFunction(event) {
       event.preventDefault();
-      await fetch('/register', {
+      fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
