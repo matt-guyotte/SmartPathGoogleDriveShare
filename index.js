@@ -548,12 +548,12 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      await fs.mkdirSync('./src/Pages/downloads/' + fileName, { recursive: true }, (err) => {
+      await fs.mkdirSync('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err) => {
         if (err) return console.log("At 764: " + err);
         console.log("folder transfer worked")
       });
       const topFolderPath = './src/Pages/downloads/' + files[i].name;
-      const topFolderZip = await zip.folder('./src/Pages/downloads/' + files[i].name);
+      //const topFolderZip = await zip.folder('./src/Pages/downloads/' + files[i].name);
       if(files[i].children.length != 0) {
         //1
         for(var y = 0; y < files[i].children.length; y++) {
