@@ -47,9 +47,9 @@ class Register extends React.Component {
       })
     }
 
-    async submitFunction(event) {
+    submitFunction(event) {
       event.preventDefault();
-      await fetch('/register', {
+      fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -112,7 +112,7 @@ class Register extends React.Component {
                           <Form.Label>Domain</Form.Label>
                           <Form.Control input = "true" name = "name" placeholder="Please include the @" value= {this.state.domain || ''} onChange = {this.handleChangeDomain} required />
                           <Form.Text className="text-muted">
-                            Re-enter email domain (example: tim<strong>@smartpathed.com</strong>)
+                            Re-enter email domain (example: tim<strong>@smartpathed.com</strong>) *please add @*
                           </Form.Text>
                           <p class = "register-error"> <strong> {this.state.registerMessage} </strong> </p>
                           </Form.Group>
