@@ -1940,18 +1940,6 @@ class Search extends React.Component {
         var industryArray = this.state.industryArray;
         console.log(subjectArray);
         for(var i = 0; i < driveFiles.length; i++) {
-
-          if (driveFiles[i].properties.subject && driveFiles[i].properties.subject.length === 0) {
-            driveFiles[i].properties.subject = ["none"]
-          }
-
-          if (driveFiles[i].properties.grade && driveFiles[i].properties.grade.length === 0) {
-            driveFiles[i].properties.grade = ["none"]
-          }
-
-          if (driveFiles[i].properties.industry && driveFiles[i].properties.industry.length === 0) {
-            driveFiles[i].properties.industry = ["none"]
-          }
           if (subjectArray.length === 0) {
             subjectArray = ['none']
           }
@@ -1998,7 +1986,8 @@ class Search extends React.Component {
         //// Subject search terms 
           let checker = (arr, target) => target.every(v => arr.includes(v));
 
-          if(driveFiles[i].file.includes(searchTerm) === true 
+          if(driveFiles[i].file.includes(searchTerm) === true &&
+          subjectArray[0] !== "none" || gradeArray[0] !== "none" || industryArray[0] !== "none"
           && checker(driveFiles[i].properties.subject, subjectArray) === true 
           && checker(driveFiles[i].properties.grade, gradeArray) === true 
           && checker(driveFiles[i].properties.industry, industryArray) === true
@@ -2210,7 +2199,7 @@ class Search extends React.Component {
                                             <h2> Found Lessons </h2>
                                                 {this.state.foundFolders.map(folders => (
                                                 <div className = "file-box-search" key={folders}>
-                                                <img className = "lesson-pic" ></img>
+                                                <img className = "lesson-pic" src = {folders.imgsrc} ></img>
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <p> {folders.type} </p>
@@ -2221,7 +2210,9 @@ class Search extends React.Component {
                                                   </Row>
                                                     <Row>
                                                       <ul>
-                                                        <li>{folders.properties.contain}</li>
+                                                        <li>{folders.contains.contains1}</li>
+                                                        <li>{folders.contains.contains2}</li>
+                                                        <li>{folders.contains.contains3}</li>
                                                       </ul>
                                                     </Row>
                                                   </Container>

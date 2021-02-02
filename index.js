@@ -317,6 +317,11 @@ async function listFiles(auth) {
           industry: industryArray[y],
           imgsrc: ''
         },
+        contains: {
+          contains1: "",
+          contains2: "",
+          contains3: "",
+        },
         parents: parents[y],
       });
     }
@@ -329,22 +334,22 @@ async function listFiles(auth) {
         fileArray.splice(k, 1)
       }
       if (typeof fileArray[k1].properties.subject === "undefined") {
-        fileArray[k1].properties.subject = [];
+        fileArray[k1].properties.subject = ['none'];
       }
       if (typeof fileArray[k1].properties.grade === "undefined") {
-        fileArray[k1].properties.grade = [];
+        fileArray[k1].properties.grade = ['none'];
       }
       if (typeof fileArray[k1].properties.industry === "undefined") {
-        fileArray[k1].properties.industry = [];
+        fileArray[k1].properties.industry = ['none'];
       }
       if(fileArray[k1].properties.subject === [Array]) {
-        fileArray[k1].properties.subject === [];
+        fileArray[k1].properties.subject === ['none'];
       }
       if(fileArray[k1].properties.grade === [Array]) {
-        fileArray[k1].properties.grade === [];
+        fileArray[k1].properties.grade === ['none'];
       }
       if(fileArray[k1].properties.industry === [Array]) {
-        fileArray[k1].properties.industry === [];
+        fileArray[k1].properties.industry === ['none'];
       }
       //if (typeof fileArray[k1].properties.subject === "string") {
       //  fileArray[k1].properties.subject = [fileArray[k1].properties.subject];
@@ -365,7 +370,7 @@ async function listFiles(auth) {
           //ALL
           if(fileArray[k1].properties.subject.length === 0 && fileArray[k1].properties.grade.length === 0 && fileArray[k1].properties.industry.length === 0) {
             //console.log(fileArray[k1])
-            var newTags1 = new TagFile({id: fileArray[k1].id, contains1: '', contains2: '', contains3: ''});
+            var newTags1 = new TagFile({id: fileArray[k1].id});
             newTags1.save((err, res) => {
               if (err) return console.log(err);
               //console.log(res);
@@ -450,24 +455,53 @@ async function listFiles(auth) {
               }
             }
             // 3 Contains //
-            if(res.contains1) {
-              res.contains1 = fileArray[k1].contains.contains1; 
+            if(res.contains1 !== "") {
+              console.log(res);
+              fileArray[k1].contains.contains1 = res.contains1; 
             }
-            if(res.contains2) {
-              res.contains2 = fileArray[k1].contains.contains2;
+            else {
+              fileArray[k1].contains.contains1 = "";
             }
-            if(res.contains3) {
-              res.contains3 = fileArray[k1].contains.contains3;
+            if(res.contains2 !== "") {
+              fileArray[k1].contains.contains2 = res.contains2;
+            }
+            else {
+              fileArray[k1].contains.contains2 = "";
+            }
+            if(res.contains3 !== "") {
+              fileArray[k1].contains.contains3 = res.contains3;
+            }
+            else {
+              fileArray[k1].contains.contains2 = "";
+            }
+
+            //If still undefined then set to empty string
+            if(fileArray[k1].contains.contains1 === undefined) {
+              fileArray[k1].contains.contains1 = ""
+            }
+            if(fileArray[k1].contains.contains2 === undefined) {
+              fileArray[k1].contains.contains2 = ""
+            }
+            if(fileArray[k1].contains.contains3 === undefined) {
+              fileArray[k1].contains.contains3 = ""
+            }
+
+            //Double check subjects to set to none if empty
+            if(fileArray[k1].properties.subject.length === 0) {
+              fileArray[k1].properties.subject.push('none');
+            }
+            if(fileArray[k1].properties.grade.length === 0) {
+              fileArray[k1].properties.grade.push('none');
+            }
+            if(fileArray[k1].properties.industry.length === 0) {
+              fileArray[k1].properties.industry.push('none');
             }
           })
-        }
-        else {
-          return;
         }
         //console.log(fileArray);
       })
     }
-    //console.log(fileArray)
+    console.log(fileArray)
     app.set('fileArray', fileArray);
   }
 }
