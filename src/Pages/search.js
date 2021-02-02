@@ -2307,7 +2307,37 @@ class Search extends React.Component {
                                       </Modal.Footer>
                                     </div>
                                     :
-                                    <div> </div>
+                                    <div>
+                                    <Modal.Header className = "modal-top" closeButton>
+                                      <Modal.Title>Export</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Header>Current File(s) selected: </Modal.Header>
+                                    <Modal.Body> {this.state.fileName} </Modal.Body>
+                                    <Modal.Header> <strong> Export to Google Classroom: </strong> </Modal.Header>
+                                    <Modal.Body> <GoogleBtn/> </Modal.Body>
+                                    <Modal.Body> <Button className = "btn btn-primary" onClick = {this.getFoldersClassroom}> Pick Course to Export To: </Button> </Modal.Body>
+                                    <Modal.Body> Courses </Modal.Body>
+                                    <Modal.Body>
+                                    {this.state.newClassroomFolders.map(folders => (
+                                      <div className = "file-box-search" key={folders}>
+                                      <input type = "checkbox" name = {folders.file} value = {folders.id} onChange = {this.handleChangeSetParent}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
+                                      <p> {folders.description} </p>
+                                      </div>))}
+                                    </Modal.Body>
+                                    <Modal.Body>
+                                      <Form onSubmit = {this.classroomExport}>
+                                        <Button type = "submit" className = "btn btn-primary"> Export to Classroom </Button>
+                                      </Form>
+                                    </Modal.Body>
+                                    <Modal.Body> {this.state.exportResult} </Modal.Body>
+                                    <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
+                                    <Modal.Body> <a href = "https://connect.smartpathed.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
+                                    <Modal.Footer>
+                                      <Button variant="secondary" onClick={this.closeModal}>
+                                        Close
+                                      </Button>
+                                    </Modal.Footer>
+                                    </div>
                                     }
                                 </Modal>
                            </Col>  
