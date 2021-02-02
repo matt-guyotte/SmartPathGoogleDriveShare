@@ -2203,7 +2203,6 @@ class Search extends React.Component {
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
                                                 <p> {folders.type} </p>
-                                                { folders.children ? (
                                                 <Container>
                                                   <Row>
                                                     <h2> Contains: </h2>
@@ -2216,11 +2215,6 @@ class Search extends React.Component {
                                                       </ul>
                                                     </Row>
                                                   </Container>
-                                                  )
-                                                  : (
-                                                  <Row>
-                                                  </Row>
-                                                  )}
 
                                                 </div>))}
                                             </Col>
