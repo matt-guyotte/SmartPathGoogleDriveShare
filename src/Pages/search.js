@@ -1987,7 +1987,7 @@ class Search extends React.Component {
           let checker = (arr, target) => target.every(v => arr.includes(v));
 
           if(driveFiles[i].file.includes(searchTerm) === true &&
-          subjectArray[0] !== "none" || gradeArray[0] !== "none" || industryArray[0] !== "none"
+          //subjectArray[0] !== "none" || gradeArray[0] !== "none" || industryArray[0] !== "none"
           && checker(driveFiles[i].properties.subject, subjectArray) === true 
           && checker(driveFiles[i].properties.grade, gradeArray) === true 
           && checker(driveFiles[i].properties.industry, industryArray) === true
