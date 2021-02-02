@@ -668,7 +668,6 @@ removeTagIndustry(event) {
     return (
     <div>
       <div className = "whole"> </div>
-      <AdminNavbar />
         <Container>
           <div className = "page">
           <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>

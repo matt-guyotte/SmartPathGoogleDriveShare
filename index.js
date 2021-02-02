@@ -226,7 +226,7 @@ async function listFiles(auth) {
     const subjectArray = [];
     const gradeArray = [];
     const industryArray = [];
-    const imgsrc = [];
+    const imgsrcArray = [];
     var newLoop = [];
     for (var i = 0; i < files.length; i++) {
       //console.log(files[i]);
@@ -236,6 +236,7 @@ async function listFiles(auth) {
       description.push(files[i].description);
       mimeType.push(files[i].mimeType);
       parents.push(files[i].parents);
+      
       if (typeof files[i].properties === 'undefined') {
         subjectArray.push('hold');
         gradeArray.push('hold');
@@ -243,7 +244,15 @@ async function listFiles(auth) {
       }
       if(files[i].properties) {
 
-        //IF EQUALS UNDEFINED
+        //IMGSRC 
+        if(files[i].properties.imgsrc) {
+          imgsrcArray.push(files[i].properties.imgsrc);
+        }
+        if(typeof files[i].properties.imgsrc === "undefined") {
+          imgsrcArray.push('');
+        }
+
+        //IF EQUALS UNDEFINED TAGS
         if(files[i].properties.subject && typeof files[i].properties.grade === "undefined" && typeof files[i].properties.industry === "undefined") {
           subjectArray.push(files[i].properties.subject);
           gradeArray.push('hold');
@@ -315,7 +324,7 @@ async function listFiles(auth) {
           subject: subjectArray[y],
           grade: gradeArray[y],
           industry: industryArray[y],
-          imgsrc: ''
+          imgsrc: imgsrcArray[y],
         },
         contains: {
           contains1: "",
@@ -495,6 +504,11 @@ async function listFiles(auth) {
             }
             if(fileArray[k1].properties.industry.length === 0) {
               fileArray[k1].properties.industry.push('none');
+            }
+
+            //Double check imgsrcs to set to empty string if undefined
+            if(fileArray[k1].properties.imgsrc === undefined) {
+              fileArray[k1].properties.imgsrc = ''
             }
           })
         }
