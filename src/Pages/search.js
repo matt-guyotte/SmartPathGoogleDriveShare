@@ -2239,7 +2239,7 @@ class Search extends React.Component {
                                    </Col>
                                </Row>
                                <Modal className = "export-modal" show={this.state.isOpen} onHide={this.closeModal}>
-                                 {this.state.exportresult === 'first' ? 
+                                 {(this.state.exportresult == 'first') ? 
                                     <div>
                                     <Modal.Header className = "modal-top" closeButton>
                                       <Modal.Title>Export</Modal.Title>
@@ -2272,7 +2272,7 @@ class Search extends React.Component {
                                     </Modal.Footer>
                                     </div>
                                     :
-                                    this.state.exportresult === true ?
+                                    (this.state.exportresult === true) ?
                                     <div>
                                       <Modal.Header className = "modal-top" closeButton>
                                         <Modal.Title>Export</Modal.Title>
@@ -2289,7 +2289,7 @@ class Search extends React.Component {
                                       </Button>
                                       </Modal.Footer>
                                     </div>
-                                    : this.state.exportresult === false ?
+                                    : (this.state.exportresult === false) ?
                                     <div>
                                       <Modal.Header className = "modal-top" closeButton>
                                         <Modal.Title>Export</Modal.Title>
