@@ -67,7 +67,7 @@ class Search extends React.Component {
             classroomFolders: [],
             newClassroomFolders: [],
             classroomParent: '',
-            exportResult: '',
+            exportResult: 'first',
             visible: true,
 
             // Search Terms
@@ -2239,7 +2239,7 @@ class Search extends React.Component {
                                    </Col>
                                </Row>
                                <Modal className = "export-modal" show={this.state.isOpen} onHide={this.closeModal}>
-                                 {this.state.exportresult === '' ? 
+                                 {this.state.exportresult === 'first' ? 
                                     <div>
                                     <Modal.Header className = "modal-top" closeButton>
                                       <Modal.Title>Export</Modal.Title>
