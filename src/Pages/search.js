@@ -1909,8 +1909,8 @@ class Search extends React.Component {
       }
     }
 
-    async classroomExport() {
-      await fetch('/classroomexport', {
+    classroomExport() {
+      fetch('/classroomexport', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
@@ -2202,7 +2202,6 @@ class Search extends React.Component {
                                                 <img className = "lesson-pic" src = {"./img/" + folders.imgsrc} ></img>
                                                 <input type = "checkbox" name = {folders.file} value = {folders.id} title = {folders.type} onChange = {this.handleChangeCheckFile}></input><h2 className = ""> <a href = {folders.click}> {folders.file} </a> </h2>
                                                 <p> {folders.description} </p>
-                                                <p> {folders.type} </p>
                                                 <Container>
                                                   <Row>
                                                     <h2> Contains: </h2>
@@ -2214,6 +2213,7 @@ class Search extends React.Component {
                                                         <li>{folders.contains.contains3}</li>
                                                       </ul>
                                                     </Row>
+                                                    <Row> {folders.id} </Row>
                                                   </Container>
 
                                                 </div>))}
@@ -2239,6 +2239,8 @@ class Search extends React.Component {
                                    </Col>
                                </Row>
                                <Modal className = "export-modal" show={this.state.isOpen} onHide={this.closeModal}>
+                                 {this.state.exportresult === '' ? 
+                                    <div>
                                     <Modal.Header className = "modal-top" closeButton>
                                       <Modal.Title>Export</Modal.Title>
                                     </Modal.Header>
@@ -2268,6 +2270,45 @@ class Search extends React.Component {
                                         Close
                                       </Button>
                                     </Modal.Footer>
+                                    </div>
+                                    :
+                                    this.state.exportresult === true ?
+                                    <div>
+                                      <Modal.Header className = "modal-top" closeButton>
+                                        <Modal.Title>Export</Modal.Title>
+                                      </Modal.Header>
+                                      <Modal.Body>
+                                        File Transfer Complete!
+                                      </Modal.Body>
+                                      <Modal.Body>
+                                        Check your Drive classroom folder to see the new files!
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                      <Button variant="secondary" onClick={this.closeModal}>
+                                        Close
+                                      </Button>
+                                      </Modal.Footer>
+                                    </div>
+                                    : this.state.exportresult === false ?
+                                    <div>
+                                      <Modal.Header className = "modal-top" closeButton>
+                                        <Modal.Title>Export</Modal.Title>
+                                      </Modal.Header>
+                                      <Modal.Body>
+                                        File Transfer was not able to complete.
+                                      </Modal.Body>
+                                      <Modal.Body>
+                                        Try again, or report to admin if problem persists.
+                                      </Modal.Body>
+                                      <Modal.Footer>
+                                      <Button variant="secondary" onClick={this.closeModal}>
+                                        Close
+                                      </Button>
+                                      </Modal.Footer>
+                                    </div>
+                                    :
+                                    <div> </div>
+                                    }
                                 </Modal>
                            </Col>  
                         </Row>

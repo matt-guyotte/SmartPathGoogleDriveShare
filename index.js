@@ -2220,8 +2220,13 @@ app.post('/classroomexport', async (req, res) => {
 })
 
 app.get('/exportresult', (req, res) => {
-  const exportresult = req.app.get('exportresult');
-  res.send(exportresult);
+  const exportresult = req.app.get('result');
+  if (exportresult === "classroom export complete!") {
+    res.send(true);
+  }
+  else{
+    res.send(false);
+  }
 })
 
 // Extension Push
@@ -3257,6 +3262,19 @@ app.post('/adddomain', (req, res) => {
     (err, data) => {console.log(data)})
 })
 
+app.post('/removedomain', (req, res) => {
+  const newDomain = req.body.domain; 
+  Domains.findOne({name: "Domains"}, (err, data) => {
+    if (err) return console.log(err);
+    for(var i = 0; i < data.length; i++) {
+      if(data[i] === newDomain) {
+        data.splice(i, 1);
+        data.save();
+      }
+    }
+  })
+})
+
 app.get('/specialusers', (req, res) => {
   SpecialUsers.find({name: "Special Users"}, (err, data) => {
     if(err) return console.log(err);
@@ -3273,6 +3291,19 @@ app.post('/addspecialuser', (req, res) => {
     {$push: {emails: newUser}},
     {new: true},
     (err, data) => {console.log(data)})
+})
+
+app.post('/removespecialuser', (req, res) => {
+  const newUser = req.body.specialUser;
+  SpecialUsers.findOne({name: "Special Users"}, (err, data) => {
+    if(err) return console.log(err);
+    for(var i = 0; i < data.length; i++) {
+      if(data[i] === newUser) {
+        data.splice(i, 1);
+        data.save();
+      }
+    }
+  })
 })
 
 app.get('/api', (req, res, done) => {
