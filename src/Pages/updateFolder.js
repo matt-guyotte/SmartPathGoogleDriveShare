@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
+import { SimpleFileUpload } from 'react-simple-file-upload';
 
 import AdminNavbar from './adminNavbar';
 import Footer from './Footer';
@@ -87,6 +88,7 @@ class UpdateFolder extends React.Component {
     this.removeTagSubject = this.removeTagSubject.bind(this);
     this.removeTagGrade = this.removeTagGrade.bind(this);
     this.removeTagIndustry = this.removeTagIndustry.bind(this);
+    this.handleFile = this.handleFile.bind(this);
 
   }
 
@@ -663,6 +665,10 @@ removeTagIndustry(event) {
   this.setState({visible: false})
 }
 
+handleFile(url){
+  console.log('The URL of the file is ' + url)
+}
+
   render() {
     let buttonClass = this.state.visible ? "visibleYes" : "visibleNo";
     return (
@@ -672,6 +678,10 @@ removeTagIndustry(event) {
           <div className = "page">
           <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
           <hr />
+          <SimpleFileUpload
+            apiKey="bf29492ed7b7ff5be2f0568dd962b565"
+            onSuccess={handleFile}
+          />
           <h2> Update Lesson </h2>
           <br />
             <Form onSubmit = {this.update}>
