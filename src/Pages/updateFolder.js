@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
-import { SimpleFileUpload } from 'react-simple-file-upload';
+import { SimpleFileUpload } from 'react-simple-file-upload'
 
 import AdminNavbar from './adminNavbar';
 import Footer from './Footer';
@@ -679,7 +679,7 @@ handleFile(url){
           <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
           <hr />
           <SimpleFileUpload
-            apiKey="..."
+            apiKey="bf29492ed7b7ff5be2f0568dd962b565"
             onSuccess={handleFile}
           />
           <input type="hidden" id="user_avatar_url" name="user[avatar_url]" class="simple-file-upload" />
