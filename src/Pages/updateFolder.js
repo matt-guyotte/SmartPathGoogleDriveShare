@@ -680,7 +680,7 @@ handleFile(url){
           <hr />
           <SimpleFileUpload
             apiKey="bf29492ed7b7ff5be2f0568dd962b565"
-            onSuccess={handleFile}
+            onSuccess={this.handleFile}
           />
           <input type="hidden" id="user_avatar_url" name="user[avatar_url]" class="simple-file-upload" />
           <h2> Update Lesson </h2>
