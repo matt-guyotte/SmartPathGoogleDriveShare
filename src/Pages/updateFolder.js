@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Link from 'react-router-dom/Link';
-import { SimpleFileUpload } from 'react-simple-file-upload'
+import SimpleFileUpload, {SimpleFileUploadProvider} from "react-simple-file-upload";
 
 import AdminNavbar from './adminNavbar';
 import Footer from './Footer';
