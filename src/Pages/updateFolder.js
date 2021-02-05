@@ -678,10 +678,6 @@ handleFile(url){
           <div className = "page">
           <Button className = 'btn btn-primary' onClick = {this.props.moveToUpdateFolder}> Return to Home </Button>
           <hr />
-          <SimpleFileUpload
-            apiKey="bf29492ed7b7ff5be2f0568dd962b565"
-            onSuccess={this.handleFile}
-          />
           <input type="hidden" id="user_avatar_url" name="user[avatar_url]" class="simple-file-upload" />
           <h2> Update Lesson </h2>
           <br />
@@ -772,6 +768,10 @@ handleFile(url){
               <input type="file" name="myFile" accept="image/png, image/jpeg" />
               <input type="submit" value="Upload Photo"/>
             </form>
+            <SimpleFileUpload
+            apiKey="bf29492ed7b7ff5be2f0568dd962b565"
+            onSuccess={this.handleFile}
+          />
           </div>
         </Container>
         <Footer />
