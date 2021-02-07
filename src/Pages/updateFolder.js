@@ -28,6 +28,7 @@ class UpdateFolder extends React.Component {
       subjectArray: [],
       gradeArray: [],
       industryArray: [],
+      photoId: '',
       video: false,
       rubric: false,
       handout: false,
@@ -79,6 +80,7 @@ class UpdateFolder extends React.Component {
     };
     this.update = this.update.bind(this);
     this.handleChangeId = this.handleChangeId.bind(this);
+    this.handleChangePhotoId = this.handleChangePhotoId.bind(this);
     this.handleChangeType = this.handleChangeType.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
@@ -88,7 +90,7 @@ class UpdateFolder extends React.Component {
     this.removeTagSubject = this.removeTagSubject.bind(this);
     this.removeTagGrade = this.removeTagGrade.bind(this);
     this.removeTagIndustry = this.removeTagIndustry.bind(this);
-    this.handleFile = this.handleFile.bind(this);
+    this.photoUpload = this.photoUpload.bind(this);
 
   }
 
@@ -114,6 +116,12 @@ class UpdateFolder extends React.Component {
   handleChangeId(event) {
     this.setState({
       id: event.target.value
+    })
+  }
+
+  handleChangePhotoId(event) {
+    this.setState({
+      photoId: event.target.value
     })
   }
 
@@ -665,7 +673,7 @@ removeTagIndustry(event) {
   this.setState({visible: false})
 }
 
-handleFile(url){
+photoUpload(url){
   console.log('The URL of the file is ' + url)
 }
 
@@ -761,16 +769,12 @@ handleFile(url){
             <hr />
 
           <h3> Add Image </h3>
-            <form action="/profile" enctype="multipart/form-data" method="POST"> 
             <p> Enter Id of Drive Folder/File </p>
-              <input type = "text" name = "fileId" />
+            <input type = "text" name = "email" value= {this.state.photoId || ''} placeholder="Enter file/folder id" onChange = {this.handleChangePhotoId} required />
             <p> Upload picture </p>
-              <input type="file" name="myFile" accept="image/png, image/jpeg" />
-              <input type="submit" value="Upload Photo"/>
-            </form>
             <SimpleFileUpload
             apiKey="bf29492ed7b7ff5be2f0568dd962b565"
-            onSuccess={this.handleFile}
+            onSuccess={this.photoUpload}
           />
           </div>
         </Container>

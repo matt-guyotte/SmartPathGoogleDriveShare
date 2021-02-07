@@ -3434,15 +3434,14 @@ app.post("/makenew", (req, res) => {
   });
 })
 
-app.post('/profile', uploads.single('myFile'), function (req, res) {
+app.post('/profile', function (req, res) {
   var drive = req.app.get('drive');
   const id = req.body.fileId; 
   console.log(id);
-  const image = req.file.filename;
-  console.log(image);
+  const imgurl = req.file.imgurl;
   drive.files.update({
     fileId: id,
-    requestBody: {properties: {imgsrc: image}},
+    requestBody: {properties: {imgsrc: imgurl}},
   })
 })
 
