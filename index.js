@@ -3037,6 +3037,11 @@ app.post('/classroomexport2', async (req, res) => {
   }
 })
 
+app.post('/getgapidrive', (req, res) => {
+  const gapi = req.body.gapi;
+  console.log(gapi);
+})
+
 // Authentication Routes
 
 app.post("/register", (req, res, done) => {
