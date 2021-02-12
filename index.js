@@ -613,7 +613,7 @@ app.post("/downloaddocument", async (req, res) => {
             const type1 = level1.type;
             const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1, (err) => {if (err) return console.log("776: " + err)});
             const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
-            const dest1zip = topFolderZip + "/" + fileName1 + '.' + type1;
+            //const dest1zip = topFolderZip + "/" + fileName1 + '.' + type1;
             let newType1 = ''
             if(type1 === 'docx') {
               newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -644,7 +644,7 @@ app.post("/downloaddocument", async (req, res) => {
             console.log("at 808 " + topFolderPath)
             fs.mkdir(topFolderPath + "/" + level1.name, { recursive: true }, (err) => {if (err) return console.log(err)});
             const level1FolderPath = topFolderPath + "/" + level1.name;
-            const level1ZipPath = await zip.folder(topFolderZip + "/" + level1.name);
+            //const level1ZipPath = await zip.folder(topFolderZip + "/" + level1.name);
             if(level1.children.length != 0) {
               //2
               for(var a = 0; a < level1.children.length; a++) {
@@ -655,7 +655,7 @@ app.post("/downloaddocument", async (req, res) => {
                   const type2 = level2.type
                   const dest2 = await fs.createWriteStream(level1FolderPath + "/" + fileName2 + '.' + type2);
                   const dest2file = level1FolderPath + "/" + fileName2 + '.' + type2
-                  const dest2zip = level1ZipPath + "/" + fileName1 + '.' + type1;
+                  //const dest2zip = level1ZipPath + "/" + fileName1 + '.' + type1;
                   let newType2 = ''
                   if(type2 === 'docx') {
                     newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -681,7 +681,7 @@ app.post("/downloaddocument", async (req, res) => {
                 if(level1.type === 'folder') {
                   await fs.mkdir(level1FolderPath + "/" + level2.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                   const level2FolderPath = level1FolderPath + "/" + level2.name;
-                  const level2ZipPath = await zip.folder(level1ZipPath + "/" + level2.name);
+                  //const level2ZipPath = await zip.folder(level1ZipPath + "/" + level2.name);
                   if(level2.children.length != 0) {
                     //3
                     for(var b = 0; b < level2.children.length; b++) {
@@ -692,7 +692,7 @@ app.post("/downloaddocument", async (req, res) => {
                         const type3 = level3.type
                         const dest3 = await fs.createWriteStream(level2FolderPath + "/" + fileName3 + '.' + type3);
                         const dest3file = level2FolderPath + "/" + fileName3 + '.' + type3
-                        const dest3zip = level2ZipPath + "/" + fileName3 + '.' + type3;
+                        //const dest3zip = level2ZipPath + "/" + fileName3 + '.' + type3;
                         let newType3 = ''
                         if(type3 === 'docx') {
                           newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -718,7 +718,7 @@ app.post("/downloaddocument", async (req, res) => {
                       if(level3.type === 'folder') {
                         fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                         var level3FolderPath = level2FolderPath + "/" + level3.name;
-                        var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
+                        //var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
                         if(level3.children.length != 0) {
                           //4
                           for(var c = 0; c < level3.children.length; c++) {
@@ -729,7 +729,7 @@ app.post("/downloaddocument", async (req, res) => {
                               var type4 = level4.type
                               var dest4 = fs.createWriteStream(level3FolderPath + "/" + fileName4 + '.' + type4);
                               var dest4file = level3FolderPath + "/" + fileName4 + '.' + type4;
-                              var dest4zip = level3ZipPath + "/" + fileName4 + '.' + type4;
+                              //var dest4zip = level3ZipPath + "/" + fileName4 + '.' + type4;
                               var newType4 = ''
                               if(type4 === 'docx') {
                                 newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -757,7 +757,7 @@ app.post("/downloaddocument", async (req, res) => {
                             if(level4.type === 'folder') {
                               fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                               var level4FolderPath = level3FolderPath + "/" + level4.name;
-                              var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
+                              //var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
                               if(level4.children.length != 0) {
                                 //5
                                 for(var d = 0; d < level4.children.length; d++) {
@@ -768,7 +768,7 @@ app.post("/downloaddocument", async (req, res) => {
                                     var type5 = level5.type
                                     var dest5 = fs.createWriteStream(level4FolderPath + "/" + fileName5 + '.' + type5);
                                     var dest5file = level4FolderPath + "/" + fileName5 + '.' + type5;
-                                    var dest5zip = level4ZipPath + "/" + fileName5 + '.' + type5;
+                                    //var dest5zip = level4ZipPath + "/" + fileName5 + '.' + type5;
                                     var newType5 = ''
                                     if(type5 === 'docx') {
                                       newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -796,7 +796,7 @@ app.post("/downloaddocument", async (req, res) => {
                                   if(level5.type === 'folder') {
                                     fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                     var level5FolderPath = level4FolderPath + "/" + level5.name;
-                                    var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
+                                    //var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
                                     if(level5.children.length != 0) {
                                       //6
                                       for(var e = 0; e < level5.children.length; e++) {
@@ -807,7 +807,7 @@ app.post("/downloaddocument", async (req, res) => {
                                           var type6 = level6.type
                                           var dest6 = fs.createWriteStream(level5FolderPath + "/" + fileName6 + '.' + type6);
                                           var dest6file = level5FolderPath + "/" + fileName6 + '.' + type6;
-                                          var dest6zip = level5ZipPath + "/" + fileName6 + '.' + type6;
+                                          //var dest6zip = level5ZipPath + "/" + fileName6 + '.' + type6;
                                           var newType6 = ''
                                           if(type6 === 'docx') {
                                             newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -835,7 +835,7 @@ app.post("/downloaddocument", async (req, res) => {
                                         if(level6.type === 'folder') {
                                           fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                           var level6FolderPath = level5FolderPath + "/" + level6.name;
-                                          var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
+                                          //var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
                                           if(level6.children.length != 0) {
                                             //7
                                             for(var f = 0; f < level6.children.length; f++) {
@@ -846,7 +846,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                 var type7 = level7.type
                                                 var dest7 = fs.createWriteStream(level6FolderPath + "/" + fileName7 + '.' + type7);
                                                 var dest7file = level6FolderPath + "/" + fileName7 + '.' + type7;
-                                                var dest7zip = level6ZipPath + "/" + fileName7 + '.' + type7;
+                                                //var dest7zip = level6ZipPath + "/" + fileName7 + '.' + type7;
                                                 var newType7 = ''
                                                 if(type7 === 'docx') {
                                                   newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -874,7 +874,7 @@ app.post("/downloaddocument", async (req, res) => {
                                               if(level7.type === 'folder') {
                                                 fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                                 var level7FolderPath = level6FolderPath + "/" + level7.name;
-                                                var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
+                                                //var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
                                                 if(level7.children.length != 0) {
                                                   //8
                                                   for(var g = 0; g < level7.children.length; g++) {
@@ -885,7 +885,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                       var type8 = level8.type
                                                       var dest8 = fs.createWriteStream(level7FolderPath + "/" + fileName8 + '.' + type8);
                                                       var dest8file = level7FolderPath + "/" + fileName8 + '.' + type8;
-                                                      var dest8zip = level7ZipPath + "/" + fileName8 + '.' + type8;
+                                                      //var dest8zip = level7ZipPath + "/" + fileName8 + '.' + type8;
                                                       var newType8 = ''
                                                       if(type8 === 'docx') {
                                                         newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -913,7 +913,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                     if(level8.type === 'folder') {
                                                       fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                                       var level8FolderPath = level7FolderPath + "/" + level8.name;
-                                                      var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
+                                                      //var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
                                                       if(level8.children.length != 0) {
                                                         //9
                                                         for(var h = 0; h < level8.children.length; h++) {
@@ -924,7 +924,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                             var type9 = level9.type
                                                             var dest9 = fs.createWriteStream(level8FolderPath + "/" + fileName9 + '.' + type9);
                                                             var dest9file = level8FolderPath + "/" + fileName9 + '.' + type9;
-                                                            var dest9zip = level8ZipPath + "/" + fileName9 + '.' + type9;
+                                                            //var dest9zip = level8ZipPath + "/" + fileName9 + '.' + type9;
                                                             var newType9 = ''
                                                             if(type9 === 'docx') {
                                                               newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -3037,10 +3037,52 @@ app.post('/classroomexport2', async (req, res) => {
   }
 })
 
-app.post('/getgapidrive', (req, res) => {
-  const gapi = req.body.gapi;
-  console.log(gapi);
-  console.log(gapi.files);
+app.post('/makeclassroomfilearray', (req, res) => {
+  let classroomFileArray = req.body.fileArray;
+  app.set("classroomFileArray", classroomFileArray);
+})
+
+app.get('/getclassroomfilearray', (req, res) => {
+  let classroomFileArray = req.app.get("classroomFileArray");
+  res.send(classroomFileArray);
+})
+
+app.post('/makeclassroomparent', (req, res) => {
+  let classroomParent = req.body.classroomParent;
+  app.set("classroomParent", classroomParent);
+})
+
+app.get('/getclassroomparent', (req, res) => {
+  let classroomParent = req.app.get("classroomParent")
+  res.send(classroomParent);
+})
+
+app.post('/makeclassroomarrayselect', (req, res) => {
+  let fileArray = req.body.fileArray;
+  app.set("fileArray", fileArray);
+})
+
+app.get('/getclassroomarrayselect', (req, res) => {
+  let fileArray = req.app.get("fileArray")
+  res.send(fileArray);
+})
+
+app.post('/makefile', (req, res) => {
+  const newType = req.body.newType;
+  const dest = req.body.dest;
+
+  var media = {
+    mimeType: newType,
+    body: fs.createReadStream(destSimple),
+  };
+
+  app.set("media", media);
+
+})
+
+app.get("/getfile", (req, res) => {
+  const file = req.app.get('media');
+  res.send(file);
 })
 
 // Authentication Routes
