@@ -3051,21 +3051,25 @@ app.get('/getclassroomfilearray', (req, res) => {
 
 app.post('/makeclassroomparent', (req, res) => {
   let classroomParent = req.body.classroomParent;
+  console.log("from post request: " + classroomParent);
   app.set("classroomParent", classroomParent);
 })
 
 app.get('/getclassroomparent', (req, res) => {
-  let classroomParent = req.app.get("classroomParent")
+  let classroomParent = req.app.get("classroomParent");
+  console.log("from get request: " + classroomParent);
   res.send(classroomParent);
 })
 
 app.post('/makeclassroomarrayselect', (req, res) => {
   let fileArray = req.body.fileArray;
+  console.log("from classroomfilearray post request: " + fileArray)
   app.set("fileArray", fileArray);
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
   let fileArray = req.app.get("fileArray")
+  console.log("from classroomfilearray get request: " + fileArray)
   res.send(fileArray);
 })
 
