@@ -3091,6 +3091,9 @@ app.get("/getfile", (req, res) => {
   res.send(file);
 })
 
+app.get('/chrometest', (req, res) => {
+  console.log("button pressed")
+})
 // Authentication Routes
 
 app.post("/register", (req, res, done) => {
