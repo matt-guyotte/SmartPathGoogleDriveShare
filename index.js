@@ -3045,7 +3045,7 @@ app.post('/makeclassroomfilearray', (req, res) => {
 
 app.get('/getclassroomfilearray', (req, res) => {
   let classroomFileArray = req.app.get("classroomFileArray");
-  console.log("from get request - " + classroomFileArray);
+  console.log("from get request - " + classroomFileArray[0]);
   res.send(classroomFileArray);
 })
 
