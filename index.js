@@ -3039,13 +3039,13 @@ app.post('/classroomexport2', async (req, res) => {
 
 app.post('/makeclassroomfilearray', (req, res) => {
   let classroomFileArray = req.body.fileArray;
-  console.log(classroomFileArray);
+  console.log("from post request: " + classroomFileArray);
   app.set("classroomFileArray", classroomFileArray);
 })
 
 app.get('/getclassroomfilearray', (req, res) => {
   let classroomFileArray = req.app.get("classroomFileArray");
-  console.log("from post request - " + classroomFileArray);
+  console.log("from get request - " + classroomFileArray);
   res.send(classroomFileArray);
 })
 
