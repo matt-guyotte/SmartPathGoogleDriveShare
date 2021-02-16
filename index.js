@@ -3146,7 +3146,7 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 
 app.get('/getclassroombuttonclick', (req, res) => {
   let gapiCall = req.app.get('gapi');
-  console.log(gapi);
+  console.log(gapiCall);
   gapiCall.files.list({
     'pageSize': 100,
     "orderBy": "folder",
