@@ -3145,9 +3145,9 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 })
 
 app.get('/getclassroombuttonclick', (req, res) => {
-  let gapi = req.app.get('gapi');
+  let gapiCall = req.app.get('gapi');
   console.log(gapi);
-  gapi.files.list({
+  gapiCall.files.list({
     'pageSize': 100,
     "orderBy": "folder",
     'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
