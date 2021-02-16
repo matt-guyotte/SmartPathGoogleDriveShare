@@ -3111,7 +3111,7 @@ app.get('/classroomexport2', async (req, res) => {
 app.post('/makegapi', (req, res) => {
   let gapi = req.body.gapi;
   app.set('gapi', gapi);
-  console.log(req.body.gapi.files);
+  console.log(req.body.gapi);
 })
 
 app.post('/makeclassroomfilearray', (req, res) => {
@@ -3146,15 +3146,15 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 
 app.get('/getclassroombuttonclick', (req, res) => {
   let gapiCall = req.app.get('gapi');
-  //console.log(gapiCall.files);
-  gapiCall.files.list({
-    'pageSize': 100,
-    "orderBy": "folder",
-    'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
-  }).then((err, res) => {
-    if(err) return console.log(err);
-    console.log(res);
-  })
+  console.log(gapiCall);
+  //gapiCall.files.list({
+  //  'pageSize': 100,
+  //  "orderBy": "folder",
+  //  'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
+  //}).then((err, res) => {
+  //  if(err) return console.log(err);
+  //  console.log(res);
+  //})
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
