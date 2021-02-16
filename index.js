@@ -3111,7 +3111,7 @@ app.get('/classroomexport2', async (req, res) => {
 app.post('/makegapi', (req, res) => {
   let gapi = req.body.gapi;
   app.set('gapi', gapi);
-  console.log(req.body.gapi);
+  console.log(req.body.gapi.files);
 })
 
 app.post('/makeclassroomfilearray', (req, res) => {
