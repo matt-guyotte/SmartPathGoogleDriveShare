@@ -17,7 +17,11 @@ app.listen(process.env.PORT || 8080, () => {
 });
 
 var cors = require('cors'); 
-app.use(cors()); 
+app.use(cors());
+
+var background = require('../my-app - Copy/build/background.js');
+var backgroundCall = background.foo;
+console.log(backgroundCall);
 
 var mongoose = require ('mongoose'); 
     mongoose.set('useNewUrlParser', true);
@@ -3037,6 +3041,10 @@ app.post('/classroomexport2', async (req, res) => {
   }
 })
 
+app.post('/makegapi', (req, res) => {
+  console.log(req.body.gapi);
+})
+
 app.post('/makeclassroomfilearray', (req, res) => {
   let classroomFileArray = req.body.fileArray;
   console.log("from post request: " + classroomFileArray);
@@ -3065,6 +3073,10 @@ app.post('/makeclassroomarrayselect', (req, res) => {
   let fileArray = req.body.fileArray;
   console.log("from classroomfilearray post request: " + fileArray)
   app.set("fileArray", fileArray);
+})
+
+app.get('/getclassroombuttonclick', (req, res) => {
+  console.log(backgroundCall);
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
