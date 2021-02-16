@@ -3148,7 +3148,7 @@ app.get('/getclassroombuttonclick', (req, res) => {
   let gapiCall = req.app.get('gapi');
   console.log(gapiCall);
   try {
-  gapiCall.files.list({
+  gapiCall.list({
     'pageSize': 100,
     "orderBy": "folder",
     'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
