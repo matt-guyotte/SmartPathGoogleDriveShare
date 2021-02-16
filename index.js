@@ -3147,14 +3147,14 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 app.get('/getclassroombuttonclick', (req, res) => {
   let gapiCall = req.app.get('gapi');
   console.log(gapiCall);
-  //gapiCall.files.list({
-  //  'pageSize': 100,
-  //  "orderBy": "folder",
-  //  'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
-  //}).then((err, res) => {
-  //  if(err) return console.log(err);
-  //  console.log(res);
-  //})
+  gapiCall.files.list({
+    'pageSize': 100,
+    "orderBy": "folder",
+    'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
+  }).then((err, res) => {
+    if(err) return console.log(err);
+    console.log(res);
+  })
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
