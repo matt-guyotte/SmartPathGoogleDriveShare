@@ -2231,10 +2231,10 @@ app.get('/exportresult', (req, res) => {
 
 // Extension Push
 
-app.post('/classroomexport2', async (req, res) => {
-  const files = req.body.fileArray;
-  console.log("these are the files for export: " + files[0].children[0] + files[0].children[1] + files[0].children[2] + files[0].children[3])
-  const parentFolder = req.body.parentId;
+app.get('/classroomexport2', async (req, res) => {
+  let gapiAuthenticated = req.app.get('gapi');
+  let parentFolder = req.app.get("classroomParent");
+  let fileArray = req.app.get("fileArray");
   function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -2242,40 +2242,34 @@ app.post('/classroomexport2', async (req, res) => {
       currentDate = Date.now();
     } while (currentDate - date < milliseconds);
   }
-  const drive = req.app.get('drive3');
-  for(var i = 0; i < files.length; i++) {
-    if (files[i].type != "folder") {
-      const fileName = files[i].name;
-      const type = files[i].type;
-      const description = files[i].description;
+  for(var i = 0; i < fileArray.length; i++) {
+    if (fileArray[i].type != "folder") {
+      const fileNameFile = fileArray[i].name;
+      const typeFile = fileArray[i].type;
+      const descriptionFile = fileArray[i].description;
       let newType = ''
-      if(type === 'docx') {
+      if(typeFile === 'docx') {
         newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       }
-      if(type === 'pptx') {
+      if(typeFile === 'pptx') {
         newType = 'application/vnd.google-apps.presentation'
       }
-      if(type === 'xlsx') {
+      if(typeFile === 'xlsx') {
         newType === 'application/vnd.google-apps.spreadsheet'
       }
-
-      const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
-      console.log(destSimple)
-
+      const destFile = './src/Pages/downloads/' + fileName + '.' + type;
       let newId = ''
-
       var fileMetadata = {
-        'name': fileName,
-        'description': description,
+        'name': fileNameFile,
+        'description': descriptionFile,
         'parents': [parentFolder]
       };
-      console.log(fileMetadata)
       var media = {
         mimeType: newType,
-        body: fs.createReadStream(destSimple)
-      };
+        body: fs.createReadStream(destFile)
+      }; 
       console.log("This is the body of topfile " + media)
-      await drive.files.create({
+      await gapiAuthenticated.files.create({
         resource: fileMetadata,
         media: media,
         fields: 'id'
@@ -2288,11 +2282,10 @@ app.post('/classroomexport2', async (req, res) => {
         }
       });
     }
-    if(files[i].type === "folder") {
-      const fileName = files[i].name;
-      const description = files[i].description;
+    if(fileArray[i].type === "folder") {
+      const fileName = fileArray[i].name;
+      const description = fileArray[i].description;
       let newType = 'application/vnd.google-apps.folder'
-
       const destSimple = './src/Pages/downloads/' + fileName;
     
       var fileMetadata = {
@@ -2301,9 +2294,10 @@ app.post('/classroomexport2', async (req, res) => {
         'parents': [parentFolder],
         'mimeType': newType,
       };
+      var newIdFolder = ""
       function driveCreateFolder() {
         return new Promise(function (resolve, reject) { 
-          drive.files.create({
+          gapiAuthenticated.files.create({
             resource: fileMetadata,
             fields: 'id',
           }, function (err, file) {
@@ -2312,18 +2306,17 @@ app.post('/classroomexport2', async (req, res) => {
             } else {
               console.log(file)
               var newIdFolderIn = file.data.id;
-              resolve(app.set('newIdFolder', newIdFolderIn));
+              resolve(newIdFolder = newIdFolderIn);
               console.log("This is the top folder id = " + file.data.id)
             }
           });
         })
       }
-      await driveCreateFolder();
+      await driveCreateFolder();                    
       sleep(2000);
       //1
-      for(var y = 0; y < files[i].children.length; y++) {
-        const level1 = files[i].children[y]; 
-        var newIdFolder = req.app.get('newIdFolder');
+      for(var y = 0; y < fileArray[i].children.length; y++) {
+        const level1 = fileArray[i].children[y]; 
         if (level1.type != "folder") {
           const fileName1 = level1.name;
           const type1 = level1.type;
@@ -2338,25 +2331,34 @@ app.post('/classroomexport2', async (req, res) => {
           }
           if(type1 === 'xlsx') {
             newType1 === 'application/vnd.google-apps.spreadsheet'
-          }
-    
+          }            
           const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
-          console.log("This is the first destination: " + destSimple1)
-    
-          let newId1 = ''
-    
+          console.log("This is the first destination: " + destSimple1)            
+          let newId1 = ''            
           var fileMetadata1 = {
             'name': fileName1,
             'description': description1,
             'parents': [newIdFolder]
           };
+          var media1 = {}
           console.log("This is the file metadata for level1 files: " + fileMetadata1)
-          var media1 = {
-            mimeType: newType1,
-            body: fs.createReadStream(destSimple1)
-          };
+          fetch('https://connect.smartpathed.com/makefile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              newType: newType1,
+              dest: destSimple1,
+            }, (err) => {if (err) return console.log(err);})
+          }) 
+          .then(async function(err) {
+            if(err) return console.log(err);
+            let url = 'https://connect.smartpathed.com/getfile';
+            let responseFetchFile1 = await fetch(url);
+            media1 = await responseFetchFile1.json();
+            return media1;
+          })
           console.log("This is the body for level1 files: " + media1)
-          drive.files.create({
+          gapiAuthenticated.files.create({
             resource: fileMetadata1,
             media: media1,
             fields: 'id'
@@ -2367,7 +2369,7 @@ app.post('/classroomexport2', async (req, res) => {
               //console.log(file);
               newId1 = file.id;
             }
-          });
+          });              
         }
         if(level1.type === "folder") {
           const fileName1 = level1.name;
@@ -2380,9 +2382,10 @@ app.post('/classroomexport2', async (req, res) => {
             'parents': [newIdFolder],
             'mimeType': newType,
           };
+          var newIdFolder1 = ""
           function driveCreateFolder1() {
             return new Promise(function (resolve, reject) { 
-              drive.files.create({
+              gapiAuthenticated.files.create({
                 resource: fileMetadata1,
                 fields: 'id',
               }, function (err, file) {
@@ -2391,17 +2394,16 @@ app.post('/classroomexport2', async (req, res) => {
                 } else {
                   console.log(file)
                   var newIdFolderIn1 = file.data.id;
-                  resolve(app.set('newIdFolder1', newIdFolderIn1));
+                  resolve(newIdFolder1 = newIdFolder);
                 }
               });
             })
           }
-          await driveCreateFolder1();
+          await driveCreateFolder1();                            
           sleep(2000);
           //2
           for(var a = 0; a < level1.children.length; a++) {
             const level2 = level1.children[a]; 
-            var newIdFolder1 = req.app.get('newIdFolder1');
             if (level2.type != "folder") {
               const fileName2 = level2.name;
               const type2 = level2.type;
@@ -2415,24 +2417,33 @@ app.post('/classroomexport2', async (req, res) => {
               }
               if(type2 === 'xlsx') {
                 newType2 === 'application/vnd.google-apps.spreadsheet'
-              }
-        
-              const destSimple2 = destSimple1 + '/' + fileName2 + '.' + type2;
-        
-              let newId2 = ''
-        
+              }                
+              const destSimple2 = destSimple1 + '/' + fileName2 + '.' + type2;                
+              let newId2 = ''                
               var fileMetadata2 = {
                 'name': fileName2,
                 'description': description2,
                 'parents': [newIdFolder1]
               };
               console.log(fileMetadata)
-              var media2 = {
-                mimeType: newType2,
-                body: fs.createReadStream(destSimple2, (err) => {if(err) return console.log(err)})
-              };
+              var media2 = {};
+              fetch('https://connect.smartpathed.com/makefile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify({
+                  newType: newType2,
+                  dest: destSimple2,
+                }, (err) => {if (err) return console.log(err);})
+              })
+              .then(async function(err) {
+                if(err) return console.log(err);
+                let url = 'https://connect.smartpathed.com/getfile';
+                let responseFetchFile2 = await fetch(url);
+                media2 = await responseFetchFile2.json();
+                return media2;
+              }) 
               console.log(media)
-              await drive.files.create({
+              await gapiAuthenticated.files.create({
                 resource: fileMetadata2,
                 media: media2,
                 fields: 'id'
@@ -2443,22 +2454,22 @@ app.post('/classroomexport2', async (req, res) => {
                   console.log(file.id);
                   newId2 = file.id;
                 }
-              });
+              });                                    
             }
             if(level2.type === "folder") {
               const fileName2 = level2.name;
               const description2 = level2.description;
-              let newType2 = 'application/vnd.google-apps.folder'
-            
+              let newType2 = 'application/vnd.google-apps.folder'                
               var fileMetadata2 = {
                 'name': fileName2,
                 'description': description2,
                 'parents': [newIdFolder1],
                 'mimeType': newType2,
               };
+              var newIdFolder2 = "";
               function driveCreateFolder2() {
                 return new Promise(function (resolve, reject) { 
-                  drive.files.create({
+                  gapiAuthenticated.files.create({
                     resource: fileMetadata2,
                     fields: 'id',
                   }, function (err, file) {
@@ -2467,18 +2478,17 @@ app.post('/classroomexport2', async (req, res) => {
                     } else {
                       console.log(file)
                       var newIdFolderIn2 = file.data.id;
-                      resolve(app.set('newIdFolder2', newIdFolderIn2));
+                      resolve(newIdFolder2 = newIdFolderIn2);
                     }
                   });
                 })
               }
-              await driveCreateFolder2();
+              await driveCreateFolder2();                                    
               sleep(2000);
               if(level2.children != []) {
                 //3
                 for(var b = 0; b < level2.children.length; b++) {
                   const level3 = level2.children[b]; 
-                  var newIdFolder2 = req.app.get('newIdFolder2');
                   if (level3.type != "folder") {
                     const fileName3 = level3.name;
                     const type3 = level3.type;
@@ -2492,24 +2502,32 @@ app.post('/classroomexport2', async (req, res) => {
                     }
                     if(type3 === 'xlsx') {
                       newType3 === 'application/vnd.google-apps.spreadsheet'
-                    }
-              
-                    const destSimple3 = destSimple2 + '/' + fileName3 + '.' + type3;
-              
-                    let newId3 = ''
-              
+                    }                      
+                    const destSimple3 = destSimple2 + '/' + fileName3 + '.' + type3;                      
+                    let newId3 = ''                      
                     var fileMetadata3 = {
                       'name': fileName3,
                       'description': description3,
                       'parents': [newIdFolder2]
                     };
                     console.log(fileMetadata)
-                    var media3 = {
-                      mimeType: newType3,
-                      body: fs.createReadStream(destSimple3, (err) => {if(err) return console.log(err)})
-                    };
-                    console.log(media)
-                    await drive.files.create({
+                    var media3 = {};
+                    fetch('https://connect.smartpathed.com/makefile', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                      body: JSON.stringify({
+                        newType: newType3,
+                        dest: destSimple3,
+                      }, (err) => {if (err) return console.log(err);})
+                    })
+                    .then(async function(err) {
+                      if(err) return console.log(err);
+                      let url = 'https://connect.smartpathed.com/getfile';
+                      let responseFetchFile3 = await fetch(url);
+                      media3 = await responseFetchFile3.json();
+                      return media3;
+                    }) 
+                    await gapiAuthenticated.files.create({
                       resource: fileMetadata3,
                       media: media3,
                       fields: 'id'
@@ -2520,7 +2538,7 @@ app.post('/classroomexport2', async (req, res) => {
                         console.log(file.id);
                         newId3 = file.id;
                       }
-                    });
+                    });                                                
                   }
                   if(level3.type === "folder") {
                     const fileName3 = level3.name;
@@ -2533,9 +2551,10 @@ app.post('/classroomexport2', async (req, res) => {
                       'parents': [newIdFolder2],
                       'mimeType': newType3,
                     };
+                    var newIdFolder3 = "";
                     function driveCreateFolder3() {
                       return new Promise(function (resolve, reject) { 
-                        drive.files.create({
+                        gapiAuthenticated.files.create({
                           resource: fileMetadata3,
                           fields: 'id',
                         }, function (err, file) {
@@ -2543,18 +2562,17 @@ app.post('/classroomexport2', async (req, res) => {
                             console.log("Error for file creation: " + err);
                           } else {
                             var newIdFolderIn3 = file.data.id;
-                            resolve(app.set('newIdFolder3', newIdFolderIn3));
+                            resolve(newIdFolder3 = newIdFolderIn3);
                           }
                         });
                       })
                     }
-                    await driveCreateFolder3();
+                    await driveCreateFolder3();                                                
                     sleep(2000);
                     if(level3.children != []) {
                       //4
                       for(var c = 0; c < level3.children.length; c++) {
-                        const level14 = level3.children[c]; 
-                        var newIdFolder3 = req.app.get('newIdFolder3');
+                        const level4 = level3.children[c]; 
                         if (level4.type != "folder") {
                           const fileName4 = level4.name;
                           const type4 = level4.type;
@@ -2568,24 +2586,32 @@ app.post('/classroomexport2', async (req, res) => {
                           }
                           if(type4 === 'xlsx') {
                             newType4 === 'application/vnd.google-apps.spreadsheet'
-                          }
-                    
-                          const destSimple4 = destSimple3 + "/" + fileName4 + '.' + type4;
-                    
-                          let newId4 = ''
-                    
+                          }                            
+                          const destSimple4 = destSimple3 + "/" + fileName4 + '.' + type4;                            
+                          let newId4 = ''                            
                           var fileMetadata4 = {
                             'name': fileName4,
                             'description': description4,
                             'parents': [newIdFolder3]
                           };
                           console.log(fileMetadata)
-                          var media4 = {
-                            mimeType: newType4,
-                            body: fs.createReadStream(destSimple4, (err) => {if(err) return console.log(err)})
-                          };
-                          console.log(media)
-                          await drive.files.create({
+                          var media4 = {};
+                          fetch('https://connect.smartpathed.com/makefile', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                            body: JSON.stringify({
+                              newType: newType4,
+                              dest: destSimple4,
+                            }, (err) => {if (err) return console.log(err);})
+                          })
+                          .then(async function(err) {
+                            if(err) return console.log(err);
+                            let url = 'https://connect.smartpathed.com/getfile';
+                            let responseFetchFile4 = await fetch(url);
+                            media4 = await responseFetchFile4.json();
+                            return media4;
+                          })
+                          await gapiAuthenticated.files.create({
                             resource: fileMetadata4,
                             media: media4,
                             fields: 'id'
@@ -2596,7 +2622,7 @@ app.post('/classroomexport2', async (req, res) => {
                               console.log(file.id);
                               newId4 = file.id;
                             }
-                          });
+                          });                                                            
                         }
                         if(level4.type === "folder") {
                           const fileName4 = level4.name;
@@ -2609,9 +2635,10 @@ app.post('/classroomexport2', async (req, res) => {
                             'parents': [newIdFolder3],
                             'mimeType': newType4,
                           };
+                          newIdFolder4 = ""
                           function driveCreateFolder4() {
                             return new Promise(function (resolve, reject) { 
-                              drive.files.create({
+                              gapiAuthenticated.files.create({
                                 resource: fileMetadata4,
                                 fields: 'id',
                               }, function (err, file) {
@@ -2619,18 +2646,17 @@ app.post('/classroomexport2', async (req, res) => {
                                   console.log("Error for file creation: " + err);
                                 } else {
                                   var newIdFolderIn4 = file.data.id;
-                                  resolve(app.set('newIdFolder4', newIdFolderIn4));
+                                  resolve(newIdFolder4 = newIdFolderIn4);
                                 }
                               });
                             })
                           }
-                          await driveCreateFolder4();
+                          await driveCreateFolder4();                                                            
                           sleep(2000);
                           if(level4.children != []) {
                             //5
                             for(var d = 0; d < level4.children.length; d++) {
                               const level5 = level4.children[d]; 
-                              var newIdFolder4 = req.app.get('newIdFolder4');
                               if (level5.type != "folder") {
                                 const fileName5 = level5.name;
                                 const type5 = level5.type;
@@ -2644,24 +2670,33 @@ app.post('/classroomexport2', async (req, res) => {
                                 }
                                 if(type5 === 'xlsx') {
                                   newType5 === 'application/vnd.google-apps.spreadsheet'
-                                }
-                          
-                                const destSimple5 = destSimple4 + "/" + fileName5 + '.' + type5;
-                          
-                                let newId5 = ''
-                          
+                                }                                  
+                                const destSimple5 = destSimple4 + "/" + fileName5 + '.' + type5;                                  
+                                let newId5 = ''                                  
                                 var fileMetadata5 = {
                                   'name': fileName5,
                                   'description': description5,
                                   'parents': [newIdFolder4]
                                 };
                                 console.log(fileMetadata)
-                                var media5 = {
-                                  mimeType: newType5,
-                                  body: fs.createReadStream(destSimple5, (err) => {if(err) return console.log(err)})
-                                };
+                                var media5 = {};
                                 console.log(media)
-                                await drive.files.create({
+                                fetch('https://connect.smartpathed.com/makefile', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                  body: JSON.stringify({
+                                    newType: newType5,
+                                    dest: destSimple5,
+                                  }, (err) => {if (err) return console.log(err);})
+                                })
+                                .then(async function(err) {
+                                  if(err) return console.log(err);
+                                  let url = 'https://connect.smartpathed.com/getfile';
+                                  let responseFetchFile5 = await fetch(url);
+                                  media5 = await responseFetchFile5.json();
+                                  return media5;
+                                })
+                                await gapiAuthenticated.files.create({
                                   resource: fileMetadata5,
                                   media: media5,
                                   fields: 'id'
@@ -2672,22 +2707,22 @@ app.post('/classroomexport2', async (req, res) => {
                                     console.log(file.id);
                                     newId5 = file.id;
                                   }
-                                });
+                                });                                    
                               }
                               if(level5.type === "folder") {
                                 const fileName5 = level5.name;
                                 const description5 = level5.description;
-                                let newType5 = 'application/vnd.google-apps.folder'
-                              
+                                let newType5 = 'application/vnd.google-apps.folder'                                  
                                 var fileMetadata5 = {
                                   'name': fileName5,
                                   'description': description5,
                                   'parents': [newIdFolder4],
                                   'mimeType': newType5,
                                 };
+                                var newIdFolder5 = ""
                                 function driveCreateFolder5() {
                                   return new Promise(function (resolve, reject) { 
-                                    drive.files.create({
+                                    gapiAuthenticated.files.create({
                                       resource: fileMetadata5,
                                       fields: 'id',
                                     }, function (err, file) {
@@ -2695,7 +2730,7 @@ app.post('/classroomexport2', async (req, res) => {
                                         console.log("Error for file creation: " + err);
                                       } else {
                                         var newIdFolderIn5 = file.data.id;
-                                        resolve(app.set('newIdFolder5', newIdFolderIn5));
+                                        resolve(newIdFolder5 = newIdFolderIn5);
                                       }
                                     });
                                   })
@@ -2706,7 +2741,6 @@ app.post('/classroomexport2', async (req, res) => {
                                   //6
                                   for(var e = 0; e < level5.children.length; e++) {
                                     const level6 = level5.children[e]; 
-                                    var newIdFolder5 = req.app.get('newIdFolder5');
                                     if (level6.type != "folder") {
                                       const fileName6 = level6.name;
                                       const type6 = level6.type;
@@ -2720,24 +2754,33 @@ app.post('/classroomexport2', async (req, res) => {
                                       }
                                       if(type6 === 'xlsx') {
                                         newType6 === 'application/vnd.google-apps.spreadsheet'
-                                      }
-                                
-                                      const destSimple6 = destSimple5 + "/" + fileName6 + '.' + type6;
-                                
-                                      let newId6 = ''
-                                
+                                      }                                        
+                                      const destSimple6 = destSimple5 + "/" + fileName6 + '.' + type6;                                        
+                                      let newId6 = ''                                        
                                       var fileMetadata6 = {
                                         'name': fileName6,
                                         'description': description6,
                                         'parents': [newIdFolder5]
                                       };
                                       console.log(fileMetadata)
-                                      var media6 = {
-                                        mimeType: newType6,
-                                        body: fs.createReadStream(destSimple6, (err) => {if(err) return console.log(err)})
-                                      };
+                                      var media6 = {};
                                       console.log(media)
-                                      await drive.files.create({
+                                      fetch('https://connect.smartpathed.com/makefile', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                        body: JSON.stringify({
+                                          newType: newType6,
+                                          dest: destSimple6,
+                                        }, (err) => {if (err) return console.log(err);})
+                                      })
+                                      .then(async function(err) {
+                                        if(err) return console.log(err);
+                                        let url = 'https://connect.smartpathed.com/getfile';
+                                        let responseFetchFile6 = await fetch(url);
+                                        media6 = await responseFetchFile6.json();
+                                        return media6;
+                                      })
+                                      await gapiAuthenticated.files.create({
                                         resource: fileMetadata6,
                                         media: media6,
                                         fields: 'id'
@@ -2748,7 +2791,7 @@ app.post('/classroomexport2', async (req, res) => {
                                           console.log(file.id);
                                           newId6 = file.id;
                                         }
-                                      });
+                                      });                                                                                    
                                     }
                                     if(level6.type === "folder") {
                                       const fileName6 = level6.name;
@@ -2761,9 +2804,10 @@ app.post('/classroomexport2', async (req, res) => {
                                         'parents': [newIdFolder5],
                                         'mimeType': newType6,
                                       };
+                                      var newIdFolder6 = ""
                                       function driveCreateFolder6() {
                                         return new Promise(function (resolve, reject) { 
-                                          drive.files.create({
+                                          gapiAuthenticated.files.create({
                                             resource: fileMetadata6,
                                             fields: 'id',
                                           }, function (err, file) {
@@ -2771,18 +2815,17 @@ app.post('/classroomexport2', async (req, res) => {
                                               console.log("Error for file creation: " + err);
                                             } else {
                                               var newIdFolderIn6 = file.data.id;
-                                              resolve(app.set('newIdFolder6', newIdFolderIn6));
+                                              resolve(newIdFolder6 = newIdFolderIn6);
                                             }
                                           });
                                         })
                                       }
-                                      await driveCreateFolder6();
+                                      await driveCreateFolder6();                                                                                    
                                       sleep(2000);
                                       if(level6.children != []) {
                                         //7
                                         for(var f = 0; f < level6.children.length; f++) {
                                           const level7 = level6.children[f]; 
-                                          var newIdFolder6 = req.app.get('newIdFolder6');
                                           if (level7.type != "folder") {
                                             const fileName7 = level7.name;
                                             const type7 = level7.type;
@@ -2796,12 +2839,9 @@ app.post('/classroomexport2', async (req, res) => {
                                             }
                                             if(type7 === 'xlsx') {
                                               newType7 === 'application/vnd.google-apps.spreadsheet'
-                                            }
-                                      
-                                            const destSimple7 = destSimple6 + "/" + fileName7 + '.' + type7;
-                                      
-                                            let newId7 = ''
-                                      
+                                            }                                              
+                                            const destSimple7 = destSimple6 + "/" + fileName7 + '.' + type7;                                              
+                                            let newId7 = ''                                              
                                             var fileMetadata7 = {
                                               'name': fileName7,
                                               'description': description7,
@@ -2813,7 +2853,22 @@ app.post('/classroomexport2', async (req, res) => {
                                               body: fs.createReadStream(destSimple7, (err) => {if(err) return console.log(err)})
                                             };
                                             console.log(media)
-                                            await drive.files.create({
+                                            fetch('https://connect.smartpathed.com/makefile', {
+                                              method: 'POST',
+                                              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                              body: JSON.stringify({
+                                                newType: newType7,
+                                                dest: destSimple7,
+                                              }, (err) => {if (err) return console.log(err);})
+                                            })
+                                            .then(async function(err) {
+                                              if(err) return console.log(err);
+                                              let url = 'https://connect.smartpathed.com/getfile';
+                                              let responseFetchFile7 = await fetch(url);
+                                              media7 = await responseFetchFile7.json();
+                                              return media7;
+                                            })
+                                            await gapiAuthenticated.files.create({
                                               resource: fileMetadata7,
                                               media: media7,
                                               fields: 'id'
@@ -2824,7 +2879,7 @@ app.post('/classroomexport2', async (req, res) => {
                                                 console.log(file.id);
                                                 newId7 = file.id;
                                               }
-                                            });
+                                            });                                                                                                
                                           }
                                           if(level7.type === "folder") {
                                             const fileName7 = level7.name;
@@ -2837,9 +2892,10 @@ app.post('/classroomexport2', async (req, res) => {
                                               'parents': [newIdFolder6],
                                               'mimeType': newType7,
                                             };
+                                            var newIdFolder7 = ""
                                             function driveCreateFolder7() {
                                               return new Promise(function (resolve, reject) { 
-                                                drive.files.create({
+                                                gapiAuthenticated.files.create({
                                                   resource: fileMetadata7,
                                                   fields: 'id',
                                                 }, function (err, file) {
@@ -2847,18 +2903,17 @@ app.post('/classroomexport2', async (req, res) => {
                                                     console.log("Error for file creation: " + err);
                                                   } else {
                                                     var newIdFolderIn7 = file.data.id;
-                                                    resolve(app.set('newIdFolder7', newIdFolderIn7));
+                                                    resolve(newIdFolder7 = newIdFolderIn7);
                                                   }
                                                 });
                                               })
                                             }
-                                            await driveCreateFolder7();
+                                            await driveCreateFolder7();                                                                                                
                                             sleep(2000);
                                             if(level7.children != []) {
                                               //8
                                               for(var g = 0; g < level7.children.length; g++) {
-                                                const level8 = level7.children[g];
-                                                var newIdFolder7 = req.app.get('newIdFolder7'); 
+                                                const level8 = level7.children[g]; 
                                                 if (level8.type != "folder") {
                                                   const fileName8 = level8.name;
                                                   const type8 = level8.type;
@@ -2872,24 +2927,32 @@ app.post('/classroomexport2', async (req, res) => {
                                                   }
                                                   if(type8 === 'xlsx') {
                                                     newType8 === 'application/vnd.google-apps.spreadsheet'
-                                                  }
-                                            
-                                                  const destSimple8 = destSimple7 + "/" + fileName8 + '.' + type8;
-                                            
-                                                  let newId8 = ''
-                                            
+                                                  }                                                    
+                                                  const destSimple8 = destSimple7 + "/" + fileName8 + '.' + type8;                                                    
+                                                  let newId8 = ''                                                    
                                                   var fileMetadata8 = {
                                                     'name': fileName8,
                                                     'description': description8,
                                                     'parents': [newIdFolder7]
                                                   };
                                                   console.log(fileMetadata)
-                                                  var media8 = {
-                                                    mimeType: newType8,
-                                                    body: fs.createReadStream(destSimple8, (err) => {if(err) return console.log(err)})
-                                                  };
-                                                  console.log(media)
-                                                  await drive.files.create({
+                                                  var media8 = {};
+                                                  fetch('https://connect.smartpathed.com/makefile', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                                    body: JSON.stringify({
+                                                      newType: newType8,
+                                                      dest: destSimple8,
+                                                    }, (err) => {if (err) return console.log(err);})
+                                                  })
+                                                  .then(async function(err) {
+                                                    if(err) return console.log(err);
+                                                    let url = 'https://connect.smartpathed.com/getfile';
+                                                    let responseFetchFile8 = await fetch(url);
+                                                    media8 = await responseFetchFile8.json();
+                                                    return media8;
+                                                  })
+                                                  await gapiAuthenticated.files.create({
                                                     resource: fileMetadata8,
                                                     media: media8,
                                                     fields: 'id'
@@ -2900,7 +2963,7 @@ app.post('/classroomexport2', async (req, res) => {
                                                       console.log(file.id);
                                                       newId8 = file.id;
                                                     }
-                                                  });
+                                                  });                                                                                                           
                                                 }
                                                 if(level8.type === "folder") {
                                                   const fileName8 = level8.name;
@@ -2913,9 +2976,10 @@ app.post('/classroomexport2', async (req, res) => {
                                                     'parents': [newIdFolder7],
                                                     'mimeType': newType8,
                                                   };
+                                                  var newIdFolder8 = "";
                                                   function driveCreateFolder8() {
                                                     return new Promise(function (resolve, reject) { 
-                                                      drive.files.create({
+                                                      gapiAuthenticated.files.create({
                                                         resource: fileMetadata8,
                                                         fields: 'id',
                                                       }, function (err, file) {
@@ -2923,18 +2987,17 @@ app.post('/classroomexport2', async (req, res) => {
                                                           console.log("Error for file creation: " + err);
                                                         } else {
                                                           var newIdFolderIn8 = file.data.id;
-                                                          resolve(app.set('newIdFolder8', newIdFolderIn8));
+                                                          resolve(newIdFolder8 = newIdFolderIn8);
                                                         }
                                                       });
                                                     })
                                                   }
-                                                  await driveCreateFolder8();
+                                                  await driveCreateFolder8();                                                                                                            
                                                   sleep(2000);
                                                   if(level8.children != []) {
                                                     //9
                                                     for(var h = 0; h < level8.children.length; h++) {
                                                       const level9 = level8.children[h]; 
-                                                      var newIdFolder8 = req.app.get('newIdFolder8');
                                                       if (level9.type != "folder") {
                                                         const fileName9 = level9.name;
                                                         const type9 = level9.type;
@@ -2948,24 +3011,33 @@ app.post('/classroomexport2', async (req, res) => {
                                                         }
                                                         if(type9 === 'xlsx') {
                                                           newType9 === 'application/vnd.google-apps.spreadsheet'
-                                                        }
-                                                  
-                                                        const destSimple9 = destSimple8 + "/" + fileName9 + '.' + type9;
-                                                  
-                                                        let newId9 = ''
-                                                  
+                                                        }                                                          
+                                                        const destSimple9 = destSimple8 + "/" + fileName9 + '.' + type9;                                                          
+                                                        let newId9 = ''                                                          
                                                         var fileMetadata9 = {
                                                           'name': fileName9,
                                                           'description': description9,
                                                           'parents': [newIdFolder8]
                                                         };
                                                         console.log(fileMetadata)
-                                                        var media9 = {
-                                                          mimeType: newType9,
-                                                          body: fs.createReadStream(destSimple9, (err) => {if(err) return console.log(err)})
-                                                        };
+                                                        var media9 = {};
                                                         console.log(media)
-                                                        await drive.files.create({
+                                                        fetch('https://connect.smartpathed.com/makefile', {
+                                                          method: 'POST',
+                                                          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                                          body: JSON.stringify({
+                                                            newType: newType9,
+                                                            dest: destSimple9,
+                                                          }, (err) => {if (err) return console.log(err);})
+                                                        })
+                                                        .then(async function(err) {
+                                                          if(err) return console.log(err);
+                                                          let url = 'https://connect.smartpathed.com/getfile';
+                                                          let responseFetchFile9 = await fetch(url);
+                                                          media9 = await responseFetchFile9.json();
+                                                          return media9;
+                                                        })
+                                                        await gapiAuthenticated.files.create({
                                                           resource: fileMetadata9,
                                                           media: media9,
                                                           fields: 'id'
@@ -2976,13 +3048,12 @@ app.post('/classroomexport2', async (req, res) => {
                                                             console.log(file.id);
                                                             newId9 = file.id;
                                                           }
-                                                        });
+                                                        });                                                                                                                        
                                                       }
                                                       if(level9.type === "folder") {
                                                         const fileName9 = level9.name;
                                                         const description9 = level9.description;
-                                                        let newType9 = 'application/vnd.google-apps.folder'
-                                                      
+                                                        let newType9 = 'application/vnd.google-apps.folder'                                                          
                                                         var fileMetadata9 = {
                                                           'name': fileName9,
                                                           'description': description9,
@@ -2991,7 +3062,7 @@ app.post('/classroomexport2', async (req, res) => {
                                                         };
                                                         function driveCreateFolder9() {
                                                           return new Promise(function (resolve, reject) { 
-                                                            drive.files.create({
+                                                            gapiAuthenticated.files.create({
                                                               resource: fileMetadata9,
                                                               fields: 'id',
                                                             }, function (err, file) {
@@ -3004,7 +3075,7 @@ app.post('/classroomexport2', async (req, res) => {
                                                             });
                                                           })
                                                         }
-                                                        await driveCreateFolder9();
+                                                        await driveCreateFolder9();                                                                                                                        
                                                         if(level9.children != []) {
                                                           console.log("maximum file depth reached.")
                                                         } 
@@ -3038,6 +3109,8 @@ app.post('/classroomexport2', async (req, res) => {
 })
 
 app.post('/makegapi', (req, res) => {
+  let gapi = req.body.gapi;
+  app.set('gapi', gapi);
   console.log(req.body.gapi);
 })
 
@@ -3072,7 +3145,15 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 })
 
 app.get('/getclassroombuttonclick', (req, res) => {
-  console.log(backgroundCall);
+  let gapi = req.app.get('gapi');
+  gapi.files.list({
+    'pageSize': 100,
+    "orderBy": "folder",
+    'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
+  }).then((err, res) => {
+    if(err) return console.log(err);
+    console.log(res);
+  })
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
