@@ -19,10 +19,6 @@ app.listen(process.env.PORT || 8080, () => {
 var cors = require('cors'); 
 app.use(cors());
 
-var background = require('../my-app - Copy/build/background.js');
-var backgroundCall = background.foo;
-console.log(backgroundCall);
-
 var mongoose = require ('mongoose'); 
     mongoose.set('useNewUrlParser', true);
     mongoose.set('useUnifiedTopology', true);
