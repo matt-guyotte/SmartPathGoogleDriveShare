@@ -3160,7 +3160,6 @@ app.get('/getclassroombuttonclick', (req, res) => {
     if(err) return console.log(err);
     console.log(res);
   })
-  }
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
