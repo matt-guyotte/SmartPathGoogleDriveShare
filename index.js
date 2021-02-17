@@ -3114,6 +3114,11 @@ app.post('/makegapi', (req, res) => {
   console.log(req.body.gapi);
 })
 
+app.get('/getgapi', (req, res) => {
+  let gapi = req.app.get("gapi");
+  res.send(gapi);
+})
+
 app.post('/makeclassroomfilearray', (req, res) => {
   let classroomFileArray = req.body.fileArray;
   console.log("from post request: " + classroomFileArray);
