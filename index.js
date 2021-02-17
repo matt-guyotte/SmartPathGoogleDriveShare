@@ -3115,8 +3115,7 @@ app.post('/makegapi', (req, res) => {
 })
 
 app.get('/getgapi', (req, res) => {
-  let gapi = req.app.get("gapi");
-  res.send(gapi);
+  // The ID of the extension we want to talk to.;
 })
 
 app.post('/makeclassroomfilearray', (req, res) => {
@@ -3150,16 +3149,20 @@ app.post('/makeclassroomarrayselect', (req, res) => {
 })
 
 app.get('/getclassroombuttonclick', (req, res) => {
-  let gapiCall = req.app.get('gapi');
-  console.log(gapiCall);
-  gapiCall({
-    'pageSize': 100,
-    "orderBy": "folder",
-    'fields': "nextPageToken, files(id, name, mimeType, description, properties, parents)"
-  }).then((err, res) => {
-    if(err) return console.log(err);
-    console.log(res);
-  })
+  var editorExtensionId = "nmpjgikladbaiaeckcjloilmgemcilpd";
+
+  var url = 'test';
+  // Make a simple request:
+  chrome.runtime.sendMessage(
+    editorExtensionId,
+    {openUrlInEditor: url},
+    function(response) {
+      if (!response.success)
+        handleError(url);
+    });
+    function handleError(url) {
+      console.log(url) 
+    }
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
