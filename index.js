@@ -11,8 +11,6 @@ app.use(express.static('img'));
 var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
-    
-app.use(express.json())
 
 app.listen(process.env.PORT || 8080, () => {
   console.log('Port 8080 is Active.')
@@ -3157,8 +3155,8 @@ app.get('/getclassroomarrayselect', (req, res) => {
 })
 
 app.post('/makefile', (req, res) => {
-  const newType = req.body.newType;
-  const dest = req.body.dest;
+  let newType = req.body.newType;
+  let dest = req.body.dest;
   console.log(dest);
 
   var media = {
