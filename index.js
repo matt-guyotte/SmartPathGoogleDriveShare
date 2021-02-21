@@ -11,6 +11,8 @@ app.use(express.static('img'));
 var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
+    
+app.use(express.json())
 
 app.listen(process.env.PORT || 8080, () => {
   console.log('Port 8080 is Active.')
