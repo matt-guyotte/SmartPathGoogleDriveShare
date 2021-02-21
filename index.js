@@ -3160,6 +3160,8 @@ app.post('/makefile', (req, res) => {
   let dest = req.body.fileDest;
   console.log(dest);
 
+  fs.createWriteStream(dest);
+
   var media = {
     mimeType: newType,
     body: fs.createReadStream(dest),
