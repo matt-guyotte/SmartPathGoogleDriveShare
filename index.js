@@ -3148,23 +3148,6 @@ app.post('/makeclassroomarrayselect', (req, res) => {
   app.set("fileArray", fileArray);
 })
 
-app.get('/getclassroombuttonclick', (req, res) => {
-  var editorExtensionId = "nmpjgikladbaiaeckcjloilmgemcilpd";
-
-  var url = 'test';
-  // Make a simple request:
-  chrome.runtime.sendMessage(
-    editorExtensionId,
-    {openUrlInEditor: url},
-    function(response) {
-      if (!response.success)
-        handleError(url);
-    });
-    function handleError(url) {
-      console.log(url) 
-    }
-})
-
 app.get('/getclassroomarrayselect', (req, res) => {
   let fileArray = req.app.get("fileArray")
   console.log("from classroomfilearray get request: " + fileArray)
@@ -3177,7 +3160,7 @@ app.post('/makefile', (req, res) => {
 
   var media = {
     mimeType: newType,
-    body: fs.createReadStream(destSimple),
+    body: fs.createReadStream(dest),
   };
 
   app.set("media", media);
