@@ -3157,6 +3157,7 @@ app.get('/getclassroomarrayselect', (req, res) => {
 app.post('/makefile', (req, res) => {
   const newType = req.body.newType;
   const dest = req.body.dest;
+  console.log(dest);
 
   var media = {
     mimeType: newType,
