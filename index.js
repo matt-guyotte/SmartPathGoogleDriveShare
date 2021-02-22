@@ -3157,15 +3157,7 @@ app.get('/getclassroomarrayselect', (req, res) => {
 app.post('/makefile', async (req, res) => {
   const newType = req.body.newType;
   console.log(newType);
-  const fileDest = req.body.fileDest;
-
-  const testText = "This is the test text.";
-  const dest = await fs.createWriteStream(fileDest);
-  function fileWrite() {
-    testText.pipe(dest);
-  }
-  fileWrite();
-
+  const dest = req.body.fileDest;
 
   var media = {
     mimeType: newType,
