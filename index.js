@@ -3154,7 +3154,7 @@ app.get('/getclassroomarrayselect', (req, res) => {
   res.send(fileArray);
 })
 
-app.post('/makefile', (req, res) => {
+app.post('/makefile', async (req, res) => {
   const newType = req.body.newType;
   console.log(newType);
   const fileDest = req.body.fileDest;
