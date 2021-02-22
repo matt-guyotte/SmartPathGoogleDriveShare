@@ -3132,13 +3132,13 @@ app.get('/getclassroomfilearray', (req, res) => {
 
 app.post('/makeclassroomparent', (req, res) => {
   let classroomParent = req.body.classroomParent;
-  console.log("from post request: " + classroomParent);
+  console.log("from classroom parent post request: " + classroomParent);
   app.set("classroomParent", classroomParent);
 })
 
 app.get('/getclassroomparent', (req, res) => {
   let classroomParent = req.app.get("classroomParent");
-  console.log("from get request: " + classroomParent);
+  console.log("from classroom parent get request: " + classroomParent);
   res.send(classroomParent);
 })
 
