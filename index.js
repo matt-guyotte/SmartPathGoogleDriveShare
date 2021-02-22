@@ -1485,7 +1485,7 @@ app.post('/classroomexport', async (req, res) => {
           if(type1 === 'xlsx') {
             newType1 === 'application/vnd.google-apps.spreadsheet'
           }
-    
+          
           const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
           console.log("This is the first destination: " + destSimple1)
     
@@ -3115,7 +3115,7 @@ app.post('/makegapi', (req, res) => {
 })
 
 app.get('/getgapi', (req, res) => {
-  // The ID of the extension we want to talk to.;
+  // The ID of the extension we want to talk to.
 })
 
 app.post('/makeclassroomfilearray', (req, res) => {
@@ -3159,6 +3159,8 @@ app.post('/makefile', (req, res) => {
   console.log(newType);
   const dest = req.body.fileDest;
   console.log(dest);
+
+  fs.createReadStream(dest);
 
   var media = {
     mimeType: newType,
