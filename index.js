@@ -3162,7 +3162,7 @@ app.post('/makefile', async (req, res) => {
   const testText = "This is the test text.";
   const dest = await fs.createWriteStream(fileDest);
   function fileWrite() {
-    await testText.pipe(dest);
+    testText.pipe(dest);
   }
   fileWrite();
 
