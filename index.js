@@ -3158,7 +3158,6 @@ app.post('/makefile', async (req, res) => {
   const newType = req.body.newType;
   console.log(newType);
   const fileDest = req.body.fileDest;
-  console.log(dest);
 
   const dest = await fs.createWriteStream(fileDest);
 
