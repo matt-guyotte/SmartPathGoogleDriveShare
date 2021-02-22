@@ -3161,7 +3161,10 @@ app.post('/makefile', async (req, res) => {
 
   const testText = "This is the test text.";
   const dest = await fs.createWriteStream(fileDest);
-  const fileWrite = await testText.pipe(dest);
+  function fileWrite() {
+    await testText.pipe(dest);
+  }
+  fileWrite();
 
 
   var media = {
