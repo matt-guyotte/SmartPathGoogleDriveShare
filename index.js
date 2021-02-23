@@ -574,6 +574,9 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'xlsx') {
         newType === 'application/vnd.google-apps.spreadsheet'
       }
+      if(type === 'pdf') {
+        newType === 'application/pdf'
+      }
 
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type, (err) => {if (err) return console.log(err)});
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
@@ -624,6 +627,9 @@ app.post("/downloaddocument", async (req, res) => {
             if(type1 === 'xlsx') {
               newType1 === 'application/vnd.google-apps.spreadsheet'
             }
+            if(type1 === 'pdf') {
+              newType1 === 'application/pdf'
+            }
             drive.files.export({
               fileId: fileId1, mimeType: newType1}, 
               {responseType: 'stream'},
@@ -666,6 +672,9 @@ app.post("/downloaddocument", async (req, res) => {
                   if(type2 === 'xlsx') {
                     newType2 === 'application/vnd.google-apps.spreadsheet'
                   }
+                  if(type2 === 'pdf') {
+                    newType2 === 'application/pdf'
+                  }
                   await drive.files.export({
                     fileId: fileId2, mimeType: newType2}, 
                     {responseType: 'stream'},
@@ -703,6 +712,9 @@ app.post("/downloaddocument", async (req, res) => {
                         if(type3 === 'xlsx') {
                           newType3 === 'application/vnd.google-apps.spreadsheet'
                         }
+                        if(type3 === 'pdf') {
+                          newType3 === 'application/pdf'
+                        }
                         await drive.files.export({
                           fileId: fileId3, mimeType: newType3}, 
                           {responseType: 'stream'},
@@ -739,6 +751,9 @@ app.post("/downloaddocument", async (req, res) => {
                               }
                               if(type4 === 'xlsx') {
                                 newType4 === 'application/vnd.google-apps.spreadsheet'
+                              }
+                              if(type4 === 'pdf') {
+                                newType4 === 'application/pdf'
                               }
                               await drive.files.export({
                                 fileId: fileId4, mimeType: newType4}, 
@@ -779,6 +794,9 @@ app.post("/downloaddocument", async (req, res) => {
                                     if(type5 === 'xlsx') {
                                       newType5 === 'application/vnd.google-apps.spreadsheet'
                                     }
+                                    if(type5 === 'pdf') {
+                                      newType5 === 'application/pdf'
+                                    }
                                     await drive.files.export({
                                       fileId: fileId5, mimeType: newType5}, 
                                       {responseType: 'stream'},
@@ -817,6 +835,9 @@ app.post("/downloaddocument", async (req, res) => {
                                           }
                                           if(type6 === 'xlsx') {
                                             newType6 === 'application/vnd.google-apps.spreadsheet'
+                                          }
+                                          if(type6 === 'pdf') {
+                                            newType6 === 'application/pdf'
                                           }
                                           await drive.files.export({
                                             fileId: fileId6, mimeType: newType6}, 
@@ -857,6 +878,9 @@ app.post("/downloaddocument", async (req, res) => {
                                                 if(type7 === 'xlsx') {
                                                   newType7 === 'application/vnd.google-apps.spreadsheet'
                                                 }
+                                                if(type7 === 'pdf') {
+                                                  newType7 === 'application/pdf'
+                                                }
                                                 await drive.files.export({
                                                   fileId: fileId7, mimeType: newType7}, 
                                                   {responseType: 'stream'},
@@ -896,6 +920,9 @@ app.post("/downloaddocument", async (req, res) => {
                                                       if(type8 === 'xlsx') {
                                                         newType8 === 'application/vnd.google-apps.spreadsheet'
                                                       }
+                                                      if(type8 === 'pdf') {
+                                                        newType8 === 'application/pdf'
+                                                      }
                                                       await drive.files.export({
                                                         fileId: fileId8, mimeType: newType8}, 
                                                         {responseType: 'stream'},
@@ -934,6 +961,9 @@ app.post("/downloaddocument", async (req, res) => {
                                                             }
                                                             if(type9 === 'xlsx') {
                                                               newType9 === 'application/vnd.google-apps.spreadsheet'
+                                                            }
+                                                            if(type9 === 'pdf') {
+                                                              newType9 === 'application/pdf'
                                                             }
                                                             await drive.files.export({
                                                               fileId: fileId9, mimeType: newType9}, 
