@@ -578,7 +578,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType === 'application/pdf'
       }
 
-      const dest = await fs.createWriteStream(__dirname + '/src/Pages/downloads/' + fileName + '.' + type);
+      const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type);
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
 
