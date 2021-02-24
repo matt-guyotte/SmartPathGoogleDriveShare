@@ -584,12 +584,12 @@ app.post("/downloaddocument", async (req, res) => {
       await drive.files.export({
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
-        async function(err, response){
+        function(err, response){
         if(err)return console.log(err);
         response.data.on('error', err => {
             console.log("Found at 911 " + err);
         })
-        const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
+        const dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
         .pipe(dest, function(){console.log('file path written.')})
         .on('end', ()=>{
             console.log("sent file.")
