@@ -577,7 +577,8 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf') {
         newType === 'application/pdf'
       }
-
+      
+      const dest = fs.createWriteStream('./' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
 
@@ -589,7 +590,6 @@ app.post("/downloaddocument", async (req, res) => {
         response.data.on('error', err => {
             console.log("Found at 911 " + err);
         })
-        const dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
         .pipe(dest, function(){console.log('file path written.')})
         .on('end', ()=>{
             console.log("sent file.")
