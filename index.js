@@ -583,7 +583,7 @@ app.post("/downloaddocument", async (req, res) => {
           alt: 'media'
         }, function(err, response) {
           if(err) return console.log("error during download", err)
-          .pipe(dest, function(){console.log('file path written.')});
+          .pipe(dest, function(){console.log('file path written.')})
           .on('end', function () {
             console.log('sent file');
           })
