@@ -577,7 +577,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType = 'application/vnd.google-apps.spreadsheet'
       }
       if(type === 'pdf' || type === "jpg" || type === "png") {
-        const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
+        const destFile = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
         await drive.files.get({
           fileId: fileId,
           alt: 'media'
@@ -591,7 +591,7 @@ app.post("/downloaddocument", async (req, res) => {
         })
       }
 
-      if(type != 'pdf' || type != "jpg" || type != "png") {      
+      else {      
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
