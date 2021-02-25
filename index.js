@@ -565,6 +565,7 @@ app.post("/downloaddocument", async (req, res) => {
       const fileId = files[i].id
       const fileName = files[i].name
       const type = files[i].type
+      console.log("this is the type that comes in: " + type);
       let newType = ''
       if(type === 'docx') {
         newType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
