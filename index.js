@@ -550,6 +550,7 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 // Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
+  fs.mkdir('./src/Pages/downloads')
   const JSZip = require('jszip');
   const drive = req.app.get('drive');
   const files = req.body.files;
@@ -577,7 +578,6 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf') {
         newType === 'application/pdf'
       }
-      console.log("this is the path.normalize: " + path.normalize('./src/Pages/downloads/' + fileName + '.' + type))
       
       const dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
