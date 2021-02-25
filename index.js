@@ -585,7 +585,7 @@ app.post("/downloaddocument", async (req, res) => {
         }, function(err, response) {
           if(err) return console.log("error during download", err)
           console.log("at get function: " + response)
-          .pipe(dest, function(){console.log('file path written.')})
+          .pipe(destFile, function(){console.log('file path written.')})
           .on('end', function () {
             console.log('sent file');
           })
