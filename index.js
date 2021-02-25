@@ -577,6 +577,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType = 'application/vnd.google-apps.spreadsheet'
       }
       if(type === 'pdf' || type === "jpg" || type === "png") {
+        console.log("pdf if statement called")
         const destFile = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
         await drive.files.get({
           fileId: fileId,
@@ -599,7 +600,7 @@ app.post("/downloaddocument", async (req, res) => {
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
         function(err, response){
-        if(err)return console.log("error in drive.files.export: " + JSON.stringify(err))
+        if(err)return console.log("error in drive.files.export: " + err)
         .pipe(dest, function(){console.log('file path written.')})
         .on('end', ()=>{
             console.log("sent file.")
