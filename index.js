@@ -108,6 +108,7 @@ const { domain } = require('process');
 const { request } = require('http');
 const { appsactivity } = require('googleapis/build/src/apis/appsactivity');
 const { stringify } = require('querystring');
+const { json } = require('body-parser');
 
 
 /// GOOGLE DRIVE API MAIN ROUTES 
@@ -586,7 +587,7 @@ app.post("/downloaddocument", async (req, res) => {
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
         function(err, response){
-        if(err)return console.log("error in drive.files.export: " + err[0]);
+        if(err)return console.log("error in drive.files.export: " + JSON.stringify(err));
         response.data.on('error', err => {
             console.log("Found at 911 " + err);
         })
