@@ -550,18 +550,6 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 // Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
-  //await fs.access("./src/Pages/downloads", function(error) {
-  //  if (error) {
-  //    console.log("./src/Pages/downloads directory does not exist.")
-  //    fs.mkdir("./src/Pages/downloads", (err, res) => {
-  //      if (err) return console.log(err);
-  //      console.log("./src/Pages/downloads created.")
-  //    });
-  //    console.log("directory created.")
-  //  } else {
-  //    console.log("Directory exists.")
-  //  }
-  //})
   const JSZip = require('jszip');
   const drive = req.app.get('drive');
   const files = req.body.files;
@@ -590,7 +578,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType === 'application/pdf'
       }
       
-      const dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
+      const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
 
