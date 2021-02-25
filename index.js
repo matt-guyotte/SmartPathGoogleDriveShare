@@ -576,10 +576,22 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'xlsx') {
         newType = 'application/vnd.google-apps.spreadsheet'
       }
-      if(type === 'pdf') {
-        newType = 'application/pdf'
+      if(type === 'pdf' || type === "jpg" || type === "png") {
+        const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
+        drive.files.get({
+          fileId: fileId,
+          alt: 'media'
+        })
+        .on('error', function (err) {
+          console.log('Error during download', err);
+        })
+        .on('end', function () {
+          console.log('sent file');
+        })
+        .pipe(dest, function(){console.log('file path written.')});
       }
-      
+
+      if(type != 'pdf' || type != "jpg" || type != "png") {      
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
@@ -596,6 +608,7 @@ app.post("/downloaddocument", async (req, res) => {
       });
 
       //await zip.file(destSimple, fs.readFile(destSimple), () => {if(err) return console.log(err)})
+      }
     }
 
     if(files[i].type === "folder") {
