@@ -579,8 +579,6 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf') {
         newType = 'application/pdf'
       }
-
-      console.log("the mimeType is: " + newType)
       
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
