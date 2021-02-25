@@ -550,10 +550,10 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 // Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
-  fs.access("./src/Pages", function(error) {
+  fs.access("./src/Pages/downloads", function(error) {
     if (error) {
       console.log("./src directory does not exist.")
-      fs.mkdir("./src/Pages");
+      fs.mkdir("./src/Pages/downloads");
       console.log("directory created.")
     } else {
       console.log("Directory exists.")
