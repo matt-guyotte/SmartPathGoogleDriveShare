@@ -550,7 +550,15 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 // Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
-  fs.mkdir('./src/Pages/downloads')
+  fs.access("./src", function(error) {
+    if (error) {
+      console.log("./src directory does not exist.")
+      fs.mkdir("./src");
+      console.log("directory created.")
+    } else {
+      console.log("Directory exists.")
+    }
+  })
   const JSZip = require('jszip');
   const drive = req.app.get('drive');
   const files = req.body.files;
