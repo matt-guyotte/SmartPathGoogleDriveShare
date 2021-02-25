@@ -578,7 +578,7 @@ app.post("/downloaddocument", async (req, res) => {
       }
       if(type === 'pdf' || type === "jpg" || type === "png") {
         const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
-        drive.files.get({
+        await drive.files.get({
           fileId: fileId,
           alt: 'media'
         })
