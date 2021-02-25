@@ -555,7 +555,7 @@ app.post("/downloaddocument", async (req, res) => {
   const drive = req.app.get('drive');
   const files = req.body.files;
   app.set('files', files);
-  console.log("these are the files: " + files);
+  console.log("these are the files: " + files[0] + files[1]);
  
   var zip = new JSZip();
   let topFolderPathZip = ''
