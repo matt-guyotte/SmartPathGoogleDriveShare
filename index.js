@@ -586,7 +586,7 @@ app.post("/downloaddocument", async (req, res) => {
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
         function(err, response){
-        if(err)return console.log(err);
+        if(err)return console.log("error in drive.files.export: " + err);
         response.data.on('error', err => {
             console.log("Found at 911 " + err);
         })
