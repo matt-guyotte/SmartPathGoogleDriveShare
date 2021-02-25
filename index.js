@@ -552,8 +552,11 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 app.post("/downloaddocument", async (req, res) => {
   fs.access("./src/Pages/downloads", function(error) {
     if (error) {
-      console.log("./src directory does not exist.")
-      fs.mkdir("./src/Pages/downloads");
+      console.log("./src/Pages/downloads directory does not exist.")
+      fs.mkdir("./src/Pages/downloads", (err, res) => {
+        if (err) return console.log(err);
+        console.log("./src/Pages/downloads created.")
+      });
       console.log("directory created.")
     } else {
       console.log("Directory exists.")
