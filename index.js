@@ -579,7 +579,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType === 'application/pdf'
       }
 
-      console.log(newType)
+      console.log("the mimeType is: " + newType)
       
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
@@ -589,7 +589,7 @@ app.post("/downloaddocument", async (req, res) => {
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
         function(err, response){
-        if(err)return console.log("error in drive.files.export: " + JSON.stringify(err));
+        if(err)return console.log("error in drive.files.export: " + console.log(err.response));
         response.data.on('error', err => {
             console.log("Found at 911 " + err);
         })
