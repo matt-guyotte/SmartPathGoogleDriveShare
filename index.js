@@ -583,19 +583,18 @@ app.post("/downloaddocument", async (req, res) => {
           alt: 'media'
         }, function(err, response) {
           if(err) return console.log("error during download", err)
+          console.log("at get function: " + response)
           .pipe(dest, function(){console.log('file path written.')})
           .on('end', function () {
             console.log('sent file');
           })
-      })
-
+        })
       }
 
       if(type != 'pdf' || type != "jpg" || type != "png") {      
       const dest = await fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
-
       await drive.files.export({
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
