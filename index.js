@@ -588,10 +588,7 @@ app.post("/downloaddocument", async (req, res) => {
         fileId: fileId, mimeType: newType}, 
         {responseType: 'stream'},
         function(err, response){
-        if(err)return console.log("error in drive.files.export: " + JSON.stringify(err));
-        response.data.on('error', err => {
-            console.log("Found at 911 " + err);
-        })
+        if(err)return console.log("error in drive.files.export: " + JSON.stringify(err))
         .pipe(dest, function(){console.log('file path written.')})
         .on('end', ()=>{
             console.log("sent file.")
