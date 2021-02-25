@@ -577,6 +577,7 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf') {
         newType === 'application/pdf'
       }
+      console.log("this is the path.normalize: "path.normalize('./src/Pages/downloads/' + fileName + '.' + type))
       
       const dest = fs.createWriteStream('./src/Pages/downloads/' + fileName + '.' + type)
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
