@@ -583,13 +583,13 @@ app.post("/downloaddocument", async (req, res) => {
 
       if(type === 'pdf' || type === "jpg" || type === "png") {
         console.log("pdf if statement called")
-        await drive.files.get({
+        drive.files.get({
           fileId: fileId,
           alt: 'media'
         }, function(err, response) {
           if(err) return console.log("error during download", err)
           console.log("at get function: " + response)
-          .pipe(dest)
+          .pipe(dest, function(){console.log('file path written.')})
           .on('end', function () {
             console.log('sent file');
           })
