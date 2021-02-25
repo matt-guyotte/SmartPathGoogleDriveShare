@@ -574,10 +574,10 @@ app.post("/downloaddocument", async (req, res) => {
         newType = 'application/vnd.google-apps.presentation'
       }
       if(type === 'xlsx') {
-        newType === 'application/vnd.google-apps.spreadsheet'
+        newType = 'application/vnd.google-apps.spreadsheet'
       }
       if(type === 'pdf') {
-        newType === 'application/pdf'
+        newType = 'application/pdf'
       }
 
       console.log("the mimeType is: " + newType)
