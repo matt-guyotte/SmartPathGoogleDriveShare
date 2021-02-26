@@ -604,7 +604,7 @@ app.post("/downloaddocument", async (req, res) => {
           alt: 'media'
         })
         .then(successReturn, rejectReturn)
-        .pipe(dest);
+        //.pipe(dest);
       }
 
       else {      
