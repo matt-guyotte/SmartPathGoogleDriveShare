@@ -593,7 +593,8 @@ app.post("/downloaddocument", async (req, res) => {
         await drive.files.get({
           fileId: fileId,
           alt: 'media'
-        }, function(err, response) {
+        }
+        .then(function(err, response) {
           if(err) return console.log("error during download", err)
           console.log("at get function: " + response)
           .pipe(dest, function(){console.log('file path written.')})
@@ -601,6 +602,8 @@ app.post("/downloaddocument", async (req, res) => {
             console.log('sent file');
           })
         })
+        )
+        
       }
 
       else {      
