@@ -582,8 +582,15 @@ app.post("/downloaddocument", async (req, res) => {
       //console.log(destSimple)
 
       if(type === 'pdf' || type === "jpg" || type === "png") {
+        fs.access("./src/Pages/downloads", function(error) {
+          if (error) {
+            console.log("Directory does not exist.")
+          } else {
+            console.log("Directory exists.")
+          }
+        })
         console.log("pdf if statement called")
-        drive.files.get({
+        await drive.files.get({
           fileId: fileId,
           alt: 'media'
         }, function(err, response) {
