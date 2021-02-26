@@ -591,17 +591,20 @@ app.post("/downloaddocument", async (req, res) => {
         })
         console.log("pdf if statement called")
 
+        function successReturn() {
+          console.log('sent file')
+        }
+
+        function rejectReturn() {
+          console.log('error during download')
+        }
+
         await drive.files.get({
           fileId: fileId,
           alt: 'media'
         })
-          .on('error', function (err) {
-            console.log('Error during download', err);
-          })
-          .on('end', function () {
-            console.log('sent file');
-          })
-          .pipe(dest);
+        .then(successReturn, rejectReturn)
+        .pipe(dest);
       }
 
       else {      
