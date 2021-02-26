@@ -582,13 +582,6 @@ app.post("/downloaddocument", async (req, res) => {
       //console.log(destSimple)
 
       if(type === 'pdf' || type === "jpg" || type === "png") {
-        fs.access("./src/Pages/downloads/" + fileName + "." + type, function(error) {
-          if (error) {
-            console.log("Directory does not exist.")
-          } else {
-            console.log("Directory exists.")
-          }
-        })
         console.log("pdf if statement called")
 
         function successReturn() {
@@ -3222,7 +3215,7 @@ app.get('/getclassroomarrayselect', (req, res) => {
 
 app.post('/makefile', async (req, res) => {
   const newType = req.body.newType;
-  console.log(newType);
+  console.log("this is the file type in post request: " + newType);
   const dest = req.body.fileDest;
 
   var media = {
