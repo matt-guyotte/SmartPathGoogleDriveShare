@@ -599,7 +599,7 @@ app.post("/downloaddocument", async (req, res) => {
           console.log('error during download')
         }
 
-        await drive.files.get({
+        drive.files.get({
           fileId: fileId,
           alt: 'media'
         })
