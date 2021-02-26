@@ -3217,6 +3217,7 @@ app.post('/makefile', async (req, res) => {
   const newType = req.body.newType;
   console.log("this is the file type in post request: " + newType);
   const dest = req.body.fileDest;
+  console.log("this is the file destination: " + dest);
 
   var media = {
     mimeType: newType,
