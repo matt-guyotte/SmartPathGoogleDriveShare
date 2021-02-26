@@ -3230,6 +3230,7 @@ app.post('/makefile', async (req, res) => {
 
 app.get("/getfile", (req, res) => {
   const file = req.app.get('media');
+  console.log(file);
   res.send(file);
 })
 
