@@ -600,11 +600,23 @@ app.post("/downloaddocument", async (req, res) => {
         }
 
         await drive.files.get({
-          fileId: fileId,
-          alt: 'media'
+          fileId: fileId,alt: 'media'}, 
+          {responseType: 'stream'}
+        )
+        .then(() => {
+          return new Promise((resolve, reject) => {
+            res.data
+            .on('end', () => {
+              console.log('sent file');
+              resolve(destSimple);
+            })
+            .on('error', err => {
+              console.error('Error downloading file.');
+              reject(err);
+            })
+            .pipe(dest);
+          })
         })
-        .then(successReturn, rejectReturn)
-        .pipe(dest);
       }
 
       else {      
