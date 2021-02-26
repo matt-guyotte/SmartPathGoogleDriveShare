@@ -582,7 +582,7 @@ app.post("/downloaddocument", async (req, res) => {
       //console.log(destSimple)
 
       if(type === 'pdf' || type === "jpg" || type === "png") {
-        fs.access("./src/Pages/downloads", function(error) {
+        fs.access("./src/Pages/downloads/" + fileName + "." + type, function(error) {
           if (error) {
             console.log("Directory does not exist.")
           } else {
