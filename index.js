@@ -590,7 +590,7 @@ app.post("/downloaddocument", async (req, res) => {
           }
         })
         console.log("pdf if statement called")
-        await drive.files.get({
+        drive.files.get({
           fileId: fileId,
           alt: 'media'
         })
