@@ -594,17 +594,14 @@ app.post("/downloaddocument", async (req, res) => {
         await drive.files.get({
           fileId: fileId,
           alt: 'media'
-        }, function(err, response) {
-          if(err) return console.log("error during download", err)
-          console.log("at get function: " + response)
-        }
+        })
           .on('error', function (err) {
             console.log('Error during download', err);
           })
           .on('end', function () {
             console.log('sent file');
           })
-          .pipe(dest, function(){console.log('file path written.')}))
+          .pipe(dest);
       }
 
       else {      
