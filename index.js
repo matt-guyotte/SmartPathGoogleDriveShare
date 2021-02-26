@@ -593,7 +593,7 @@ app.post("/downloaddocument", async (req, res) => {
         await drive.files.get({
           fileId: fileId,
           alt: 'media'
-        }
+        })
         .then(function(err, response) {
           if(err) return console.log("error during download", err)
           console.log("at get function: " + response)
@@ -601,9 +601,7 @@ app.post("/downloaddocument", async (req, res) => {
           .on('end', function () {
             console.log('sent file');
           })
-        })
-        )
-        
+        })        
       }
 
       else {      
