@@ -585,22 +585,15 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf' || type === "jpg" || type === "png") {
         console.log("pdf if statement called")
 
-        function successReturn() {
-          console.log('sent file')
-        }
-
-        function rejectReturn() {
-          console.log('error during download')
-        }
-
         await drive.files.get({
           fileId: fileId, alt: 'media'}, 
           {responseType: 'stream'}
         )
         .then(res => {
+          console.log(res);
           return new Promise((resolve, reject) => {
             res.data
-            .on('end', () => {
+            .on('success', () => {
               console.log('sent file');
               resolve(destSimple);
             })
