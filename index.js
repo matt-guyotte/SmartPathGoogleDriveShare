@@ -1163,10 +1163,6 @@ app.get("/drivecall2", (req, res) => {
   }
 })
 
-app.get("/getfile/:filename", (req, res) => {
-  console.log(req.params['filename']);
-})
-
 // Extension Routes
 
 app.get('/setchromeoauth', (req, res) => {
@@ -3234,6 +3230,12 @@ app.get("/getfile", (req, res) => {
   const file = req.app.get('media');
   console.log(file);
   res.send(file);
+})
+
+app.get("/getfile/:filename", (req, res) => {
+  console.log(req.params['filename']);
+  var filePath = req.params['filename'];
+  res.sendFile('src/downloads/' + filePath, {root: __dirname })
 })
 
 app.get('/chrometest', (req, res) => {
