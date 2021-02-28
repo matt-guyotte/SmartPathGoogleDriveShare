@@ -601,7 +601,10 @@ app.post("/downloaddocument", async (req, res) => {
               console.error('Error downloading file.');
               reject(err);
             })
-            .pipe(dest);
+            .pipe(dest, function(err, res) {
+              if(err) return console.log(err);
+              console.log("file uploaded.")
+            });
           })
         })
       }
@@ -1160,7 +1163,9 @@ app.get("/drivecall2", (req, res) => {
   }
 })
 
-
+app.get("/getfile/:filename", (req, res) => {
+  console.log(req.params['filename']);
+})
 
 // Extension Routes
 
