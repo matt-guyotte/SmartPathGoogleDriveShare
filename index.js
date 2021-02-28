@@ -593,7 +593,7 @@ app.post("/downloaddocument", async (req, res) => {
           console.log(res);
           return new Promise((resolve, reject) => {
             res.data
-            .on('success', () => {
+            .on('end', () => {
               console.log('sent file');
               resolve(destSimple);
             })
