@@ -585,17 +585,19 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf' || type === "jpg" || type === "png") {
         console.log("pdf if statement called")
 
-        await drive.files.export({
+        drive.files.export({
           fileId: fileId,
-          mimeType: 'application/pdf'
-        })
-        .on('end', function () {
-          console.log('Done');
-        })
-        .on('error', function (err) {
-          console.log('Error during download', err);
-        })
-        .pipe(dest);
+          mimeType: 'text/csv'
+         }, {responseType: 'stream'},
+         function(err, response){
+             if(err)return done(err);
+             response.data.on('error', err => {
+                 done(err);
+             }).on('end', ()=>{
+                 done();
+             })
+             .pipe(dest);
+        });
 
 
         //await drive.files.get({
