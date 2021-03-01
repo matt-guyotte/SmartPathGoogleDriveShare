@@ -596,7 +596,7 @@ app.post("/downloaddocument", async (req, res) => {
             .pipe(dest, function(err, res) {
               if(err) return console.log(err);
               console.log("file uploaded.")
-            });
+            })
             .on('end', () => {
               console.log('sent file');
               resolve(destSimple);
