@@ -587,7 +587,7 @@ app.post("/downloaddocument", async (req, res) => {
 
         drive.files.export({
           fileId: fileId,
-          mimeType: 'text/csv'
+          mimeType: newType
          }, {responseType: 'stream'},
          function(err, response){
              if(err)return console.log(err);
