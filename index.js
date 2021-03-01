@@ -3240,7 +3240,7 @@ app.get("/getfile", (req, res) => {
   res.send(file);
 })
 
-app.get("/getfile/:filename", (req, res) => {
+app.get("/getfilename/:filename", (req, res) => {
   console.log(req.params['filename']);
   var filePath = req.params['filename'];
   res.sendFile('./src/Pages/downloads/' + filePath, {root: __dirname }, function(err) {
