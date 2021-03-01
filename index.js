@@ -587,17 +587,21 @@ app.post("/downloaddocument", async (req, res) => {
         newType = "application/pdf"
 
         drive.files.export({
-          fileId: fileId,
-          mimeType: newType
-         }, {responseType: 'stream'},
-         function(err, response){
-             if(err)return console.log(err);
-             response.data.on('error', err => {
-                 console.log(err);
-             }).on('end', ()=>{
-                 console.log("file exported successfully")
-             })
-             .pipe(dest);
+          fileId: fileId, mimeType: newType}, 
+          {responseType: 'stream'},
+          function(err, response){
+          if(err)return console.log(err);
+          response.data.on('error', err => {
+              console.log("Found at 595 " + err);
+          })
+          .pipe(dest, function(err, res) {
+            if (err) return console.log(err);
+            console.log("pipe worked")
+          })
+          .on('end', ()=>{
+              console.log("sent file.")
+          })
+          console.log("file written.")
         });
 
 
