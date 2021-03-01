@@ -1047,7 +1047,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
   }
 } catch(e) {
-  console.log('error occurred uploading:' + e);
+  console.log('error occurred uploading:' + JSON.stringify(e));
 }
   //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
   //  .pipe(fs.createWriteStream(topFolderPath + '.zip'))
