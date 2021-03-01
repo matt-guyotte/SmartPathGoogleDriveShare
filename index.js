@@ -588,11 +588,9 @@ app.post("/downloaddocument", async (req, res) => {
         await drive.files.export({
           fileId: fileId, mimeType: newType}, 
           {responseType: 'stream'})
-          .then(function(err, res) {
-            res.pipe(dest, function(err, res) {
-              if(err) return console.log(err);
-              console.log("file uploaded.")
-            })
+          .pipe(dest, function(err, res) {
+            if(err) return console.log(err);
+            console.log("file uploaded.") 
           })
 
 
@@ -1047,7 +1045,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
   }
 } catch(e) {
-  console.log('error occurred uploading:' + JSON.stringify(e));
+  console.log('error occurred uploading:' + e);
 }
   //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
   //  .pipe(fs.createWriteStream(topFolderPath + '.zip'))
