@@ -585,27 +585,20 @@ app.post("/downloaddocument", async (req, res) => {
         console.log("pdf if statement called")
         newType = "application/pdf"
 
-        await new Promise((resolve, reject) => {
-          drive.files.export({
-            fileId: fileId,
-            mimeType: newType
-          }, {
-            responseType: 'stream'
-          }, (err, response) => {
-    
-            if (err) {
-              reject(err)
-              return
-            }
-    
-            response.data.on('error', err => {
-              reject(err)
-            }).pipe(dest)
-    
-            dest.on('finish', resolve)
-            dest.on('error', reject)
-          })
+        drive.files.get({
+          fileId: fileId,
+          alt: 'media'
         })
+        .on('end', function () {
+          console.log('Done');
+        })
+        .on('error', function (err) {
+          console.log('Error during download', err);
+        })
+        .pipe(dest, function(err, res) {
+          if (err) return console.log("error at pipe: " + err);
+          console.log("pipe worked successfully");
+        });
 
 
         //await drive.files.get({
