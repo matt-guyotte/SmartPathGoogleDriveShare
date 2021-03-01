@@ -586,12 +586,16 @@ app.post("/downloaddocument", async (req, res) => {
         console.log("pdf if statement called")
 
         await drive.files.export({
-          fileId: fileId, mimeType: newType}, 
-          {responseType: 'stream'})
-          .pipe(dest, function(err, res) {
-            if(err) return console.log(err);
-            console.log("file uploaded.") 
-          })
+          fileId: fileId,
+          mimeType: 'application/pdf'
+        })
+        .on('end', function () {
+          console.log('Done');
+        })
+        .on('error', function (err) {
+          console.log('Error during download', err);
+        })
+        .pipe(dest);
 
 
         //await drive.files.get({
