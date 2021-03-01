@@ -586,9 +586,7 @@ app.post("/downloaddocument", async (req, res) => {
         newType = "application/pdf"
 
         drive.files.get({
-          fileId: fileId,
-          alt: 'media'
-        })
+          fileId, alt: 'media'}, {responseType: 'stream'})
         .on('end', function () {
           console.log('Done');
         })
