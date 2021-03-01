@@ -587,14 +587,14 @@ app.post("/downloaddocument", async (req, res) => {
 
         await drive.files.export({
           fileId: fileId, mimeType: newType}, 
-          {responseType: 'stream'},
-          function(err, response){
-          if(err)return console.log("error in drive.files.export: " + err)
-          .pipe(dest, function(){console.log('file path written.')})
-          .on('end', ()=>{
-              console.log("sent file.")
+          {responseType: 'stream'})
+          .then(function(err, res) {
+            res.pipe(dest, function(err, res) {
+              if(err) return console.log(err);
+              console.log("file uploaded.")
+            })
           })
-        });
+
 
         //await drive.files.get({
         //  fileId: fileId, alt: 'media'}, 
