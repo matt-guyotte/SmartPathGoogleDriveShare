@@ -587,9 +587,8 @@ app.post("/downloaddocument", async (req, res) => {
         newType = "application/pdf"
 
         const { data } = await drive.files.export(
-          {fileId: fileId, mimeType: newType,
-          },
-          {responseType: 'stream',}
+          {fileId: fileId, mimeType: newType,},
+          {responseType: 'stream'}
         );
         
         data
