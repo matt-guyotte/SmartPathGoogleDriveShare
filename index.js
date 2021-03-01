@@ -589,8 +589,9 @@ app.post("/downloaddocument", async (req, res) => {
         {fileId: fileId, alt: 'media'}, 
         {responseType: 'stream'}, 
         (err, res) => {
+          console.log(res.data);
           if (err) return console.log(err); 
-          res.data.pipe(dest, function(err,res) {
+          res.data.pipe(dest, function(err, res) {
             if(err) return console.log(err);
             console.log("pipe worked")
           });
