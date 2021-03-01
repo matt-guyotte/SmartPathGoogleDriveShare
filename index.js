@@ -560,7 +560,6 @@ app.post("/downloaddocument", async (req, res) => {
   var zip = new JSZip();
   let topFolderPathZip = ''
 
-  try {
   for(var i = 0; i < files.length; i++) {
     if (files[i].type != "folder") {
       const fileId = files[i].id
@@ -1059,9 +1058,6 @@ app.post("/downloaddocument", async (req, res) => {
       }          
     }
   }
-} catch(e) {
-  console.log('error occurred uploading:' + JSON.stringify(e));
-}
   //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
   //  .pipe(fs.createWriteStream(topFolderPath + '.zip'))
   //  .on('finish', function () {
