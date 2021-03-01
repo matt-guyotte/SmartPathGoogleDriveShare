@@ -589,12 +589,12 @@ app.post("/downloaddocument", async (req, res) => {
           fileId: fileId,
           mimeType: 'text/csv'
          }, {responseType: 'stream'},
-         function(err, response, done){
-             if(err)return done(err);
+         function(err, response){
+             if(err)return console.log(err);
              response.data.on('error', err => {
-                 done(err);
+                 console.log(err);
              }).on('end', ()=>{
-                 done();
+                 console.log("file exported successfully")
              })
              .pipe(dest);
         });
