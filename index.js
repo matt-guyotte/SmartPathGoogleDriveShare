@@ -582,8 +582,9 @@ app.post("/downloaddocument", async (req, res) => {
       const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
       //console.log(destSimple)
 
-      if(type === 'pdf' || type === "jpg" || type === "png") {
+      if(type === 'pdf') {
         console.log("pdf if statement called")
+        newType = "application/pdf"
 
         drive.files.export({
           fileId: fileId,
