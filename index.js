@@ -586,23 +586,20 @@ app.post("/downloaddocument", async (req, res) => {
         console.log("pdf if statement called")
         newType = "application/pdf"
 
-        drive.files.export({
-          fileId: fileId, mimeType: newType}, 
-          {responseType: 'stream'},
-          function(err, response){
-          if(err)return console.log(err);
-          response.data.on('error', err => {
-              console.log("Found at 595 " + err);
+        const { data } = await drive.files.export(
+          {fileId: fileId, mimeType: newType,
+          },
+          {responseType: 'stream',}
+        );
+        
+        data
+          .on('end', function () {
+            console.log('Done');
           })
-          .pipe(dest, function(err, res) {
-            if (err) return console.log(err);
-            console.log("pipe worked")
+          .on('error', function (err) {
+            console.log('Error during download', err);
           })
-          .on('end', ()=>{
-              console.log("sent file.")
-          })
-          console.log("file written.")
-        });
+          .pipe(dest);
 
 
         //await drive.files.get({
