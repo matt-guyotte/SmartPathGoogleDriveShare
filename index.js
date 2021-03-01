@@ -593,6 +593,10 @@ app.post("/downloaddocument", async (req, res) => {
           console.log(res);
           return new Promise((resolve, reject) => {
             res.data
+            .pipe(dest, function(err, res) {
+              if(err) return console.log(err);
+              console.log("file uploaded.")
+            });
             .on('end', () => {
               console.log('sent file');
               resolve(destSimple);
@@ -601,10 +605,6 @@ app.post("/downloaddocument", async (req, res) => {
               console.error('Error downloading file.');
               reject(err);
             })
-            .pipe(dest, function(err, res) {
-              if(err) return console.log(err);
-              console.log("file uploaded.")
-            });
           })
         })
       }
