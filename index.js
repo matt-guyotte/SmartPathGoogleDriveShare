@@ -585,40 +585,51 @@ app.post("/downloaddocument", async (req, res) => {
       if(type === 'pdf' || type === "jpg" || type === "png") {
         console.log("pdf if statement called")
 
-        await drive.files.get({
-          fileId: fileId, alt: 'media'}, 
-          {responseType: 'stream'}
-        )
-        .then(res => {
-          return new Promise((resolve, reject) => {
-            res.data
-            .pipe(dest, function(err, res) {
-              if(err) return console.log(err);
-              console.log("file uploaded.")
-            })
-            .on('end', () => {
-              console.log('sent file');
-              resolve(destSimple);
-            })
-            .on('error', err => {
-              console.error('Error downloading file.');
-              reject(err);
-            })
+        await drive.files.export({
+          fileId: fileId, mimeType: newType}, 
+          {responseType: 'stream'},
+          function(err, response){
+          if(err)return console.log("error in drive.files.export: " + err)
+          .pipe(dest, function(){console.log('file path written.')})
+          .on('end', ()=>{
+              console.log("sent file.")
           })
-        })
-      }
+        });
+
+        //await drive.files.get({
+        //  fileId: fileId, alt: 'media'}, 
+        //  {responseType: 'stream'}
+        //)
+        //.then(res => {
+        //  return new Promise((resolve, reject) => {
+        //    res.data
+        //    .pipe(dest, function(err, res) {
+        //      if(err) return console.log(err);
+        //      console.log("file uploaded.")
+        //    })
+        //    .on('end', () => {
+        //      console.log('sent file');
+        //      resolve(destSimple);
+        //    })
+        //    .on('error', err => {
+        //      console.error('Error downloading file.');
+        //      reject(err);
+        //    })
+        //  })
+        //})
+      }//
 
       else {      
-      await drive.files.export({
-        fileId: fileId, mimeType: newType}, 
-        {responseType: 'stream'},
-        function(err, response){
-        if(err)return console.log("error in drive.files.export: " + err)
-        .pipe(dest, function(){console.log('file path written.')})
-        .on('end', ()=>{
-            console.log("sent file.")
-        })
-      });
+      //await drive.files.export({
+      //  fileId: fileId, mimeType: newType}, 
+      //  {responseType: 'stream'},
+      //  function(err, response){
+      //  if(err)return console.log("error in drive.files.export: " + err)
+      //  .pipe(dest, function(){console.log('file path written.')})
+      //  .on('end', ()=>{
+      //      console.log("sent file.")
+      //  })
+      //});
 
       //await zip.file(destSimple, fs.readFile(destSimple), () => {if(err) return console.log(err)})
       }
