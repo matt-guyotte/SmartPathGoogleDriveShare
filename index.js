@@ -589,7 +589,7 @@ app.post("/downloaddocument", async (req, res) => {
           fileId: fileId,
           mimeType: 'text/csv'
          }, {responseType: 'stream'},
-         function(err, response){
+         function(err, response, done){
              if(err)return done(err);
              response.data.on('error', err => {
                  done(err);
