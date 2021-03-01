@@ -590,7 +590,7 @@ app.post("/downloaddocument", async (req, res) => {
         {responseType: 'stream'}, 
         (err, res) => {
           if (err) return console.log(err); 
-          res.data.pipe(file);
+          res.data.pipe(dest);
           console.log("pipe worked")
         });
 
