@@ -585,13 +585,12 @@ app.post("/downloaddocument", async (req, res) => {
         console.log("pdf if statement called")
         newType = "application/pdf"
 
-        drive.files.get(
+        await drive.files.get(
         {fileId: fileId, alt: 'media'}, 
         {responseType: 'stream'}, 
         (err, res) => {
-          console.log(res.data);
           if (err) return console.log(err); 
-          res.data.pipe(dest, function(err, res) {
+          res.data.pipe(dest, function(err) {
             if(err) return console.log(err);
             console.log("pipe worked")
           });
