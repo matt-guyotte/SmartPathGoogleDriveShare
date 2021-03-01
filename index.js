@@ -588,7 +588,10 @@ app.post("/downloaddocument", async (req, res) => {
         drive.files.get({fileId: fileId, alt: 'media'}, {responseType: 'stream'},
           function (err, res) {
           res.data
-          .pipe(dest)
+          .pipe(dest, function(err, res) {
+            if(err) return console.log("error at pipe: " + err);
+            console.log("pipe success")
+          })
           .on('end', () => {
               console.log('Done');
           })
