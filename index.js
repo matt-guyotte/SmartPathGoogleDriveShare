@@ -3235,7 +3235,7 @@ app.get("/getfile", (req, res) => {
 app.get("/getfile/:filename", (req, res) => {
   console.log(req.params['filename']);
   var filePath = req.params['filename'];
-  res.sendFile('./src/Pages/downloads/' + filePath, {root: __dirname })
+  res.sendFile('./src/Pages/downloads/test.txt', {root: __dirname })
 })
 
 app.get('/chrometest', (req, res) => {
