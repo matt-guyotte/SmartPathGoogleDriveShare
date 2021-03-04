@@ -636,12 +636,8 @@ removeTagIndustry(event) {
           <Button className = 'btn btn-primary' onClick = {this.props.moveToAddNew}> Return to Home </Button>
           <hr />
           <h3> Add Lesson </h3>
+            <p><strong>*This will only add the folder to the drive with all it's metadata to be found in search. Please add individual files manually. </strong></p>
             <Form onSubmit = {this.createNew}>
-            <Form.Control as="select" onChange = {this.handleChangeType} value = {this.state.type || ''}>
-            <option> Pick an option:</option>
-            <option value = "application/vnd.google-apps.folder">Folder</option>
-            <option value = "application/vnd.google-apps.document">Document</option>
-            </Form.Control>
             <br />
             <h4> Name* </h4>
             <Form.Control input = "true" name = "name" value= {this.state.name || ''} placeholder="Enter name" onChange = {this.handleChangeName} required />
@@ -649,21 +645,21 @@ removeTagIndustry(event) {
             <h4> Description* </h4>
             <Form.Control input = "true" name = "description" value= {this.state.description || ''} placeholder="Enter description" onChange = {this.handleChangeDescription} required />
             <hr /> 
-            <h4> Subject* </h4>
+            <h4> Subject </h4>
             <Form.Control as="select" onChange = {this.handleChangeSubject} value = {this.state.subject || ''} multiple>
-            <option value = "math"> Math</option>
-            <option value = "science">Science</option>
-            <option value = "socialStudies">Social Studies</option>
-            <option value = "languageArts">Language Arts</option>
-            <option value = "careers">Careers</option>
-            <option value = "technology">Technology</option>
+              <option value = "math">Math</option>
+              <option value = "science">Science</option>
+              <option value = "socialStudies">Social Studies</option>
+              <option value = "languageArts">Language Arts</option>
+              <option value = "careers">Careers</option>
+              <option value = "technology">Technology</option>
             </Form.Control>
             {this.state.subjectArray.map(subject => (
-                <Button className = {buttonClass} value = {subject} onClick = {this.removeTagSubject}>
-                  {subject}
-                </Button>))}
-              <hr />
-            <h4> Grade* </h4>
+              <Button className = {buttonClass} value = {subject} onClick = {this.removeTagSubject}>
+                {subject}
+              </Button>))}
+            <hr />
+          <h4> Grade </h4>
             <Form.Control as="select" onChange = {this.handleChangeGrade} value = {this.state.grade || ''} multiple>
             <option value = "pre-k">Pre-K</option>
             <option value = "k">K</option>
@@ -681,16 +677,16 @@ removeTagIndustry(event) {
             <option value = "twelveth">12th</option>
             </Form.Control>
             {this.state.gradeArray.map(grades => (
-                  <Button className = {buttonClass} value = {grades} onClick = {this.removeTagGrade}>
-                  {grades}
-                </Button>))}
-                <hr />
-            <h4> Industry </h4>
+                <Button className = {buttonClass} value = {grades} onClick = {this.removeTagGrade}>
+                {grades}
+              </Button>))}
+            <hr />
+          <h4> Industry </h4>
             <Form.Control as="select" onChange = {this.handleChangeIndustry} value = {this.state.industry || ''} multiple>
               <option value = "Agriculture, Food and Natural Resources"> Agriculture, Food and Natural Resources </option>
               <option value = "Architecture and Construction"> Architecture and Construction </option>
               <option value = "Arts, Audio/Video Technology and Communications"> Arts, Audio/Video Technology and Communications </option>
-              <option value = "Business Managment and Administration" > Business Managment and Administration </option>
+              <option value = "Business Managment and Administration"> Business Managment and Administration </option>
               <option value = "Education and Training"> Education and Training </option>
               <option value = "Finance"> Finance </option>
               <option value = "Government and Public Administration"> Government and Public Administration </option>
@@ -701,12 +697,13 @@ removeTagIndustry(event) {
               <option value = "Marketing, Sales and Service"> Marketing, Sales and Service </option>
               <option value = "Science, Technology, Engineering and Math"> Science, Technology, Engineering and Math </option>
               <option value = "Transportation, Distribution and Logistics"> Transportation, Distribution and Logistics </option>
-            </Form.Control>
+            </Form.Control> 
             {this.state.industryArray.map(industry => (
-                  <Button className = {buttonClass} value = {industry} onClick = {this.removeTagIndustry}>
-                  {industry}
-                </Button>))}
-                <hr />
+                <Button className = {buttonClass} value = {industry} onClick = {this.removeTagIndustry}>
+                {industry}
+              </Button>))}
+            <hr />
+            <br />
             <h4> What does it contain? (add three) </h4>
               <br />
               <Form.Control input = "true" name = "contains" value= {this.state.contains1 || ''} placeholder="Enter first file" onChange = {this.handleChangeContains1.bind(this)} />
