@@ -27,6 +27,49 @@ class AddNew extends React.Component {
       contains1: "",
       contains2: "",
       contains3: "",
+
+      // Search Terms
+        // Subjects
+        math: false,
+        science: false,
+        socialStudies: false,
+        languageArts: false,
+        careers: false,
+        technology: false,
+
+        // Grades 
+        preK: false,
+        K: false, 
+        first: false,
+        second: false,
+        third: false,
+        fourth: false,
+        fifth: false,
+        sixth: false, 
+        seventh: false,
+        eighth: false,
+        ninth: false,
+        tenth: false,
+        eleventh: false,
+        twelveth: false,
+        
+        // Industry
+        agriculture: false,
+        architecture: false,
+        arts: false,
+        businessManagement: false,
+        educationTraining: false,
+        finance: false,
+        governmentPublic: false,
+        healthScience: false,
+        hospitality: false,
+        humanServices: false,
+        informationTechnology: false,
+        lawSafety: false,
+        manufacturing: false,
+        marketingSales: false,
+        sTEM: false,
+        transportation: false,
     };
     this.addSubject = this.addSubject.bind(this);
     this.createNew = this.createNew.bind(this);
