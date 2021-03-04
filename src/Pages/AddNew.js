@@ -52,7 +52,7 @@ class AddNew extends React.Component {
         tenth: false,
         eleventh: false,
         twelveth: false,
-        
+
         // Industry
         agriculture: false,
         architecture: false,
@@ -104,7 +104,6 @@ class AddNew extends React.Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        type: this.state.type,
         name: this.state.name,
         description: this.state.description,
         subject: this.state.subjectArray,
