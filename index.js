@@ -3234,6 +3234,52 @@ app.post('/makefile', (req, res) => {
 
 })
 
+app.post("/verifychromeemail", (req, res) => {
+  var email = req.body.email;
+  function getSecondPart(str) {
+    return str.split('@')[1];
+  }
+  var emailDomain = "@" + getSecondPart(email);
+  var message;
+  Domains.find({name: "Domains"}, (err, res) => {
+    if (err) {
+      console.log(err);
+      message = false;
+      app.set('message', message)
+    };
+    var foundDomains = res[0].domains;
+    for(var i = 0; i < foundDomains.length; i++) {
+      if(foundDomains[i] === emailDomain) {
+        message = true;
+        app.set('message', message);
+        break;
+      }
+      if(foundDomains[i] !== emailDomain) {
+        SpecialUsers.find({name: "Special Users"}, (err, res) => {
+          if(err) return console.log(err);
+          var specialUsers = res[0].emails;
+          for(var y = 0; y < specialUsers.length; y++) {
+            if(specialUsers[i] === emailDomain) {
+              message = true;
+              app.set('message', message);
+              break;
+            }
+            else {
+              message = false;
+              app.set('message', message);
+            }
+          }
+        })
+      }
+    }
+  })
+})
+
+app.get("getemailmessage", (req, res) => {
+  var responsemessage = req.app.get('message');
+  res.send(responsemessage);
+})
+
 app.get("/getfile", (req, res) => {
   const file = req.app.get('media');
   console.log(file);
