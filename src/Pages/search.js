@@ -204,26 +204,69 @@ class Search extends React.Component {
       var newType = '';
       console.log(event.target.title);
       console.log(event.target.value);
-      if(event.target.checked === true) {
-        if(event.target.title === 'application/vnd.google-apps.document') {
-          newType = "docx"
-          newArray.push({id: event.target.value, name: event.target.name, type: newType})
-        }
-        if(event.target.title === 'application/vnd.google-apps.presentation') {
-          newType = "pptx"
-          newArray.push({id: event.target.value, name: event.target.name, type: newType})
-        }
-        if(event.target.title === 'application/vnd.google-apps.spreadsheet') {
-          newType = "xlsx"
-          newArray.push({id: event.target.value, name: event.target.name, type: newType})
-        }
-        if(event.target.title === 'application/vnd.google-apps.folder') {
+      if(event.target.title === 'application/vnd.google-apps.document') {
+        newType = "docx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.presentation') {
+        newType = "pptx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.spreadsheet') {
+        newType = "xlsx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/pdf') {
+        newType = "pdf"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'audio/mpeg') {
+        newType = "mp3"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'audio/wav') {
+        newType = "wav"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'video/mp4') {
+        newType = "mp4"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'image/jpg') {
+        newType = "jpg"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'image/png') {
+        newType = "png"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/msword') {
+        newType = "doc"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+        newType = "docx"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.ms-powerpoint') {
+        newType = "ppt"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'text/plain') {
+        newType = "txt"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/x-zip-compressed') {
+        newType = "zip"
+        newArray.push({id: event.target.value, name: event.target.name, type: newType})
+      }
+      if(event.target.title === 'application/vnd.google-apps.folder') {
         newType = "folder";
         newArray.push({id: event.target.value, name: event.target.name, type: newType, children: []})
         console.log(newArray)
         // 1 
         for (var y = 0; y < fileArray.length; y++) {
-          if (typeof fileArray[y].parents !== "undefined" && fileArray[y].parents[0] === event.target.value) {
+          if (fileArray[y].parents[0] === event.target.value) {
             console.log(fileArray[y]);
             var parent = fileArray[y].parents[0]
             if(fileArray[y].type === 'application/vnd.google-apps.document') {
@@ -248,6 +291,86 @@ class Search extends React.Component {
               for(var y3 = 0; y3 < newArray.length; y3++) {
                 if(newArray[y3].id === event.target.value) {
                   newArray[y3].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/pdf') {
+              newType = "pdf"
+              for(var y32 = 0; y32 < newArray.length; y32++) {
+                if(newArray[y32].id === event.target.value) {
+                  newArray[y32].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'audio/mpeg') {
+              newType = "mp3"
+              for(var y33 = 0; y33 < newArray.length; y33++) {
+                if(newArray[y33].id === event.target.value) {
+                  newArray[y33].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'audio/wav') {
+              newType = "wav"
+              for(var y34 = 0; y34 < newArray.length; y34++) {
+                if(newArray[y34].id === event.target.value) {
+                  newArray[y34].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'video/mp4') {
+              newType = "mp4"
+              for(var y35 = 0; y35 < newArray.length; y35++) {
+                if(newArray[y35].id === event.target.value) {
+                  newArray[y35].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'image/jpeg') {
+              newType = "jpg"
+              for(var y36 = 0; y36 < newArray.length; y36++) {
+                if(newArray[y36].id === event.target.value) {
+                  newArray[y36].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'image/png') {
+              newType = "png"
+              for(var y37 = 0; y37 < newArray.length; y37++) {
+                if(newArray[y37].id === event.target.value) {
+                  newArray[y37].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/msword') {
+              newType = "doc"
+              for(var y38 = 0; y38 < newArray.length; y38++) {
+                if(newArray[y38].id === event.target.value) {
+                  newArray[y38].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+              newType = "docx"
+              for(var y39 = 0; y39 < newArray.length; y39++) {
+                if(newArray[y39].id === event.target.value) {
+                  newArray[y39].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'application/vnd.ms-powerpoint') {
+              newType = "ppt"
+              for(var y391 = 0; y391 < newArray.length; y391++) {
+                if(newArray[y391].id === event.target.value) {
+                  newArray[y391].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
+                }
+              }
+            }
+            if(fileArray[y].type === 'text/plain') {
+              newType = "txt"
+              for(var y392 = 0; y392 < newArray.length; y392++) {
+                if(newArray[y392].id === event.target.value) {
+                  newArray[y392].children.push({id: fileArray[y].id, name: fileArray[y].file, type: newType, parent: parent})
                 }
               }
             }
@@ -303,6 +426,160 @@ class Search extends React.Component {
                         for(var aa3; aa3 < newArray[a3].children.length; aa3++) {
                           if(newArray[a3].children[aa3].id === fileArray[y].id) {
                             newArray[a3].children[aa3].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/pdf') {
+                    newType = "pdf"
+                    // level 1
+                    for(var a32 = 0; a32 < newArray.length; a32++) {
+                      if(newArray[a32].id === event.target.value) {
+                        // level 2
+                        for(var aa32; aa32 < newArray[a32].children.length; aa32++) {
+                          if(newArray[a32].children[aa32].id === fileArray[y].id) {
+                            newArray[a32].children[aa32].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'audio/mpeg') {
+                    newType = "mp3"
+                    // level 1
+                    for(var a33 = 0; a33 < newArray.length; a33++) {
+                      if(newArray[a33].id === event.target.value) {
+                        // level 2
+                        for(var aa33; aa33 < newArray[a33].children.length; aa33++) {
+                          if(newArray[a33].children[aa33].id === fileArray[y].id) {
+                            newArray[a33].children[aa33].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'audio/wav') {
+                    newType = "wav"
+                    // level 1
+                    for(var a34 = 0; a34 < newArray.length; a34++) {
+                      if(newArray[a34].id === event.target.value) {
+                        // level 2
+                        for(var aa34; aa34 < newArray[a34].children.length; aa34++) {
+                          if(newArray[a34].children[aa34].id === fileArray[y].id) {
+                            newArray[a34].children[aa34].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'video/mp4') {
+                    newType = "mp4"
+                    // level 1
+                    for(var a35 = 0; a35 < newArray.length; a35++) {
+                      if(newArray[a35].id === event.target.value) {
+                        // level 2
+                        for(var aa35; aa35 < newArray[a35].children.length; aa35++) {
+                          if(newArray[a35].children[aa35].id === fileArray[y].id) {
+                            newArray[a35].children[aa35].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'image/jpeg') {
+                    newType = "jpg"
+                    // level 1
+                    for(var a36 = 0; a36 < newArray.length; a36++) {
+                      if(newArray[a36].id === event.target.value) {
+                        // level 2
+                        for(var aa36; aa36 < newArray[a36].children.length; aa36++) {
+                          if(newArray[a36].children[aa36].id === fileArray[y].id) {
+                            newArray[a36].children[aa36].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'image/png') {
+                    newType = "png"
+                    // level 1
+                    for(var a37 = 0; a37 < newArray.length; a37++) {
+                      if(newArray[a37].id === event.target.value) {
+                        // level 2
+                        for(var aa37; aa37 < newArray[a37].children.length; aa37++) {
+                          if(newArray[a37].children[aa37].id === fileArray[y].id) {
+                            newArray[a37].children[aa37].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/msword') {
+                    newType = "doc"
+                    // level 1
+                    for(var a38 = 0; a38 < newArray.length; a38++) {
+                      if(newArray[a38].id === event.target.value) {
+                        // level 2
+                        for(var aa38; aa38 < newArray[a38].children.length; aa38++) {
+                          if(newArray[a38].children[aa38].id === fileArray[y].id) {
+                            newArray[a38].children[aa38].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    newType = "docx"
+                    // level 1
+                    for(var a39 = 0; a39 < newArray.length; a39++) {
+                      if(newArray[a39].id === event.target.value) {
+                        // level 2
+                        for(var aa39; aa39 < newArray[a39].children.length; aa39++) {
+                          if(newArray[a39].children[aa39].id === fileArray[y].id) {
+                            newArray[a39].children[aa39].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/vnd.ms-powerpoint') {
+                    newType = "ppt"
+                    // level 1
+                    for(var a391 = 0; a391 < newArray.length; a391++) {
+                      if(newArray[a391].id === event.target.value) {
+                        // level 2
+                        for(var aa391; aa391 < newArray[a391].children.length; aa391++) {
+                          if(newArray[a391].children[aa391].id === fileArray[y].id) {
+                            newArray[a391].children[aa391].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'txt/plain') {
+                    newType = "txt"
+                    // level 1
+                    for(var a392 = 0; a392 < newArray.length; a392++) {
+                      if(newArray[a392].id === event.target.value) {
+                        // level 2
+                        for(var aa392; aa392 < newArray[a392].children.length; aa392++) {
+                          if(newArray[a392].children[aa392].id === fileArray[y].id) {
+                            newArray[a392].children[aa392].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
+                          }
+                        } 
+                      }
+                    }
+                  }
+                  if(fileArray[a].type === 'application/x-zip-compressed') {
+                    newType = "zip"
+                    // level 1
+                    for(var a393 = 0; a393 < newArray.length; a393++) {
+                      if(newArray[a393].id === event.target.value) {
+                        // level 2
+                        for(var aa393; aa393 < newArray[a393].children.length; aa393++) {
+                          if(newArray[a393].children[aa393].id === fileArray[y].id) {
+                            newArray[a393].children[aa393].children.push({id: fileArray[a].id, name: fileArray[a].file, type: newType, parent: parent})
                           }
                         } 
                       }
@@ -380,6 +657,226 @@ class Search extends React.Component {
                                   for(var bbb3 = 0; bbb3 < newArray[b3].children[bb3].children.length; bbb3++) {
                                     if(newArray[b3].children[bb3].children[bbb3].id === fileArray[a].id) {
                                       newArray[b3].children[bb3].children[bbb3].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/pdf') {
+                          newType = "pdf"
+                          //level 1
+                          for(var b32 = 0; b32 < newArray.length; b32++) {
+                            if(newArray[b32].id === event.target.value) {
+                              // level 2
+                              for(var bb32 = 0; bb32 < newArray[b32].children.length; bb32++) {
+                                if(newArray[b32].children[bb32] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb32 = 0; bbb32 < newArray[b32].children[bb32].children.length; bbb32++) {
+                                    if(newArray[b32].children[bb32].children[bbb32].id === fileArray[a].id) {
+                                      newArray[b32].children[bb32].children[bbb32].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'audio/mpeg') {
+                          newType = "mp3"
+                          //level 1
+                          for(var b33 = 0; b33 < newArray.length; b33++) {
+                            if(newArray[b33].id === event.target.value) {
+                              // level 2
+                              for(var bb33 = 0; bb33 < newArray[b33].children.length; bb33++) {
+                                if(newArray[b33].children[bb33] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb33 = 0; bbb33 < newArray[b33].children[bb33].children.length; bbb33++) {
+                                    if(newArray[b33].children[bb33].children[bbb33].id === fileArray[a].id) {
+                                      newArray[b33].children[bb33].children[bbb33].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'audio/wav') {
+                          newType = "wav"
+                          //level 1
+                          for(var b34 = 0; b34 < newArray.length; b34++) {
+                            if(newArray[b34].id === event.target.value) {
+                              // level 2
+                              for(var bb34 = 0; bb34 < newArray[b34].children.length; bb34++) {
+                                if(newArray[b34].children[bb34] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb34 = 0; bbb34 < newArray[b34].children[bb34].children.length; bbb34++) {
+                                    if(newArray[b34].children[bb34].children[bbb34].id === fileArray[a].id) {
+                                      newArray[b34].children[bb34].children[bbb34].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'video/mp4') {
+                          newType = "mp4"
+                          //level 1
+                          for(var b35 = 0; b35 < newArray.length; b35++) {
+                            if(newArray[b35].id === event.target.value) {
+                              // level 2
+                              for(var bb35 = 0; bb35 < newArray[b35].children.length; bb35++) {
+                                if(newArray[b35].children[bb35] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb35 = 0; bbb35 < newArray[b35].children[bb35].children.length; bbb35++) {
+                                    if(newArray[b35].children[bb35].children[bbb35].id === fileArray[a].id) {
+                                      newArray[b35].children[bb35].children[bbb35].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'image/jpeg') {
+                          newType = "jpg"
+                          //level 1
+                          for(var b36 = 0; b36 < newArray.length; b36++) {
+                            if(newArray[b36].id === event.target.value) {
+                              // level 2
+                              for(var bb36 = 0; bb36 < newArray[b36].children.length; bb36++) {
+                                if(newArray[b36].children[bb36] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb36 = 0; bbb36 < newArray[b36].children[bb36].children.length; bbb36++) {
+                                    if(newArray[b36].children[bb36].children[bbb36].id === fileArray[a].id) {
+                                      newArray[b36].children[bb36].children[bbb36].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'image/png') {
+                          newType = "png"
+                          //level 1
+                          for(var b37 = 0; b37 < newArray.length; b37++) {
+                            if(newArray[b37].id === event.target.value) {
+                              // level 2
+                              for(var bb37 = 0; bb37 < newArray[b37].children.length; bb37++) {
+                                if(newArray[b37].children[bb37] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb37 = 0; bbb37 < newArray[b37].children[bb37].children.length; bbb37++) {
+                                    if(newArray[b37].children[bb37].children[bbb37].id === fileArray[a].id) {
+                                      newArray[b37].children[bb37].children[bbb37].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/msword') {
+                          newType = "doc"
+                          //level 1
+                          for(var b38 = 0; b38 < newArray.length; b38++) {
+                            if(newArray[b38].id === event.target.value) {
+                              // level 2
+                              for(var bb38 = 0; bb38 < newArray[b38].children.length; bb38++) {
+                                if(newArray[b38].children[bb38] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb38 = 0; bbb38 < newArray[b38].children[bb38].children.length; bbb38++) {
+                                    if(newArray[b38].children[bb38].children[bbb38].id === fileArray[a].id) {
+                                      newArray[b38].children[bb38].children[bbb38].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                          newType = "docx"
+                          //level 1
+                          for(var b39 = 0; b39 < newArray.length; b39++) {
+                            if(newArray[b39].id === event.target.value) {
+                              // level 2
+                              for(var bb39 = 0; bb39 < newArray[b39].children.length; bb39++) {
+                                if(newArray[b39].children[bb39] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb39 = 0; bbb39 < newArray[b39].children[bb39].children.length; bbb39++) {
+                                    if(newArray[b39].children[bb39].children[bbb39].id === fileArray[a].id) {
+                                      newArray[b39].children[bb39].children[bbb39].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/vnd.ms-powerpoint') {
+                          newType = "ppt"
+                          //level 1
+                          for(var b391 = 0; b391 < newArray.length; b391++) {
+                            if(newArray[b391].id === event.target.value) {
+                              // level 2
+                              for(var bb391 = 0; bb391 < newArray[b391].children.length; bb391++) {
+                                if(newArray[b391].children[bb391] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb391 = 0; bbb391 < newArray[b391].children[bb391].children.length; bbb391++) {
+                                    if(newArray[b391].children[bb391].children[bbb391].id === fileArray[a].id) {
+                                      newArray[b391].children[bb391].children[bbb391].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'text/plain') {
+                          newType = "txt"
+                          //level 1
+                          for(var b392 = 0; b392 < newArray.length; b392++) {
+                            if(newArray[b392].id === event.target.value) {
+                              // level 2
+                              for(var bb392 = 0; bb392 < newArray[b392].children.length; bb392++) {
+                                if(newArray[b392].children[bb392] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb392 = 0; bbb392 < newArray[b392].children[bb392].children.length; bbb392++) {
+                                    if(newArray[b392].children[bb392].children[bbb392].id === fileArray[a].id) {
+                                      newArray[b392].children[bb392].children[bbb392].children
+                                      .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        if(fileArray[b].type === 'application/x-zip-compressed') {
+                          newType = "zip"
+                          //level 1
+                          for(var b393 = 0; b393 < newArray.length; b393++) {
+                            if(newArray[b393].id === event.target.value) {
+                              // level 2
+                              for(var bb393 = 0; bb393 < newArray[b393].children.length; bb393++) {
+                                if(newArray[b393].children[bb393] === fileArray[y].id) {
+                                  // level 3
+                                  for(var bbb393 = 0; bbb393 < newArray[b393].children[bb393].children.length; bbb393++) {
+                                    if(newArray[b393].children[bb393].children[bbb393].id === fileArray[a].id) {
+                                      newArray[b393].children[bb393].children[bbb393].children
                                       .push({id: fileArray[b].id, name: fileArray[b].file, type: newType, parent: parent})
                                     }
                                   }
@@ -476,6 +973,256 @@ class Search extends React.Component {
                                             for(var cccc3 = 0; cccc3 < newArray[c3].children[cc3].children[ccc3].children.length; cccc3++) {
                                               if(newArray[c3].children[cc3].children[ccc3].children[cccc3].id === fileArray[b].id) {
                                                 newArray[c3].children[cc3].children[ccc3].children[cccc3].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/pdf') {
+                                newType = "pdf"
+                                //level 1
+                                for(var c32 = 0; c32 < newArray.length; c32++) {
+                                  if(newArray[c32].id === event.target.value) {
+                                    // level 2
+                                    for(var cc32 = 0; cc32 < newArray[c32].children.length; cc32++) {
+                                      if(newArray[c32].children[cc32].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc32 = 0; ccc32 < newArray[c32].children[cc32].children.length; ccc32++) {
+                                          if(newArray[c32].children[cc32].children[ccc32].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc32 = 0; cccc32 < newArray[c32].children[cc32].children[ccc32].children.length; cccc32++) {
+                                              if(newArray[c32].children[cc32].children[ccc32].children[cccc32].id === fileArray[b].id) {
+                                                newArray[c32].children[cc32].children[ccc32].children[cccc32].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'audio/mpeg') {
+                                newType = "mp3"
+                                //level 1
+                                for(var c33 = 0; c33 < newArray.length; c33++) {
+                                  if(newArray[c33].id === event.target.value) {
+                                    // level 2
+                                    for(var cc33 = 0; cc33 < newArray[c33].children.length; cc33++) {
+                                      if(newArray[c33].children[cc33].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc33 = 0; ccc33 < newArray[c33].children[cc33].children.length; ccc33++) {
+                                          if(newArray[c33].children[cc33].children[ccc33].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc33 = 0; cccc33 < newArray[c33].children[cc33].children[ccc33].children.length; cccc33++) {
+                                              if(newArray[c33].children[cc33].children[ccc33].children[cccc33].id === fileArray[b].id) {
+                                                newArray[c33].children[cc33].children[ccc33].children[cccc33].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'audio/wav') {
+                                newType = "wav"
+                                //level 1
+                                for(var c34 = 0; c34 < newArray.length; c34++) {
+                                  if(newArray[c34].id === event.target.value) {
+                                    // level 2
+                                    for(var cc34 = 0; cc34 < newArray[c34].children.length; cc34++) {
+                                      if(newArray[c34].children[cc34].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc34 = 0; ccc34 < newArray[c34].children[cc34].children.length; ccc34++) {
+                                          if(newArray[c34].children[cc34].children[ccc34].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc34 = 0; cccc34 < newArray[c34].children[cc34].children[ccc34].children.length; cccc34++) {
+                                              if(newArray[c34].children[cc34].children[ccc34].children[cccc34].id === fileArray[b].id) {
+                                                newArray[c34].children[cc34].children[ccc34].children[cccc34].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'image/jpeg') {
+                                newType = "jpg"
+                                //level 1
+                                for(var c35 = 0; c35 < newArray.length; c35++) {
+                                  if(newArray[c35].id === event.target.value) {
+                                    // level 2
+                                    for(var cc35 = 0; cc35 < newArray[c35].children.length; cc35++) {
+                                      if(newArray[c35].children[cc35].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc35 = 0; ccc35 < newArray[c35].children[cc35].children.length; ccc35++) {
+                                          if(newArray[c35].children[cc35].children[ccc35].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc35 = 0; cccc35 < newArray[c35].children[cc35].children[ccc35].children.length; cccc35++) {
+                                              if(newArray[c35].children[cc35].children[ccc35].children[cccc35].id === fileArray[b].id) {
+                                                newArray[c35].children[cc35].children[ccc35].children[cccc35].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'image/png') {
+                                newType = "png"
+                                //level 1
+                                for(var c36 = 0; c36 < newArray.length; c36++) {
+                                  if(newArray[c36].id === event.target.value) {
+                                    // level 2
+                                    for(var cc36 = 0; cc36 < newArray[c36].children.length; cc36++) {
+                                      if(newArray[c36].children[cc36].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc36 = 0; ccc36 < newArray[c36].children[cc36].children.length; ccc36++) {
+                                          if(newArray[c36].children[cc36].children[ccc36].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc36 = 0; cccc36 < newArray[c36].children[cc36].children[ccc36].children.length; cccc36++) {
+                                              if(newArray[c36].children[cc36].children[ccc36].children[cccc36].id === fileArray[b].id) {
+                                                newArray[c36].children[cc36].children[ccc36].children[cccc36].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/msword') {
+                                newType = "doc"
+                                //level 1
+                                for(var c37 = 0; c37 < newArray.length; c37++) {
+                                  if(newArray[c37].id === event.target.value) {
+                                    // level 2
+                                    for(var cc37 = 0; cc37 < newArray[c37].children.length; cc37++) {
+                                      if(newArray[c37].children[cc37].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc37 = 0; ccc37 < newArray[c37].children[cc37].children.length; ccc37++) {
+                                          if(newArray[c37].children[cc37].children[ccc37].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc37 = 0; cccc37 < newArray[c37].children[cc37].children[ccc37].children.length; cccc37++) {
+                                              if(newArray[c37].children[cc37].children[ccc37].children[cccc37].id === fileArray[b].id) {
+                                                newArray[c37].children[cc37].children[ccc37].children[cccc37].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                newType = "docx"
+                                //level 1
+                                for(var c38 = 0; c38 < newArray.length; c38++) {
+                                  if(newArray[c38].id === event.target.value) {
+                                    // level 2
+                                    for(var cc38 = 0; cc38 < newArray[c38].children.length; cc38++) {
+                                      if(newArray[c38].children[cc38].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc38 = 0; ccc38 < newArray[c38].children[cc38].children.length; ccc38++) {
+                                          if(newArray[c38].children[cc38].children[ccc38].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc38 = 0; cccc38 < newArray[c38].children[cc38].children[ccc38].children.length; cccc38++) {
+                                              if(newArray[c38].children[cc38].children[ccc38].children[cccc38].id === fileArray[b].id) {
+                                                newArray[c38].children[cc38].children[ccc38].children[cccc38].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/vnd.ms-powerpoint') {
+                                newType = "ppt"
+                                //level 1
+                                for(var c39 = 0; c39 < newArray.length; c39++) {
+                                  if(newArray[c39].id === event.target.value) {
+                                    // level 2
+                                    for(var cc39 = 0; cc39 < newArray[c39].children.length; cc39++) {
+                                      if(newArray[c39].children[cc39].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc39 = 0; ccc39 < newArray[c39].children[cc39].children.length; ccc39++) {
+                                          if(newArray[c39].children[cc39].children[ccc39].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc39 = 0; cccc39 < newArray[c39].children[cc39].children[ccc39].children.length; cccc39++) {
+                                              if(newArray[c39].children[cc39].children[ccc39].children[cccc39].id === fileArray[b].id) {
+                                                newArray[c39].children[cc39].children[ccc39].children[cccc39].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'text/plain') {
+                                newType = "txt"
+                                //level 1
+                                for(var c391 = 0; c391 < newArray.length; c391++) {
+                                  if(newArray[c391].id === event.target.value) {
+                                    // level 2
+                                    for(var cc391 = 0; cc391 < newArray[c391].children.length; cc391++) {
+                                      if(newArray[c391].children[cc391].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc391 = 0; ccc391 < newArray[c391].children[cc391].children.length; ccc391++) {
+                                          if(newArray[c391].children[cc391].children[ccc391].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc391 = 0; cccc391 < newArray[c391].children[cc391].children[ccc391].children.length; cccc391++) {
+                                              if(newArray[c391].children[cc391].children[ccc391].children[cccc391].id === fileArray[b].id) {
+                                                newArray[c391].children[cc391].children[ccc391].children[cccc391].children
+                                                .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                              if(fileArray[c].type === 'application/x-zip-compressed') {
+                                newType = "zip"
+                                //level 1
+                                for(var c392 = 0; c392 < newArray.length; c392++) {
+                                  if(newArray[c392].id === event.target.value) {
+                                    // level 2
+                                    for(var cc392 = 0; cc392 < newArray[c392].children.length; cc392++) {
+                                      if(newArray[c392].children[cc392].id === fileArray[y].id) {
+                                        // level 3
+                                        for(var ccc392 = 0; ccc392 < newArray[c392].children[cc392].children.length; ccc392++) {
+                                          if(newArray[c392].children[cc392].children[ccc392].id === fileArray[a].id) {
+                                            //level 4
+                                            for(var cccc392 = 0; cccc392 < newArray[c392].children[cc392].children[ccc392].children.length; cccc392++) {
+                                              if(newArray[c392].children[cc392].children[ccc392].children[cccc392].id === fileArray[b].id) {
+                                                newArray[c392].children[cc392].children[ccc392].children[cccc392].children
                                                 .push({id: fileArray[c].id, name: fileArray[c].file, type: newType, parent: parent})
                                               }
                                             }
@@ -592,6 +1339,336 @@ class Search extends React.Component {
                                                       for(var ddddd3 = 0; ddddd3 < newArray[d3].children[dd3].children[ddd3].children[dddd3].length; ddddd3++) {
                                                         if(newArray[d3].children[dd3].children[ddd3].children[dddd3].children[ddddd3].id === fileArray[c].id) {
                                                           newArray[d3].children[dd3].children[ddd3].children[dddd3].children[ddddd3].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/pdf') {
+                                      newType = "pdf"
+                                      //level 1
+                                      for(var d32 = 0; d32 < newArray.length; d32++) {
+                                        if(newArray[d32].id === event.target.value) {
+                                          // level 2
+                                          for(var dd32 = 0; dd32 < newArray[d32].children.length; dd32++) {
+                                            if(newArray[d32].children[dd32].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd32 = 0; ddd32 < newArray[d32].children[dd32].children.length; ddd32++) {
+                                                if(newArray[d32].children[dd32].children[ddd32].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd32 = 0; dddd32 < newArray[d32].children[dd32].children[ddd32].children.length; dddd32++) {
+                                                    if(newArray[d32].children[dd32].children[ddd32].children[dddd32].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd32 = 0; ddddd32 < newArray[d32].children[dd32].children[ddd32].children[dddd32].length; ddddd32++) {
+                                                        if(newArray[d32].children[dd32].children[ddd32].children[dddd32].children[ddddd32].id === fileArray[c].id) {
+                                                          newArray[d32].children[dd32].children[ddd32].children[dddd32].children[ddddd32].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'audio/mpeg') {
+                                      newType = "mp3"
+                                      //level 1
+                                      for(var d33 = 0; d33 < newArray.length; d33++) {
+                                        if(newArray[d33].id === event.target.value) {
+                                          // level 2
+                                          for(var dd33 = 0; dd33 < newArray[d33].children.length; dd33++) {
+                                            if(newArray[d33].children[dd33].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd33 = 0; ddd33 < newArray[d33].children[dd33].children.length; ddd33++) {
+                                                if(newArray[d33].children[dd33].children[ddd33].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd33 = 0; dddd33 < newArray[d33].children[dd33].children[ddd33].children.length; dddd33++) {
+                                                    if(newArray[d33].children[dd33].children[ddd33].children[dddd33].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd33 = 0; ddddd33 < newArray[d33].children[dd33].children[ddd33].children[dddd33].length; ddddd33++) {
+                                                        if(newArray[d33].children[dd33].children[ddd33].children[dddd33].children[ddddd33].id === fileArray[c].id) {
+                                                          newArray[d33].children[dd33].children[ddd33].children[dddd33].children[ddddd33].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'audio/wav') {
+                                      newType = "wav"
+                                      //level 1
+                                      for(var d34 = 0; d34 < newArray.length; d34++) {
+                                        if(newArray[d34].id === event.target.value) {
+                                          // level 2
+                                          for(var dd34 = 0; dd34 < newArray[d34].children.length; dd34++) {
+                                            if(newArray[d34].children[dd34].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd34 = 0; ddd34 < newArray[d34].children[dd34].children.length; ddd34++) {
+                                                if(newArray[d34].children[dd34].children[ddd34].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd34 = 0; dddd34 < newArray[d34].children[dd34].children[ddd34].children.length; dddd34++) {
+                                                    if(newArray[d34].children[dd34].children[ddd34].children[dddd34].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd34 = 0; ddddd34 < newArray[d34].children[dd34].children[ddd34].children[dddd34].length; ddddd34++) {
+                                                        if(newArray[d34].children[dd34].children[ddd34].children[dddd34].children[ddddd34].id === fileArray[c].id) {
+                                                          newArray[d34].children[dd34].children[ddd34].children[dddd34].children[ddddd34].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'image/jpeg') {
+                                      newType = "jpg"
+                                      //level 1
+                                      for(var d35 = 0; d35 < newArray.length; d35++) {
+                                        if(newArray[d35].id === event.target.value) {
+                                          // level 2
+                                          for(var dd35 = 0; dd35 < newArray[d35].children.length; dd35++) {
+                                            if(newArray[d35].children[dd35].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd35 = 0; ddd35 < newArray[d35].children[dd35].children.length; ddd35++) {
+                                                if(newArray[d35].children[dd35].children[ddd35].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd35 = 0; dddd35 < newArray[d35].children[dd35].children[ddd35].children.length; dddd35++) {
+                                                    if(newArray[d35].children[dd35].children[ddd35].children[dddd35].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd35 = 0; ddddd35 < newArray[d35].children[dd35].children[ddd35].children[dddd35].length; ddddd35++) {
+                                                        if(newArray[d35].children[dd35].children[ddd35].children[dddd35].children[ddddd35].id === fileArray[c].id) {
+                                                          newArray[d35].children[dd35].children[ddd35].children[dddd35].children[ddddd35].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'image/png') {
+                                      newType = "png"
+                                      //level 1
+                                      for(var d36 = 0; d36 < newArray.length; d36++) {
+                                        if(newArray[d36].id === event.target.value) {
+                                          // level 2
+                                          for(var dd36 = 0; dd36 < newArray[d36].children.length; dd36++) {
+                                            if(newArray[d36].children[dd36].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd36 = 0; ddd36 < newArray[d36].children[dd36].children.length; ddd36++) {
+                                                if(newArray[d36].children[dd36].children[ddd36].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd36 = 0; dddd36 < newArray[d36].children[dd36].children[ddd36].children.length; dddd36++) {
+                                                    if(newArray[d36].children[dd36].children[ddd36].children[dddd36].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd36 = 0; ddddd36 < newArray[d36].children[dd36].children[ddd36].children[dddd36].length; ddddd36++) {
+                                                        if(newArray[d36].children[dd36].children[ddd36].children[dddd36].children[ddddd36].id === fileArray[c].id) {
+                                                          newArray[d36].children[dd36].children[ddd36].children[dddd36].children[ddddd36].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'video/mp4') {
+                                      newType = "mp4"
+                                      //level 1
+                                      for(var d37 = 0; d37 < newArray.length; d37++) {
+                                        if(newArray[d37].id === event.target.value) {
+                                          // level 2
+                                          for(var dd37 = 0; dd37 < newArray[d37].children.length; dd37++) {
+                                            if(newArray[d37].children[dd37].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd37 = 0; ddd37 < newArray[d37].children[dd37].children.length; ddd37++) {
+                                                if(newArray[d37].children[dd37].children[ddd37].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd37 = 0; dddd37 < newArray[d37].children[dd37].children[ddd37].children.length; dddd37++) {
+                                                    if(newArray[d37].children[dd37].children[ddd37].children[dddd37].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd37 = 0; ddddd37 < newArray[d37].children[dd37].children[ddd37].children[dddd37].length; ddddd37++) {
+                                                        if(newArray[d37].children[dd37].children[ddd37].children[dddd37].children[ddddd37].id === fileArray[c].id) {
+                                                          newArray[d37].children[dd37].children[ddd37].children[dddd37].children[ddddd37].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/msword') {
+                                      newType = "doc"
+                                      //level 1
+                                      for(var d38 = 0; d38 < newArray.length; d38++) {
+                                        if(newArray[d38].id === event.target.value) {
+                                          // level 2
+                                          for(var dd38 = 0; dd38 < newArray[d38].children.length; dd38++) {
+                                            if(newArray[d38].children[dd38].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd38 = 0; ddd38 < newArray[d38].children[dd38].children.length; ddd38++) {
+                                                if(newArray[d38].children[dd38].children[ddd38].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd38 = 0; dddd38 < newArray[d38].children[dd38].children[ddd38].children.length; dddd38++) {
+                                                    if(newArray[d38].children[dd38].children[ddd38].children[dddd38].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd38 = 0; ddddd38 < newArray[d38].children[dd38].children[ddd38].children[dddd38].length; ddddd38++) {
+                                                        if(newArray[d38].children[dd38].children[ddd38].children[dddd38].children[ddddd38].id === fileArray[c].id) {
+                                                          newArray[d38].children[dd38].children[ddd38].children[dddd38].children[ddddd38].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                      newType = "docx"
+                                      //level 1
+                                      for(var d39 = 0; d39 < newArray.length; d39++) {
+                                        if(newArray[d39].id === event.target.value) {
+                                          // level 2
+                                          for(var dd39 = 0; dd39 < newArray[d39].children.length; dd39++) {
+                                            if(newArray[d39].children[dd39].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd39 = 0; ddd39 < newArray[d39].children[dd39].children.length; ddd39++) {
+                                                if(newArray[d39].children[dd39].children[ddd39].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd39 = 0; dddd39 < newArray[d39].children[dd39].children[ddd39].children.length; dddd39++) {
+                                                    if(newArray[d39].children[dd39].children[ddd39].children[dddd39].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd39 = 0; ddddd39 < newArray[d39].children[dd39].children[ddd39].children[dddd39].length; ddddd39++) {
+                                                        if(newArray[d39].children[dd39].children[ddd39].children[dddd39].children[ddddd39].id === fileArray[c].id) {
+                                                          newArray[d39].children[dd39].children[ddd39].children[dddd39].children[ddddd39].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/vnd.ms-powerpoint') {
+                                      newType = "ppt"
+                                      //level 1
+                                      for(var d391 = 0; d391 < newArray.length; d391++) {
+                                        if(newArray[d391].id === event.target.value) {
+                                          // level 2
+                                          for(var dd391 = 0; dd391 < newArray[d391].children.length; dd391++) {
+                                            if(newArray[d391].children[dd391].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd391 = 0; ddd391 < newArray[d391].children[dd391].children.length; ddd391++) {
+                                                if(newArray[d391].children[dd391].children[ddd391].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd391 = 0; dddd391 < newArray[d391].children[dd391].children[ddd391].children.length; dddd391++) {
+                                                    if(newArray[d391].children[dd391].children[ddd391].children[dddd391].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd391 = 0; ddddd391 < newArray[d391].children[dd391].children[ddd391].children[dddd391].length; ddddd391++) {
+                                                        if(newArray[d391].children[dd391].children[ddd391].children[dddd391].children[ddddd391].id === fileArray[c].id) {
+                                                          newArray[d391].children[dd391].children[ddd391].children[dddd391].children[ddddd391].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'text/plain') {
+                                      newType = "txt"
+                                      //level 1
+                                      for(var d392 = 0; d392 < newArray.length; d392++) {
+                                        if(newArray[d392].id === event.target.value) {
+                                          // level 2
+                                          for(var dd392 = 0; dd392 < newArray[d392].children.length; dd392++) {
+                                            if(newArray[d392].children[dd392].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd392 = 0; ddd392 < newArray[d392].children[dd392].children.length; ddd392++) {
+                                                if(newArray[d392].children[dd392].children[ddd392].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd392 = 0; dddd392 < newArray[d392].children[dd392].children[ddd392].children.length; dddd392++) {
+                                                    if(newArray[d392].children[dd392].children[ddd392].children[dddd392].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd392 = 0; ddddd392 < newArray[d392].children[dd392].children[ddd392].children[dddd392].length; ddddd392++) {
+                                                        if(newArray[d392].children[dd392].children[ddd392].children[dddd392].children[ddddd392].id === fileArray[c].id) {
+                                                          newArray[d392].children[dd392].children[ddd392].children[dddd392].children[ddddd392].children
+                                                          .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    if(fileArray[d].type === 'application/x-zip-compressed') {
+                                      newType = "zip"
+                                      //level 1
+                                      for(var d393 = 0; d393 < newArray.length; d393++) {
+                                        if(newArray[d393].id === event.target.value) {
+                                          // level 2
+                                          for(var dd393 = 0; dd393 < newArray[d393].children.length; dd393++) {
+                                            if(newArray[d393].children[dd393].id === fileArray[y].id) {
+                                              // level 3
+                                              for(var ddd393 = 0; ddd393 < newArray[d393].children[dd393].children.length; ddd393++) {
+                                                if(newArray[d393].children[dd393].children[ddd393].id === fileArray[a].id) {
+                                                  //level 4
+                                                  for(var dddd393 = 0; dddd393 < newArray[d393].children[dd393].children[ddd393].children.length; dddd393++) {
+                                                    if(newArray[d393].children[dd393].children[ddd393].children[dddd393].id === fileArray[b].id) {
+                                                      //level 5
+                                                      for(var ddddd393 = 0; ddddd393 < newArray[d393].children[dd393].children[ddd393].children[dddd393].length; ddddd393++) {
+                                                        if(newArray[d393].children[dd393].children[ddd393].children[dddd393].children[ddddd393].id === fileArray[c].id) {
+                                                          newArray[d393].children[dd393].children[ddd393].children[dddd393].children[ddddd393].children
                                                           .push({id: fileArray[d].id, name: fileArray[d].file, type: newType, parent: parent})
                                                         }
                                                       }
@@ -728,6 +1805,391 @@ class Search extends React.Component {
                                                                 for(var eeeeee3 = 0; eeeeee3 < newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].length; eeeeee3++) {
                                                                   if(newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].children[eeeeee3].id === fileArray[d].id) {
                                                                     newArray[e3].children[ee3].children[eee3].children[eeee3].children[eeeee3].children[eeeeee3].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/pdf') {
+                                            newType = "pdf"
+                                            //level 1
+                                            for(var e32 = 0; e32 < newArray.length; e32++) {
+                                              if(newArray[e32].id === event.target.value) {
+                                                //level 2
+                                                for(var ee32 = 0; ee32 < newArray[e32].children.length; ee32++) {
+                                                  if(newArray[e32].children[ee32].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee32 = 0; eee32 < newArray[e32].children[ee32].children.length; eee32++) {
+                                                      if(newArray[e32].children[ee32].children[eee32].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee32 = 0; eeee32 < newArray[e32].children[ee32].children[eee32].children.length; eeee32++) {
+                                                          if(newArray[e32].children[ee32].children[eee32].children[eeee32].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee32 = 0; eeeee32 < newArray[e32].children[ee32].children[eee32].children[eeee32].length; eeeee32++) {
+                                                              if(newArray[e32].children[ee32].children[eee32].children[eeee32].children[eeeee32].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee32 = 0; eeeeee32 < newArray[e32].children[ee32].children[eee32].children[eeee32].children[eeeee32].length; eeeeee32++) {
+                                                                  if(newArray[e32].children[ee32].children[eee32].children[eeee32].children[eeeee32].children[eeeeee32].id === fileArray[d].id) {
+                                                                    newArray[e32].children[ee32].children[eee32].children[eeee32].children[eeeee32].children[eeeeee32].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'audio/mpeg') {
+                                            newType = "mp3"
+                                            //level 1
+                                            for(var e33 = 0; e33 < newArray.length; e33++) {
+                                              if(newArray[e33].id === event.target.value) {
+                                                //level 2
+                                                for(var ee33 = 0; ee33 < newArray[e33].children.length; ee33++) {
+                                                  if(newArray[e33].children[ee33].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee33 = 0; eee33 < newArray[e33].children[ee33].children.length; eee33++) {
+                                                      if(newArray[e33].children[ee33].children[eee33].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee33 = 0; eeee33 < newArray[e33].children[ee33].children[eee33].children.length; eeee33++) {
+                                                          if(newArray[e33].children[ee33].children[eee33].children[eeee33].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee33 = 0; eeeee33 < newArray[e33].children[ee33].children[eee33].children[eeee33].length; eeeee33++) {
+                                                              if(newArray[e33].children[ee33].children[eee33].children[eeee33].children[eeeee33].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee33 = 0; eeeeee33 < newArray[e33].children[ee33].children[eee33].children[eeee33].children[eeeee33].length; eeeeee33++) {
+                                                                  if(newArray[e33].children[ee33].children[eee33].children[eeee33].children[eeeee33].children[eeeeee33].id === fileArray[d].id) {
+                                                                    newArray[e33].children[ee33].children[eee33].children[eeee33].children[eeeee33].children[eeeeee33].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'audio/wav') {
+                                            newType = "wav"
+                                            //level 1
+                                            for(var e34 = 0; e34 < newArray.length; e34++) {
+                                              if(newArray[e34].id === event.target.value) {
+                                                //level 2
+                                                for(var ee34 = 0; ee34 < newArray[e34].children.length; ee34++) {
+                                                  if(newArray[e34].children[ee34].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee34 = 0; eee34 < newArray[e34].children[ee34].children.length; eee34++) {
+                                                      if(newArray[e34].children[ee34].children[eee34].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee34 = 0; eeee34 < newArray[e34].children[ee34].children[eee34].children.length; eeee34++) {
+                                                          if(newArray[e34].children[ee34].children[eee34].children[eeee34].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee34 = 0; eeeee34 < newArray[e34].children[ee34].children[eee34].children[eeee34].length; eeeee34++) {
+                                                              if(newArray[e34].children[ee34].children[eee34].children[eeee34].children[eeeee34].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee34 = 0; eeeeee34 < newArray[e34].children[ee34].children[eee34].children[eeee34].children[eeeee34].length; eeeeee34++) {
+                                                                  if(newArray[e34].children[ee34].children[eee34].children[eeee34].children[eeeee34].children[eeeeee34].id === fileArray[d].id) {
+                                                                    newArray[e34].children[ee34].children[eee34].children[eeee34].children[eeeee34].children[eeeeee34].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'video/mp4') {
+                                            newType = "mp4"
+                                            //level 1
+                                            for(var e35 = 0; e35 < newArray.length; e35++) {
+                                              if(newArray[e35].id === event.target.value) {
+                                                //level 2
+                                                for(var ee35 = 0; ee35 < newArray[e35].children.length; ee35++) {
+                                                  if(newArray[e35].children[ee35].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee35 = 0; eee35 < newArray[e35].children[ee35].children.length; eee35++) {
+                                                      if(newArray[e35].children[ee35].children[eee35].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee35 = 0; eeee35 < newArray[e35].children[ee35].children[eee35].children.length; eeee35++) {
+                                                          if(newArray[e35].children[ee35].children[eee35].children[eeee35].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee35 = 0; eeeee35 < newArray[e35].children[ee35].children[eee35].children[eeee35].length; eeeee35++) {
+                                                              if(newArray[e35].children[ee35].children[eee35].children[eeee35].children[eeeee35].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee35 = 0; eeeeee35 < newArray[e35].children[ee35].children[eee35].children[eeee35].children[eeeee35].length; eeeeee35++) {
+                                                                  if(newArray[e35].children[ee35].children[eee35].children[eeee35].children[eeeee35].children[eeeeee35].id === fileArray[d].id) {
+                                                                    newArray[e35].children[ee35].children[eee35].children[eeee35].children[eeeee35].children[eeeeee35].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'image/jpeg') {
+                                            newType = "jpg"
+                                            //level 1
+                                            for(var e36 = 0; e36 < newArray.length; e36++) {
+                                              if(newArray[e36].id === event.target.value) {
+                                                //level 2
+                                                for(var ee36 = 0; ee36 < newArray[e36].children.length; ee36++) {
+                                                  if(newArray[e36].children[ee36].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee36 = 0; eee36 < newArray[e36].children[ee36].children.length; eee36++) {
+                                                      if(newArray[e36].children[ee36].children[eee36].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee36 = 0; eeee36 < newArray[e36].children[ee36].children[eee36].children.length; eeee36++) {
+                                                          if(newArray[e36].children[ee36].children[eee36].children[eeee36].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee36 = 0; eeeee36 < newArray[e36].children[ee36].children[eee36].children[eeee36].length; eeeee36++) {
+                                                              if(newArray[e36].children[ee36].children[eee36].children[eeee36].children[eeeee36].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee36 = 0; eeeeee36 < newArray[e36].children[ee36].children[eee36].children[eeee36].children[eeeee36].length; eeeeee36++) {
+                                                                  if(newArray[e36].children[ee36].children[eee36].children[eeee36].children[eeeee36].children[eeeeee36].id === fileArray[d].id) {
+                                                                    newArray[e36].children[ee36].children[eee36].children[eeee36].children[eeeee36].children[eeeeee36].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'image/png') {
+                                            newType = "png"
+                                            //level 1
+                                            for(var e37 = 0; e37 < newArray.length; e37++) {
+                                              if(newArray[e37].id === event.target.value) {
+                                                //level 2
+                                                for(var ee37 = 0; ee37 < newArray[e37].children.length; ee37++) {
+                                                  if(newArray[e37].children[ee37].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee37 = 0; eee37 < newArray[e37].children[ee37].children.length; eee37++) {
+                                                      if(newArray[e37].children[ee37].children[eee37].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee37 = 0; eeee37 < newArray[e37].children[ee37].children[eee37].children.length; eeee37++) {
+                                                          if(newArray[e37].children[ee37].children[eee37].children[eeee37].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee37 = 0; eeeee37 < newArray[e37].children[ee37].children[eee37].children[eeee37].length; eeeee37++) {
+                                                              if(newArray[e37].children[ee37].children[eee37].children[eeee37].children[eeeee37].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee37 = 0; eeeeee37 < newArray[e37].children[ee37].children[eee37].children[eeee37].children[eeeee37].length; eeeeee37++) {
+                                                                  if(newArray[e37].children[ee37].children[eee37].children[eeee37].children[eeeee37].children[eeeeee37].id === fileArray[d].id) {
+                                                                    newArray[e37].children[ee37].children[eee37].children[eeee37].children[eeeee37].children[eeeeee37].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/msword') {
+                                            newType = "doc"
+                                            //level 1
+                                            for(var e38 = 0; e38 < newArray.length; e38++) {
+                                              if(newArray[e38].id === event.target.value) {
+                                                //level 2
+                                                for(var ee38 = 0; ee38 < newArray[e38].children.length; ee38++) {
+                                                  if(newArray[e38].children[ee38].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee38 = 0; eee38 < newArray[e38].children[ee38].children.length; eee38++) {
+                                                      if(newArray[e38].children[ee38].children[eee38].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee38 = 0; eeee38 < newArray[e38].children[ee38].children[eee38].children.length; eeee38++) {
+                                                          if(newArray[e38].children[ee38].children[eee38].children[eeee38].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee38 = 0; eeeee38 < newArray[e38].children[ee38].children[eee38].children[eeee38].length; eeeee38++) {
+                                                              if(newArray[e38].children[ee38].children[eee38].children[eeee38].children[eeeee38].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee38 = 0; eeeeee38 < newArray[e38].children[ee38].children[eee38].children[eeee38].children[eeeee38].length; eeeeee38++) {
+                                                                  if(newArray[e38].children[ee38].children[eee38].children[eeee38].children[eeeee38].children[eeeeee38].id === fileArray[d].id) {
+                                                                    newArray[e38].children[ee38].children[eee38].children[eeee38].children[eeeee38].children[eeeeee38].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                            newType = "docx"
+                                            //level 1
+                                            for(var e39 = 0; e39 < newArray.length; e39++) {
+                                              if(newArray[e39].id === event.target.value) {
+                                                //level 2
+                                                for(var ee39 = 0; ee39 < newArray[e39].children.length; ee39++) {
+                                                  if(newArray[e39].children[ee39].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee39 = 0; eee39 < newArray[e39].children[ee39].children.length; eee39++) {
+                                                      if(newArray[e39].children[ee39].children[eee39].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee39 = 0; eeee39 < newArray[e39].children[ee39].children[eee39].children.length; eeee39++) {
+                                                          if(newArray[e39].children[ee39].children[eee39].children[eeee39].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee39 = 0; eeeee39 < newArray[e39].children[ee39].children[eee39].children[eeee39].length; eeeee39++) {
+                                                              if(newArray[e39].children[ee39].children[eee39].children[eeee39].children[eeeee39].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee39 = 0; eeeeee39 < newArray[e39].children[ee39].children[eee39].children[eeee39].children[eeeee39].length; eeeeee39++) {
+                                                                  if(newArray[e39].children[ee39].children[eee39].children[eeee39].children[eeeee39].children[eeeeee39].id === fileArray[d].id) {
+                                                                    newArray[e39].children[ee39].children[eee39].children[eeee39].children[eeeee39].children[eeeeee39].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/vnd.ms-powerpoint') {
+                                            newType = "docx"
+                                            //level 1
+                                            for(var e391 = 0; e391 < newArray.length; e391++) {
+                                              if(newArray[e391].id === event.target.value) {
+                                                //level 2
+                                                for(var ee391 = 0; ee391 < newArray[e391].children.length; ee391++) {
+                                                  if(newArray[e391].children[ee391].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee391 = 0; eee391 < newArray[e391].children[ee391].children.length; eee391++) {
+                                                      if(newArray[e391].children[ee391].children[eee391].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee391 = 0; eeee391 < newArray[e391].children[ee391].children[eee391].children.length; eeee391++) {
+                                                          if(newArray[e391].children[ee391].children[eee391].children[eeee391].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee391 = 0; eeeee391 < newArray[e391].children[ee391].children[eee391].children[eeee391].length; eeeee391++) {
+                                                              if(newArray[e391].children[ee391].children[eee391].children[eeee391].children[eeeee391].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee391 = 0; eeeeee391 < newArray[e391].children[ee391].children[eee391].children[eeee391].children[eeeee391].length; eeeeee391++) {
+                                                                  if(newArray[e391].children[ee391].children[eee391].children[eeee391].children[eeeee391].children[eeeeee391].id === fileArray[d].id) {
+                                                                    newArray[e391].children[ee391].children[eee391].children[eeee391].children[eeeee391].children[eeeeee391].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'text/plain') {
+                                            newType = "txt"
+                                            //level 1
+                                            for(var e392 = 0; e392 < newArray.length; e392++) {
+                                              if(newArray[e392].id === event.target.value) {
+                                                //level 2
+                                                for(var ee392 = 0; ee392 < newArray[e392].children.length; ee392++) {
+                                                  if(newArray[e392].children[ee392].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee392 = 0; eee392 < newArray[e392].children[ee392].children.length; eee392++) {
+                                                      if(newArray[e392].children[ee392].children[eee392].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee392 = 0; eeee392 < newArray[e392].children[ee392].children[eee392].children.length; eeee392++) {
+                                                          if(newArray[e392].children[ee392].children[eee392].children[eeee392].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee392 = 0; eeeee392 < newArray[e392].children[ee392].children[eee392].children[eeee392].length; eeeee392++) {
+                                                              if(newArray[e392].children[ee392].children[eee392].children[eeee392].children[eeeee392].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee392 = 0; eeeeee392 < newArray[e392].children[ee392].children[eee392].children[eeee392].children[eeeee392].length; eeeeee392++) {
+                                                                  if(newArray[e392].children[ee392].children[eee392].children[eeee392].children[eeeee392].children[eeeeee392].id === fileArray[d].id) {
+                                                                    newArray[e392].children[ee392].children[eee392].children[eeee392].children[eeeee392].children[eeeeee392].children
+                                                                    .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                          if(fileArray[e].type === 'application/x-zip-compressed') {
+                                            newType = "zip"
+                                            //level 1
+                                            for(var e393 = 0; e393 < newArray.length; e393++) {
+                                              if(newArray[e393].id === event.target.value) {
+                                                //level 2
+                                                for(var ee393 = 0; ee393 < newArray[e393].children.length; ee393++) {
+                                                  if(newArray[e393].children[ee393].id === fileArray[y].id) {
+                                                    // level 3
+                                                    for(var eee393 = 0; eee393 < newArray[e393].children[ee393].children.length; eee393++) {
+                                                      if(newArray[e393].children[ee393].children[eee393].id === fileArray[a].id) {
+                                                        //level 4
+                                                        for(var eeee393 = 0; eeee393 < newArray[e393].children[ee393].children[eee393].children.length; eeee393++) {
+                                                          if(newArray[e393].children[ee393].children[eee393].children[eeee393].id === fileArray[b].id) {
+                                                            //level 5
+                                                            for(var eeeee393 = 0; eeeee393 < newArray[e393].children[ee393].children[eee393].children[eeee393].length; eeeee393++) {
+                                                              if(newArray[e393].children[ee393].children[eee393].children[eeee393].children[eeeee393].id === fileArray[c].id) {
+                                                                //level 6
+                                                                for(var eeeeee393 = 0; eeeeee393 < newArray[e393].children[ee393].children[eee393].children[eeee393].children[eeeee393].length; eeeeee393++) {
+                                                                  if(newArray[e393].children[ee393].children[eee393].children[eeee393].children[eeeee393].children[eeeeee393].id === fileArray[d].id) {
+                                                                    newArray[e393].children[ee393].children[eee393].children[eeee393].children[eeeee393].children[eeeeee393].children
                                                                     .push({id: fileArray[e].id, name: fileArray[e].file, type: newType, parent: parent})
                                                                   }
                                                                 }
@@ -900,6 +2362,446 @@ class Search extends React.Component {
                                                     }
                                                   }
                                                 }
+                                                if(fileArray[f].type === 'application/pdf') {
+                                                  newType = "pdf"
+                                                  //level 1
+                                                  for(var f32 = 0; f32 < newArray.length; f32++) {
+                                                    if(newArray[f32].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff32 = 0; ff32 < newArray[f32].children.length; ff32++) {
+                                                        if(newArray[f32].children[ff32].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff32 = 0; fff32 < newArray[f32].children[ff32].children.length; fff32++) {
+                                                            if(newArray[f32].children[ff32].children[fff32].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff32 = 0; ffff32 < newArray[f32].children[ff32].children[fff32].children.length; ffff32++) {
+                                                                if(newArray[f32].children[ff32].children[fff32].children[ffff32].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff32 = 0; fffff32 < newArray[f32].children[ff32].children[fff32].children[ffff32].length; fffff32++) {
+                                                                    if(newArray[f32].children[ff32].children[ffff32].children[ffff32].children[fffff32].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff32 = 0; ffffff32 < newArray[f32].children[ff32].children[fff32].children[ffff32].children[fffff32].length; ffffff32++) {
+                                                                        if(newArray[f32].children[ff32].children[fff32].children[ffff32].children[fffff32].children[ffffff32].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff32 = 0; fffffff32 < newArray[f32].children[ff32].children[fff32].children[ffff32].children[fffff32].children[ffffff32].length; fffffff32++) {
+                                                                            if(newArray[f32].children[ff32].children[fff32].children[ffff32].children[fffff32].children[ffffff32].children[fffffff32].id === fileArray[e].id) {
+                                                                              newArray[f32].children[ff32].children[fff32].children[ffff32].children[fffff32].children[ffffff32].children[fffffff32].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'audio/mpeg') {
+                                                  newType = "mp3"
+                                                  //level 1
+                                                  for(var f33 = 0; f33 < newArray.length; f33++) {
+                                                    if(newArray[f33].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff33 = 0; ff33 < newArray[f33].children.length; ff33++) {
+                                                        if(newArray[f33].children[ff33].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff33 = 0; fff33 < newArray[f33].children[ff33].children.length; fff33++) {
+                                                            if(newArray[f33].children[ff33].children[fff33].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff33 = 0; ffff33 < newArray[f33].children[ff33].children[fff33].children.length; ffff33++) {
+                                                                if(newArray[f33].children[ff33].children[fff33].children[ffff33].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff33 = 0; fffff33 < newArray[f33].children[ff33].children[fff33].children[ffff33].length; fffff33++) {
+                                                                    if(newArray[f33].children[ff33].children[ffff33].children[ffff33].children[fffff33].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff33 = 0; ffffff33 < newArray[f33].children[ff33].children[fff33].children[ffff33].children[fffff33].length; ffffff33++) {
+                                                                        if(newArray[f33].children[ff33].children[fff33].children[ffff33].children[fffff33].children[ffffff33].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff33 = 0; fffffff33 < newArray[f33].children[ff33].children[fff33].children[ffff33].children[fffff33].children[ffffff33].length; fffffff33++) {
+                                                                            if(newArray[f33].children[ff33].children[fff33].children[ffff33].children[fffff33].children[ffffff33].children[fffffff33].id === fileArray[e].id) {
+                                                                              newArray[f33].children[ff33].children[fff33].children[ffff33].children[fffff33].children[ffffff33].children[fffffff33].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'audio/wav') {
+                                                  newType = "wav"
+                                                  //level 1
+                                                  for(var f34 = 0; f34 < newArray.length; f34++) {
+                                                    if(newArray[f34].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff34 = 0; ff34 < newArray[f34].children.length; ff34++) {
+                                                        if(newArray[f34].children[ff34].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff34 = 0; fff34 < newArray[f34].children[ff34].children.length; fff34++) {
+                                                            if(newArray[f34].children[ff34].children[fff34].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff34 = 0; ffff34 < newArray[f34].children[ff34].children[fff34].children.length; ffff34++) {
+                                                                if(newArray[f34].children[ff34].children[fff34].children[ffff34].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff34 = 0; fffff34 < newArray[f34].children[ff34].children[fff34].children[ffff34].length; fffff34++) {
+                                                                    if(newArray[f34].children[ff34].children[ffff34].children[ffff34].children[fffff34].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff34 = 0; ffffff34 < newArray[f34].children[ff34].children[fff34].children[ffff34].children[fffff34].length; ffffff34++) {
+                                                                        if(newArray[f34].children[ff34].children[fff34].children[ffff34].children[fffff34].children[ffffff34].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff34 = 0; fffffff34 < newArray[f34].children[ff34].children[fff34].children[ffff34].children[fffff34].children[ffffff34].length; fffffff34++) {
+                                                                            if(newArray[f34].children[ff34].children[fff34].children[ffff34].children[fffff34].children[ffffff34].children[fffffff34].id === fileArray[e].id) {
+                                                                              newArray[f34].children[ff34].children[fff34].children[ffff34].children[fffff34].children[ffffff34].children[fffffff34].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'video/mp4') {
+                                                  newType = "mp4"
+                                                  //level 1
+                                                  for(var f35 = 0; f35 < newArray.length; f35++) {
+                                                    if(newArray[f35].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff35 = 0; ff35 < newArray[f35].children.length; ff35++) {
+                                                        if(newArray[f35].children[ff35].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff35 = 0; fff35 < newArray[f35].children[ff35].children.length; fff35++) {
+                                                            if(newArray[f35].children[ff35].children[fff35].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff35 = 0; ffff35 < newArray[f35].children[ff35].children[fff35].children.length; ffff35++) {
+                                                                if(newArray[f35].children[ff35].children[fff35].children[ffff35].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff35 = 0; fffff35 < newArray[f35].children[ff35].children[fff35].children[ffff35].length; fffff35++) {
+                                                                    if(newArray[f35].children[ff35].children[ffff35].children[ffff35].children[fffff35].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff35 = 0; ffffff35 < newArray[f35].children[ff35].children[fff35].children[ffff35].children[fffff35].length; ffffff35++) {
+                                                                        if(newArray[f35].children[ff35].children[fff35].children[ffff35].children[fffff35].children[ffffff35].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff35 = 0; fffffff35 < newArray[f35].children[ff35].children[fff35].children[ffff35].children[fffff35].children[ffffff35].length; fffffff35++) {
+                                                                            if(newArray[f35].children[ff35].children[fff35].children[ffff35].children[fffff35].children[ffffff35].children[fffffff35].id === fileArray[e].id) {
+                                                                              newArray[f35].children[ff35].children[fff35].children[ffff35].children[fffff35].children[ffffff35].children[fffffff35].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'image/jpeg') {
+                                                  newType = "jpg"
+                                                  //level 1
+                                                  for(var f36 = 0; f36 < newArray.length; f36++) {
+                                                    if(newArray[f36].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff36 = 0; ff36 < newArray[f36].children.length; ff36++) {
+                                                        if(newArray[f36].children[ff36].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff36 = 0; fff36 < newArray[f36].children[ff36].children.length; fff36++) {
+                                                            if(newArray[f36].children[ff36].children[fff36].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff36 = 0; ffff36 < newArray[f36].children[ff36].children[fff36].children.length; ffff36++) {
+                                                                if(newArray[f36].children[ff36].children[fff36].children[ffff36].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff36 = 0; fffff36 < newArray[f36].children[ff36].children[fff36].children[ffff36].length; fffff36++) {
+                                                                    if(newArray[f36].children[ff36].children[ffff36].children[ffff36].children[fffff36].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff36 = 0; ffffff36 < newArray[f36].children[ff36].children[fff36].children[ffff36].children[fffff36].length; ffffff36++) {
+                                                                        if(newArray[f36].children[ff36].children[fff36].children[ffff36].children[fffff36].children[ffffff36].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff36 = 0; fffffff36 < newArray[f36].children[ff36].children[fff36].children[ffff36].children[fffff36].children[ffffff36].length; fffffff36++) {
+                                                                            if(newArray[f36].children[ff36].children[fff36].children[ffff36].children[fffff36].children[ffffff36].children[fffffff36].id === fileArray[e].id) {
+                                                                              newArray[f36].children[ff36].children[fff36].children[ffff36].children[fffff36].children[ffffff36].children[fffffff36].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'image/png') {
+                                                  newType = "png"
+                                                  //level 1
+                                                  for(var f37 = 0; f37 < newArray.length; f37++) {
+                                                    if(newArray[f37].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff37 = 0; ff37 < newArray[f37].children.length; ff37++) {
+                                                        if(newArray[f37].children[ff37].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff37 = 0; fff37 < newArray[f37].children[ff37].children.length; fff37++) {
+                                                            if(newArray[f37].children[ff37].children[fff37].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff37 = 0; ffff37 < newArray[f37].children[ff37].children[fff37].children.length; ffff37++) {
+                                                                if(newArray[f37].children[ff37].children[fff37].children[ffff37].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff37 = 0; fffff37 < newArray[f37].children[ff37].children[fff37].children[ffff37].length; fffff37++) {
+                                                                    if(newArray[f37].children[ff37].children[ffff37].children[ffff37].children[fffff37].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff37 = 0; ffffff37 < newArray[f37].children[ff37].children[fff37].children[ffff37].children[fffff37].length; ffffff37++) {
+                                                                        if(newArray[f37].children[ff37].children[fff37].children[ffff37].children[fffff37].children[ffffff37].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff37 = 0; fffffff37 < newArray[f37].children[ff37].children[fff37].children[ffff37].children[fffff37].children[ffffff37].length; fffffff37++) {
+                                                                            if(newArray[f37].children[ff37].children[fff37].children[ffff37].children[fffff37].children[ffffff37].children[fffffff37].id === fileArray[e].id) {
+                                                                              newArray[f37].children[ff37].children[fff37].children[ffff37].children[fffff37].children[ffffff37].children[fffffff37].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/msword') {
+                                                  newType = "doc"
+                                                  //level 1
+                                                  for(var f38 = 0; f38 < newArray.length; f38++) {
+                                                    if(newArray[f38].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff38 = 0; ff38 < newArray[f38].children.length; ff38++) {
+                                                        if(newArray[f38].children[ff38].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff38 = 0; fff38 < newArray[f38].children[ff38].children.length; fff38++) {
+                                                            if(newArray[f38].children[ff38].children[fff38].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff38 = 0; ffff38 < newArray[f38].children[ff38].children[fff38].children.length; ffff38++) {
+                                                                if(newArray[f38].children[ff38].children[fff38].children[ffff38].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff38 = 0; fffff38 < newArray[f38].children[ff38].children[fff38].children[ffff38].length; fffff38++) {
+                                                                    if(newArray[f38].children[ff38].children[ffff38].children[ffff38].children[fffff38].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff38 = 0; ffffff38 < newArray[f38].children[ff38].children[fff38].children[ffff38].children[fffff38].length; ffffff38++) {
+                                                                        if(newArray[f38].children[ff38].children[fff38].children[ffff38].children[fffff38].children[ffffff38].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff38 = 0; fffffff38 < newArray[f38].children[ff38].children[fff38].children[ffff38].children[fffff38].children[ffffff38].length; fffffff38++) {
+                                                                            if(newArray[f38].children[ff38].children[fff38].children[ffff38].children[fffff38].children[ffffff38].children[fffffff38].id === fileArray[e].id) {
+                                                                              newArray[f38].children[ff38].children[fff38].children[ffff38].children[fffff38].children[ffffff38].children[fffffff38].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                                  newType = "docx"
+                                                  //level 1
+                                                  for(var f39 = 0; f39 < newArray.length; f39++) {
+                                                    if(newArray[f39].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff39 = 0; ff39 < newArray[f39].children.length; ff39++) {
+                                                        if(newArray[f39].children[ff39].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff39 = 0; fff39 < newArray[f39].children[ff39].children.length; fff39++) {
+                                                            if(newArray[f39].children[ff39].children[fff39].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff39 = 0; ffff39 < newArray[f39].children[ff39].children[fff39].children.length; ffff39++) {
+                                                                if(newArray[f39].children[ff39].children[fff39].children[ffff39].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff39 = 0; fffff39 < newArray[f39].children[ff39].children[fff39].children[ffff39].length; fffff39++) {
+                                                                    if(newArray[f39].children[ff39].children[ffff39].children[ffff39].children[fffff39].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff39 = 0; ffffff39 < newArray[f39].children[ff39].children[fff39].children[ffff39].children[fffff39].length; ffffff39++) {
+                                                                        if(newArray[f39].children[ff39].children[fff39].children[ffff39].children[fffff39].children[ffffff39].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff39 = 0; fffffff39 < newArray[f39].children[ff39].children[fff39].children[ffff39].children[fffff39].children[ffffff39].length; fffffff39++) {
+                                                                            if(newArray[f39].children[ff39].children[fff39].children[ffff39].children[fffff39].children[ffffff39].children[fffffff39].id === fileArray[e].id) {
+                                                                              newArray[f39].children[ff39].children[fff39].children[ffff39].children[fffff39].children[ffffff39].children[fffffff39].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/vnd.ms-powerpoint') {
+                                                  newType = "ppt"
+                                                  //level 1
+                                                  for(var f391 = 0; f391 < newArray.length; f391++) {
+                                                    if(newArray[f391].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff391 = 0; ff391 < newArray[f391].children.length; ff391++) {
+                                                        if(newArray[f391].children[ff391].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff391 = 0; fff391 < newArray[f391].children[ff391].children.length; fff391++) {
+                                                            if(newArray[f391].children[ff391].children[fff391].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff391 = 0; ffff391 < newArray[f391].children[ff391].children[fff391].children.length; ffff391++) {
+                                                                if(newArray[f391].children[ff391].children[fff391].children[ffff391].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff391 = 0; fffff391 < newArray[f391].children[ff391].children[fff391].children[ffff391].length; fffff391++) {
+                                                                    if(newArray[f391].children[ff391].children[ffff391].children[ffff391].children[fffff391].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff391 = 0; ffffff391 < newArray[f391].children[ff391].children[fff391].children[ffff391].children[fffff391].length; ffffff391++) {
+                                                                        if(newArray[f391].children[ff391].children[fff391].children[ffff391].children[fffff391].children[ffffff391].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff391 = 0; fffffff391 < newArray[f391].children[ff391].children[fff391].children[ffff391].children[fffff391].children[ffffff391].length; fffffff391++) {
+                                                                            if(newArray[f391].children[ff391].children[fff391].children[ffff391].children[fffff391].children[ffffff391].children[fffffff391].id === fileArray[e].id) {
+                                                                              newArray[f391].children[ff391].children[fff391].children[ffff391].children[fffff391].children[ffffff391].children[fffffff391].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'text/plain') {
+                                                  newType = "txt"
+                                                  //level 1
+                                                  for(var f392 = 0; f392 < newArray.length; f392++) {
+                                                    if(newArray[f392].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff392 = 0; ff392 < newArray[f392].children.length; ff392++) {
+                                                        if(newArray[f392].children[ff392].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff392 = 0; fff392 < newArray[f392].children[ff392].children.length; fff392++) {
+                                                            if(newArray[f392].children[ff392].children[fff392].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff392 = 0; ffff392 < newArray[f392].children[ff392].children[fff392].children.length; ffff392++) {
+                                                                if(newArray[f392].children[ff392].children[fff392].children[ffff392].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff392 = 0; fffff392 < newArray[f392].children[ff392].children[fff392].children[ffff392].length; fffff392++) {
+                                                                    if(newArray[f392].children[ff392].children[ffff392].children[ffff392].children[fffff392].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff392 = 0; ffffff392 < newArray[f392].children[ff392].children[fff392].children[ffff392].children[fffff392].length; ffffff392++) {
+                                                                        if(newArray[f392].children[ff392].children[fff392].children[ffff392].children[fffff392].children[ffffff392].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff392 = 0; fffffff392 < newArray[f392].children[ff392].children[fff392].children[ffff392].children[fffff392].children[ffffff392].length; fffffff392++) {
+                                                                            if(newArray[f392].children[ff392].children[fff392].children[ffff392].children[fffff392].children[ffffff392].children[fffffff392].id === fileArray[e].id) {
+                                                                              newArray[f392].children[ff392].children[fff392].children[ffff392].children[fffff392].children[ffffff392].children[fffffff392].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                if(fileArray[f].type === 'application/x-zip-compressed') {
+                                                  newType = "zip"
+                                                  //level 1
+                                                  for(var f393 = 0; f393 < newArray.length; f393++) {
+                                                    if(newArray[f393].id === event.target.value) {
+                                                      //level 2
+                                                      for(var ff393 = 0; ff393 < newArray[f393].children.length; ff393++) {
+                                                        if(newArray[f393].children[ff393].id === fileArray[y].id) {
+                                                          // level 3
+                                                          for(var fff393 = 0; fff393 < newArray[f393].children[ff393].children.length; fff393++) {
+                                                            if(newArray[f393].children[ff393].children[fff393].id === fileArray[a].id) {
+                                                              //level 4
+                                                              for(var ffff393 = 0; ffff393 < newArray[f393].children[ff393].children[fff393].children.length; ffff393++) {
+                                                                if(newArray[f393].children[ff393].children[fff393].children[ffff393].id === fileArray[b].id) {
+                                                                  //level 5
+                                                                  for(var fffff393 = 0; fffff393 < newArray[f393].children[ff393].children[fff393].children[ffff393].length; fffff393++) {
+                                                                    if(newArray[f393].children[ff393].children[ffff393].children[ffff393].children[fffff393].id === fileArray[c].id) {
+                                                                      //level 6
+                                                                      for(var ffffff393 = 0; ffffff393 < newArray[f393].children[ff393].children[fff393].children[ffff393].children[fffff393].length; ffffff393++) {
+                                                                        if(newArray[f393].children[ff393].children[fff393].children[ffff393].children[fffff393].children[ffffff393].id === fileArray[d].id) {
+                                                                          //level 7
+                                                                          for(var fffffff393 = 0; fffffff393 < newArray[f393].children[ff393].children[fff393].children[ffff393].children[fffff393].children[ffffff393].length; fffffff393++) {
+                                                                            if(newArray[f393].children[ff393].children[fff393].children[ffff393].children[fffff393].children[ffffff393].children[fffffff393].id === fileArray[e].id) {
+                                                                              newArray[f393].children[ff393].children[fff393].children[ffff393].children[fffff393].children[ffffff393].children[fffffff393].children
+                                                                              .push({id: fileArray[f].id, name: fileArray[f].file, type: newType, parent: parent})
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
                                                 if(fileArray[f].type === 'application/vnd.google-apps.folder') {
                                                   newType = "folder";
                                                   //level 1
@@ -1036,30 +2938,525 @@ class Search extends React.Component {
                                                       if(fileArray[g].type === 'application/vnd.google-apps.spreadsheet') {
                                                         newType = "xlsx"
                                                         //level 1
-                                                        for(var g4 = 0; g4 < newArray.length; g4++) {
-                                                          if(newArray[g4].id === event.target.value) {
+                                                        for(var g3 = 0; g3 < newArray.length; g3++) {
+                                                          if(newArray[g3].id === event.target.value) {
                                                             //level 2
-                                                            for(var gg4 = 0; gg4 < newArray[g4].children.length; gg4++) {
-                                                              if(newArray[g4].children[gg4].id === fileArray[y].id) {
+                                                            for(var gg3 = 0; gg3 < newArray[g3].children.length; gg3++) {
+                                                              if(newArray[g3].children[gg3].id === fileArray[y].id) {
                                                                 // level 3
-                                                                for(var ggg4 = 0; ggg4 < newArray[g4].children[gg4].children.length; ggg4++) {
-                                                                  if(newArray[g4].children[gg4].children[ggg4].id === fileArray[a].id) {
-                                                                    //level 4
-                                                                    for(var gggg4 = 0; gggg4 < newArray[g4].children[gg4].children[ggg4].children.length; gggg4++) {
-                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].id === fileArray[b].id) {
+                                                                for(var ggg3 = 0; ggg3 < newArray[g3].children[gg3].children.length; ggg3++) {
+                                                                  if(newArray[g3].children[gg3].children[ggg3].id === fileArray[a].id) {
+                                                                    //level 3
+                                                                    for(var gggg3 = 0; gggg3 < newArray[g3].children[gg3].children[ggg3].children.length; gggg3++) {
+                                                                      if(newArray[g3].children[gg3].children[ggg3].children[gggg3].id === fileArray[b].id) {
                                                                         //level 5
-                                                                        for(var ggggg4 = 0; ggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].length; ggggg4++) {
-                                                                          if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].id === fileArray[c].id) {
+                                                                        for(var ggggg3 = 0; ggggg3 < newArray[g3].children[gg3].children[ggg3].children[gggg3].length; ggggg3++) {
+                                                                          if(newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].id === fileArray[c].id) {
                                                                             //level 6
-                                                                            for(var gggggg4 = 0; gggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].length; gggggg4++) {
-                                                                              if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].id === fileArray[d].id) {
+                                                                            for(var gggggg3 = 0; gggggg3 < newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].length; gggggg3++) {
+                                                                              if(newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].id === fileArray[d].id) {
                                                                                 //level 7
-                                                                                for(var ggggggg4 = 0; ggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].length; ggggggg4++) {
-                                                                                  if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].id === fileArray[e].id) {
+                                                                                for(var ggggggg3 = 0; ggggggg3 < newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].length; ggggggg3++) {
+                                                                                  if(newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].children[ggggggg3].id === fileArray[e].id) {
                                                                                     //level 8
-                                                                                    for(var gggggggg4 = 0; gggggggg4 < newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].length; gggggggg4) {
-                                                                                      if(newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].id === fileArray[f].id) {
-                                                                                        newArray[g4].children[gg4].children[ggg4].children[gggg4].children[ggggg4].children[gggggg4].children[ggggggg4].children[gggggggg4].children
+                                                                                    for(var gggggggg3 = 0; gggggggg3 < newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].children[ggggggg3].length; gggggggg3) {
+                                                                                      if(newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].children[ggggggg3].children[gggggggg3].id === fileArray[f].id) {
+                                                                                        newArray[g3].children[gg3].children[ggg3].children[gggg3].children[ggggg3].children[gggggg3].children[ggggggg3].children[gggggggg3].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/pdf') {
+                                                        newType = "pdf"
+                                                        //level 1
+                                                        for(var g32 = 0; g32 < newArray.length; g32++) {
+                                                          if(newArray[g32].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg32 = 0; gg32 < newArray[g32].children.length; gg32++) {
+                                                              if(newArray[g32].children[gg32].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg32 = 0; ggg32 < newArray[g32].children[gg32].children.length; ggg32++) {
+                                                                  if(newArray[g32].children[gg32].children[ggg32].id === fileArray[a].id) {
+                                                                    //level 32
+                                                                    for(var gggg32 = 0; gggg32 < newArray[g32].children[gg32].children[ggg32].children.length; gggg32++) {
+                                                                      if(newArray[g32].children[gg32].children[ggg32].children[gggg32].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg32 = 0; ggggg32 < newArray[g32].children[gg32].children[ggg32].children[gggg32].length; ggggg32++) {
+                                                                          if(newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg32 = 0; gggggg32 < newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].length; gggggg32++) {
+                                                                              if(newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg32 = 0; ggggggg32 < newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].length; ggggggg32++) {
+                                                                                  if(newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].children[ggggggg32].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg32 = 0; gggggggg32 < newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].children[ggggggg32].length; gggggggg32) {
+                                                                                      if(newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].children[ggggggg32].children[gggggggg32].id === fileArray[f].id) {
+                                                                                        newArray[g32].children[gg32].children[ggg32].children[gggg32].children[ggggg32].children[gggggg32].children[ggggggg32].children[gggggggg32].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'audio/mpeg') {
+                                                        newType = "mp3"
+                                                        //level 1
+                                                        for(var g33 = 0; g33 < newArray.length; g33++) {
+                                                          if(newArray[g33].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg33 = 0; gg33 < newArray[g33].children.length; gg33++) {
+                                                              if(newArray[g33].children[gg33].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg33 = 0; ggg33 < newArray[g33].children[gg33].children.length; ggg33++) {
+                                                                  if(newArray[g33].children[gg33].children[ggg33].id === fileArray[a].id) {
+                                                                    //level 33
+                                                                    for(var gggg33 = 0; gggg33 < newArray[g33].children[gg33].children[ggg33].children.length; gggg33++) {
+                                                                      if(newArray[g33].children[gg33].children[ggg33].children[gggg33].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg33 = 0; ggggg33 < newArray[g33].children[gg33].children[ggg33].children[gggg33].length; ggggg33++) {
+                                                                          if(newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg33 = 0; gggggg33 < newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].length; gggggg33++) {
+                                                                              if(newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg33 = 0; ggggggg33 < newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].length; ggggggg33++) {
+                                                                                  if(newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].children[ggggggg33].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg33 = 0; gggggggg33 < newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].children[ggggggg33].length; gggggggg33) {
+                                                                                      if(newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].children[ggggggg33].children[gggggggg33].id === fileArray[f].id) {
+                                                                                        newArray[g33].children[gg33].children[ggg33].children[gggg33].children[ggggg33].children[gggggg33].children[ggggggg33].children[gggggggg33].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'audio/wav') {
+                                                        newType = "wav"
+                                                        //level 1
+                                                        for(var g34 = 0; g34 < newArray.length; g34++) {
+                                                          if(newArray[g34].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg34 = 0; gg34 < newArray[g34].children.length; gg34++) {
+                                                              if(newArray[g34].children[gg34].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg34 = 0; ggg34 < newArray[g34].children[gg34].children.length; ggg34++) {
+                                                                  if(newArray[g34].children[gg34].children[ggg34].id === fileArray[a].id) {
+                                                                    //level 34
+                                                                    for(var gggg34 = 0; gggg34 < newArray[g34].children[gg34].children[ggg34].children.length; gggg34++) {
+                                                                      if(newArray[g34].children[gg34].children[ggg34].children[gggg34].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg34 = 0; ggggg34 < newArray[g34].children[gg34].children[ggg34].children[gggg34].length; ggggg34++) {
+                                                                          if(newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg34 = 0; gggggg34 < newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].length; gggggg34++) {
+                                                                              if(newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg34 = 0; ggggggg34 < newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].length; ggggggg34++) {
+                                                                                  if(newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].children[ggggggg34].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg34 = 0; gggggggg34 < newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].children[ggggggg34].length; gggggggg34) {
+                                                                                      if(newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].children[ggggggg34].children[gggggggg34].id === fileArray[f].id) {
+                                                                                        newArray[g34].children[gg34].children[ggg34].children[gggg34].children[ggggg34].children[gggggg34].children[ggggggg34].children[gggggggg34].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'video/mp4') {
+                                                        newType = "mp4"
+                                                        //level 1
+                                                        for(var g35 = 0; g35 < newArray.length; g35++) {
+                                                          if(newArray[g35].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg35 = 0; gg35 < newArray[g35].children.length; gg35++) {
+                                                              if(newArray[g35].children[gg35].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg35 = 0; ggg35 < newArray[g35].children[gg35].children.length; ggg35++) {
+                                                                  if(newArray[g35].children[gg35].children[ggg35].id === fileArray[a].id) {
+                                                                    //level 35
+                                                                    for(var gggg35 = 0; gggg35 < newArray[g35].children[gg35].children[ggg35].children.length; gggg35++) {
+                                                                      if(newArray[g35].children[gg35].children[ggg35].children[gggg35].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg35 = 0; ggggg35 < newArray[g35].children[gg35].children[ggg35].children[gggg35].length; ggggg35++) {
+                                                                          if(newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg35 = 0; gggggg35 < newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].length; gggggg35++) {
+                                                                              if(newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg35 = 0; ggggggg35 < newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].length; ggggggg35++) {
+                                                                                  if(newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].children[ggggggg35].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg35 = 0; gggggggg35 < newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].children[ggggggg35].length; gggggggg35) {
+                                                                                      if(newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].children[ggggggg35].children[gggggggg35].id === fileArray[f].id) {
+                                                                                        newArray[g35].children[gg35].children[ggg35].children[gggg35].children[ggggg35].children[gggggg35].children[ggggggg35].children[gggggggg35].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'image/jpg') {
+                                                        newType = "jpg"
+                                                        //level 1
+                                                        for(var g36 = 0; g36 < newArray.length; g36++) {
+                                                          if(newArray[g36].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg36 = 0; gg36 < newArray[g36].children.length; gg36++) {
+                                                              if(newArray[g36].children[gg36].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg36 = 0; ggg36 < newArray[g36].children[gg36].children.length; ggg36++) {
+                                                                  if(newArray[g36].children[gg36].children[ggg36].id === fileArray[a].id) {
+                                                                    //level 36
+                                                                    for(var gggg36 = 0; gggg36 < newArray[g36].children[gg36].children[ggg36].children.length; gggg36++) {
+                                                                      if(newArray[g36].children[gg36].children[ggg36].children[gggg36].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg36 = 0; ggggg36 < newArray[g36].children[gg36].children[ggg36].children[gggg36].length; ggggg36++) {
+                                                                          if(newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg36 = 0; gggggg36 < newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].length; gggggg36++) {
+                                                                              if(newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg36 = 0; ggggggg36 < newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].length; ggggggg36++) {
+                                                                                  if(newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].children[ggggggg36].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg36 = 0; gggggggg36 < newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].children[ggggggg36].length; gggggggg36) {
+                                                                                      if(newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].children[ggggggg36].children[gggggggg36].id === fileArray[f].id) {
+                                                                                        newArray[g36].children[gg36].children[ggg36].children[gggg36].children[ggggg36].children[gggggg36].children[ggggggg36].children[gggggggg36].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'image/png') {
+                                                        newType = "png"
+                                                        //level 1
+                                                        for(var g37 = 0; g37 < newArray.length; g37++) {
+                                                          if(newArray[g37].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg37 = 0; gg37 < newArray[g37].children.length; gg37++) {
+                                                              if(newArray[g37].children[gg37].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg37 = 0; ggg37 < newArray[g37].children[gg37].children.length; ggg37++) {
+                                                                  if(newArray[g37].children[gg37].children[ggg37].id === fileArray[a].id) {
+                                                                    //level 37
+                                                                    for(var gggg37 = 0; gggg37 < newArray[g37].children[gg37].children[ggg37].children.length; gggg37++) {
+                                                                      if(newArray[g37].children[gg37].children[ggg37].children[gggg37].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg37 = 0; ggggg37 < newArray[g37].children[gg37].children[ggg37].children[gggg37].length; ggggg37++) {
+                                                                          if(newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg37 = 0; gggggg37 < newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].length; gggggg37++) {
+                                                                              if(newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg37 = 0; ggggggg37 < newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].length; ggggggg37++) {
+                                                                                  if(newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].children[ggggggg37].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg37 = 0; gggggggg37 < newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].children[ggggggg37].length; gggggggg37) {
+                                                                                      if(newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].children[ggggggg37].children[gggggggg37].id === fileArray[f].id) {
+                                                                                        newArray[g37].children[gg37].children[ggg37].children[gggg37].children[ggggg37].children[gggggg37].children[ggggggg37].children[gggggggg37].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/msword') {
+                                                        newType = "doc"
+                                                        //level 1
+                                                        for(var g38 = 0; g38 < newArray.length; g38++) {
+                                                          if(newArray[g38].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg38 = 0; gg38 < newArray[g38].children.length; gg38++) {
+                                                              if(newArray[g38].children[gg38].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg38 = 0; ggg38 < newArray[g38].children[gg38].children.length; ggg38++) {
+                                                                  if(newArray[g38].children[gg38].children[ggg38].id === fileArray[a].id) {
+                                                                    //level 38
+                                                                    for(var gggg38 = 0; gggg38 < newArray[g38].children[gg38].children[ggg38].children.length; gggg38++) {
+                                                                      if(newArray[g38].children[gg38].children[ggg38].children[gggg38].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg38 = 0; ggggg38 < newArray[g38].children[gg38].children[ggg38].children[gggg38].length; ggggg38++) {
+                                                                          if(newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg38 = 0; gggggg38 < newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].length; gggggg38++) {
+                                                                              if(newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg38 = 0; ggggggg38 < newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].length; ggggggg38++) {
+                                                                                  if(newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].children[ggggggg38].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg38 = 0; gggggggg38 < newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].children[ggggggg38].length; gggggggg38) {
+                                                                                      if(newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].children[ggggggg38].children[gggggggg38].id === fileArray[f].id) {
+                                                                                        newArray[g38].children[gg38].children[ggg38].children[gggg38].children[ggggg38].children[gggggg38].children[ggggggg38].children[gggggggg38].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                                        newType = "docx"
+                                                        //level 1
+                                                        for(var g39 = 0; g39 < newArray.length; g39++) {
+                                                          if(newArray[g39].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg39 = 0; gg39 < newArray[g39].children.length; gg39++) {
+                                                              if(newArray[g39].children[gg39].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg39 = 0; ggg39 < newArray[g39].children[gg39].children.length; ggg39++) {
+                                                                  if(newArray[g39].children[gg39].children[ggg39].id === fileArray[a].id) {
+                                                                    //level 39
+                                                                    for(var gggg39 = 0; gggg39 < newArray[g39].children[gg39].children[ggg39].children.length; gggg39++) {
+                                                                      if(newArray[g39].children[gg39].children[ggg39].children[gggg39].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg39 = 0; ggggg39 < newArray[g39].children[gg39].children[ggg39].children[gggg39].length; ggggg39++) {
+                                                                          if(newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg39 = 0; gggggg39 < newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].length; gggggg39++) {
+                                                                              if(newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg39 = 0; ggggggg39 < newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].length; ggggggg39++) {
+                                                                                  if(newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].children[ggggggg39].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg39 = 0; gggggggg39 < newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].children[ggggggg39].length; gggggggg39) {
+                                                                                      if(newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].children[ggggggg39].children[gggggggg39].id === fileArray[f].id) {
+                                                                                        newArray[g39].children[gg39].children[ggg39].children[gggg39].children[ggggg39].children[gggggg39].children[ggggggg39].children[gggggggg39].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/vnd.ms-powerpoint') {
+                                                        newType = "ppt"
+                                                        //level 1
+                                                        for(var g391 = 0; g391 < newArray.length; g391++) {
+                                                          if(newArray[g391].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg391 = 0; gg391 < newArray[g391].children.length; gg391++) {
+                                                              if(newArray[g391].children[gg391].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg391 = 0; ggg391 < newArray[g391].children[gg391].children.length; ggg391++) {
+                                                                  if(newArray[g391].children[gg391].children[ggg391].id === fileArray[a].id) {
+                                                                    //level 391
+                                                                    for(var gggg391 = 0; gggg391 < newArray[g391].children[gg391].children[ggg391].children.length; gggg391++) {
+                                                                      if(newArray[g391].children[gg391].children[ggg391].children[gggg391].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg391 = 0; ggggg391 < newArray[g391].children[gg391].children[ggg391].children[gggg391].length; ggggg391++) {
+                                                                          if(newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg391 = 0; gggggg391 < newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].length; gggggg391++) {
+                                                                              if(newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg391 = 0; ggggggg391 < newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].length; ggggggg391++) {
+                                                                                  if(newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].children[ggggggg391].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg391 = 0; gggggggg391 < newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].children[ggggggg391].length; gggggggg391) {
+                                                                                      if(newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].children[ggggggg391].children[gggggggg391].id === fileArray[f].id) {
+                                                                                        newArray[g391].children[gg391].children[ggg391].children[gggg391].children[ggggg391].children[gggggg391].children[ggggggg391].children[gggggggg391].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'text/plain') {
+                                                        newType = "txt"
+                                                        //level 1
+                                                        for(var g392 = 0; g392 < newArray.length; g392++) {
+                                                          if(newArray[g392].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg392 = 0; gg392 < newArray[g392].children.length; gg392++) {
+                                                              if(newArray[g392].children[gg392].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg392 = 0; ggg392 < newArray[g392].children[gg392].children.length; ggg392++) {
+                                                                  if(newArray[g392].children[gg392].children[ggg392].id === fileArray[a].id) {
+                                                                    //level 392
+                                                                    for(var gggg392 = 0; gggg392 < newArray[g392].children[gg392].children[ggg392].children.length; gggg392++) {
+                                                                      if(newArray[g392].children[gg392].children[ggg392].children[gggg392].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg392 = 0; ggggg392 < newArray[g392].children[gg392].children[ggg392].children[gggg392].length; ggggg392++) {
+                                                                          if(newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg392 = 0; gggggg392 < newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].length; gggggg392++) {
+                                                                              if(newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg392 = 0; ggggggg392 < newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].length; ggggggg392++) {
+                                                                                  if(newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].children[ggggggg392].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg392 = 0; gggggggg392 < newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].children[ggggggg392].length; gggggggg392) {
+                                                                                      if(newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].children[ggggggg392].children[gggggggg392].id === fileArray[f].id) {
+                                                                                        newArray[g392].children[gg392].children[ggg392].children[gggg392].children[ggggg392].children[gggggg392].children[ggggggg392].children[gggggggg392].children
+                                                                                        .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                      if(fileArray[g].type === 'application/x-zip-compressed') {
+                                                        newType = "zip"
+                                                        //level 1
+                                                        for(var g393 = 0; g393 < newArray.length; g393++) {
+                                                          if(newArray[g393].id === event.target.value) {
+                                                            //level 2
+                                                            for(var gg393 = 0; gg393 < newArray[g393].children.length; gg393++) {
+                                                              if(newArray[g393].children[gg393].id === fileArray[y].id) {
+                                                                // level 3
+                                                                for(var ggg393 = 0; ggg393 < newArray[g393].children[gg393].children.length; ggg393++) {
+                                                                  if(newArray[g393].children[gg393].children[ggg393].id === fileArray[a].id) {
+                                                                    //level 393
+                                                                    for(var gggg393 = 0; gggg393 < newArray[g393].children[gg393].children[ggg393].children.length; gggg393++) {
+                                                                      if(newArray[g393].children[gg393].children[ggg393].children[gggg393].id === fileArray[b].id) {
+                                                                        //level 5
+                                                                        for(var ggggg393 = 0; ggggg393 < newArray[g393].children[gg393].children[ggg393].children[gggg393].length; ggggg393++) {
+                                                                          if(newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].id === fileArray[c].id) {
+                                                                            //level 6
+                                                                            for(var gggggg393 = 0; gggggg393 < newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].length; gggggg393++) {
+                                                                              if(newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].id === fileArray[d].id) {
+                                                                                //level 7
+                                                                                for(var ggggggg393 = 0; ggggggg393 < newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].length; ggggggg393++) {
+                                                                                  if(newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].children[ggggggg393].id === fileArray[e].id) {
+                                                                                    //level 8
+                                                                                    for(var gggggggg393 = 0; gggggggg393 < newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].children[ggggggg393].length; gggggggg393) {
+                                                                                      if(newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].children[ggggggg393].children[gggggggg393].id === fileArray[f].id) {
+                                                                                        newArray[g393].children[gg393].children[ggg393].children[gggg393].children[ggggg393].children[gggggg393].children[ggggggg393].children[gggggggg393].children
                                                                                         .push({id: fileArray[g].id, name: fileArray[g].file, type: newType, parent: parent})
                                                                                       }
                                                                                     }
@@ -1276,6 +3673,556 @@ class Search extends React.Component {
                                                                 }
                                                               }
                                                             }
+                                                            if(fileArray[h].type === 'application/pdf') {
+                                                              newType = "pdf"
+                                                              //level 1
+                                                              for(var h32 = 0; h32 < newArray.length; h32++) {
+                                                                if(newArray[h32].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh32; hh32 < newArray[h32].children.length; hh32++) {
+                                                                    if(newArray[h32].children[hh32].id === fileArray[y].id) {
+                                                                      // level 32
+                                                                      for(var hhh32; hhh32 < newArray[h32].children[hh32].children.length; hhh32++) {
+                                                                        if(newArray[h32].children[hh32].children[hhh32].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh32; hhhh32 < newArray[h32].children[hh32].children[hhh32].children.length; hhhh32++) {
+                                                                            if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh32; hhhhh32 < newArray[h32].children[hh32].children[hhh32].children[hhhh32].length; hhhhh32++) {
+                                                                                if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh32; hhhhhh32 < newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].length; hhhhhh32++) {
+                                                                                    if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh32; hhhhhhh32 < newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].length; hhhhhhh32++) {
+                                                                                        if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh32; hhhhhhhh32 < newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].length; hhhhhhhh32) {
+                                                                                            if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].children[hhhhhhhh32].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh32; hhhhhhhhh32 < newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].children[hhhhhhhh32].length; hhhhhhhhh32++) {
+                                                                                                if(newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].children[hhhhhhhh32].children[hhhhhhhhh32].id === fileArray[g].id) {
+                                                                                                  newArray[h32].children[hh32].children[hhh32].children[hhhh32].children[hhhhh32].children[hhhhhh32].children[hhhhhhh32].children[hhhhhhhh32].children[hhhhhhhhh32].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'audio/mpeg') {
+                                                              newType = "mp3"
+                                                              //level 1
+                                                              for(var h33 = 0; h33 < newArray.length; h33++) {
+                                                                if(newArray[h33].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh33; hh33 < newArray[h33].children.length; hh33++) {
+                                                                    if(newArray[h33].children[hh33].id === fileArray[y].id) {
+                                                                      // level 33
+                                                                      for(var hhh33; hhh33 < newArray[h33].children[hh33].children.length; hhh33++) {
+                                                                        if(newArray[h33].children[hh33].children[hhh33].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh33; hhhh33 < newArray[h33].children[hh33].children[hhh33].children.length; hhhh33++) {
+                                                                            if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh33; hhhhh33 < newArray[h33].children[hh33].children[hhh33].children[hhhh33].length; hhhhh33++) {
+                                                                                if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh33; hhhhhh33 < newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].length; hhhhhh33++) {
+                                                                                    if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh33; hhhhhhh33 < newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].length; hhhhhhh33++) {
+                                                                                        if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh33; hhhhhhhh33 < newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].length; hhhhhhhh33) {
+                                                                                            if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].children[hhhhhhhh33].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh33; hhhhhhhhh33 < newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].children[hhhhhhhh33].length; hhhhhhhhh33++) {
+                                                                                                if(newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].children[hhhhhhhh33].children[hhhhhhhhh33].id === fileArray[g].id) {
+                                                                                                  newArray[h33].children[hh33].children[hhh33].children[hhhh33].children[hhhhh33].children[hhhhhh33].children[hhhhhhh33].children[hhhhhhhh33].children[hhhhhhhhh33].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'audio/wav') {
+                                                              newType = "wav"
+                                                              //level 1
+                                                              for(var h34 = 0; h34 < newArray.length; h34++) {
+                                                                if(newArray[h34].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh34; hh34 < newArray[h34].children.length; hh34++) {
+                                                                    if(newArray[h34].children[hh34].id === fileArray[y].id) {
+                                                                      // level 34
+                                                                      for(var hhh34; hhh34 < newArray[h34].children[hh34].children.length; hhh34++) {
+                                                                        if(newArray[h34].children[hh34].children[hhh34].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh34; hhhh34 < newArray[h34].children[hh34].children[hhh34].children.length; hhhh34++) {
+                                                                            if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh34; hhhhh34 < newArray[h34].children[hh34].children[hhh34].children[hhhh34].length; hhhhh34++) {
+                                                                                if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh34; hhhhhh34 < newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].length; hhhhhh34++) {
+                                                                                    if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh34; hhhhhhh34 < newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].length; hhhhhhh34++) {
+                                                                                        if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh34; hhhhhhhh34 < newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].length; hhhhhhhh34) {
+                                                                                            if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].children[hhhhhhhh34].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh34; hhhhhhhhh34 < newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].children[hhhhhhhh34].length; hhhhhhhhh34++) {
+                                                                                                if(newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].children[hhhhhhhh34].children[hhhhhhhhh34].id === fileArray[g].id) {
+                                                                                                  newArray[h34].children[hh34].children[hhh34].children[hhhh34].children[hhhhh34].children[hhhhhh34].children[hhhhhhh34].children[hhhhhhhh34].children[hhhhhhhhh34].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'video/mp4') {
+                                                              newType = "mp4"
+                                                              //level 1
+                                                              for(var h35 = 0; h35 < newArray.length; h35++) {
+                                                                if(newArray[h35].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh35; hh35 < newArray[h35].children.length; hh35++) {
+                                                                    if(newArray[h35].children[hh35].id === fileArray[y].id) {
+                                                                      // level 35
+                                                                      for(var hhh35; hhh35 < newArray[h35].children[hh35].children.length; hhh35++) {
+                                                                        if(newArray[h35].children[hh35].children[hhh35].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh35; hhhh35 < newArray[h35].children[hh35].children[hhh35].children.length; hhhh35++) {
+                                                                            if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh35; hhhhh35 < newArray[h35].children[hh35].children[hhh35].children[hhhh35].length; hhhhh35++) {
+                                                                                if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh35; hhhhhh35 < newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].length; hhhhhh35++) {
+                                                                                    if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh35; hhhhhhh35 < newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].length; hhhhhhh35++) {
+                                                                                        if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh35; hhhhhhhh35 < newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].length; hhhhhhhh35) {
+                                                                                            if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].children[hhhhhhhh35].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh35; hhhhhhhhh35 < newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].children[hhhhhhhh35].length; hhhhhhhhh35++) {
+                                                                                                if(newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].children[hhhhhhhh35].children[hhhhhhhhh35].id === fileArray[g].id) {
+                                                                                                  newArray[h35].children[hh35].children[hhh35].children[hhhh35].children[hhhhh35].children[hhhhhh35].children[hhhhhhh35].children[hhhhhhhh35].children[hhhhhhhhh35].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'image/jpeg') {
+                                                              newType = "jpg"
+                                                              //level 1
+                                                              for(var h36 = 0; h36 < newArray.length; h36++) {
+                                                                if(newArray[h36].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh36; hh36 < newArray[h36].children.length; hh36++) {
+                                                                    if(newArray[h36].children[hh36].id === fileArray[y].id) {
+                                                                      // level 36
+                                                                      for(var hhh36; hhh36 < newArray[h36].children[hh36].children.length; hhh36++) {
+                                                                        if(newArray[h36].children[hh36].children[hhh36].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh36; hhhh36 < newArray[h36].children[hh36].children[hhh36].children.length; hhhh36++) {
+                                                                            if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh36; hhhhh36 < newArray[h36].children[hh36].children[hhh36].children[hhhh36].length; hhhhh36++) {
+                                                                                if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh36; hhhhhh36 < newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].length; hhhhhh36++) {
+                                                                                    if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh36; hhhhhhh36 < newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].length; hhhhhhh36++) {
+                                                                                        if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh36; hhhhhhhh36 < newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].length; hhhhhhhh36) {
+                                                                                            if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].children[hhhhhhhh36].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh36; hhhhhhhhh36 < newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].children[hhhhhhhh36].length; hhhhhhhhh36++) {
+                                                                                                if(newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].children[hhhhhhhh36].children[hhhhhhhhh36].id === fileArray[g].id) {
+                                                                                                  newArray[h36].children[hh36].children[hhh36].children[hhhh36].children[hhhhh36].children[hhhhhh36].children[hhhhhhh36].children[hhhhhhhh36].children[hhhhhhhhh36].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'image/png') {
+                                                              newType = "png"
+                                                              //level 1
+                                                              for(var h37 = 0; h37 < newArray.length; h37++) {
+                                                                if(newArray[h37].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh37; hh37 < newArray[h37].children.length; hh37++) {
+                                                                    if(newArray[h37].children[hh37].id === fileArray[y].id) {
+                                                                      // level 37
+                                                                      for(var hhh37; hhh37 < newArray[h37].children[hh37].children.length; hhh37++) {
+                                                                        if(newArray[h37].children[hh37].children[hhh37].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh37; hhhh37 < newArray[h37].children[hh37].children[hhh37].children.length; hhhh37++) {
+                                                                            if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh37; hhhhh37 < newArray[h37].children[hh37].children[hhh37].children[hhhh37].length; hhhhh37++) {
+                                                                                if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh37; hhhhhh37 < newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].length; hhhhhh37++) {
+                                                                                    if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh37; hhhhhhh37 < newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].length; hhhhhhh37++) {
+                                                                                        if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh37; hhhhhhhh37 < newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].length; hhhhhhhh37) {
+                                                                                            if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].children[hhhhhhhh37].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh37; hhhhhhhhh37 < newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].children[hhhhhhhh37].length; hhhhhhhhh37++) {
+                                                                                                if(newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].children[hhhhhhhh37].children[hhhhhhhhh37].id === fileArray[g].id) {
+                                                                                                  newArray[h37].children[hh37].children[hhh37].children[hhhh37].children[hhhhh37].children[hhhhhh37].children[hhhhhhh37].children[hhhhhhhh37].children[hhhhhhhhh37].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/msword') {
+                                                              newType = "doc"
+                                                              //level 1
+                                                              for(var h38 = 0; h38 < newArray.length; h38++) {
+                                                                if(newArray[h38].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh38; hh38 < newArray[h38].children.length; hh38++) {
+                                                                    if(newArray[h38].children[hh38].id === fileArray[y].id) {
+                                                                      // level 38
+                                                                      for(var hhh38; hhh38 < newArray[h38].children[hh38].children.length; hhh38++) {
+                                                                        if(newArray[h38].children[hh38].children[hhh38].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh38; hhhh38 < newArray[h38].children[hh38].children[hhh38].children.length; hhhh38++) {
+                                                                            if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh38; hhhhh38 < newArray[h38].children[hh38].children[hhh38].children[hhhh38].length; hhhhh38++) {
+                                                                                if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh38; hhhhhh38 < newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].length; hhhhhh38++) {
+                                                                                    if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh38; hhhhhhh38 < newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].length; hhhhhhh38++) {
+                                                                                        if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh38; hhhhhhhh38 < newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].length; hhhhhhhh38) {
+                                                                                            if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].children[hhhhhhhh38].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh38; hhhhhhhhh38 < newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].children[hhhhhhhh38].length; hhhhhhhhh38++) {
+                                                                                                if(newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].children[hhhhhhhh38].children[hhhhhhhhh38].id === fileArray[g].id) {
+                                                                                                  newArray[h38].children[hh38].children[hhh38].children[hhhh38].children[hhhhh38].children[hhhhhh38].children[hhhhhhh38].children[hhhhhhhh38].children[hhhhhhhhh38].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                                              newType = "docx"
+                                                              //level 1
+                                                              for(var h39 = 0; h39 < newArray.length; h39++) {
+                                                                if(newArray[h39].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh39; hh39 < newArray[h39].children.length; hh39++) {
+                                                                    if(newArray[h39].children[hh39].id === fileArray[y].id) {
+                                                                      // level 39
+                                                                      for(var hhh39; hhh39 < newArray[h39].children[hh39].children.length; hhh39++) {
+                                                                        if(newArray[h39].children[hh39].children[hhh39].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh39; hhhh39 < newArray[h39].children[hh39].children[hhh39].children.length; hhhh39++) {
+                                                                            if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh39; hhhhh39 < newArray[h39].children[hh39].children[hhh39].children[hhhh39].length; hhhhh39++) {
+                                                                                if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh39; hhhhhh39 < newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].length; hhhhhh39++) {
+                                                                                    if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh39; hhhhhhh39 < newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].length; hhhhhhh39++) {
+                                                                                        if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh39; hhhhhhhh39 < newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].length; hhhhhhhh39) {
+                                                                                            if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].children[hhhhhhhh39].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh39; hhhhhhhhh39 < newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].children[hhhhhhhh39].length; hhhhhhhhh39++) {
+                                                                                                if(newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].children[hhhhhhhh39].children[hhhhhhhhh39].id === fileArray[g].id) {
+                                                                                                  newArray[h39].children[hh39].children[hhh39].children[hhhh39].children[hhhhh39].children[hhhhhh39].children[hhhhhhh39].children[hhhhhhhh39].children[hhhhhhhhh39].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/vnd.ms-powerpoint') {
+                                                              newType = "ppt"
+                                                              //level 1
+                                                              for(var h391 = 0; h391 < newArray.length; h391++) {
+                                                                if(newArray[h391].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh391; hh391 < newArray[h391].children.length; hh391++) {
+                                                                    if(newArray[h391].children[hh391].id === fileArray[y].id) {
+                                                                      // level 391
+                                                                      for(var hhh391; hhh391 < newArray[h391].children[hh391].children.length; hhh391++) {
+                                                                        if(newArray[h391].children[hh391].children[hhh391].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh391; hhhh391 < newArray[h391].children[hh391].children[hhh391].children.length; hhhh391++) {
+                                                                            if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh391; hhhhh391 < newArray[h391].children[hh391].children[hhh391].children[hhhh391].length; hhhhh391++) {
+                                                                                if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh391; hhhhhh391 < newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].length; hhhhhh391++) {
+                                                                                    if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh391; hhhhhhh391 < newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].length; hhhhhhh391++) {
+                                                                                        if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh391; hhhhhhhh391 < newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].length; hhhhhhhh391) {
+                                                                                            if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].children[hhhhhhhh391].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh391; hhhhhhhhh391 < newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].children[hhhhhhhh391].length; hhhhhhhhh391++) {
+                                                                                                if(newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].children[hhhhhhhh391].children[hhhhhhhhh391].id === fileArray[g].id) {
+                                                                                                  newArray[h391].children[hh391].children[hhh391].children[hhhh391].children[hhhhh391].children[hhhhhh391].children[hhhhhhh391].children[hhhhhhhh391].children[hhhhhhhhh391].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'text/plain') {
+                                                              newType = "txt"
+                                                              //level 1
+                                                              for(var h392 = 0; h392 < newArray.length; h392++) {
+                                                                if(newArray[h392].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh392; hh392 < newArray[h392].children.length; hh392++) {
+                                                                    if(newArray[h392].children[hh392].id === fileArray[y].id) {
+                                                                      // level 392
+                                                                      for(var hhh392; hhh392 < newArray[h392].children[hh392].children.length; hhh392++) {
+                                                                        if(newArray[h392].children[hh392].children[hhh392].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh392; hhhh392 < newArray[h392].children[hh392].children[hhh392].children.length; hhhh392++) {
+                                                                            if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh392; hhhhh392 < newArray[h392].children[hh392].children[hhh392].children[hhhh392].length; hhhhh392++) {
+                                                                                if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh392; hhhhhh392 < newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].length; hhhhhh392++) {
+                                                                                    if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh392; hhhhhhh392 < newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].length; hhhhhhh392++) {
+                                                                                        if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh392; hhhhhhhh392 < newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].length; hhhhhhhh392) {
+                                                                                            if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].children[hhhhhhhh392].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh392; hhhhhhhhh392 < newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].children[hhhhhhhh392].length; hhhhhhhhh392++) {
+                                                                                                if(newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].children[hhhhhhhh392].children[hhhhhhhhh392].id === fileArray[g].id) {
+                                                                                                  newArray[h392].children[hh392].children[hhh392].children[hhhh392].children[hhhhh392].children[hhhhhh392].children[hhhhhhh392].children[hhhhhhhh392].children[hhhhhhhhh392].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            if(fileArray[h].type === 'application/x-zip-compressed') {
+                                                              newType = "zip"
+                                                              //level 1
+                                                              for(var h393 = 0; h393 < newArray.length; h393++) {
+                                                                if(newArray[h393].id === event.target.value) {
+                                                                  //level 2
+                                                                  for(var hh393; hh393 < newArray[h393].children.length; hh393++) {
+                                                                    if(newArray[h393].children[hh393].id === fileArray[y].id) {
+                                                                      // level 393
+                                                                      for(var hhh393; hhh393 < newArray[h393].children[hh393].children.length; hhh393++) {
+                                                                        if(newArray[h393].children[hh393].children[hhh393].id === fileArray[a].id) {
+                                                                          //level 4
+                                                                          for(var hhhh393; hhhh393 < newArray[h393].children[hh393].children[hhh393].children.length; hhhh393++) {
+                                                                            if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].id === fileArray[b].id) {
+                                                                              //level 5
+                                                                              for(var hhhhh393; hhhhh393 < newArray[h393].children[hh393].children[hhh393].children[hhhh393].length; hhhhh393++) {
+                                                                                if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].id === fileArray[c].id) {
+                                                                                  //level 6
+                                                                                  for(var hhhhhh393; hhhhhh393 < newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].length; hhhhhh393++) {
+                                                                                    if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].id === fileArray[d].id) {
+                                                                                      //level 7
+                                                                                      for(var hhhhhhh393; hhhhhhh393 < newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].length; hhhhhhh393++) {
+                                                                                        if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].id === fileArray[e].id) {
+                                                                                          //level 8
+                                                                                          for(var hhhhhhhh393; hhhhhhhh393 < newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].length; hhhhhhhh393) {
+                                                                                            if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].children[hhhhhhhh393].id === fileArray[f].id) {
+                                                                                              //level 9
+                                                                                              for(var hhhhhhhhh393; hhhhhhhhh393 < newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].children[hhhhhhhh393].length; hhhhhhhhh393++) {
+                                                                                                if(newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].children[hhhhhhhh393].children[hhhhhhhhh393].id === fileArray[g].id) {
+                                                                                                  newArray[h393].children[hh393].children[hhh393].children[hhhh393].children[hhhhh393].children[hhhhhh393].children[hhhhhhh393].children[hhhhhhhh393].children[hhhhhhhhh393].children
+                                                                                                  .push({id: fileArray[h].id, name: fileArray[h].file, type: newType, parent: parent})
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
                                                             if(fileArray[h].type === 'application/vnd.google-apps.folder') {
                                                               console.log("maximum file depth reached.")                                             
                                                             }
@@ -1305,15 +4252,9 @@ class Search extends React.Component {
             }
           }
         }
-        }
+      }
+      console.log(newArray);
       this.setState({exportFileArray: newArray})
-      console.log(newArray);
-      }
-      if(event.target.checked === false) {
-        newArray = [];
-      }
-      console.log(newArray);
-      //this.setState({exportFileArray: newArray})
     }
 
     handleChangeSetParent(event) {
