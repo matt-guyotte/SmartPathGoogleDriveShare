@@ -3807,6 +3807,7 @@ app.post("/verifychromeemail", (req, res) => {
     return str.split('@')[1];
   }
   var emailDomain = "@" + getSecondPart(email);
+  console.log(emailDomain);
   var message;
   Domains.find({name: "Domains"}, (err, res) => {
     if (err) {
