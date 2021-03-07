@@ -3842,7 +3842,7 @@ app.post("/verifychromeemail", (req, res) => {
   })
 })
 
-app.get("getemailmessage", (req, res) => {
+app.get("/getemailmessage", (req, res) => {
   var responsemessage = req.app.get('message');
   console.log("this is from emailMessage: " + responsemessage);
   res.send(responsemessage);
