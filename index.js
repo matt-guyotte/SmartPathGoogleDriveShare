@@ -3825,7 +3825,7 @@ app.post("/verifychromeemail", (req, res) => {
         app.set('message', message);
         break;
       }
-      if(foundDomains[i] !== emailDomain) {
+      else {
         SpecialUsers.find({name: "Special Users"}, (err, res) => {
           if(err) return console.log(err);
           var specialUsers = res[0].emails;
@@ -3845,7 +3845,6 @@ app.post("/verifychromeemail", (req, res) => {
         })
       }
     }
-    break;
   })
 })
 
