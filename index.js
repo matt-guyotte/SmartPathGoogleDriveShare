@@ -3817,6 +3817,7 @@ app.post("/verifychromeemail", (req, res) => {
       app.set('message', message)
     };
     var foundDomains = res[0].domains;
+    console.log(foundDomains)
     for(var i = 0; i < foundDomains.length; i++) {
       if(foundDomains[i] === emailDomain) {
         message = true;
