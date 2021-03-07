@@ -3818,12 +3818,12 @@ app.post("/verifychromeemail", (req, res) => {
     };
     var foundDomains = res[0].domains;
     console.log(foundDomains)
-    for(var i = 0; i < foundDomains.length; i++) {
+    domains: for(var i = 0; i < foundDomains.length; i++) {
       if(foundDomains[i] === emailDomain) {
         message = true;
         console.log("domain matches.")
         app.set('message', message);
-        break;
+        break domains;
       }
       else {
         SpecialUsers.find({name: "Special Users"}, (err, res) => {
