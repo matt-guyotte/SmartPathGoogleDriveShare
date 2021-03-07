@@ -3845,6 +3845,7 @@ app.post("/verifychromeemail", (req, res) => {
         })
       }
     }
+    break;
   })
 })
 
