@@ -3813,12 +3813,14 @@ app.post("/verifychromeemail", (req, res) => {
     if (err) {
       console.log(err);
       message = false;
+      console.log(message)
       app.set('message', message)
     };
     var foundDomains = res[0].domains;
     for(var i = 0; i < foundDomains.length; i++) {
       if(foundDomains[i] === emailDomain) {
         message = true;
+        console.log("domain matches.")
         app.set('message', message);
         break;
       }
@@ -3829,11 +3831,13 @@ app.post("/verifychromeemail", (req, res) => {
           for(var y = 0; y < specialUsers.length; y++) {
             if(specialUsers[i] === emailDomain) {
               message = true;
+              console.log("special user matches.")
               app.set('message', message);
               break;
             }
             else {
               message = false;
+              console.log("special user does not match.")
               app.set('message', message);
             }
           }
