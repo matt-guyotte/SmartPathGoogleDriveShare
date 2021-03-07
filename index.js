@@ -3802,6 +3802,7 @@ app.post('/makefile', (req, res) => {
 
 app.post("/verifychromeemail", (req, res) => {
   var email = req.body.email;
+  console.log("this is from the verify request: " + email)
   function getSecondPart(str) {
     return str.split('@')[1];
   }
