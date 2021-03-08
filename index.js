@@ -3823,14 +3823,13 @@ app.post("/verifychromeemail", (req, res) => {
         message = true;
         console.log("domain matches.")
         app.set('message', message);
-        break;
         break domains;
       }
       else {
-        special: SpecialUsers.find({name: "Special Users"}, (err, res) => {
+         SpecialUsers.find({name: "Special Users"}, (err, res) => {
           if(err) return console.log(err);
           var specialUsers = res[0].emails;
-          for(var y = 0; y < specialUsers.length; y++) {
+          special: for(var y = 0; y < specialUsers.length; y++) {
             if(specialUsers[i] === emailDomain) {
               message = true;
               console.log("special user matches.")
