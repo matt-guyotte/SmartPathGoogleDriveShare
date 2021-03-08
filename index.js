@@ -3809,7 +3809,7 @@ app.post("/verifychromeemail", (req, res) => {
   var emailDomain = "@" + getSecondPart(email);
   console.log(emailDomain);
   var message;
-  domainfind: Domains.find({name: "Domains"}, (err, res) => {
+  Domains.find({name: "Domains"}, (err, res) => {
     if (err) {
       console.log(err);
       message = false;
