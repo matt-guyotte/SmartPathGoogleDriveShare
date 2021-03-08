@@ -3823,8 +3823,8 @@ app.post("/verifychromeemail", (req, res) => {
         message = true;
         console.log("domain matches.")
         app.set('message', message);
+        break;
         break domains;
-        break domainfind;
       }
       else {
         special: SpecialUsers.find({name: "Special Users"}, (err, res) => {
