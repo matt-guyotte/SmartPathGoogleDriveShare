@@ -3809,7 +3809,7 @@ app.post("/verifychromeemail", (req, res) => {
   var emailDomain = "@" + getSecondPart(email);
   console.log(emailDomain);
   var message;
-  Domains.find({name: "Domains"}, (err, res) => {
+  domainfind: Domains.find({name: "Domains"}, (err, res) => {
     if (err) {
       console.log(err);
       message = false;
@@ -3824,9 +3824,10 @@ app.post("/verifychromeemail", (req, res) => {
         console.log("domain matches.")
         app.set('message', message);
         break domains;
+        break domainfind;
       }
       else {
-        SpecialUsers.find({name: "Special Users"}, (err, res) => {
+        special: SpecialUsers.find({name: "Special Users"}, (err, res) => {
           if(err) return console.log(err);
           var specialUsers = res[0].emails;
           for(var y = 0; y < specialUsers.length; y++) {
@@ -3834,7 +3835,7 @@ app.post("/verifychromeemail", (req, res) => {
               message = true;
               console.log("special user matches.")
               app.set('message', message);
-              break;
+              break special;
             }
             else {
               message = false;
