@@ -760,7 +760,7 @@ removeTagIndustry(event) {
             <hr />
 
             <h3> Add Image </h3>
-            <form action="/profile" enctype="multipart/form-data" method="POST"> 
+            <form action="/photoupload" enctype="multipart/form-data" method="POST"> 
             <p> Enter Id of Drive Folder/File </p>
               <input type = "text" name = "fileId" />
             <p> Upload picture </p>

@@ -63,10 +63,15 @@ var specialUsersSchema = new Schema ({
   name: String,
   emails: Array,
 })
+var imageSchema = new Schema({
+  id: String,
+  img: {data: Buffer, contentType: String}
+});
 const User = mongoose.model('User', userSchema);
 const TagFile = mongoose.model('TagFile', tagSchema)
 const Domains = mongoose.model('Domains', domainSchema)
 const SpecialUsers = mongoose.model('SpecialUsers', specialUsersSchema)
+const Images = mongoose.model('Images', imageSchema);
 
 //function makeNewTag() {
 //  TagFile.remove({}, (err, res) => {
@@ -84,7 +89,7 @@ const storage = multer.diskStorage({
     cb(null, './src/Pages/img')
   },
   filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    cb(null, file.fieldname + '-' + Date.now())
   }
 })
 
@@ -250,7 +255,16 @@ async function listFiles(auth) {
           imgsrcArray.push(files[i].properties.imgsrc);
         }
         if(typeof files[i].properties.imgsrc === "undefined") {
-          imgsrcArray.push('');
+          Images.find({id: files[i].id}, (err, data) => {
+          if (err) {
+            console.log(err)
+            imgsrcArray.push('')
+          };
+          var imgFile = data[0]
+          const rawBuffer = imgFile.toString("base64");
+          const imageSrc = "data:image/png;base64," + rawBuffer;
+          imgsrcArray.push(imageSrc);
+        })
         }
 
         //IF EQUALS UNDEFINED TAGS
@@ -4277,6 +4291,32 @@ app.post('/profile', function (req, res) {
   drive.files.update({
     fileId: id,
     requestBody: {properties: {imgsrc: imgurl}},
+  })
+})
+
+app.post('/photoupload', uploads.single('image'), (req, res, next) => {
+  var obj = {
+    id: req.body.fileId,
+    img: {
+        data: fs.readFileSync('./src/Pages/img/' + req.file.filename),
+        contentType: 'image/png'
+    }
+  }
+  Images.create(obj, (err, item) => {
+      if (err) return console.log(err)
+      console.log(item);
+  });
+});
+
+app.get('/photocall/:photoid', (req, res) => {
+  console.log(req.params['id']);
+  var photoId = req.params['photoname']
+  Images.find({id: photoId}, (err, data) => {
+    if (err) return console.log(err);
+    var imgFile = data[0]
+    const rawBuffer = imgFile.toString("base64");
+    const imageSrc = "data:image/png;base64," + rawBuffer;
+    res.send(imageSrc);
   })
 })
 
