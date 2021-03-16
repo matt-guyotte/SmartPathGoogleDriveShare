@@ -658,7 +658,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      const mkDir1 = await fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err, res) => {
+      const mkDir1 = await fs.mkdir('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
