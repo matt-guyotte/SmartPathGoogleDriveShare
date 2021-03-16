@@ -658,11 +658,10 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      const mkDir1 = await fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err) => {
+      const mkDir1 = await fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
-      await mkDir1;
       //1
       for(var y = 0; y < files[i].children.length; y++) {
         const topFolderPath = './src/Pages/downloads/' + files[i].name;
@@ -708,6 +707,7 @@ app.post("/downloaddocument", async (req, res) => {
           }
           if(type1 === 'pdf' || type1 === "mp3" || type1 === "wav" || type1 === "mp4" || 
              type1 === 'jpg' || type1 === 'png' || type1 === 'txt') {
+            await mkDir1;
             console.log("pdf if statement level1 called")
     
             await drive.files.get(
@@ -1419,7 +1419,7 @@ app.post("/downloaddocument", async (req, res) => {
             } 
           }
         }
-      }           
+      }          
     }
   }
   //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
