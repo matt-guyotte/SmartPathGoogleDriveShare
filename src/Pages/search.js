@@ -137,6 +137,7 @@ class Search extends React.Component {
         this.getFoldersClassroom = this.getFoldersClassroom.bind(this);
         this.organizeClassroomFolders = this.organizeClassroomFolders.bind(this);
         this.classroomExport = this.classroomExport.bind(this); 
+        this.fileDownload = this.fileDownload.bind(this);
         this.downloadTest = this.downloadTest.bind(this);
         
     }
@@ -4864,7 +4865,16 @@ class Search extends React.Component {
        .then(res => this.setState({exportResult: res}))
     }
 
-    
+    fileDownload() {
+      fetch('/filedownload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          fileArray: this.state.exportFileArray,
+          parentId: this.state.classroomParent,
+        })
+      })
+    }
 
     searchFunction() {
         console.log("search function run");
@@ -5205,7 +5215,7 @@ class Search extends React.Component {
                                     </Modal.Body>
                                     <Modal.Body> {this.state.exportResult} </Modal.Body>
                                     <Modal.Header> <strong> Local Download: </strong> </Modal.Header>
-                                    <Modal.Body> <a href = "https://connect.smartpathed.com/download"> <Button className = "btn-primary"> Download </Button> </a> </Modal.Body>
+                                    <Modal.Body> <Button onClick = {this.fileDownload} className = "btn-primary"> Download </Button> </Modal.Body>
                                     <Modal.Footer>
                                       <Button variant="secondary" onClick={this.closeModal}>
                                         Close

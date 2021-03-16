@@ -565,14 +565,10 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 // Setting Files to Local 
 
 app.post("/downloaddocument", async (req, res) => {
-  const JSZip = require('jszip');
   const drive = req.app.get('drive');
   const files = req.body.files;
   app.set('files', files);
   console.log("these are the files: " + JSON.stringify(files));
- 
-  var zip = new JSZip();
-  let topFolderPathZip = ''
 
   for(var i = 0; i < files.length; i++) {
     if (files[i].type != "folder") {
@@ -623,7 +619,8 @@ app.post("/downloaddocument", async (req, res) => {
         {fileId: fileId, alt: 'media'}, 
         {responseType: 'stream'}, 
         (err, res) => {
-          if (err) return console.log(err); 
+          if (err) return console.log(err);
+          console.log("file recieved from drive.") 
           res.data
           .pipe(dest, function(err) {
             if(err) return console.log(err);
@@ -2230,7 +2227,7 @@ app.post('/classroomexport', async (req, res) => {
                     if(level3.children != []) {
                       //4
                       for(var c = 0; c < level3.children.length; c++) {
-                        const level14 = level3.children[c]; 
+                        const level4 = level3.children[c]; 
                         var newIdFolder3 = req.app.get('newIdFolder3');
                         if (level4.type != "folder") {
                           const fileName4 = level4.name;
@@ -2874,6 +2871,260 @@ app.get('/exportresult', (req, res) => {
   }
 })
 
+app.post('/filedownload', (req, res) => {
+  var JSZip = require("jszip");
+  var jsZipUtils = require("jszip-utils");
+  const files = req.body.fileArray;
+  const regDest = './src/Pages/downloads';
+  var zip = new JSZip();
+  for(var i = 0; i < files.length; i++) {
+    if (files[i].type != "folder") {
+      const fileName = files[i].name;
+      const type = files[i].type;
+      const destSimple = './src/Pages/downloads/' + fileName + '.' + type;
+      console.log(destSimple)
+      JSZipUtils.getBinaryContent(destSimple, function(err, data) {
+        if(err) {
+            throw err; // or handle the error
+        }
+        zip.file(fileName + '.' + type, data, {binary:true});
+      })
+
+      app.set('result', result)
+    }
+    if(files[i].type === "folder") {
+      const fileName = files[i].name;
+      zip.folder(fileName);
+      if (typeof files[i].children === 'undefined') {
+      }
+      //1
+      else {
+        for(var y = 0; y < files[i].children.length; y++) {
+          const level1 = files[i].children[y]; 
+          if (level1.type != "folder") {
+            const fileName1 = level1.name;
+            const destSimple1 = destSimple + '/' + fileName1 + '.' + type1;
+
+            JSZipUtils.getBinaryContent(destSimple1, function(err, data) {
+              if(err) {
+                  throw err; // or handle the error
+              }
+              zip.file(fileName1 + '.' + type1, data, {binary:true});
+            })   
+          }
+          if(level1.type === "folder") {
+            const fileName1 = level1.name;
+            const zipFileDest1 = regDest + "driveDownload" + '_' + fileName1;
+            zip.folder(fileName1);
+            if (typeof level1.children === 'undefined') {
+            }         
+            //2
+                else {
+                  for(var a = 0; a < level1.children.length; a++) {
+                    const level2 = level1.children[a]; 
+                    var newIdFolder1 = req.app.get('newIdFolder1');
+                    if (level2.type != "folder") {
+                      const fileName2 = level2.name;
+                      const type2 = level2.type;
+                      const destSimple2 = destSimple1 + '/' + fileName2 + '.' + type2;
+
+                      JSZipUtils.getBinaryContent(destSimple2, function(err, data) {
+                        if(err) {
+                            throw err; // or handle the error
+                        }
+                        zip.file(fileName2 + '.' + type2, data, {binary:true});
+                      }) 
+
+                    }
+                  if(level2.type === "folder") {
+                    const fileName2 = level2.name;
+                    zip.folder(fileName2);
+                  if(level2.children != []) {
+                    //3
+                    for(var b = 0; b < level2.children.length; b++) {
+                      const level3 = level2.children[b]; 
+                      var newIdFolder2 = req.app.get('newIdFolder2');
+                      if (level3.type != "folder") {
+                        const fileName3 = level3.name;
+                        const type3 = level3.type;
+                        const destSimple3 = destSimple2 + '/' + fileName3 + '.' + type3;
+
+                        JSZipUtils.getBinaryContent(destSimple3, function(err, data) {
+                          if(err) {
+                              throw err; // or handle the error
+                          }
+                          zip.file(fileName3 + '.' + type3, data, {binary:true});
+                        }) 
+                        
+                      }
+                      if(level3.type === "folder") {
+                        const fileName3 = level3.name;
+                        zip.folder(fileName3);
+                        if(level3.children != []) {
+                          //4
+                          for(var c = 0; c < level3.children.length; c++) {
+                            const level4 = level3.children[c]; 
+                            if (level4.type != "folder") {
+                              const fileName4 = level4.name;
+                              const type4 = level4.type;
+                              const destSimple4 = destSimple3 + "/" + fileName4 + '.' + type4;
+
+                              JSZipUtils.getBinaryContent(destSimple4, function(err, data) {
+                                if(err) {
+                                    throw err; // or handle the error
+                                }
+                                zip.file(fileName4 + '.' + type4, data, {binary:true});
+                              }) 
+
+                            }
+                            if(level4.type === "folder") {
+                              const fileName4 = level4.name;
+                              zip.folder(fileName4);
+                              
+                              if(level4.children != []) {
+                                //5
+                                for(var d = 0; d < level4.children.length; d++) {
+                                  const level5 = level4.children[d]; 
+                                  if (level5.type != "folder") {
+                                    const fileName5 = level5.name;
+                                    const type5 = level5.type;                                 
+
+                                    const destSimple5 = destSimple4 + "/" + fileName5 + '.' + type5;
+
+                                    JSZipUtils.getBinaryContent(destSimple5, function(err, data) {
+                                      if(err) {
+                                          throw err; // or handle the error
+                                      }
+                                      zip.file(fileName5 + '.' + type5, data, {binary:true});
+                                    }) 
+                                  }
+                                  if(level5.type === "folder") {
+                                    const fileName5 = level5.name;
+                                    zip.folder(fileName5);
+                                    if(level5.children != []) {
+                                      //6
+                                      for(var e = 0; e < level5.children.length; e++) {
+                                        const level6 = level5.children[e]; 
+                                        if (level6.type != "folder") {
+                                          const fileName6 = level6.name;
+                                          const type6 = level6.type;
+
+                                          const destSimple6 = destSimple5 + "/" + fileName6 + '.' + type6;
+
+                                          JSZipUtils.getBinaryContent(destSimple6, function(err, data) {
+                                            if(err) {
+                                                throw err; // or handle the error
+                                            }
+                                            zip.file(fileName6 + '.' + type6, data, {binary:true});
+                                          }) 
+                                        }
+                                        if(level6.type === "folder") {
+                                          const fileName6 = level6.name;
+                                          zip.folder(fileName6);
+                                          
+                                          if(level6.children != []) {
+                                            //7
+                                            for(var f = 0; f < level6.children.length; f++) {
+                                              const level7 = level6.children[f]; 
+                                              if (level7.type != "folder") {
+                                                const fileName7 = level7.name;
+                                                const type7 = level7.type;                                             
+
+                                                const destSimple7 = destSimple6 + "/" + fileName7 + '.' + type7;
+
+                                                JSZipUtils.getBinaryContent(destSimple7, function(err, data) {
+                                                  if(err) {
+                                                      throw err; // or handle the error
+                                                  }
+                                                  zip.file(fileName7 + '.' + type7, data, {binary:true});
+                                                }) 
+                                              }
+                                              if(level7.type === "folder") {
+                                                const fileName7 = level7.name;
+                                                zip.folder(fileName7);
+                                                if(level7.children != []) {
+                                                  //8
+                                                  for(var g = 0; g < level7.children.length; g++) {
+                                                    const level8 = level7.children[g];
+                                                    if (level8.type != "folder") {
+                                                      const fileName8 = level8.name;
+                                                      const type8 = level8.type;                                                   
+
+                                                      const destSimple8 = destSimple7 + "/" + fileName8 + '.' + type8;
+
+                                                      JSZipUtils.getBinaryContent(destSimple8, function(err, data) {
+                                                        if(err) {
+                                                            throw err; // or handle the error
+                                                        }
+                                                        zip.file(fileName8 + '.' + type8, data, {binary:true});
+                                                      }) 
+                                                    }
+                                                    if(level8.type === "folder") {
+                                                      const fileName8 = level8.name;
+                                                      zip.folder(fileName8);
+                                                      if(level8.children != []) {
+                                                        //9
+                                                        for(var h = 0; h < level8.children.length; h++) {
+                                                          const level9 = level8.children[h]; 
+                                                          if (level9.type != "folder") {
+                                                            const fileName9 = level9.name;
+                                                            const type9 = level9.type;                                                           
+
+                                                            const destSimple9 = destSimple8 + "/" + fileName9 + '.' + type9;
+
+                                                            JSZipUtils.getBinaryContent(destSimple9, function(err, data) {
+                                                              if(err) {
+                                                                  throw err; // or handle the error
+                                                              }
+                                                              zip.file(fileName9 + '.' + type9, data, {binary:true});
+                                                            }) 
+                                                          }
+                                                          if(level9.type === "folder") {
+                                                            const fileName9 = level9.name;
+                                                            zip.folder(fileName9);
+                                                            if(level9.children != []) {
+                                                              console.log("maximum file depth reached.")
+                                                            } 
+                                                          }
+                                                        }
+                                                      } 
+                                                    }
+                                                  }
+                                                } 
+                                              }
+                                            }
+                                          } 
+                                        }
+                                      }
+                                    } 
+                                  }
+                                }
+                              } 
+                            }
+                          }
+                        } 
+                      }
+                    }
+                  } 
+                }
+              } 
+            }
+          }
+        } 
+      }
+    }
+  }
+  var jsZipExport = regDest + "driveDownload" + files[0].id + "." + 'zip';
+  zip
+  .generateNodeStream({type:'nodebuffer', streamFiles:true})
+  .pipe(fs.createWriteStream(jsZipExport))
+  .on('finish', function () {
+      // JSZip generates a readable stream with a "end" event,
+      // but is piped here in a writable stream which emits a "finish" event.
+      console.log("zip file written.");
+      res.download(newPath)
+  });
+})
 // Extension Push
 
 app.get('/classroomexport2', async (req, res) => {
@@ -4318,16 +4569,6 @@ app.get('/photocall/:photoid', (req, res) => {
     const imageSrc = "data:image/png;base64," + rawBuffer;
     res.send(imageSrc);
   })
-})
-
-app.get('/download', (req, res) => {
-  console.log("file downloaded.")
-  const fileName = req.app.get('fileName');
-  const type = req.app.get('type')
-  var pathStart = './src/Pages/downloads/'
-  var newPath = pathStart.concat(fileName + '.' + type)
-  console.log(newPath)
-  res.download(newPath)
 })
 
 
