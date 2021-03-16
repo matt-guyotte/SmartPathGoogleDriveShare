@@ -669,6 +669,7 @@ app.post("/downloaddocument", async (req, res) => {
         const level1 = files[i].children[y]
         console.log(level1);
         if(level1.type != 'folder') {
+          await mkDir1;
           const fileId1 = level1.id;
           const fileName1 = level1.name;
           const type1 = level1.type;
