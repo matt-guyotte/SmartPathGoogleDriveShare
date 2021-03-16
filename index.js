@@ -704,7 +704,7 @@ app.post("/downloaddocument", async (req, res) => {
             }
             if(type1 === 'pdf' || type1 === "mp3" || type1 === "wav" || type1 === "mp4" || 
                type1 === 'jpg' || type1 === 'png' || type1 === 'txt') {
-              console.log("pdf if statement called")
+              console.log("pdf if statement level1 called")
       
               await drive.files.get(
                 {fileId: fileId1, alt: 'media'}, 
