@@ -658,7 +658,7 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      const mkDir1 = await fs.mkdir('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err, res) => {
+      await fs.mkdir('./src/Pages/downloads/' + files[i].name, { recursive: true }, (err, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
@@ -668,7 +668,6 @@ app.post("/downloaddocument", async (req, res) => {
         const level1 = files[i].children[y]
         console.log(level1);
         if(level1.type != 'folder') {
-          await mkDir1;
           const fileId1 = level1.id;
           const fileName1 = level1.name;
           const type1 = level1.type;
@@ -707,7 +706,6 @@ app.post("/downloaddocument", async (req, res) => {
           }
           if(type1 === 'pdf' || type1 === "mp3" || type1 === "wav" || type1 === "mp4" || 
              type1 === 'jpg' || type1 === 'png' || type1 === 'txt') {
-            await mkDir1;
             console.log("pdf if statement level1 called")
     
             await drive.files.get(
@@ -907,7 +905,7 @@ app.post("/downloaddocument", async (req, res) => {
                       //await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
                     }
                     if(level3.type === 'folder') {
-                      fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                      await fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                       var level3FolderPath = level2FolderPath + "/" + level3.name;
                       //var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
                       if(level3.children.length != 0) {
@@ -988,7 +986,7 @@ app.post("/downloaddocument", async (req, res) => {
                             //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                           }
                           if(level4.type === 'folder') {
-                            fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                            await fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                             var level4FolderPath = level3FolderPath + "/" + level4.name;
                             //var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
                             if(level4.children.length != 0) {
@@ -1069,7 +1067,7 @@ app.post("/downloaddocument", async (req, res) => {
                                   //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                 }
                                 if(level5.type === 'folder') {
-                                  fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                  await fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                   var level5FolderPath = level4FolderPath + "/" + level5.name;
                                   //var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
                                   if(level5.children.length != 0) {
@@ -1150,7 +1148,7 @@ app.post("/downloaddocument", async (req, res) => {
                                         //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                       }
                                       if(level6.type === 'folder') {
-                                        fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                        await fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                         var level6FolderPath = level5FolderPath + "/" + level6.name;
                                         //var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
                                         if(level6.children.length != 0) {
@@ -1231,7 +1229,7 @@ app.post("/downloaddocument", async (req, res) => {
                                               //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                             }
                                             if(level7.type === 'folder') {
-                                              fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                              await fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                               var level7FolderPath = level6FolderPath + "/" + level7.name;
                                               //var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
                                               if(level7.children.length != 0) {
@@ -1312,7 +1310,7 @@ app.post("/downloaddocument", async (req, res) => {
                                                     //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                                   }
                                                   if(level8.type === 'folder') {
-                                                    fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                                    await fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
                                                     var level8FolderPath = level7FolderPath + "/" + level8.name;
                                                     //var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
                                                     if(level8.children.length != 0) {
