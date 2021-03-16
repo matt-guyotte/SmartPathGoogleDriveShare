@@ -662,11 +662,10 @@ app.post("/downloaddocument", async (req, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
-      sleep(2000);
-      const topFolderPath = './src/Pages/downloads/' + files[i].name;
       if(files[i].children.length != 0) {
         //1
         for(var y = 0; y < files[i].children.length; y++) {
+          const topFolderPath = './src/Pages/downloads/' + files[i].name;
           const level1 = files[i].children[y]
           console.log(level1);
           if(level1.type != 'folder') {
