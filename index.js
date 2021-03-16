@@ -662,764 +662,762 @@ app.post("/downloaddocument", async (req, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
-      if(files[i].children.length != 0) {
-        //1
-        for(var y = 0; y < files[i].children.length; y++) {
-          const topFolderPath = './src/Pages/downloads/' + files[i].name;
-          const level1 = files[i].children[y]
-          console.log(level1);
-          if(level1.type != 'folder') {
-            const fileId1 = level1.id;
-            const fileName1 = level1.name;
-            const type1 = level1.type;
-            const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1);
-            const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
-            let newType1 = ''
-            if(type1 === 'docx') {
-              newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            }
-            if(type1 === 'pptx') {
-              newType1 = 'application/vnd.google-apps.presentation'
-            }
-            if(type1 === 'xlsx') {
-              newType1 === 'application/vnd.google-apps.spreadsheet'
-            }
-            if(type1 === 'pdf') {
-              newType1 === 'application/pdf'
-            }
-            if(type1 === 'mp3') {
-              newType1 = 'audio/mpeg'
-            }
-            if(type1 === 'wav') {
-              newType1 = 'audio/wav'
-            }
-            if(type1 === 'mp4') {
-              newType1 = 'video/mp4'
-            }
-            if(type1 === 'jpg') {
-              newType1 = 'image/jpeg'
-            }
-            if(type1 === 'png') {
-              newType1 = 'image/png'
-            }
-            if(type1 === 'txt') {
-              newType1 = 'text/plain'
-            }
-            if(type1 === 'pdf' || type1 === "mp3" || type1 === "wav" || type1 === "mp4" || 
-               type1 === 'jpg' || type1 === 'png' || type1 === 'txt') {
-              console.log("pdf if statement level1 called")
-      
-              await drive.files.get(
-                {fileId: fileId1, alt: 'media'}, 
-                {responseType: 'stream'}, 
-                (err, res) => {
-                  if (err) return console.log(err); 
-                  res.data
-                  .pipe(dest1, function(err) {
-                    if(err) return console.log(err);
-                    console.log("pipe worked")
-                  })
-                  .on('end', () => {
-                    console.log("made file.")
-                  })
-                });
-            }
-            if(type1 === 'docx' || type1 === 'pptx' || type1 === 'xlsx') {
-              await drive.files.export({
-                fileId: fileId1, mimeType: newType1}, 
-                {responseType: 'stream'},
-                (err, res) => {
-                if(err)return console.log("error in drive.files.export: " + err)
+      //1
+      for(var y = 0; y < files[i].children.length; y++) {
+        const topFolderPath = './src/Pages/downloads/' + files[i].name;
+        const level1 = files[i].children[y]
+        console.log(level1);
+        if(level1.type != 'folder') {
+          const fileId1 = level1.id;
+          const fileName1 = level1.name;
+          const type1 = level1.type;
+          const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1);
+          const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
+          let newType1 = ''
+          if(type1 === 'docx') {
+            newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          }
+          if(type1 === 'pptx') {
+            newType1 = 'application/vnd.google-apps.presentation'
+          }
+          if(type1 === 'xlsx') {
+            newType1 === 'application/vnd.google-apps.spreadsheet'
+          }
+          if(type1 === 'pdf') {
+            newType1 === 'application/pdf'
+          }
+          if(type1 === 'mp3') {
+            newType1 = 'audio/mpeg'
+          }
+          if(type1 === 'wav') {
+            newType1 = 'audio/wav'
+          }
+          if(type1 === 'mp4') {
+            newType1 = 'video/mp4'
+          }
+          if(type1 === 'jpg') {
+            newType1 = 'image/jpeg'
+          }
+          if(type1 === 'png') {
+            newType1 = 'image/png'
+          }
+          if(type1 === 'txt') {
+            newType1 = 'text/plain'
+          }
+          if(type1 === 'pdf' || type1 === "mp3" || type1 === "wav" || type1 === "mp4" || 
+             type1 === 'jpg' || type1 === 'png' || type1 === 'txt') {
+            console.log("pdf if statement level1 called")
+    
+            await drive.files.get(
+              {fileId: fileId1, alt: 'media'}, 
+              {responseType: 'stream'}, 
+              (err, res) => {
+                if (err) return console.log(err); 
                 res.data
                 .pipe(dest1, function(err) {
-                  if (err) return console.log(err);
-                  console.log('file written')
+                  if(err) return console.log(err);
+                  console.log("pipe worked")
                 })
-                .on('end', ()=>{
-                    console.log("made file.")
+                .on('end', () => {
+                  console.log("made file.")
                 })
               });
-            }
-            //await zip.file(dest1zip, fs.readFile(dest1file, (err) => {if (err) return console.log(err)}));
           }
-          if(level1.type === 'folder') {
-            console.log("at 808 " + topFolderPath)
-            fs.mkdir(topFolderPath + "/" + level1.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-            const level1FolderPath = topFolderPath + "/" + level1.name;
-            //const level1ZipPath = await zip.folder(topFolderZip + "/" + level1.name);
-            if(level1.children.length != 0) {
-              //2
-              for(var a = 0; a < level1.children.length; a++) {
-                const level2 = level1.children[a];
-                if(level2.type != 'folder') {
-                  const fileId2 = level2.id
-                  const fileName2 = level2.name
-                  const type2 = level2.type
-                  const dest2 = await fs.createWriteStream(level1FolderPath + "/" + fileName2 + '.' + type2);
-                  const dest2file = level1FolderPath + "/" + fileName2 + '.' + type2
-                  //const dest2zip = level1ZipPath + "/" + fileName1 + '.' + type1;
-                  let newType2 = ''
-                  if(type2 === 'docx') {
-                    newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                  }
-                  if(type2 === 'pptx') {
-                    newType2 = 'application/vnd.google-apps.presentation'
-                  }
-                  if(type2 === 'xlsx') {
-                    newType2 === 'application/vnd.google-apps.spreadsheet'
-                  }
-                  if(type2 === 'pdf') {
-                    newType2 === 'application/pdf'
-                  }
-                  if(type2 === 'mp3') {
-                    newType2 = 'audio/mpeg'
-                  }
-                  if(type2 === 'wav') {
-                    newType2 = 'audio/wav'
-                  }
-                  if(type2 === 'mp4') {
-                    newType2 = 'video/mp4'
-                  }
-                  if(type2 === 'jpg') {
-                    newType2 = 'image/jpeg'
-                  }
-                  if(type2 === 'png') {
-                    newType2 = 'image/png'
-                  }
-                  if(type2 === 'txt') {
-                    newType2 = 'text/plain'
-                  }
-                  if(type2 === 'pdf' || type2 === "mp3" || type2 === "wav" || type2 === "mp4" || 
-                    type2 === 'jpg' || type2 === 'png' || type2 === 'txt') {                   
-                    await drive.files.get(
-                      {fileId: fileId2, alt: 'media'}, 
-                      {responseType: 'stream'}, 
-                      (err, res) => {
-                        if (err) return console.log(err); 
-                        res.data
-                        .pipe(dest2, function(err) {
-                          if(err) return console.log(err);
-                          console.log("pipe worked")
-                        })
-                        .on('end', () => {
-                          console.log("made file.")
-                        })
-                      });
-                  }
-                  if(type2 === 'docx' || type2 === 'pptx' || type2 === 'xlsx') {
-                    await drive.files.export({
-                      fileId: fileId2, mimeType: newType2}, 
-                      {responseType: 'stream'},
-                      (err, res) => {
-                      if(err)return console.log("error in drive.files.export: " + err)
+          if(type1 === 'docx' || type1 === 'pptx' || type1 === 'xlsx') {
+            await drive.files.export({
+              fileId: fileId1, mimeType: newType1}, 
+              {responseType: 'stream'},
+              (err, res) => {
+              if(err)return console.log("error in drive.files.export: " + err)
+              res.data
+              .pipe(dest1, function(err) {
+                if (err) return console.log(err);
+                console.log('file written')
+              })
+              .on('end', ()=>{
+                  console.log("made file.")
+              })
+            });
+          }
+          //await zip.file(dest1zip, fs.readFile(dest1file, (err) => {if (err) return console.log(err)}));
+        }
+        if(level1.type === 'folder') {
+          console.log("at 808 " + topFolderPath)
+          fs.mkdir(topFolderPath + "/" + level1.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+          const level1FolderPath = topFolderPath + "/" + level1.name;
+          //const level1ZipPath = await zip.folder(topFolderZip + "/" + level1.name);
+          if(level1.children.length != 0) {
+            //2
+            for(var a = 0; a < level1.children.length; a++) {
+              const level2 = level1.children[a];
+              if(level2.type != 'folder') {
+                const fileId2 = level2.id
+                const fileName2 = level2.name
+                const type2 = level2.type
+                const dest2 = await fs.createWriteStream(level1FolderPath + "/" + fileName2 + '.' + type2);
+                const dest2file = level1FolderPath + "/" + fileName2 + '.' + type2
+                //const dest2zip = level1ZipPath + "/" + fileName1 + '.' + type1;
+                let newType2 = ''
+                if(type2 === 'docx') {
+                  newType2 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                }
+                if(type2 === 'pptx') {
+                  newType2 = 'application/vnd.google-apps.presentation'
+                }
+                if(type2 === 'xlsx') {
+                  newType2 === 'application/vnd.google-apps.spreadsheet'
+                }
+                if(type2 === 'pdf') {
+                  newType2 === 'application/pdf'
+                }
+                if(type2 === 'mp3') {
+                  newType2 = 'audio/mpeg'
+                }
+                if(type2 === 'wav') {
+                  newType2 = 'audio/wav'
+                }
+                if(type2 === 'mp4') {
+                  newType2 = 'video/mp4'
+                }
+                if(type2 === 'jpg') {
+                  newType2 = 'image/jpeg'
+                }
+                if(type2 === 'png') {
+                  newType2 = 'image/png'
+                }
+                if(type2 === 'txt') {
+                  newType2 = 'text/plain'
+                }
+                if(type2 === 'pdf' || type2 === "mp3" || type2 === "wav" || type2 === "mp4" || 
+                  type2 === 'jpg' || type2 === 'png' || type2 === 'txt') {                   
+                  await drive.files.get(
+                    {fileId: fileId2, alt: 'media'}, 
+                    {responseType: 'stream'}, 
+                    (err, res) => {
+                      if (err) return console.log(err); 
                       res.data
                       .pipe(dest2, function(err) {
-                        if (err) return console.log(err);
-                        console.log('file written')
+                        if(err) return console.log(err);
+                        console.log("pipe worked")
                       })
-                      .on('end', ()=>{
-                          console.log("made file.")
+                      .on('end', () => {
+                        console.log("made file.")
                       })
                     });
-                  }
-                  //await zip.file(dest2zip, fs.readFile(dest2file, (err) => {if(err) return console.log(err)}));
                 }
-                if(level1.type === 'folder') {
-                  await fs.mkdir(level1FolderPath + "/" + level2.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                  const level2FolderPath = level1FolderPath + "/" + level2.name;
-                  //const level2ZipPath = await zip.folder(level1ZipPath + "/" + level2.name);
-                  if(level2.children.length != 0) {
-                    //3
-                    for(var b = 0; b < level2.children.length; b++) {
-                      const level3 = level2.children[b];
-                      if(level3.type != 'folder') {
-                        const fileId3 = level3.id
-                        const fileName3 = level3.name
-                        const type3 = level3.type
-                        const dest3 = await fs.createWriteStream(level2FolderPath + "/" + fileName3 + '.' + type3);
-                        const dest3file = level2FolderPath + "/" + fileName3 + '.' + type3
-                        //const dest3zip = level2ZipPath + "/" + fileName3 + '.' + type3;
-                        let newType3 = ''
-                        if(type3 === 'docx') {
-                          newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                        }
-                        if(type3 === 'pptx') {
-                          newType3 = 'application/vnd.google-apps.presentation'
-                        }
-                        if(type3 === 'xlsx') {
-                          newType3 === 'application/vnd.google-apps.spreadsheet'
-                        }
-                        if(type3 === 'pdf') {
-                          newType3 === 'application/pdf'
-                        }
-                        if(type3 === 'mp3') {
-                          newType3 = 'audio/mpeg'
-                        }
-                        if(type3 === 'wav') {
-                          newType3 = 'audio/wav'
-                        }
-                        if(type3 === 'mp4') {
-                          newType3 = 'video/mp4'
-                        }
-                        if(type3 === 'jpg') {
-                          newType3 = 'image/jpeg'
-                        }
-                        if(type3 === 'png') {
-                          newType3 = 'image/png'
-                        }
-                        if(type3 === 'txt') {
-                          newType3 = 'text/plain'
-                        }
-                        if(type3 === 'pdf' || type3 === "mp3" || type3 === "wav" || type3 === "mp4" || 
-                          type3 === 'jpg' || type3 === 'png' || type3 === 'txt') {                   
-                          await drive.files.get(
-                            {fileId: fileId3, alt: 'media'}, 
-                            {responseType: 'stream'}, 
-                            (err, res) => {
-                              if (err) return console.log(err); 
-                              res.data
-                              .pipe(dest3, function(err) {
-                                if(err) return console.log(err);
-                                console.log("pipe worked")
-                              })
-                              .on('end', () => {
-                                console.log("made file.")
-                              })
-                            });
-                        }
-                        if(type3 === 'docx' || type3 === 'pptx' || type3 === 'xlsx') {
-                          await drive.files.export({
-                            fileId: fileId3, mimeType: newType3}, 
-                            {responseType: 'stream'},
-                            (err, res) => {
-                            if(err)return console.log("error in drive.files.export: " + err)
+                if(type2 === 'docx' || type2 === 'pptx' || type2 === 'xlsx') {
+                  await drive.files.export({
+                    fileId: fileId2, mimeType: newType2}, 
+                    {responseType: 'stream'},
+                    (err, res) => {
+                    if(err)return console.log("error in drive.files.export: " + err)
+                    res.data
+                    .pipe(dest2, function(err) {
+                      if (err) return console.log(err);
+                      console.log('file written')
+                    })
+                    .on('end', ()=>{
+                        console.log("made file.")
+                    })
+                  });
+                }
+                //await zip.file(dest2zip, fs.readFile(dest2file, (err) => {if(err) return console.log(err)}));
+              }
+              if(level1.type === 'folder') {
+                await fs.mkdir(level1FolderPath + "/" + level2.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                const level2FolderPath = level1FolderPath + "/" + level2.name;
+                //const level2ZipPath = await zip.folder(level1ZipPath + "/" + level2.name);
+                if(level2.children.length != 0) {
+                  //3
+                  for(var b = 0; b < level2.children.length; b++) {
+                    const level3 = level2.children[b];
+                    if(level3.type != 'folder') {
+                      const fileId3 = level3.id
+                      const fileName3 = level3.name
+                      const type3 = level3.type
+                      const dest3 = await fs.createWriteStream(level2FolderPath + "/" + fileName3 + '.' + type3);
+                      const dest3file = level2FolderPath + "/" + fileName3 + '.' + type3
+                      //const dest3zip = level2ZipPath + "/" + fileName3 + '.' + type3;
+                      let newType3 = ''
+                      if(type3 === 'docx') {
+                        newType3 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                      }
+                      if(type3 === 'pptx') {
+                        newType3 = 'application/vnd.google-apps.presentation'
+                      }
+                      if(type3 === 'xlsx') {
+                        newType3 === 'application/vnd.google-apps.spreadsheet'
+                      }
+                      if(type3 === 'pdf') {
+                        newType3 === 'application/pdf'
+                      }
+                      if(type3 === 'mp3') {
+                        newType3 = 'audio/mpeg'
+                      }
+                      if(type3 === 'wav') {
+                        newType3 = 'audio/wav'
+                      }
+                      if(type3 === 'mp4') {
+                        newType3 = 'video/mp4'
+                      }
+                      if(type3 === 'jpg') {
+                        newType3 = 'image/jpeg'
+                      }
+                      if(type3 === 'png') {
+                        newType3 = 'image/png'
+                      }
+                      if(type3 === 'txt') {
+                        newType3 = 'text/plain'
+                      }
+                      if(type3 === 'pdf' || type3 === "mp3" || type3 === "wav" || type3 === "mp4" || 
+                        type3 === 'jpg' || type3 === 'png' || type3 === 'txt') {                   
+                        await drive.files.get(
+                          {fileId: fileId3, alt: 'media'}, 
+                          {responseType: 'stream'}, 
+                          (err, res) => {
+                            if (err) return console.log(err); 
                             res.data
                             .pipe(dest3, function(err) {
-                              if (err) return console.log(err);
-                              console.log('file written')
+                              if(err) return console.log(err);
+                              console.log("pipe worked")
                             })
-                            .on('end', ()=>{
-                                console.log("made file.")
+                            .on('end', () => {
+                              console.log("made file.")
                             })
                           });
-                        }
-                        //await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
                       }
-                      if(level3.type === 'folder') {
-                        fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                        var level3FolderPath = level2FolderPath + "/" + level3.name;
-                        //var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
-                        if(level3.children.length != 0) {
-                          //4
-                          for(var c = 0; c < level3.children.length; c++) {
-                            var level4 = level3.children[c];
-                            if(level4.type != 'folder') {
-                              var fileId4 = level4.id
-                              var fileName4 = level4.name
-                              var type4 = level4.type
-                              var dest4 = fs.createWriteStream(level3FolderPath + "/" + fileName4 + '.' + type4);
-                              var dest4file = level3FolderPath + "/" + fileName4 + '.' + type4;
-                              //var dest4zip = level3ZipPath + "/" + fileName4 + '.' + type4;
-                              var newType4 = ''
-                              if(type4 === 'docx') {
-                                newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                              }
-                              if(type4 === 'pptx') {
-                                newType4 = 'application/vnd.google-apps.presentation'
-                              }
-                              if(type4 === 'xlsx') {
-                                newType4 === 'application/vnd.google-apps.spreadsheet'
-                              }
-                              if(type4 === 'pdf') {
-                                newType4 === 'application/pdf'
-                              }
-                              if(type4 === 'mp3') {
-                                newType4 = 'audio/mpeg'
-                              }
-                              if(type4 === 'wav') {
-                                newType4 = 'audio/wav'
-                              }
-                              if(type4 === 'mp4') {
-                                newType4 = 'video/mp4'
-                              }
-                              if(type4 === 'jpg') {
-                                newType4 = 'image/jpeg'
-                              }
-                              if(type4 === 'png') {
-                                newType4 = 'image/png'
-                              }
-                              if(type4 === 'txt') {
-                                newType4 = 'text/plain'
-                              }
-                              if(type4 === 'pdf' || type4 === "mp3" || type4 === "wav" || type4 === "mp4" || 
-                                type4 === 'jpg' || type4 === 'png' || type4 === 'txt') {                   
-                                await drive.files.get(
-                                  {fileId: fileId4, alt: 'media'}, 
-                                  {responseType: 'stream'}, 
-                                  (err, res) => {
-                                    if (err) return console.log(err); 
-                                    res.data
-                                    .pipe(dest4, function(err) {
-                                      if(err) return console.log(err);
-                                      console.log("pipe worked")
-                                    })
-                                    .on('end', () => {
-                                      console.log("made file.")
-                                    })
-                                  });
-                              }
-                              if(type4 === 'docx' || type4 === 'pptx' || type4 === 'xlsx') {
-                                await drive.files.export({
-                                  fileId: fileId4, mimeType: newType4}, 
-                                  {responseType: 'stream'},
-                                  (err, res) => {
-                                  if(err)return console.log("error in drive.files.export: " + err)
+                      if(type3 === 'docx' || type3 === 'pptx' || type3 === 'xlsx') {
+                        await drive.files.export({
+                          fileId: fileId3, mimeType: newType3}, 
+                          {responseType: 'stream'},
+                          (err, res) => {
+                          if(err)return console.log("error in drive.files.export: " + err)
+                          res.data
+                          .pipe(dest3, function(err) {
+                            if (err) return console.log(err);
+                            console.log('file written')
+                          })
+                          .on('end', ()=>{
+                              console.log("made file.")
+                          })
+                        });
+                      }
+                      //await zip.file(dest3zip, fs.readFile(dest3file, (err) => {if(err) return console.log(err)}));
+                    }
+                    if(level3.type === 'folder') {
+                      fs.mkdir(level2FolderPath + "/" + level3.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                      var level3FolderPath = level2FolderPath + "/" + level3.name;
+                      //var level3ZipPath = zip.folder(level2ZipPath + "/" + level3.name);
+                      if(level3.children.length != 0) {
+                        //4
+                        for(var c = 0; c < level3.children.length; c++) {
+                          var level4 = level3.children[c];
+                          if(level4.type != 'folder') {
+                            var fileId4 = level4.id
+                            var fileName4 = level4.name
+                            var type4 = level4.type
+                            var dest4 = fs.createWriteStream(level3FolderPath + "/" + fileName4 + '.' + type4);
+                            var dest4file = level3FolderPath + "/" + fileName4 + '.' + type4;
+                            //var dest4zip = level3ZipPath + "/" + fileName4 + '.' + type4;
+                            var newType4 = ''
+                            if(type4 === 'docx') {
+                              newType4 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                            }
+                            if(type4 === 'pptx') {
+                              newType4 = 'application/vnd.google-apps.presentation'
+                            }
+                            if(type4 === 'xlsx') {
+                              newType4 === 'application/vnd.google-apps.spreadsheet'
+                            }
+                            if(type4 === 'pdf') {
+                              newType4 === 'application/pdf'
+                            }
+                            if(type4 === 'mp3') {
+                              newType4 = 'audio/mpeg'
+                            }
+                            if(type4 === 'wav') {
+                              newType4 = 'audio/wav'
+                            }
+                            if(type4 === 'mp4') {
+                              newType4 = 'video/mp4'
+                            }
+                            if(type4 === 'jpg') {
+                              newType4 = 'image/jpeg'
+                            }
+                            if(type4 === 'png') {
+                              newType4 = 'image/png'
+                            }
+                            if(type4 === 'txt') {
+                              newType4 = 'text/plain'
+                            }
+                            if(type4 === 'pdf' || type4 === "mp3" || type4 === "wav" || type4 === "mp4" || 
+                              type4 === 'jpg' || type4 === 'png' || type4 === 'txt') {                   
+                              await drive.files.get(
+                                {fileId: fileId4, alt: 'media'}, 
+                                {responseType: 'stream'}, 
+                                (err, res) => {
+                                  if (err) return console.log(err); 
                                   res.data
                                   .pipe(dest4, function(err) {
-                                    if (err) return console.log(err);
-                                    console.log('file written')
+                                    if(err) return console.log(err);
+                                    console.log("pipe worked")
                                   })
-                                  .on('end', ()=>{
-                                      console.log("made file.")
+                                  .on('end', () => {
+                                    console.log("made file.")
                                   })
                                 });
-                              }
-                              //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                             }
-                            if(level4.type === 'folder') {
-                              fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                              var level4FolderPath = level3FolderPath + "/" + level4.name;
-                              //var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
-                              if(level4.children.length != 0) {
-                                //5
-                                for(var d = 0; d < level4.children.length; d++) {
-                                  var level5 = level4.children[d];
-                                  if(level5.type != 'folder') {
-                                    var fileId5 = level5.id
-                                    var fileName5 = level5.name
-                                    var type5 = level5.type
-                                    var dest5 = fs.createWriteStream(level4FolderPath + "/" + fileName5 + '.' + type5);
-                                    var dest5file = level4FolderPath + "/" + fileName5 + '.' + type5;
-                                    //var dest5zip = level4ZipPath + "/" + fileName5 + '.' + type5;
-                                    var newType5 = ''
-                                    if(type5 === 'docx') {
-                                      newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                                    }
-                                    if(type5 === 'pptx') {
-                                      newType5 = 'application/vnd.google-apps.presentation'
-                                    }
-                                    if(type5 === 'xlsx') {
-                                      newType5 === 'application/vnd.google-apps.spreadsheet'
-                                    }
-                                    if(type5 === 'pdf') {
-                                      newType5 === 'application/pdf'
-                                    }
-                                    if(type5 === 'mp3') {
-                                      newType5 = 'audio/mpeg'
-                                    }
-                                    if(type5 === 'wav') {
-                                      newType5 = 'audio/wav'
-                                    }
-                                    if(type5 === 'mp4') {
-                                      newType5 = 'video/mp4'
-                                    }
-                                    if(type5 === 'jpg') {
-                                      newType5 = 'image/jpeg'
-                                    }
-                                    if(type5 === 'png') {
-                                      newType5 = 'image/png'
-                                    }
-                                    if(type5 === 'txt') {
-                                      newType5 = 'text/plain'
-                                    }
-                                    if(type5 === 'pdf' || type5 === "mp3" || type5 === "wav" || type5 === "mp4" || 
-                                      type5 === 'jpg' || type5 === 'png' || type5 === 'txt') {                   
-                                      await drive.files.get(
-                                        {fileId: fileId5, alt: 'media'}, 
-                                        {responseType: 'stream'}, 
-                                        (err, res) => {
-                                          if (err) return console.log(err); 
-                                          res.data
-                                          .pipe(dest5, function(err) {
-                                            if(err) return console.log(err);
-                                            console.log("pipe worked")
-                                          })
-                                          .on('end', () => {
-                                            console.log("made file.")
-                                          })
-                                        });
-                                    }
-                                    if(type5 === 'docx' || type5 === 'pptx' || type5 === 'xlsx') {
-                                      await drive.files.export({
-                                        fileId: fileId5, mimeType: newType5}, 
-                                        {responseType: 'stream'},
-                                        (err, res) => {
-                                        if(err)return console.log("error in drive.files.export: " + err)
+                            if(type4 === 'docx' || type4 === 'pptx' || type4 === 'xlsx') {
+                              await drive.files.export({
+                                fileId: fileId4, mimeType: newType4}, 
+                                {responseType: 'stream'},
+                                (err, res) => {
+                                if(err)return console.log("error in drive.files.export: " + err)
+                                res.data
+                                .pipe(dest4, function(err) {
+                                  if (err) return console.log(err);
+                                  console.log('file written')
+                                })
+                                .on('end', ()=>{
+                                    console.log("made file.")
+                                })
+                              });
+                            }
+                            //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                          }
+                          if(level4.type === 'folder') {
+                            fs.mkdir(level3FolderPath + "/" + level4.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                            var level4FolderPath = level3FolderPath + "/" + level4.name;
+                            //var level4ZipPath = zip.folder(level3ZipPath + "/" + level4.name);
+                            if(level4.children.length != 0) {
+                              //5
+                              for(var d = 0; d < level4.children.length; d++) {
+                                var level5 = level4.children[d];
+                                if(level5.type != 'folder') {
+                                  var fileId5 = level5.id
+                                  var fileName5 = level5.name
+                                  var type5 = level5.type
+                                  var dest5 = fs.createWriteStream(level4FolderPath + "/" + fileName5 + '.' + type5);
+                                  var dest5file = level4FolderPath + "/" + fileName5 + '.' + type5;
+                                  //var dest5zip = level4ZipPath + "/" + fileName5 + '.' + type5;
+                                  var newType5 = ''
+                                  if(type5 === 'docx') {
+                                    newType5 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                  }
+                                  if(type5 === 'pptx') {
+                                    newType5 = 'application/vnd.google-apps.presentation'
+                                  }
+                                  if(type5 === 'xlsx') {
+                                    newType5 === 'application/vnd.google-apps.spreadsheet'
+                                  }
+                                  if(type5 === 'pdf') {
+                                    newType5 === 'application/pdf'
+                                  }
+                                  if(type5 === 'mp3') {
+                                    newType5 = 'audio/mpeg'
+                                  }
+                                  if(type5 === 'wav') {
+                                    newType5 = 'audio/wav'
+                                  }
+                                  if(type5 === 'mp4') {
+                                    newType5 = 'video/mp4'
+                                  }
+                                  if(type5 === 'jpg') {
+                                    newType5 = 'image/jpeg'
+                                  }
+                                  if(type5 === 'png') {
+                                    newType5 = 'image/png'
+                                  }
+                                  if(type5 === 'txt') {
+                                    newType5 = 'text/plain'
+                                  }
+                                  if(type5 === 'pdf' || type5 === "mp3" || type5 === "wav" || type5 === "mp4" || 
+                                    type5 === 'jpg' || type5 === 'png' || type5 === 'txt') {                   
+                                    await drive.files.get(
+                                      {fileId: fileId5, alt: 'media'}, 
+                                      {responseType: 'stream'}, 
+                                      (err, res) => {
+                                        if (err) return console.log(err); 
                                         res.data
                                         .pipe(dest5, function(err) {
-                                          if (err) return console.log(err);
-                                          console.log('file written')
+                                          if(err) return console.log(err);
+                                          console.log("pipe worked")
                                         })
-                                        .on('end', ()=>{
-                                            console.log("made file.")
+                                        .on('end', () => {
+                                          console.log("made file.")
                                         })
                                       });
-                                    }
-                                    //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                   }
-                                  if(level5.type === 'folder') {
-                                    fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                                    var level5FolderPath = level4FolderPath + "/" + level5.name;
-                                    //var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
-                                    if(level5.children.length != 0) {
-                                      //6
-                                      for(var e = 0; e < level5.children.length; e++) {
-                                        var level6 = level5.children[e];
-                                        if(level6.type != 'folder') {
-                                          var fileId6 = level6.id
-                                          var fileName6 = level6.name
-                                          var type6 = level6.type
-                                          var dest6 = fs.createWriteStream(level5FolderPath + "/" + fileName6 + '.' + type6);
-                                          var dest6file = level5FolderPath + "/" + fileName6 + '.' + type6;
-                                          //var dest6zip = level5ZipPath + "/" + fileName6 + '.' + type6;
-                                          var newType6 = ''
-                                          if(type6 === 'docx') {
-                                            newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                                          }
-                                          if(type6 === 'pptx') {
-                                            newType6 = 'application/vnd.google-apps.presentation'
-                                          }
-                                          if(type6 === 'xlsx') {
-                                            newType6 === 'application/vnd.google-apps.spreadsheet'
-                                          }
-                                          if(type6 === 'pdf') {
-                                            newType6 === 'application/pdf'
-                                          }
-                                          if(type6 === 'mp3') {
-                                            newType6 = 'audio/mpeg'
-                                          }
-                                          if(type6 === 'wav') {
-                                            newType6 = 'audio/wav'
-                                          }
-                                          if(type6 === 'mp4') {
-                                            newType6 = 'video/mp4'
-                                          }
-                                          if(type6 === 'jpg') {
-                                            newType6 = 'image/jpeg'
-                                          }
-                                          if(type6 === 'png') {
-                                            newType6 = 'image/png'
-                                          }
-                                          if(type6 === 'txt') {
-                                            newType6 = 'text/plain'
-                                          }
-                                          if(type6 === 'pdf' || type6 === "mp3" || type6 === "wav" || type6 === "mp4" || 
-                                            type6 === 'jpg' || type6 === 'png' || type6 === 'txt') {                   
-                                            await drive.files.get(
-                                              {fileId: fileId6, alt: 'media'}, 
-                                              {responseType: 'stream'}, 
-                                              (err, res) => {
-                                                if (err) return console.log(err); 
-                                                res.data
-                                                .pipe(dest6, function(err) {
-                                                  if(err) return console.log(err);
-                                                  console.log("pipe worked")
-                                                })
-                                                .on('end', () => {
-                                                  console.log("made file.")
-                                                })
-                                              });
-                                          }
-                                          if(type6 === 'docx' || type6 === 'pptx' || type6 === 'xlsx') {
-                                            await drive.files.export({
-                                              fileId: fileId6, mimeType: newType6}, 
-                                              {responseType: 'stream'},
-                                              (err, res) => {
-                                              if(err)return console.log("error in drive.files.export: " + err)
+                                  if(type5 === 'docx' || type5 === 'pptx' || type5 === 'xlsx') {
+                                    await drive.files.export({
+                                      fileId: fileId5, mimeType: newType5}, 
+                                      {responseType: 'stream'},
+                                      (err, res) => {
+                                      if(err)return console.log("error in drive.files.export: " + err)
+                                      res.data
+                                      .pipe(dest5, function(err) {
+                                        if (err) return console.log(err);
+                                        console.log('file written')
+                                      })
+                                      .on('end', ()=>{
+                                          console.log("made file.")
+                                      })
+                                    });
+                                  }
+                                  //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                                }
+                                if(level5.type === 'folder') {
+                                  fs.mkdir(level4FolderPath + "/" + level5.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                  var level5FolderPath = level4FolderPath + "/" + level5.name;
+                                  //var level5ZipPath = zip.folder(level4ZipPath + "/" + level5.name);
+                                  if(level5.children.length != 0) {
+                                    //6
+                                    for(var e = 0; e < level5.children.length; e++) {
+                                      var level6 = level5.children[e];
+                                      if(level6.type != 'folder') {
+                                        var fileId6 = level6.id
+                                        var fileName6 = level6.name
+                                        var type6 = level6.type
+                                        var dest6 = fs.createWriteStream(level5FolderPath + "/" + fileName6 + '.' + type6);
+                                        var dest6file = level5FolderPath + "/" + fileName6 + '.' + type6;
+                                        //var dest6zip = level5ZipPath + "/" + fileName6 + '.' + type6;
+                                        var newType6 = ''
+                                        if(type6 === 'docx') {
+                                          newType6 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                        }
+                                        if(type6 === 'pptx') {
+                                          newType6 = 'application/vnd.google-apps.presentation'
+                                        }
+                                        if(type6 === 'xlsx') {
+                                          newType6 === 'application/vnd.google-apps.spreadsheet'
+                                        }
+                                        if(type6 === 'pdf') {
+                                          newType6 === 'application/pdf'
+                                        }
+                                        if(type6 === 'mp3') {
+                                          newType6 = 'audio/mpeg'
+                                        }
+                                        if(type6 === 'wav') {
+                                          newType6 = 'audio/wav'
+                                        }
+                                        if(type6 === 'mp4') {
+                                          newType6 = 'video/mp4'
+                                        }
+                                        if(type6 === 'jpg') {
+                                          newType6 = 'image/jpeg'
+                                        }
+                                        if(type6 === 'png') {
+                                          newType6 = 'image/png'
+                                        }
+                                        if(type6 === 'txt') {
+                                          newType6 = 'text/plain'
+                                        }
+                                        if(type6 === 'pdf' || type6 === "mp3" || type6 === "wav" || type6 === "mp4" || 
+                                          type6 === 'jpg' || type6 === 'png' || type6 === 'txt') {                   
+                                          await drive.files.get(
+                                            {fileId: fileId6, alt: 'media'}, 
+                                            {responseType: 'stream'}, 
+                                            (err, res) => {
+                                              if (err) return console.log(err); 
                                               res.data
                                               .pipe(dest6, function(err) {
-                                                if (err) return console.log(err);
-                                                console.log('file written')
+                                                if(err) return console.log(err);
+                                                console.log("pipe worked")
                                               })
-                                              .on('end', ()=>{
-                                                  console.log("made file.")
+                                              .on('end', () => {
+                                                console.log("made file.")
                                               })
                                             });
-                                          }
-                                          //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                         }
-                                        if(level6.type === 'folder') {
-                                          fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                                          var level6FolderPath = level5FolderPath + "/" + level6.name;
-                                          //var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
-                                          if(level6.children.length != 0) {
-                                            //7
-                                            for(var f = 0; f < level6.children.length; f++) {
-                                              var level7 = level6.children[f];
-                                              if(level7.type != 'folder') {
-                                                var fileId7 = level7.id
-                                                var fileName7 = level7.name
-                                                var type7 = level7.type
-                                                var dest7 = fs.createWriteStream(level6FolderPath + "/" + fileName7 + '.' + type7);
-                                                var dest7file = level6FolderPath + "/" + fileName7 + '.' + type7;
-                                                //var dest7zip = level6ZipPath + "/" + fileName7 + '.' + type7;
-                                                var newType7 = ''
-                                                if(type7 === 'docx') {
-                                                  newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                                                }
-                                                if(type7 === 'pptx') {
-                                                  newType7 = 'application/vnd.google-apps.presentation'
-                                                }
-                                                if(type7 === 'xlsx') {
-                                                  newType7 === 'application/vnd.google-apps.spreadsheet'
-                                                }
-                                                if(type7 === 'pdf') {
-                                                  newType7 === 'application/pdf'
-                                                }
-                                                if(type7 === 'mp3') {
-                                                  newType7 = 'audio/mpeg'
-                                                }
-                                                if(type7 === 'wav') {
-                                                  newType7 = 'audio/wav'
-                                                }
-                                                if(type7 === 'mp4') {
-                                                  newType7 = 'video/mp4'
-                                                }
-                                                if(type7 === 'jpg') {
-                                                  newType7 = 'image/jpeg'
-                                                }
-                                                if(type7 === 'png') {
-                                                  newType7 = 'image/png'
-                                                }
-                                                if(type7 === 'txt') {
-                                                  newType7 = 'text/plain'
-                                                }
-                                                if(type7 === 'pdf' || type7 === "mp3" || type7 === "wav" || type7 === "mp4" || 
-                                                  type7 === 'jpg' || type7 === 'png' || type7 === 'txt') {                   
-                                                  await drive.files.get(
-                                                    {fileId: fileId7, alt: 'media'}, 
-                                                    {responseType: 'stream'}, 
-                                                    (err, res) => {
-                                                      if (err) return console.log(err); 
-                                                      res.data
-                                                      .pipe(dest7, function(err) {
-                                                        if(err) return console.log(err);
-                                                        console.log("pipe worked")
-                                                      })
-                                                      .on('end', () => {
-                                                        console.log("made file.")
-                                                      })
-                                                    });
-                                                }
-                                                if(type7 === 'docx' || type7 === 'pptx' || type7 === 'xlsx') {
-                                                  await drive.files.export({
-                                                    fileId: fileId7, mimeType: newType7}, 
-                                                    {responseType: 'stream'},
-                                                    (err, res) => {
-                                                    if(err)return console.log("error in drive.files.export: " + err)
+                                        if(type6 === 'docx' || type6 === 'pptx' || type6 === 'xlsx') {
+                                          await drive.files.export({
+                                            fileId: fileId6, mimeType: newType6}, 
+                                            {responseType: 'stream'},
+                                            (err, res) => {
+                                            if(err)return console.log("error in drive.files.export: " + err)
+                                            res.data
+                                            .pipe(dest6, function(err) {
+                                              if (err) return console.log(err);
+                                              console.log('file written')
+                                            })
+                                            .on('end', ()=>{
+                                                console.log("made file.")
+                                            })
+                                          });
+                                        }
+                                        //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                                      }
+                                      if(level6.type === 'folder') {
+                                        fs.mkdir(level5FolderPath + "/" + level6.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                        var level6FolderPath = level5FolderPath + "/" + level6.name;
+                                        //var level6ZipPath = zip.folder(level5ZipPath + "/" + level6.name);
+                                        if(level6.children.length != 0) {
+                                          //7
+                                          for(var f = 0; f < level6.children.length; f++) {
+                                            var level7 = level6.children[f];
+                                            if(level7.type != 'folder') {
+                                              var fileId7 = level7.id
+                                              var fileName7 = level7.name
+                                              var type7 = level7.type
+                                              var dest7 = fs.createWriteStream(level6FolderPath + "/" + fileName7 + '.' + type7);
+                                              var dest7file = level6FolderPath + "/" + fileName7 + '.' + type7;
+                                              //var dest7zip = level6ZipPath + "/" + fileName7 + '.' + type7;
+                                              var newType7 = ''
+                                              if(type7 === 'docx') {
+                                                newType7 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                              }
+                                              if(type7 === 'pptx') {
+                                                newType7 = 'application/vnd.google-apps.presentation'
+                                              }
+                                              if(type7 === 'xlsx') {
+                                                newType7 === 'application/vnd.google-apps.spreadsheet'
+                                              }
+                                              if(type7 === 'pdf') {
+                                                newType7 === 'application/pdf'
+                                              }
+                                              if(type7 === 'mp3') {
+                                                newType7 = 'audio/mpeg'
+                                              }
+                                              if(type7 === 'wav') {
+                                                newType7 = 'audio/wav'
+                                              }
+                                              if(type7 === 'mp4') {
+                                                newType7 = 'video/mp4'
+                                              }
+                                              if(type7 === 'jpg') {
+                                                newType7 = 'image/jpeg'
+                                              }
+                                              if(type7 === 'png') {
+                                                newType7 = 'image/png'
+                                              }
+                                              if(type7 === 'txt') {
+                                                newType7 = 'text/plain'
+                                              }
+                                              if(type7 === 'pdf' || type7 === "mp3" || type7 === "wav" || type7 === "mp4" || 
+                                                type7 === 'jpg' || type7 === 'png' || type7 === 'txt') {                   
+                                                await drive.files.get(
+                                                  {fileId: fileId7, alt: 'media'}, 
+                                                  {responseType: 'stream'}, 
+                                                  (err, res) => {
+                                                    if (err) return console.log(err); 
                                                     res.data
                                                     .pipe(dest7, function(err) {
-                                                      if (err) return console.log(err);
-                                                      console.log('file written')
+                                                      if(err) return console.log(err);
+                                                      console.log("pipe worked")
                                                     })
-                                                    .on('end', ()=>{
-                                                        console.log("made file.")
+                                                    .on('end', () => {
+                                                      console.log("made file.")
                                                     })
                                                   });
-                                                }
-                                                //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                               }
-                                              if(level7.type === 'folder') {
-                                                fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                                                var level7FolderPath = level6FolderPath + "/" + level7.name;
-                                                //var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
-                                                if(level7.children.length != 0) {
-                                                  //8
-                                                  for(var g = 0; g < level7.children.length; g++) {
-                                                    var level8 = level7.children[g];
-                                                    if(level8.type != 'folder') {
-                                                      var fileId8 = level8.id
-                                                      var fileName8 = level8.name
-                                                      var type8 = level8.type
-                                                      var dest8 = fs.createWriteStream(level7FolderPath + "/" + fileName8 + '.' + type8);
-                                                      var dest8file = level7FolderPath + "/" + fileName8 + '.' + type8;
-                                                      //var dest8zip = level7ZipPath + "/" + fileName8 + '.' + type8;
-                                                      var newType8 = ''
-                                                      if(type8 === 'docx') {
-                                                        newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                                                      }
-                                                      if(type8 === 'pptx') {
-                                                        newType8 = 'application/vnd.google-apps.presentation'
-                                                      }
-                                                      if(type8 === 'xlsx') {
-                                                        newType8 === 'application/vnd.google-apps.spreadsheet'
-                                                      }
-                                                      if(type8 === 'pdf') {
-                                                        newType8 === 'application/pdf'
-                                                      }
-                                                      if(type8 === 'mp3') {
-                                                        newType8 = 'audio/mpeg'
-                                                      }
-                                                      if(type8 === 'wav') {
-                                                        newType8 = 'audio/wav'
-                                                      }
-                                                      if(type8 === 'mp4') {
-                                                        newType8 = 'video/mp4'
-                                                      }
-                                                      if(type8 === 'jpg') {
-                                                        newType8 = 'image/jpeg'
-                                                      }
-                                                      if(type8 === 'png') {
-                                                        newType8 = 'image/png'
-                                                      }
-                                                      if(type8 === 'txt') {
-                                                        newType8 = 'text/plain'
-                                                      }
-                                                      if(type8 === 'pdf' || type8 === "mp3" || type8 === "wav" || type8 === "mp4" || 
-                                                        type8 === 'jpg' || type8 === 'png' || type8 === 'txt') {                   
-                                                        await drive.files.get(
-                                                          {fileId: fileId8, alt: 'media'}, 
-                                                          {responseType: 'stream'}, 
-                                                          (err, res) => {
-                                                            if (err) return console.log(err); 
-                                                            res.data
-                                                            .pipe(dest8, function(err) {
-                                                              if(err) return console.log(err);
-                                                              console.log("pipe worked")
-                                                            })
-                                                            .on('end', () => {
-                                                              console.log("made file.")
-                                                            })
-                                                          });
-                                                      }
-                                                      if(type8 === 'docx' || type8 === 'pptx' || type8 === 'xlsx') {
-                                                        await drive.files.export({
-                                                          fileId: fileId8, mimeType: newType8}, 
-                                                          {responseType: 'stream'},
-                                                          (err, res) => {
-                                                          if(err)return console.log("error in drive.files.export: " + err)
+                                              if(type7 === 'docx' || type7 === 'pptx' || type7 === 'xlsx') {
+                                                await drive.files.export({
+                                                  fileId: fileId7, mimeType: newType7}, 
+                                                  {responseType: 'stream'},
+                                                  (err, res) => {
+                                                  if(err)return console.log("error in drive.files.export: " + err)
+                                                  res.data
+                                                  .pipe(dest7, function(err) {
+                                                    if (err) return console.log(err);
+                                                    console.log('file written')
+                                                  })
+                                                  .on('end', ()=>{
+                                                      console.log("made file.")
+                                                  })
+                                                });
+                                              }
+                                              //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                                            }
+                                            if(level7.type === 'folder') {
+                                              fs.mkdir(level6FolderPath + "/" + level7.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                              var level7FolderPath = level6FolderPath + "/" + level7.name;
+                                              //var level7ZipPath = zip.folder(level6ZipPath + "/" + level7.name);
+                                              if(level7.children.length != 0) {
+                                                //8
+                                                for(var g = 0; g < level7.children.length; g++) {
+                                                  var level8 = level7.children[g];
+                                                  if(level8.type != 'folder') {
+                                                    var fileId8 = level8.id
+                                                    var fileName8 = level8.name
+                                                    var type8 = level8.type
+                                                    var dest8 = fs.createWriteStream(level7FolderPath + "/" + fileName8 + '.' + type8);
+                                                    var dest8file = level7FolderPath + "/" + fileName8 + '.' + type8;
+                                                    //var dest8zip = level7ZipPath + "/" + fileName8 + '.' + type8;
+                                                    var newType8 = ''
+                                                    if(type8 === 'docx') {
+                                                      newType8 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                    }
+                                                    if(type8 === 'pptx') {
+                                                      newType8 = 'application/vnd.google-apps.presentation'
+                                                    }
+                                                    if(type8 === 'xlsx') {
+                                                      newType8 === 'application/vnd.google-apps.spreadsheet'
+                                                    }
+                                                    if(type8 === 'pdf') {
+                                                      newType8 === 'application/pdf'
+                                                    }
+                                                    if(type8 === 'mp3') {
+                                                      newType8 = 'audio/mpeg'
+                                                    }
+                                                    if(type8 === 'wav') {
+                                                      newType8 = 'audio/wav'
+                                                    }
+                                                    if(type8 === 'mp4') {
+                                                      newType8 = 'video/mp4'
+                                                    }
+                                                    if(type8 === 'jpg') {
+                                                      newType8 = 'image/jpeg'
+                                                    }
+                                                    if(type8 === 'png') {
+                                                      newType8 = 'image/png'
+                                                    }
+                                                    if(type8 === 'txt') {
+                                                      newType8 = 'text/plain'
+                                                    }
+                                                    if(type8 === 'pdf' || type8 === "mp3" || type8 === "wav" || type8 === "mp4" || 
+                                                      type8 === 'jpg' || type8 === 'png' || type8 === 'txt') {                   
+                                                      await drive.files.get(
+                                                        {fileId: fileId8, alt: 'media'}, 
+                                                        {responseType: 'stream'}, 
+                                                        (err, res) => {
+                                                          if (err) return console.log(err); 
                                                           res.data
                                                           .pipe(dest8, function(err) {
-                                                            if (err) return console.log(err);
-                                                            console.log('file written')
+                                                            if(err) return console.log(err);
+                                                            console.log("pipe worked")
                                                           })
-                                                          .on('end', ()=>{
-                                                              console.log("made file.")
+                                                          .on('end', () => {
+                                                            console.log("made file.")
                                                           })
                                                         });
-                                                      }
-                                                      //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                                     }
-                                                    if(level8.type === 'folder') {
-                                                      fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
-                                                      var level8FolderPath = level7FolderPath + "/" + level8.name;
-                                                      //var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
-                                                      if(level8.children.length != 0) {
-                                                        //9
-                                                        for(var h = 0; h < level8.children.length; h++) {
-                                                          var level9 = level8.children[g];
-                                                          if(level9.type != 'folder') {
-                                                            var fileId9 = level9.id
-                                                            var fileName9 = level9.name
-                                                            var type9 = level9.type
-                                                            var dest9 = fs.createWriteStream(level8FolderPath + "/" + fileName9 + '.' + type9);
-                                                            var dest9file = level8FolderPath + "/" + fileName9 + '.' + type9;
-                                                            //var dest9zip = level8ZipPath + "/" + fileName9 + '.' + type9;
-                                                            var newType9 = ''
-                                                            if(type9 === 'docx') {
-                                                              newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                                                            }
-                                                            if(type9 === 'pptx') {
-                                                              newType9 = 'application/vnd.google-apps.presentation'
-                                                            }
-                                                            if(type9 === 'xlsx') {
-                                                              newType9 === 'application/vnd.google-apps.spreadsheet'
-                                                            }
-                                                            if(type9 === 'pdf') {
-                                                              newType9 === 'application/pdf'
-                                                            }
-                                                            if(type9 === 'mp3') {
-                                                              newType9 = 'audio/mpeg'
-                                                            }
-                                                            if(type9 === 'wav') {
-                                                              newType9 = 'audio/wav'
-                                                            }
-                                                            if(type9 === 'mp4') {
-                                                              newType9 = 'video/mp4'
-                                                            }
-                                                            if(type9 === 'jpg') {
-                                                              newType9 = 'image/jpeg'
-                                                            }
-                                                            if(type9 === 'png') {
-                                                              newType9 = 'image/png'
-                                                            }
-                                                            if(type9 === 'txt') {
-                                                              newType9 = 'text/plain'
-                                                            }
-                                                            if(type9 === 'pdf' || type9 === "mp3" || type9 === "wav" || type9 === "mp4" || 
-                                                              type9 === 'jpg' || type9 === 'png' || type9 === 'txt') {                   
-                                                              await drive.files.get(
-                                                                {fileId: fileId9, alt: 'media'}, 
-                                                                {responseType: 'stream'}, 
-                                                                (err, res) => {
-                                                                  if (err) return console.log(err); 
-                                                                  res.data
-                                                                  .pipe(dest9, function(err) {
-                                                                    if(err) return console.log(err);
-                                                                    console.log("pipe worked")
-                                                                  })
-                                                                  .on('end', () => {
-                                                                    console.log("made file.")
-                                                                  })
-                                                                });
-                                                            }
-                                                            if(type9 === 'docx' || type9 === 'pptx' || type9 === 'xlsx') {
-                                                              await drive.files.export({
-                                                                fileId: fileId9, mimeType: newType9}, 
-                                                                {responseType: 'stream'},
-                                                                (err, res) => {
-                                                                if(err)return console.log("error in drive.files.export: " + err)
+                                                    if(type8 === 'docx' || type8 === 'pptx' || type8 === 'xlsx') {
+                                                      await drive.files.export({
+                                                        fileId: fileId8, mimeType: newType8}, 
+                                                        {responseType: 'stream'},
+                                                        (err, res) => {
+                                                        if(err)return console.log("error in drive.files.export: " + err)
+                                                        res.data
+                                                        .pipe(dest8, function(err) {
+                                                          if (err) return console.log(err);
+                                                          console.log('file written')
+                                                        })
+                                                        .on('end', ()=>{
+                                                            console.log("made file.")
+                                                        })
+                                                      });
+                                                    }
+                                                    //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                                                  }
+                                                  if(level8.type === 'folder') {
+                                                    fs.mkdir(level7FolderPath + "/" + level8.name, { recursive: true }, (err) => {if (err) return console.log(err)});
+                                                    var level8FolderPath = level7FolderPath + "/" + level8.name;
+                                                    //var level8ZipPath = zip.folder(level7ZipPath + "/" + level8.name);
+                                                    if(level8.children.length != 0) {
+                                                      //9
+                                                      for(var h = 0; h < level8.children.length; h++) {
+                                                        var level9 = level8.children[g];
+                                                        if(level9.type != 'folder') {
+                                                          var fileId9 = level9.id
+                                                          var fileName9 = level9.name
+                                                          var type9 = level9.type
+                                                          var dest9 = fs.createWriteStream(level8FolderPath + "/" + fileName9 + '.' + type9);
+                                                          var dest9file = level8FolderPath + "/" + fileName9 + '.' + type9;
+                                                          //var dest9zip = level8ZipPath + "/" + fileName9 + '.' + type9;
+                                                          var newType9 = ''
+                                                          if(type9 === 'docx') {
+                                                            newType9 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                                          }
+                                                          if(type9 === 'pptx') {
+                                                            newType9 = 'application/vnd.google-apps.presentation'
+                                                          }
+                                                          if(type9 === 'xlsx') {
+                                                            newType9 === 'application/vnd.google-apps.spreadsheet'
+                                                          }
+                                                          if(type9 === 'pdf') {
+                                                            newType9 === 'application/pdf'
+                                                          }
+                                                          if(type9 === 'mp3') {
+                                                            newType9 = 'audio/mpeg'
+                                                          }
+                                                          if(type9 === 'wav') {
+                                                            newType9 = 'audio/wav'
+                                                          }
+                                                          if(type9 === 'mp4') {
+                                                            newType9 = 'video/mp4'
+                                                          }
+                                                          if(type9 === 'jpg') {
+                                                            newType9 = 'image/jpeg'
+                                                          }
+                                                          if(type9 === 'png') {
+                                                            newType9 = 'image/png'
+                                                          }
+                                                          if(type9 === 'txt') {
+                                                            newType9 = 'text/plain'
+                                                          }
+                                                          if(type9 === 'pdf' || type9 === "mp3" || type9 === "wav" || type9 === "mp4" || 
+                                                            type9 === 'jpg' || type9 === 'png' || type9 === 'txt') {                   
+                                                            await drive.files.get(
+                                                              {fileId: fileId9, alt: 'media'}, 
+                                                              {responseType: 'stream'}, 
+                                                              (err, res) => {
+                                                                if (err) return console.log(err); 
                                                                 res.data
                                                                 .pipe(dest9, function(err) {
-                                                                  if (err) return console.log(err);
-                                                                  console.log('file written')
+                                                                  if(err) return console.log(err);
+                                                                  console.log("pipe worked")
                                                                 })
-                                                                .on('end', ()=>{
-                                                                    console.log("made file.")
+                                                                .on('end', () => {
+                                                                  console.log("made file.")
                                                                 })
                                                               });
-                                                            }
-                                                            //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
                                                           }
-                                                          if(level9.type === 'folder') {
-                                                            console.log("maximum file depth reached.")
+                                                          if(type9 === 'docx' || type9 === 'pptx' || type9 === 'xlsx') {
+                                                            await drive.files.export({
+                                                              fileId: fileId9, mimeType: newType9}, 
+                                                              {responseType: 'stream'},
+                                                              (err, res) => {
+                                                              if(err)return console.log("error in drive.files.export: " + err)
+                                                              res.data
+                                                              .pipe(dest9, function(err) {
+                                                                if (err) return console.log(err);
+                                                                console.log('file written')
+                                                              })
+                                                              .on('end', ()=>{
+                                                                  console.log("made file.")
+                                                              })
+                                                            });
                                                           }
-                                                        } 
-                                                      }
+                                                          //zip.file(dest4zip, fs.readFile(dest4file, (err) => {if(err) return console.log(err)}));
+                                                        }
+                                                        if(level9.type === 'folder') {
+                                                          console.log("maximum file depth reached.")
+                                                        }
+                                                      } 
                                                     }
-                                                  } 
-                                                }
+                                                  }
+                                                } 
                                               }
-                                            } 
-                                          }
+                                            }
+                                          } 
                                         }
-                                      } 
-                                    }
+                                      }
+                                    } 
                                   }
-                                } 
-                              }
+                                }
+                              } 
                             }
-                          } 
-                        }
+                          }
+                        } 
                       }
-                    } 
-                  }
+                    }
+                  } 
                 }
-              } 
-            }
+              }
+            } 
           }
-        } 
-      }          
+        }
+      }           
     }
   }
   //zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
