@@ -567,6 +567,13 @@ app.get("https://connect.smartpathed.com/admin", (req, res) => {
 app.post("/downloaddocument", async (req, res) => {
   const drive = req.app.get('drive');
   const files = req.body.files;
+  function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
   app.set('files', files);
   console.log("these are the files: " + JSON.stringify(files));
 
