@@ -653,9 +653,6 @@ app.post("/downloaddocument", async (req, res) => {
     if(files[i].type === "folder") {
       fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err) => {
         if (err) return console.log("At 764: " + err);
-      })
-      .then((err) => {
-        if (err) return console.log(err);
         console.log("directory 1 made.")
       })
       const topFolderPath = './src/Pages/downloads/' + files[i].name;
@@ -670,7 +667,6 @@ app.post("/downloaddocument", async (req, res) => {
             const type1 = level1.type;
             const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1);
             const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
-            //const dest1zip = topFolderZip + "/" + fileName1 + '.' + type1;
             let newType1 = ''
             if(type1 === 'docx') {
               newType1 = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -717,7 +713,7 @@ app.post("/downloaddocument", async (req, res) => {
                     console.log("pipe worked")
                   })
                   .on('end', () => {
-                    console.log("made file.")
+                    console.log("made folder.")
                   })
                 });
             }
