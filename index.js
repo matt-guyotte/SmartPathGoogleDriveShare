@@ -665,7 +665,7 @@ app.post("/downloaddocument", async (req, res) => {
             const fileId1 = level1.id;
             const fileName1 = level1.name;
             const type1 = level1.type;
-            const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1, (err) => {if (err) return console.log("776: " + err)});
+            const dest1 = await fs.createWriteStream(topFolderPath + "/" + fileName1 + '.' + type1);
             const dest1file = topFolderPath + "/" + fileName1 + '.' + type1;
             //const dest1zip = topFolderZip + "/" + fileName1 + '.' + type1;
             let newType1 = ''
