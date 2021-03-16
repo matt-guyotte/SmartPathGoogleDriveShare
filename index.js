@@ -658,12 +658,13 @@ app.post("/downloaddocument", async (req, res) => {
     }
 
     if(files[i].type === "folder") {
-      await fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err) => {
+      const mkDir1 = fs.mkdir('./src/Pages/downloads' + files[i].name, { recursive: true }, (err) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
       //1
       for(var y = 0; y < files[i].children.length; y++) {
+        await mkDir1;
         const topFolderPath = './src/Pages/downloads/' + files[i].name;
         const level1 = files[i].children[y]
         console.log(level1);
