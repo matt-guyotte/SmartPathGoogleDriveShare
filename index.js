@@ -655,6 +655,7 @@ app.post("/downloaddocument", async (req, res) => {
         if (err) return console.log("At 764: " + err);
         console.log("directory 1 made.")
       })
+      sleep(2000);
       const topFolderPath = './src/Pages/downloads/' + files[i].name;
       if(files[i].children.length != 0) {
         //1
