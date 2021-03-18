@@ -4117,8 +4117,8 @@ app.post("/verifychromeemail", (req, res) => {
       //  })
       //}
     }
-    res.end("verify function ran.")
   })
+  res.end("verify function ran.")
 })
 
 app.get("/getemailmessage", (req, res) => {
