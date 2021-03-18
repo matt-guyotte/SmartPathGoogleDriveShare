@@ -4095,29 +4095,29 @@ app.post("/verifychromeemail", (req, res) => {
         message = true;
         console.log("domain matches.")
         app.set('message', message);
-        res.end("domain found.")
         break domains;
       }
-      else {
-         SpecialUsers.find({name: "Special Users"}, (err, res) => {
-          if(err) return console.log(err);
-          var specialUsers = res[0].emails;
-          special: for(var y = 0; y < specialUsers.length; y++) {
-            if(specialUsers[i] === emailDomain) {
-              message = true;
-              console.log("special user matches.")
-              app.set('message', message);
-              break special;
-            }
-            else {
-              message = false;
-              console.log("special user does not match.")
-              app.set('message', message);
-            }
-          }
-        })
-      }
+      //else {
+      //   SpecialUsers.find({name: "Special Users"}, (err, res) => {
+      //    if(err) return console.log(err);
+      //    var specialUsers = res[0].emails;
+      //    special: for(var y = 0; y < specialUsers.length; y++) {
+      //      if(specialUsers[i] === emailDomain) {
+      //        message = true;
+      //        console.log("special user matches.")
+      //        app.set('message', message);
+      //        break special;
+      //      }
+      //      else {
+      //        message = false;
+      //        console.log("special user does not match.")
+      //        app.set('message', message);
+      //      }
+      //    }
+      //  })
+      //}
     }
+    res.end("verify function ran.")
   })
 })
 
