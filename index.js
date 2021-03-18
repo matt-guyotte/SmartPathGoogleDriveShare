@@ -4240,6 +4240,7 @@ app.post("/register", (req, res, done) => {
       }
     }
   })
+  res.end("register function ran.")
 }); 
 
 app.get("/registerConfirm", (req, res) => {
@@ -4263,7 +4264,7 @@ app.post('/verify/*', (req, res) => {
     res.send("Your Email is now authenticated!")
     done(null, data)
   })
-
+  res.end("email verify ran.")
 })
 
 app.post('/login', (req, res, done) => {
@@ -4319,6 +4320,7 @@ app.post('/login', (req, res, done) => {
       }) 
       }
   })
+  res.end("login function ran.")
 })
 
 app.get('/login2', (req, res) => {
@@ -4368,6 +4370,8 @@ app.post('/adddomain', (req, res) => {
     {$push: {domains: newDomains}},
     {new: true},
     (err, data) => {console.log(data)})
+  
+  res.end("add domain ran.")
 })
 
 app.post('/removedomain', (req, res) => {
@@ -4381,6 +4385,7 @@ app.post('/removedomain', (req, res) => {
       }
     }
   })
+  res.end("remove domain ran.")
 })
 
 app.get('/specialusers', (req, res) => {
@@ -4399,6 +4404,8 @@ app.post('/addspecialuser', (req, res) => {
     {$push: {emails: newUser}},
     {new: true},
     (err, data) => {console.log(data)})
+
+  res.end("add special user ran.")
 })
 
 app.post('/removespecialuser', (req, res) => {
@@ -4412,6 +4419,7 @@ app.post('/removespecialuser', (req, res) => {
       }
     }
   })
+  res.end("remove special user ran.")
 })
 
 app.get('/api', (req, res, done) => {
@@ -4509,7 +4517,7 @@ app.post('/update', async (req, res) => {
     }
   });
   console.log(response);
-
+  res.end("update ran.")
 })
 
 app.post("/makenew", (req, res) => {
@@ -4540,6 +4548,7 @@ app.post("/makenew", (req, res) => {
         })
     }
   });
+  res.end("makenew ran.")
 })
 
 app.post('/profile', function (req, res) {
@@ -4551,6 +4560,7 @@ app.post('/profile', function (req, res) {
     fileId: id,
     requestBody: {properties: {imgsrc: imgurl}},
   })
+  res.end("profile ran.")
 })
 
 app.post('/photoupload', uploads.single('image'), (req, res, next) => {
@@ -4565,6 +4575,7 @@ app.post('/photoupload', uploads.single('image'), (req, res, next) => {
       if (err) return console.log(err)
       console.log(item);
   });
+  res.end("photoupload ran.")
 });
 
 app.get('/photocall/:photoid', (req, res) => {
