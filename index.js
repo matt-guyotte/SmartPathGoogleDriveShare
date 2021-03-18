@@ -4022,6 +4022,7 @@ app.post('/makeclassroomfilearray', (req, res) => {
   let classroomFileArray = req.body.fileArray;
   console.log("from post request: " + classroomFileArray);
   app.set("classroomFileArray", classroomFileArray);
+  res.end("classroomFileArray created.")
 })
 
 app.get('/getclassroomfilearray', (req, res) => {
@@ -4034,6 +4035,7 @@ app.post('/makeclassroomparent', (req, res) => {
   let classroomParent = req.body.classroomParent;
   console.log("from classroom parent post request: " + classroomParent);
   app.set("classroomParent", classroomParent);
+  res.end("classroom parent created.")
 })
 
 app.get('/getclassroomparent', (req, res) => {
@@ -4046,6 +4048,7 @@ app.post('/makeclassroomarrayselect', (req, res) => {
   let fileArray = req.body.fileArray;
   console.log("from classroomfilearray post request: " + fileArray)
   app.set("fileArray", fileArray);
+  res.end("next classroom file array recieved.")
 })
 
 app.get('/getclassroomarrayselect', (req, res) => {
@@ -4092,27 +4095,28 @@ app.post("/verifychromeemail", (req, res) => {
         message = true;
         console.log("domain matches.")
         app.set('message', message);
+        res.end("domain found.")
         break domains;
       }
-      //else {
-      //   SpecialUsers.find({name: "Special Users"}, (err, res) => {
-      //    if(err) return console.log(err);
-      //    var specialUsers = res[0].emails;
-      //    special: for(var y = 0; y < specialUsers.length; y++) {
-      //      if(specialUsers[i] === emailDomain) {
-      //        message = true;
-      //        console.log("special user matches.")
-      //        app.set('message', message);
-      //        break special;
-      //      }
-      //      else {
-      //        message = false;
-      //        console.log("special user does not match.")
-      //        app.set('message', message);
-      //      }
-      //    }
-      //  })
-      //}
+      else {
+         SpecialUsers.find({name: "Special Users"}, (err, res) => {
+          if(err) return console.log(err);
+          var specialUsers = res[0].emails;
+          special: for(var y = 0; y < specialUsers.length; y++) {
+            if(specialUsers[i] === emailDomain) {
+              message = true;
+              console.log("special user matches.")
+              app.set('message', message);
+              break special;
+            }
+            else {
+              message = false;
+              console.log("special user does not match.")
+              app.set('message', message);
+            }
+          }
+        })
+      }
     }
   })
 })
