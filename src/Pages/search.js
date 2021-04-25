@@ -40,10 +40,11 @@ class Search extends React.Component {
             session: false,
             driveFiles: [],
             downloadLink: '',
-            searchTerm: 'Search Here',
+            searchTerm: undefined,
             searchRan: false,
             foundFolders: [],
             foundFiles: [],
+            foundResults: 0,
             subject: '',
             grade: '',
             industry: '',
@@ -4908,7 +4909,7 @@ class Search extends React.Component {
 
         // Plain search terms
 
-            if(this.state.searchTerm === "Search Here" && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
+            if(this.state.searchTerm === undefined && !this.state.math && !this.state.science && !this.state.socialStudies && !this.state.languageArts && !this.state.careers && !this.state.technology
             && !this.state.preK && !this.state.K && !this.state.first && !this.state.second && !this.state.third && !this.state.fourth && !this.state.fifth && !this.state.sixth && !this.state.seventh && !this.state.eighth && !this.state.ninth && !this.state.tenth && !this.state.eleventh && !this.state.twelveth 
             && !this.state.agriculture && !this.state.architecture && !this.state.arts && !this.state.businessManagement && !this.state.educationTraining && !this.state.finance && !this.state.governmentPublic && !this.state.healthScience && !this.state.hospitality && !this.state.humanServices && !this.state.informationTechnology && !this.state.lawSafety && !this.state.manufacturing && !this.state.marketingSales && !this.state.sTEM && !this.state.transportation) {
                 this.setState({foundFolders: "Please enter a valid search term."})
@@ -4957,6 +4958,7 @@ class Search extends React.Component {
               }
           }       
         }
+        this.setState({foundResults: foundFolders.length})
         this.setState({searchRan: true})
         this.setState({subjectArray: []})
         this.setState({gradeArray: []})
@@ -5148,6 +5150,7 @@ class Search extends React.Component {
                                         <Row>
                                             <Col>
                                             <h2> Found Lessons </h2>
+                                            <p> Search returned {this.state.foundResults} results.</p>
                                                 {this.state.foundFolders.map(folders => (
                                                 <div className = "file-box-search" key={folders}>
                                                 <img className = "lesson-pic" src = {"./img/" + folders.imgsrc} ></img>
