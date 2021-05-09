@@ -4305,7 +4305,7 @@ app.post('/login', (req, res, done) => {
                         done(null, req.session.sessionID);
                         res.send(req.session.sessionID);
                       }
-                      else {
+                      if(foundDomains[i] !== data[0].domain) {
                         return console.log("user does not match any of our records.")
                       }
                     }
