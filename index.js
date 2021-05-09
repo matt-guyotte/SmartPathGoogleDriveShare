@@ -4267,10 +4267,10 @@ app.post('/verify/*', (req, res) => {
   res.end("email verify ran.")
 })
 
-app.post('/login', (req, res, done) => {
+app.post('/login', async (req, res, done) => {
   const email = req.body.email; 
   const password = req.body.password;
-  User.find({email: email}, (err, data) => {
+  await User.find({email: email}, (err, data) => {
       if (err) { 
           done(err); 
           console.log("email not found.")
@@ -4319,7 +4319,6 @@ app.post('/login', (req, res, done) => {
       }
   })
   console.log("this is the session id: " + req.session.sessionID)
-  res.end("login function ran.")
 })
 
 app.get('/login2', (req, res) => {
