@@ -4294,8 +4294,8 @@ app.post('/login', (req, res, done) => {
               var foundDomains = res[0].domains;
               for(var i = 0; i < foundDomains.length; i++) {
                 if(foundDomains[i] === data[0].domain) {
-                  done(null, req.session.sessionID);
                   console.log(req.session.sessionID); 
+                  res.end();
                 }
                 if(foundDomains[i] !== data[0].domain) {
                   SpecialUsers.find({name: "Special Users"}, (err, res) => {
@@ -4305,9 +4305,6 @@ app.post('/login', (req, res, done) => {
                       if(specialUsers[i] === data[0].email) {
                         done(null, req.session.sessionID);
                         console.log(req.session.sessionID);
-                      }
-                      if(foundDomains[i] !== data[0].domain) {
-                        return console.log("user does not match any of our records.")
                       }
                     }
                   })
