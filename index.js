@@ -4295,7 +4295,7 @@ app.post('/login', (req, res, done) => {
               for(var i = 0; i < foundDomains.length; i++) {
                 if(foundDomains[i] === data[0].domain) {
                   console.log(req.session.sessionID); 
-                  res.send("domain is clear.");
+                  done();
                 }
                 if(foundDomains[i] !== data[0].domain) {
                   SpecialUsers.find({name: "Special Users"}, (err, res) => {
