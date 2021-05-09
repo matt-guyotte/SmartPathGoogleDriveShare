@@ -4283,7 +4283,8 @@ app.post('/login', (req, res, done) => {
       bcrypt.compare(password, data[0].password, (err, result) => {
           if(err) {
               done(err);
-              console.log('passwords do not match.')
+              console.log('passwords do not match.');
+              res.end();
           }
           if(result === true) {
             req.session.sessionID = data[0]._id; 
@@ -4320,6 +4321,7 @@ app.post('/login', (req, res, done) => {
       }) 
       }
   })
+  console.log("this is the session id: " + req.session.sessionID)
   res.end("login function ran.")
 })
 
@@ -4349,9 +4351,10 @@ app.get('/apicall', (req, res, done) => {
       console.log(req.session.sessionID)
       res.send(true);
   }
-  else {
-  done(null)
+  if(!req.session.sessionID) {
+  console.log("no session id found.")
   }
+  res.end();
 })
 
 app.get('/domains', (req, res) => {
