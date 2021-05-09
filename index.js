@@ -4303,7 +4303,7 @@ app.post('/login', (req, res, done) => {
                     for(var y = 0; y < specialUsers.length; y++) {
                       if(specialUsers[i] === data[0].email) {
                         done(null, req.session.sessionID);
-                        res.send(req.session.sessionID);
+                        console.log(req.session.sessionID);
                       }
                       if(foundDomains[i] !== data[0].domain) {
                         return console.log("user does not match any of our records.")
